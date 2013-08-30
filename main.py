@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-import datetime, pytz, geojson
-from housepy import config, log, server, model, util
+import datetime, pytz, geojson, model, os
+from housepy import config, log, server, util, process
+
+process.secure_pid(os.path.join(os.path.dirname(__file__), "run"))
 
 class Home(server.Handler):
     
@@ -16,7 +18,7 @@ class Home(server.Handler):
         kinds = self.get_argument('types', "positions").split(',')
         kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['audio', 'image', 'sighting', 'position']]   # sanitizes
         dt = self.get_argument('date', datetime.datetime.now(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%d"))
-        dt = util.parse_date(date, tz=config['local_tz'])
+        dt = util.parse_date(dt, tz=config['local_tz'])
         t = util.timestamp(dt)
         features = model.fetch_features(kinds, t, t + (24 * 60 * 60))
         feature_collection = geojson.FeatureCollection(features)

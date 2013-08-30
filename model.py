@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sqlite3, json, time, sys, os
+import sqlite3, json, time, sys, os, geojson
 from housepy import config, log
 
 connection = sqlite3.connect("data.db")
@@ -30,8 +30,14 @@ def insert_feature(kind, t, data):
 def fetch_features(kinds, start_t, stop_t):
     kindq = []
     for kind in kinds:
-        kindq.append("OR kind = %s " % kind)
-    db.execute("SELECT * FROM features WHERE (1=0 %s) AND t>=? AND t<? ORDER BY t" % kindq, (kind, start_t, stop_t))
-    rows = [dict(feature) for feature in db.fetchall()]
-    return rows 
+        kindq.append("OR kind='%s'" % kind)
+    query = "SELECT rowid, data FROM features WHERE (1=0 %s) AND t>=? AND t<? ORDER BY t" % ''.join(kindq)
+    db.execute(query, (start_t, stop_t))
+    features = []
+    for row in db.fetchall():
+        feature = geojson.loads(row['data'])
+        feature.id = row['rowid'] 
+        features.append(feature)
+    return features
+
 
