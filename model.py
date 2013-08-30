@@ -9,17 +9,17 @@ db = connection.cursor()
 
 def init():
     try:
-        db.execute("CREATE TABLE IF NOT EXISTS events (t INTEGER, kind TEXT, data TEXT)")
-        db.execute("CREATE INDEX IF NOT EXISTS kind_t ON events(kind, t)")
+        db.execute("CREATE TABLE IF NOT EXISTS features (t INTEGER, kind TEXT, data TEXT)")
+        db.execute("CREATE INDEX IF NOT EXISTS kind_t ON features(kind, t)")
     except Exception as e:
         log.error(log.exc(e))
         return
     connection.commit()
 init()
 
-def insert_event(kind, t, data):
+def insert_feature(kind, t, data):
     try:
-        db.execute("INSERT INTO events (kind, t, data) VALUES (?, ?, ?)", (device, kind, t, data))
+        db.execute("INSERT INTO features (kind, t, data) VALUES (?, ?, ?)", (kind, t, data))
         entry_id = db.lastrowid
     except Exception as e:
         log.error(log.exc(e))
@@ -27,8 +27,11 @@ def insert_event(kind, t, data):
     connection.commit()
     return entry_id
 
-def fetch_events(kind, start_t, stop_t):
-    db.execute("SELECT * FROM events WHERE kind=? AND t>=? AND t<?", (kind, start_t, stop_t))
-    rows = [dict(event) for event in db.fetchall()]
+def fetch_features(kinds, start_t, stop_t):
+    kindq = []
+    for kind in kinds:
+        kindq.append("OR kind = %s " % kind)
+    db.execute("SELECT * FROM features WHERE (1=0 %s) AND t>=? AND t<? ORDER BY t" % kindq, (kind, start_t, stop_t))
+    rows = [dict(feature) for feature in db.fetchall()]
     return rows 
 
