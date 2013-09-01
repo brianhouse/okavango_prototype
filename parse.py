@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import geojson, csv, dateutil, datetime, model, time, os
+import geojson, csv, dateutil, datetime, model, time, os, zipfile
 from housepy import config, log, util, strings, emailer
 
 
@@ -37,9 +37,6 @@ def injest_geo_feature(filename, kind):
                 continue
 
 
-def injest_note(note):
-    """These wouldnt be geocoded, right? so what format do they live in?"""
-
 # def injest_image():
 
 # def injest_audio():    
@@ -49,31 +46,60 @@ def injest_note(note):
 
 messages = emailer.fetch()
 for message in messages:
-    if message['from'] != config['incoming']:
+    if message['from'] not in config['incoming']:
         log.warning("Received bunk email from %s" % message['from'])
         continue
-    notes = None
-    if 'body' in message:
-        notes = message['body']
-    elif 'html' in message:
-        notes = strings.strip_html(message['html'])
-    if notes is not None:
-        injest_note(note)
+    # notes = None
+    # if 'body' in message:
+    #     notes = message['body']
+    # elif 'html' in message:
+    #     notes = strings.strip_html(message['html'])
+    # if notes is not None:
+    #     injest_note(note)
+    subject = message['subject'].lower().strip()
+    kind = None
+    kinds = 'ambit', 'sighting', 'breadcrumb', 'image', 'audio'
+    for k in kinds:        
+        if util.lev_distance(k, subject) <= 2:
+            kind = k
+            break
+    if kind is None and 'TS270140' in subject:
+        kind = 'position'
+    if kind is None:
+        log.error("subject not recognized")
+        break
     for attachment in message['attachments']:
-        filename = os.path.join(os.path.dirname(__file__), "data", "%s_%a" % (int(time.time()), attachment['filename'].lower()))
-        with open(filename, 'wb') as f:
-            f.write(attachment['data'])
-        if "sighting" in filename:
-            injest_geo_feature(filename, "sighting")
-        elif "breadcrumbs" in filename:
-            injest_geo_feature(filename, "position")
+
+        path = os.path.join(os.path.dirname(__file__), "data", "%s_%a" % (util.timestamp(), attachment['filename'].lower()))
+        def write_file():
+            with open(path, 'wb') as f:
+                f.write(attachment['data'])
+
+        if kind in ('sighting', 'breadcrumb'):
+            if path[-3:] != "csv":
+                continue
+            write_file()
+            injest_geo_feature(path, kind)
+            break
+
+        elif kind in ('ambit', 'image', 'audio'): 
+            if zipfile.is_zipfile(path) is False:
+                continue
+            write_file()            
+            p = path.split('.')[0]
+            os.mkdir(p)
+            with ZipFile(path, 'r') as archive:
+            archive.extractall(p)
+            for filename in os.listdir(p):
+                if kind == 'ambit':
+                    injest_ambit(os.path.join(p, filename))
+                elif kind == 'image':
+                    injest_image(os.path.join(p, filename))
+                elif kind == 'audio':
+                    injest_audio(os.path.join(p, filename))
+
+        elif kind == 'position':
+            pass
 
 
-
-"""
-
-so namibia, botswana, and angola are all potentially different time zones
-
-
-"""
 

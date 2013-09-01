@@ -3,7 +3,8 @@ local_tz: "Africa/Gaborone"    # will convert from this into UTC
 server:
     port: 9999
 
-incoming: brian.house@gmail.com
+incoming:
+    - brian.house@gmail.com
 
 email:
     imap:
