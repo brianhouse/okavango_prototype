@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import geojson, csv, dateutil, datetime, model, time, os, zipfile
+import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz
 from housepy import config, log, util, strings, emailer
 
 
@@ -37,11 +37,18 @@ def injest_geo_feature(filename, kind):
                 continue
 
 
-# def injest_image():
+def injest_ambit():    
+    pass
+    
 
-# def injest_audio():    
+def injest_media(filename, kind):
+    dt = datetime.datetime.strptime(filename.split('_')[0], "%d%m%Y%H%M")
+    dt.replace(microsecond=int(filename[-7:3]))
+    log.debug(dt)
+    tz = pytz.timezone(config['local_tz'])
+    dt = tz.localize(dt)
+    t = util.timestamp(dt)
 
-# etc
 
 
 messages = emailer.fetch()
@@ -70,36 +77,37 @@ for message in messages:
         break
     for attachment in message['attachments']:
 
-        path = os.path.join(os.path.dirname(__file__), "data", "%s_%a" % (util.timestamp(), attachment['filename'].lower()))
-        def write_file():
-            with open(path, 'wb') as f:
-                f.write(attachment['data'])
+        try:
+            path = os.path.join(os.path.dirname(__file__), "data", "%s_%a" % (util.timestamp(), attachment['filename'].lower()))
+            def write_file():
+                with open(path, 'wb') as f:
+                    f.write(attachment['data'])
 
-        if kind in ('sighting', 'breadcrumb'):
-            if path[-3:] != "csv":
-                continue
-            write_file()
-            injest_geo_feature(path, kind)
-            break
+            if kind in ('sighting', 'breadcrumb'):
+                if path[-3:] != "csv":
+                    continue
+                write_file()
+                injest_geo_feature(path, kind)
+                break
 
-        elif kind in ('ambit', 'image', 'audio'): 
-            if zipfile.is_zipfile(path) is False:
-                continue
-            write_file()            
-            p = path.split('.')[0]
-            os.mkdir(p)
-            with ZipFile(path, 'r') as archive:
-            archive.extractall(p)
-            for filename in os.listdir(p):
-                if kind == 'ambit':
-                    injest_ambit(os.path.join(p, filename))
-                elif kind == 'image':
-                    injest_image(os.path.join(p, filename))
-                elif kind == 'audio':
-                    injest_audio(os.path.join(p, filename))
+            elif kind in ('ambit', 'image', 'audio'): 
+                if zipfile.is_zipfile(path) is False:
+                    continue
+                write_file()            
+                p = path.split('.')[0]
+                os.mkdir(p)
+                with ZipFile(path, 'r') as archive:
+                archive.extractall(p)
+                for filename in os.listdir(p):
+                    if kind == 'ambit':
+                        injest_ambit(os.path.join(p, filename))
+                    elif kind == 'image' or kind == 'audio':
+                        injest_media(os.path.join(p, filename), kind)
 
-        elif kind == 'position':
-            pass
+            elif kind == 'position':
+                pass
 
+        except Exception as e:
+            log.error(log.exc(e))
 
 
