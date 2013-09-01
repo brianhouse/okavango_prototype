@@ -5,8 +5,10 @@ Data streams from Dr. Steve Boyes trip down the delta
 
 
 
-Installation notes
-------------------
+Installation
+------------
+
+Python >=3.3
 
 requires housepy
 

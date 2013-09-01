@@ -1,0 +1,19 @@
+local_tz: "Africa/Gaborone"    # will convert from this into UTC
+
+server:
+    port: 9999
+
+incoming: brian.house@gmail.com
+
+email:
+    imap:
+        server: imap.gmail.com
+        username: un
+        password: pw
+    smtp:
+        name: Dr. H
+        address: account@email.com
+        server: smtp.gmail.com
+        port: 587
+        username: un
+        password: pw
