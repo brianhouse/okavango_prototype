@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
-import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz, xmltodict, json, shutil
+import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz, xmltodict, json, shutil, urllib
 import xml.etree.ElementTree as ET        
-from housepy import config, log, util, strings, emailer
+from housepy import config, log, util, strings, emailer, net
 
 
-def injest_geo_feature(filename, kind):
+def injest_geo_feature(path, kind):
+    log.info("injest_geo_feature %s" % path)
     sightings = []
     headings = {}
-    with open(filename) as f:
+    with open(path) as f:
         rows = csv.reader(f)
         for r, row in enumerate(rows):
             if r == 0:
@@ -38,8 +39,9 @@ def injest_geo_feature(filename, kind):
                 continue
 
 
-def injest_ambit(filename):    
-    with open(filename, 'r') as f:
+def injest_ambit(path):    
+    log.info("injest_ambit %s" % path)
+    with open(path, 'r') as f:
         content = f.read()        
         content = content.split("<IBI>")[0]
         parts = content.split("</header>")
@@ -74,7 +76,6 @@ def injest_image(path):
     log.info("injest_image %s" % path)
     dt = datetime.datetime.strptime(path.split('/')[-1].split('_')[0], "%d%m%Y%H%M")
     dt.replace(microsecond=int(path[-7:-4]))
-    log.debug(dt)
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
     t = util.timestamp(dt)
@@ -87,15 +88,51 @@ def injest_image(path):
 def injest_audio(path):
     log.info("injest_audio %s" % path)
     dt = datetime.datetime.strptime(path.split('/')[-1], "audio %d%m%Y_%H%M.mp3")
-    log.debug(dt)
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
     t = util.timestamp(dt)
-    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s.mp3" % t})
+    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s.mp3" % t, 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s.mp3" % t)
     shutil.copy(path, new_path)
 
+
+def injest_beacon(content):
+    log.info("injest_beacon")
+    properties = {}
+    coordinates = [None, None, None]
+    t = None
+    try:
+        lines = content.split('\n')
+        for line in lines:
+            try:
+                if "Position Time:" in line:
+                    line = line.replace("Position Time:", "").strip()
+                    dt = util.parse_date(line)
+                    t = util.timestamp(dt)
+                    properties['DateTime'] = dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")
+                    properties['t_utc'] = t
+                if "Map:" in line:
+                    line = line.split('?')[1].strip()
+                    result = net.urldecode(line)
+                    lat, lon = result['q'].split(' ')[0].split(',')
+                    coordinates[0], coordinates[1] = strings.as_numeric(lat), strings.as_numeric(lon)
+                if "Altitude:" in line:
+                    altitude = strings.as_numeric(line.replace("Altitude:", "").replace("meters", "").strip())
+                    coordinates[2] = altitude
+                if "Speed:" in line:
+                    speed = strings.as_numeric(line.replace("Speed:", "").replace("Knots", "").strip())
+                    properties['Speed'] = speed
+                if "Heading:" in line:
+                    heading = strings.as_numeric(line.replace("Heading:", "").replace("°", "").strip())
+                    properties['Heading'] = heading
+            except Exception as e:
+                log.error(log.exc(e))
+                continue
+        feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
+        feature_id = model.insert_feature('beacon', t, geojson.dumps(feature))
+    except Exception as e:
+        log.error(log.exc(e))
 
 
 messages = emailer.fetch()
@@ -103,59 +140,54 @@ for message in messages:
     if message['from'] not in config['incoming']:
         log.warning("Received bunk email from %s" % message['from'])
         continue
-    # notes = None
-    # if 'body' in message:
-    #     notes = message['body']
-    # elif 'html' in message:
-    #     notes = strings.strip_html(message['html'])
-    # if notes is not None:
-    #     injest_note(note)
     subject = message['subject'].lower().strip()
+    log.info("Email: %s" % subject)
     kind = None
     kinds = 'ambit', 'sighting', 'breadcrumb', 'image', 'audio'
     for k in kinds:        
         if util.lev_distance(k, subject) <= 2:
             kind = k
             break
-    if kind is None and 'TS270140' in subject:
-        kind = 'position'
+    if kind is None and 'TS270140'.lower() in subject:
+        kind = 'beacon'
     if kind is None:
         log.error("subject not recognized")
-        break
-    for attachment in message['attachments']:
+    else:
+        log.info("--> %s" % kind)
+    if kind == 'beacon':
+        injest_beacon(message['body'])
+    else:
+        for attachment in message['attachments']:
 
-        try:
-            path = os.path.join(os.path.dirname(__file__), "data", "%s_%a" % (util.timestamp(), attachment['filename'].lower()))
-            def write_file():
-                with open(path, 'wb') as f:
-                    f.write(attachment['data'])
+            try:
+                path = os.path.join(os.path.dirname(__file__), "data", "%s_%a" % (util.timestamp(), attachment['filename'].lower()))
+                def write_file():
+                    with open(path, 'wb') as f:
+                        f.write(attachment['data'])
 
-            if kind in ('sighting', 'breadcrumb'):
-                if path[-3:] != "csv":
-                    continue
-                write_file()
-                injest_geo_feature(path, kind)
-                break
+                if kind in ('sighting', 'breadcrumb'):
+                    if path[-3:] != "csv":
+                        continue
+                    write_file()
+                    injest_geo_feature(path, kind)
+                    break
 
-            elif kind in ('ambit', 'image', 'audio'): 
-                if zipfile.is_zipfile(path) is False:
-                    continue
-                write_file()            
-                p = path.split('.')[0]
-                os.mkdir(p)
-                with ZipFile(path, 'r') as archive:
-                    archive.extractall(p)
-                    for filename in os.listdir(p):
-                        if kind == 'ambit':
-                            injest_ambit(os.path.join(p, filename))
-                        elif kind == 'image':
-                            injest_image(os.path.join(p, filename))
-                        elif kind == 'audio':
-                            injest_audio(os.path.join(p, filename))
+                elif kind in ('ambit', 'image', 'audio'): 
+                    if zipfile.is_zipfile(path) is False:
+                        continue
+                    write_file()            
+                    p = path.split('.')[0]
+                    os.mkdir(p)
+                    with ZipFile(path, 'r') as archive:
+                        archive.extractall(p)
+                        for filename in os.listdir(p):
+                            if kind == 'ambit':
+                                injest_ambit(os.path.join(p, filename))
+                            elif kind == 'image':
+                                injest_image(os.path.join(p, filename))
+                            elif kind == 'audio':
+                                injest_audio(os.path.join(p, filename))
 
-            elif kind == 'position':
-                pass
-
-        except Exception as e:
-            log.error(log.exc(e))
+            except Exception as e:
+                log.error(log.exc(e))
 
