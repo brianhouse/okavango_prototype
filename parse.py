@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz, xmltodict, json
+import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz, xmltodict, json, shutil
 import xml.etree.ElementTree as ET        
 from housepy import config, log, util, strings, emailer
 
@@ -70,13 +70,31 @@ def injest_ambit(filename):
             log.info("Inserted feature")
 
 
-def injest_media(filename, kind):
-    dt = datetime.datetime.strptime(filename.split('_')[0], "%d%m%Y%H%M")
-    dt.replace(microsecond=int(filename[-7:3]))
+def injest_image(path):
+    log.info("injest_image %s" % path)
+    dt = datetime.datetime.strptime(path.split('/')[-1].split('_')[0], "%d%m%Y%H%M")
+    dt.replace(microsecond=int(path[-7:-4]))
     log.debug(dt)
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
     t = util.timestamp(dt)
+    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s.jpg" % t})
+    feature_id = model.insert_feature('image', t, geojson.dumps(feature))
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s.jpg" % t)
+    shutil.copy(path, new_path)
+
+
+def injest_audio(path):
+    log.info("injest_audio %s" % path)
+    dt = datetime.datetime.strptime(path.split('/')[-1], "audio %d%m%Y_%H%M.mp3")
+    log.debug(dt)
+    tz = pytz.timezone(config['local_tz'])
+    dt = tz.localize(dt)
+    t = util.timestamp(dt)
+    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s.mp3" % t})
+    feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s.mp3" % t)
+    shutil.copy(path, new_path)
 
 
 
@@ -130,13 +148,14 @@ for message in messages:
                     for filename in os.listdir(p):
                         if kind == 'ambit':
                             injest_ambit(os.path.join(p, filename))
-                        elif kind == 'image' or kind == 'audio':
-                            injest_media(os.path.join(p, filename), kind)
+                        elif kind == 'image':
+                            injest_image(os.path.join(p, filename))
+                        elif kind == 'audio':
+                            injest_audio(os.path.join(p, filename))
 
             elif kind == 'position':
                 pass
 
         except Exception as e:
             log.error(log.exc(e))
-
 
