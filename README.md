@@ -27,6 +27,12 @@ make sure the server is on top of the time:
     sudo ntpdate time.nist.gov  # in sudo crontab, daily
 
 
+Running
+-------
+
+    sudo ./scripts/start.sh
+
+
 ### Copyright/License
 
 Copyright (c) 2013 Brian House and Jer Thorp

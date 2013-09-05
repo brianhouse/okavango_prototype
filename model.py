@@ -33,10 +33,7 @@ def fetch_features(kinds, start_t, stop_t):
     for kind in kinds:
         kindq.append("OR kind='%s'" % kind)
     query = "SELECT rowid, data FROM features WHERE (1=0 %s) AND t>=? AND t<? ORDER BY t" % ''.join(kindq)
-    log.debug(query)
     db.execute(query, (start_t, stop_t))
-    log.debug(start_t)
-    log.debug(stop_t)
     features = []
     for row in db.fetchall():
         feature = geojson.loads(row['data'])
