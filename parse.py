@@ -33,7 +33,6 @@ def injest_geo_feature(path, kind):
                             pass
                 feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
                 model.insert_feature(kind, t, geojson.dumps(feature))
-                log.info("Inserted feature")
             except Exception as e:
                 log.error("Row failed: " + log.exc(e))
                 continue
@@ -69,7 +68,6 @@ def injest_ambit(path):
             sample['Person'] = person
             feature = geojson.Feature(properties=sample)
             model.insert_feature('ambit', t, geojson.dumps(feature))
-            log.info("Inserted feature")
 
 
 def injest_image(path):
@@ -105,6 +103,7 @@ def injest_beacon(content):
     try:
         lines = content.split('\n')
         for line in lines:
+            log.debug("%s" % line)
             try:
                 if "Position Time:" in line:
                     line = line.replace("Position Time:", "").strip()
@@ -141,7 +140,7 @@ for message in messages:
         log.warning("Received bunk email from %s" % message['from'])
         continue
     subject = message['subject'].lower().strip()
-    log.info("Email: %s" % subject)
+    log.info("Subject: %s" % subject)
     kind = None
     kinds = 'ambit', 'sighting', 'breadcrumb', 'image', 'audio'
     for k in kinds:        
@@ -153,40 +152,49 @@ for message in messages:
     if kind is None:
         log.error("subject not recognized")
     else:
-        log.info("--> %s" % kind)
+        log.info("--> kind: %s" % kind)
     if kind == 'beacon':
         injest_beacon(message['body'])
     else:
+        log.info("--> %s attachments" % len(message['attachments']))
         for attachment in message['attachments']:
 
             try:
-                path = os.path.join(os.path.dirname(__file__), "data", "%s_%a" % (util.timestamp(), attachment['filename'].lower()))
+                path = os.path.join(os.path.dirname(__file__), "data", "%s_%s" % (util.timestamp(), attachment['filename'].lower()))
                 def write_file():
                     with open(path, 'wb') as f:
                         f.write(attachment['data'])
 
                 if kind in ('sighting', 'breadcrumb'):
                     if path[-3:] != "csv":
+                        log.warning("--> expected csv file, got %s" % path)
                         continue
                     write_file()
                     injest_geo_feature(path, kind)
                     break
 
                 elif kind in ('ambit', 'image', 'audio'): 
-                    if zipfile.is_zipfile(path) is False:
+                    if path[-3:] != "zip":
+                        log.warning("--> expected zip file, got %s" % path)
                         continue
                     write_file()            
-                    p = path.split('.')[0]
+                    if zipfile.is_zipfile(path) is False:
+                        log.warning("--> zip file is corrupt %s" % path)
+                        continue
+                    p = path[:-4]
                     os.mkdir(p)
-                    with ZipFile(path, 'r') as archive:
+                    with zipfile.ZipFile(path, 'r') as archive:
                         archive.extractall(p)
                         for filename in os.listdir(p):
-                            if kind == 'ambit':
+                            if kind == 'ambit' and filename[-3:] == "xml":
                                 injest_ambit(os.path.join(p, filename))
-                            elif kind == 'image':
+                            elif kind == 'image' and filename[-3:] == "jpg":
                                 injest_image(os.path.join(p, filename))
-                            elif kind == 'audio':
+                            elif kind == 'audio' and filename[-3:] == "mp3":
                                 injest_audio(os.path.join(p, filename))
+                            else:
+                                log.warning("--> unknown file type %s, skipping..." % filename)
+                    break
 
             except Exception as e:
                 log.error(log.exc(e))

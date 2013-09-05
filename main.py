@@ -16,10 +16,11 @@ class Home(server.Handler):
 
     def get_timeline(self):
         kinds = self.get_argument('types', "positions").split(',')
-        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['audio', 'image', 'sighting', 'position']]   # sanitizes
+        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ambit', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon']]   # sanitizes
         dt = self.get_argument('date', datetime.datetime.now(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%d"))
         dt = util.parse_date(dt, tz=config['local_tz'])
-        t = util.timestamp(dt)
+        t = util.timestamp(dt)        
+        log.debug("--> search for kinds: %s" % kinds)
         features = model.fetch_features(kinds, t, t + (24 * 60 * 60))
         feature_collection = geojson.FeatureCollection(features)
         return self.json(feature_collection)
