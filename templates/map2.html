@@ -75,7 +75,9 @@
 		};
 
 
-		$.getJSON('/api/timeline?date=20130908&types=beacon', function(data) {
+		var lastPoint;
+
+		$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
 		  L.geoJson(data.features, {
 		    filter: function(feature, layer) {
 		    	//Filter out 0,0 points
