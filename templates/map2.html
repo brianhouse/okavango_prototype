@@ -101,7 +101,7 @@
 			console.log("zoom");
 			map.zoomIn(4);
 			map.panTo(markers[markers.length - 1].getLatLng());
-			if (map.getZoom() > 17) setTimeout(zoomIn, 5000);
+			if (map.getZoom() < 17) setTimeout(zoomIn, 5000);
 		}
 
 		setTimeout(zoomIn, 5000)
