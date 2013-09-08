@@ -6,6 +6,8 @@ server:
 incoming:
     - brian.house@gmail.com
 
+satellite: TSO90180
+
 email:
     imap:
         server: imap.gmail.com
