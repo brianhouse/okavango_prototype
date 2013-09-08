@@ -74,7 +74,6 @@
 		    fillOpacity: 0.8,
 		};
 
-		var i =0 ;
 
 		$.getJSON('/api/timeline?date=20130908&types=beacon', function(data) {
 		  L.geoJson(data.features, {
@@ -84,7 +83,7 @@
 		    },
 		    pointToLayer: function (feature, latlng) {
 		    	console.log(latlng);
-		        return L.Marker(latlng, geojsonMarkerOptions);
+		        return L.circleMarker(latlng, geojsonMarkerOptions);
 		    },
 		    style: function(feature) {
 		    	//Here we can apply styling to markers depending on properties. Cool.
