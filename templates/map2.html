@@ -87,8 +87,8 @@
 		    filter: function(feature, layer) {
 		    	//For some bizarre reason I have to invert the points in the sample data to get them to render correctly.
 		    	//*** HACK WARNING ***
-		    	feature.geometry.coordinates[0] *= -1;
-		    	feature.geometry.coordinates[1] *= -1;
+		    	//feature.geometry.coordinates[0] *= -1;
+		    	//feature.geometry.coordinates[1] *= -1;
 		    	//Filter out 0,0 points
 		        return (feature.geometry.coordinates[0] != 0);
 		    },
