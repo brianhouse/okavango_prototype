@@ -99,6 +99,8 @@
 		    }
 			}).addTo(map);
 		    map.panTo(markers[markers.length - 1].getLatLng());
+		    var lm = markers[markers.length - 1];
+			focusMarker = L.marker(lm.getLatLng()).addTo(map)
 		});
 
 		function zoomIn() {
@@ -114,8 +116,7 @@
 			}
 		}
 
-		var lm = markers[markers.length - 1];
-		focusMarker = L.marker(lm.getLatLng()).addTo(map)
+		
 		setTimeout(zoomIn, 5000)
 
 
