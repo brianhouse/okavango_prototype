@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz, xmltodict, json, shutil, urllib
+import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz, xmltodict, json, shutil, urllib, math
 import xml.etree.ElementTree as ET        
 from housepy import config, log, util, strings, emailer, net
 
 
-def injest_geo_feature(path, kind):
-    log.info("injest_geo_feature %s" % path)
+def ingest_geo_feature(path, kind):
+    log.info("ingest_geo_feature %s" % path)
     sightings = []
     headings = {}
     with open(path) as f:
@@ -38,8 +38,8 @@ def injest_geo_feature(path, kind):
                 continue
 
 
-def injest_ambit(path):    
-    log.info("injest_ambit %s" % path)
+def ingest_ambit(path):    
+    log.info("ingest_ambit %s" % path)
     with open(path, 'r') as f:
         content = f.read()        
         content = content.split("<IBI>")[0]
@@ -49,29 +49,67 @@ def injest_ambit(path):
         person = header['header']['Activity'].replace("OWBS ", "") 
         content = parts[-1].encode('utf-8')
         samples = xmltodict.parse(content)['Samples']['Sample']
-        for s, sample in enumerate(samples):
-            if 'VerticalSpeed' not in sample:
-                continue
-            for key, value in sample.items():
-                if key == "UTC":
-                    dt = util.parse_date(value) # these are UTC in the data
-                    t = util.timestamp(dt)
-                    del sample[key]
-                    continue
-                if type(value) != str:
-                    del sample[key]
-                    continue
-                sample[key] = strings.as_numeric(value)
-            sample['DateTime'] = dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")
-            sample['t_utc'] = t
-            sample['ContentType'] = 'ambit'
-            sample['Person'] = person
-            feature = geojson.Feature(properties=sample)
-            model.insert_feature('ambit', t, geojson.dumps(feature))
+        for s, sample in enumerate(samples):            
+            try:
+                if 'VerticalSpeed' not in sample:
+                    # satellite data sample                
+                    for key, value in sample.items():
+                        if key == "UTC":
+                            dt = util.parse_date(sample['UTC']) # these are UTC in the data
+                            t = util.timestamp(dt)
+                            del sample[key]
+                            continue
+                        if key == "Longitude":
+                            lon = math.degrees(float(sample['Longitude']))
+                            del sample[key]                
+                            continue                       
+                        if key == "Latitude":
+                            lat = math.degrees(float(sample['Latitude']))
+                            del sample[key]               
+                            continue
+                        if key == "GPSAltitude":
+                            alt = float(sample['Latitude'])
+                            del sample[key]               
+                            continue
+                        if key[:3] == "Nav":
+                            del sample[key]
+                            continue
+                        if type(value) != str:
+                            del sample[key]
+                            continue                            
+                        sample[key] = strings.as_numeric(value)                            
+                    sample['DateTime'] = dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")
+                    sample['t_utc'] = t
+                    sample['ContentType'] = 'ambit'
+                    sample['Person'] = person         
+                    feature = geojson.Feature(geometry={'type': "Point", 'coordinates': [lon, lat, alt]}, properties=sample)            
+                    model.insert_feature('ambit_geo', t, geojson.dumps(feature))
+
+                else:
+                    # energy data sample
+                    for key, value in sample.items():
+                        if key == "UTC":
+                            dt = util.parse_date(value) # these are UTC in the data
+                            t = util.timestamp(dt)
+                            del sample[key]
+                            continue
+                        if type(value) != str:
+                            del sample[key]
+                            continue
+                        sample[key] = strings.as_numeric(value)
+                    sample['DateTime'] = dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")
+                    sample['t_utc'] = t
+                    sample['ContentType'] = 'ambit'
+                    sample['Person'] = person
+                    feature = geojson.Feature(properties=sample)
+                    model.insert_feature('ambit', t, geojson.dumps(feature))
+
+            except Exception as e:
+                log.error(log.exc(e))
 
 
-def injest_image(path, i):
-    log.info("injest_image %s" % path)
+def ingest_image(path, i):
+    log.info("ingest_image %s" % path)
     date_string = path.split('/')[-1] 
     dt = datetime.datetime.strptime(date_string.split('_')[0], "%d%m%Y%H%M")
     tz = pytz.timezone(config['local_tz'])
@@ -83,8 +121,8 @@ def injest_image(path, i):
     shutil.copy(path, new_path)
 
 
-def injest_audio(path, i):
-    log.info("injest_audio %s" % path)
+def ingest_audio(path, i):
+    log.info("ingest_audio %s" % path)
     dt = datetime.datetime.strptime(path.split('/')[-1], "audio %d%m%Y_%H%M.mp3")
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
@@ -95,8 +133,8 @@ def injest_audio(path, i):
     shutil.copy(path, new_path)
 
 
-def injest_beacon(content):
-    log.info("injest_beacon")
+def ingest_beacon(content):
+    log.info("ingest_beacon")
     properties = {}
     coordinates = [None, None, None]
     t = None
@@ -134,68 +172,72 @@ def injest_beacon(content):
         log.error(log.exc(e))
 
 
-messages = emailer.fetch()
-for m, message in enumerate(messages):
-    if message['from'] not in config['incoming']:
-        log.warning("Received bunk email from %s" % message['from'])
-        continue
-    subject = message['subject'].lower().strip()
-    log.info("Subject: %s" % subject)
-    kind = None
-    kinds = 'ambit', 'sighting', 'breadcrumb', 'image', 'audio'
-    for k in kinds:        
-        if util.lev_distance(k, subject) <= 2:
-            kind = k
-            break
-    if kind is None and config['satellite'].lower() in subject:
-        kind = 'beacon'
-    if kind is None:
-        log.error("subject not recognized")
-    else:
-        log.info("--> kind: %s" % kind)
-    if kind == 'beacon':
-        injest_beacon(message['body'])
-    else:
-        log.info("--> %s attachments" % len(message['attachments']))
-        for attachment in message['attachments']:
+def main():
+    messages = emailer.fetch()
+    for m, message in enumerate(messages):
+        if message['from'] not in config['incoming']:
+            log.warning("Received bunk email from %s" % message['from'])
+            continue
+        subject = message['subject'].lower().strip()
+        log.info("Subject: %s" % subject)
+        kind = None
+        kinds = 'ambit', 'sighting', 'breadcrumb', 'image', 'audio'
+        for k in kinds:        
+            if util.lev_distance(k, subject) <= 2:
+                kind = k
+                break
+        if kind is None and config['satellite'].lower() in subject:
+            kind = 'beacon'
+        if kind is None:
+            log.error("subject not recognized")
+        else:
+            log.info("--> kind: %s" % kind)
+        if kind == 'beacon':
+            ingest_beacon(message['body'])
+        else:
+            log.info("--> %s attachments" % len(message['attachments']))
+            for attachment in message['attachments']:
 
-            try:
-                path = os.path.join(os.path.dirname(__file__), "data", "%s-%s_%s" % (util.timestamp(), m, attachment['filename'].lower()))
-                def write_file():
-                    with open(path, 'wb') as f:
-                        f.write(attachment['data'])
+                try:
+                    path = os.path.join(os.path.dirname(__file__), "data", "%s-%s_%s" % (util.timestamp(), m, attachment['filename'].lower()))
+                    def write_file():
+                        with open(path, 'wb') as f:
+                            f.write(attachment['data'])
 
-                if kind in ('sighting', 'breadcrumb'):
-                    if path[-3:] != "csv":
-                        log.warning("--> expected csv file, got %s" % path)
-                        continue
-                    write_file()
-                    injest_geo_feature(path, kind)
-                    break
+                    if kind in ('sighting', 'breadcrumb'):
+                        if path[-3:] != "csv":
+                            log.warning("--> expected csv file, got %s" % path)
+                            continue
+                        write_file()
+                        ingest_geo_feature(path, kind)
+                        break
 
-                elif kind in ('ambit', 'image', 'audio'): 
-                    if path[-3:] != "zip":
-                        log.warning("--> expected zip file, got %s" % path)
-                        continue
-                    write_file()            
-                    if zipfile.is_zipfile(path) is False:
-                        log.warning("--> zip file is corrupt %s" % path)
-                        continue
-                    p = path[:-4]
-                    os.mkdir(p)
-                    with zipfile.ZipFile(path, 'r') as archive:
-                        archive.extractall(p)
-                        for i, filename in enumerate(os.listdir(p)):
-                            if kind == 'ambit' and filename[-3:] == "xml":
-                                injest_ambit(os.path.join(p, filename))
-                            elif kind == 'image' and filename[-3:] == "jpg":
-                                injest_image(os.path.join(p, filename), i)
-                            elif kind == 'audio' and filename[-3:] == "mp3":
-                                injest_audio(os.path.join(p, filename), i)
-                            else:
-                                log.warning("--> unknown file type %s, skipping..." % filename)
-                    break
+                    elif kind in ('ambit', 'image', 'audio'): 
+                        if path[-3:] != "zip":
+                            log.warning("--> expected zip file, got %s" % path)
+                            continue
+                        write_file()            
+                        if zipfile.is_zipfile(path) is False:
+                            log.warning("--> zip file is corrupt %s" % path)
+                            continue
+                        p = path[:-4]
+                        os.mkdir(p)
+                        with zipfile.ZipFile(path, 'r') as archive:
+                            archive.extractall(p)
+                            for i, filename in enumerate(os.listdir(p)):
+                                if kind == 'ambit' and filename[-3:] == "xml":
+                                    ingest_ambit(os.path.join(p, filename))
+                                elif kind == 'image' and filename[-3:] == "jpg":
+                                    ingest_image(os.path.join(p, filename), i)
+                                elif kind == 'audio' and filename[-3:] == "mp3":
+                                    ingest_audio(os.path.join(p, filename), i)
+                                else:
+                                    log.warning("--> unknown file type %s, skipping..." % filename)
+                        break
 
-            except Exception as e:
-                log.error(log.exc(e))
+                except Exception as e:
+                    log.error(log.exc(e))
 
+# main()
+
+ingest_ambit("data/1378684107-9_log-5414984620002500-2013-09-08t10_21_56-0/log-5414984620002500-2013-09-08T10_21_56-0.xml")
