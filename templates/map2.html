@@ -105,8 +105,9 @@
 			if (map.getZoom() < 13) {
 				setTimeout(zoomIn, 5000);
 			} else {
-				L.marker(markers[markers.length - 1].getLatLng()).addTo(map)
-			    .bindPopup('This is the last recorded position of the expedition. \n Timestamp: ')
+				var lm = markers[markers.length - 1];
+				L.marker(lm.getLatLng()).addTo(map)
+			    .bindPopup('This is the last recorded position of the expedition. \n Timestamp: ' + lm.getJSON)
 			    .openPopup();
 			}
 		}
