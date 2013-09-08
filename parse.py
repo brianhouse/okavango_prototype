@@ -147,7 +147,7 @@ for message in messages:
         if util.lev_distance(k, subject) <= 2:
             kind = k
             break
-    if kind is None and 'TS270140'.lower() in subject:
+    if kind is None and config['satellite'].lower() in subject:
         kind = 'beacon'
     if kind is None:
         log.error("subject not recognized")
