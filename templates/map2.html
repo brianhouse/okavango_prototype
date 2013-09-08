@@ -81,6 +81,16 @@
 		var d = new Date();
 		var focusMarker;
 
+		var step = 0;
+
+		var scripts = [
+			"This is the Okavango Delta.",
+			"Located in Botswana, it is one of the richest biomes on Earth.",
+			"On September 7th, an expedition entered the delta to inventory its rich wildlife.",
+			"On this site, you can follow along with the expedition, and access all of the data they are collecting.",
+			"This is the last reported location of the expedition."
+		]
+
 		$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
 		  L.geoJson(data.features, {
 		    filter: function(feature, layer) {
@@ -100,7 +110,8 @@
 			}).addTo(map);
 		    map.panTo(markers[markers.length - 1].getLatLng());
 		    var lm = markers[markers.length - 1];
-			focusMarker = L.marker(lm.getLatLng()).addTo(map)
+			focusMarker = L.marker(lm.getLatLng()).addTo(map);
+			nextStep();
 		});
 
 		function zoomIn() {
@@ -111,12 +122,16 @@
 				setTimeout(zoomIn, 5000);
 			} 
 				
-			    focusMarker.bindPopup('This is the last reported position of the expedition.' + map.getZoom())
-			    focusMarker.openPopup();
+			nextStep();
 			
 		}
 
-		
+		function nextStep() {
+			focusMarker.bindPopup(scripts[step])
+			focusMarker.openPopup();
+			step ++;
+		}
+
 		setTimeout(zoomIn, 5000)
 
 
