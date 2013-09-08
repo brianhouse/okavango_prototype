@@ -84,9 +84,9 @@ def ingest_ambit(path, t_protect):
                             del sample[key]
                             continue                            
                         sample[key] = strings.as_numeric(value) 
-                    if t <= t_protect:
-                        log.warning("Protected t, skipping...")
-                        continue
+                    # if t <= t_protect:
+                    #     log.warning("Protected t, skipping...")
+                    #     continue
                     sample['DateTime'] = dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")
                     sample['t_utc'] = t
                     sample['ContentType'] = 'ambit'
@@ -106,9 +106,9 @@ def ingest_ambit(path, t_protect):
                             del sample[key]
                             continue
                         sample[key] = strings.as_numeric(value)
-                    if t <= t_protect:
-                        log.warning("Protected t, skipping...")
-                        continue                        
+                    # if t <= t_protect:
+                    #     log.warning("Protected t, skipping...")
+                    #     continue                        
                     sample['DateTime'] = dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")
                     sample['t_utc'] = t
                     sample['ContentType'] = 'ambit'
@@ -127,9 +127,9 @@ def ingest_image(path, i, t_protect):
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
     t = util.timestamp(dt)
-    if t <= t_protect:
-        log.warning("Protected t, skipping...")
-        return                    
+    # if t <= t_protect:
+    #     log.warning("Protected t, skipping...")
+    #     return                    
     feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s-%s.jpg" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('image', t, geojson.dumps(feature))
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s-%s.jpg" % (t, i))
@@ -141,10 +141,10 @@ def ingest_audio(path, i, t_protect):
     dt = datetime.datetime.strptime(path.split('/')[-1], "audio %d%m%Y_%H%M.mp3")
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
-    t = util.timestamp(dt)
-    if t <= t_protect:
-        log.warning("Protected t, skipping...")
-        return                    
+    t = util.timestamp(dt)    
+    # if t <= t_protect:
+    #     log.warning("Protected t, skipping...")
+    #     return                    
     feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.amr" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.amr" % (t, i))
