@@ -84,7 +84,7 @@
 		    },
 		    pointToLayer: function (feature, latlng) {
 		    	console.log(latlng);
-		        return L.Marker(latlng);
+		        return L.Marker(latlng, geojsonMarkerOptions);
 		    },
 		    style: function(feature) {
 		    	//Here we can apply styling to markers depending on properties. Cool.
