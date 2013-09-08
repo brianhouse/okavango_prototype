@@ -102,7 +102,13 @@
 			console.log("zoom");
 			map.zoomIn(4);
 			
-			if (map.getZoom() < 13) setTimeout(zoomIn, 5000);
+			if (map.getZoom() < 13) {
+				setTimeout(zoomIn, 5000);
+			} else {
+				L.marker(markers[markers.length - 1].getLatLng()).addTo(map)
+			    .bindPopup('This is the last recorded position of the expedition.')
+			    .openPopup();
+			}
 		}
 
 
