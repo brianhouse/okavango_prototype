@@ -117,7 +117,7 @@
 			    	var c = Math.floor(feature.properties["Speed"] * 4);
 			        return {fillColor: "#FFFFFF"};
 			    }
-				}).addTo(map);
+				})
 			    map.panTo(markers[markers.length - 1].getLatLng());
 			    var lm = beaconMarkers[beaconMarkers.length - 1];
 				focusMarker = L.marker(lm.getLatLng()).addTo(map);
