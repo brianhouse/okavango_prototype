@@ -56,6 +56,7 @@
 	<script type="text/javascript">
 	  	// create a map in the "map" div, set the view to a given place and zoom
 		var map = L.map('map').setView([-19.2571, 22.6560], 5);
+		map.zoomAnimationThreshold = 20;
 
 		// add an OpenStreetMap tile layer
 		L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
