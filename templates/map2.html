@@ -56,6 +56,7 @@
 	<script type="text/javascript">
 	  	// create a map in the "map" div, set the view to a given place and zoom
 		var map = L.map('map').setView([-19.2571, 22.6560], 5);
+		map.zoomAnimationThreshold = 20;
 
 		// add an OpenStreetMap tile layer
 		L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
@@ -81,7 +82,6 @@
 		        return (feature.geometry.coordinates[0] != 0);
 		    },
 		    pointToLayer: function (feature, latlng) {
-		    	console.log(latlng);
 		        return L.circleMarker(latlng, geojsonMarkerOptions);
 		    },
 		    style: function(feature) {
@@ -91,6 +91,15 @@
 		    }
 			}).addTo(map);
 		});
+
+		function zoomIn() {
+			console.log("zoom");
+			map.setZoom(15);
+		}
+
+		setTimeout(zoomIn, 3000)
+
+
 					
 	</script>
 	
