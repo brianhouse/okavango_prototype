@@ -89,7 +89,7 @@ def ingest_ambit(path, t_protect):
                     #     continue
                     sample['DateTime'] = dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")
                     sample['t_utc'] = t
-                    sample['ContentType'] = 'ambit'
+                    sample['ContentType'] = 'ambit_geo'
                     sample['Person'] = person         
                     feature = geojson.Feature(geometry={'type': "Point", 'coordinates': [lon, lat, alt]}, properties=sample)            
                     model.insert_feature('ambit_geo', t, geojson.dumps(feature))
