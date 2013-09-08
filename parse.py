@@ -72,8 +72,9 @@ def injest_ambit(path):
 
 def injest_image(path):
     log.info("injest_image %s" % path)
-    dt = datetime.datetime.strptime(path.split('/')[-1].split('_')[0], "%d%m%Y%H%M")
-    dt.replace(microsecond=int(path[-7:-4]))
+    date_string = path.split('/')[-1] 
+    dt = datetime.datetime.strptime(date_string.split('_')[0], "%d%m%Y%H%M")
+    dt.replace(microsecond=int(date_string.split('_')[1].split('.')[0]))
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
     t = util.timestamp(dt)
@@ -135,7 +136,7 @@ def injest_beacon(content):
 
 
 messages = emailer.fetch()
-for message in messages:
+for m, message in enumerate(messages):
     if message['from'] not in config['incoming']:
         log.warning("Received bunk email from %s" % message['from'])
         continue
@@ -160,7 +161,7 @@ for message in messages:
         for attachment in message['attachments']:
 
             try:
-                path = os.path.join(os.path.dirname(__file__), "data", "%s_%s" % (util.timestamp(), attachment['filename'].lower()))
+                path = os.path.join(os.path.dirname(__file__), "data", "%s-%s_%s" % (util.timestamp(), m, attachment['filename'].lower()))
                 def write_file():
                     with open(path, 'wb') as f:
                         f.write(attachment['data'])
