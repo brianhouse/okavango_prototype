@@ -41,4 +41,8 @@ def fetch_features(kinds, start_t, stop_t):
         features.append(feature)
     return features
 
+def get_protect(kind):
+    db.execute("SELECT t FROM features WHERE kind=? ORDER BY t DESC LIMIT 1", (kind,))
+    result = db.fetchone()
+    return result['t']
 
