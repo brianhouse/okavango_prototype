@@ -92,7 +92,7 @@
 		    style: function(feature) {
 		    	//Here we can apply styling to markers depending on properties. Cool.
 		    	var c = Math.floor(feature.properties["Speed"] * 4);
-		        return {fillColor: "rgb(" + 255 + "," + c + "," + 0 +  ")"};
+		        return {fillColor: "#FFFFFF"};
 		    }
 			}).addTo(map);
 		    map.panTo(markers[markers.length - 1].getLatLng());
