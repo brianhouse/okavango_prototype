@@ -95,6 +95,7 @@
 		        return {fillColor: "rgb(" + 255 + "," + c + "," + 0 +  ")"};
 		    }
 			}).addTo(map);
+		    map.panTo(markers[markers.length - 1].getLatLng());
 		});
 
 		function zoomIn() {
@@ -104,7 +105,7 @@
 			if (map.getZoom() < 13) setTimeout(zoomIn, 5000);
 		}
 
-		map.panTo(markers[markers.length - 1].getLatLng());
+
 		setTimeout(zoomIn, 5000)
 
 
