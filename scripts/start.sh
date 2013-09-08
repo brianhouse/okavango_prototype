@@ -1,2 +1,2 @@
 ./main.py &
-tail -f ../logs/main.log
+tail -f logs/main.log

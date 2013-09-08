@@ -20,7 +20,7 @@ def injest_geo_feature(path, kind):
                 dt = util.parse_date("%s %s" % (row[headings['Date']], row[headings['Time']]), tz=config['local_tz'], dayfirst=True)
                 t = util.timestamp(dt)
                 try:
-                    coordinates = strings.as_numeric(row[headings['Latitude']]), strings.as_numeric(row[headings['Longitude']]), strings.as_numeric(row[headings['Altitude']])
+                    coordinates = strings.as_numeric(row[headings['Longitude']]), strings.as_numeric(row[headings['Latitude']]), strings.as_numeric(row[headings['Altitude']])
                 except Exception as e:
                     log.error("Missing coordinates! Skipping...")
                     continue
@@ -115,7 +115,7 @@ def injest_beacon(content):
                     line = line.split('?')[1].strip()
                     result = net.urldecode(line)
                     lat, lon = result['q'].split(' ')[0].split(',')
-                    coordinates[0], coordinates[1] = strings.as_numeric(lat), strings.as_numeric(lon)
+                    coordinates[0], coordinates[1] = strings.as_numeric(lon), strings.as_numeric(lat)
                 if "Altitude:" in line:
                     altitude = strings.as_numeric(line.replace("Altitude:", "").replace("meters", "").strip())
                     coordinates[2] = altitude
