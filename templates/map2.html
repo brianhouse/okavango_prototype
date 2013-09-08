@@ -56,7 +56,7 @@
 
 	<script type="text/javascript">
 	  	// create a map in the "map" div, set the view to a given place and zoom
-		var map = L.map('map').setView([-19.2571, 22.6560], 16);
+		var map = L.map('map').setView([-19.2571, 22.6560], 5);
 
 		// add an OpenStreetMap tile layer
 		L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
@@ -67,6 +67,38 @@
 		L.marker([-19.2571, 22.6560]).addTo(map)
 		    .bindPopup('A pretty CSS3 popup. <br> Easily customizable.')
 		    .openPopup();
+
+		// load breadrumb data
+
+		var geojsonMarkerOptions = {
+		    radius: 8,
+		    fillColor: "#ff7800",
+		    color: "#000",
+		    weight: 1,
+		    opacity: 0,
+		    fillOpacity: 0.8,
+		};
+
+		$.getJSON('../data/breadcrumbs.json', function(data) {
+		  L.geoJson(data.features, {
+		    filter: function(feature, layer) {
+		    	//For some bizarre reason I have to invert the points in the sample data to get them to render correctly.
+		    	//*** HACK WARNING ***
+		    	feature.geometry.coordinates[0] *= -1;
+		    	feature.geometry.coordinates[1] *= -1;
+		    	//Filter out 0,0 points
+		        return (feature.geometry.coordinates[0] != 0);
+		    },
+		    pointToLayer: function (feature, latlng) {
+		        return L.circleMarker(latlng, geojsonMarkerOptions);
+		    },
+		    style: function(feature) {
+		    	//Here we can apply styling to markers depending on properties. Cool.
+		    	var c = Math.floor(feature.properties["Light "] / 5);
+		        return {fillColor: "rgb(" + c + "," + c + "," + c +  ")"};
+		    }
+			}).addTo(map);
+		});
 					
 	</script>
 	
