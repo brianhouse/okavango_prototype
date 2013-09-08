@@ -100,10 +100,10 @@
 		function zoomIn() {
 			console.log("zoom");
 			map.setZoom(15);
-			map.panTo(markers[0].getLatLng());
+			map.panTo(markers[markers.length - 1].getLatLng());
 		}
 
-		setTimeout(zoomIn, 3000)
+		setTimeout(zoomIn, 5000)
 
 
 					
