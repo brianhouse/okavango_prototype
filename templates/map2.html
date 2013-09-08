@@ -89,7 +89,7 @@
 			"On September 7th, an expedition led by Dr. Steve Boyes entered the area to explore and survey new parts of the central delta.",
 			"On this site, you can follow along with the expedition, and access all of the data they are collecting, including wildlife sightings, colour samples, and position and heartrate data for individual expedition members.",
 			"This is the last reported location of the expedition.",
-			" Click, drag, and zoom the map to see previous data points. <br> For help & information about the expedition API, click on the help button at the top of the page."
+			" Click, drag, and zoom the map to see previous data points. For help & information about the expedition API, click on the help button at the top of the page."
 		]
 
 		$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
@@ -117,7 +117,7 @@
 
 		function zoomIn() {
 			console.log("zoom");
-			if (map.getZoom < 14) map.zoomIn(3);
+			if (map.getZoom() < 14) map.zoomIn(3);
 			if (step < scripts.length) {
 				nextStep();
 				setTimeout(zoomIn, 8000)
