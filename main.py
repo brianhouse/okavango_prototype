@@ -9,7 +9,9 @@ class Home(server.Handler):
     
     def get(self, page=None):
         if not len(page):
-            return self.render("home.html")    
+            return self.render("map2.html")
+        if page == "api":
+            return self.render("home.html")  
         if page == "timeline":
             return self.get_timeline()
         return self.not_found()
