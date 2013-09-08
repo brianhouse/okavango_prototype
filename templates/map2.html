@@ -78,6 +78,20 @@
 		var lastPoint;
 		var markers = [];
 
+		var d = new Date();
+		var focusMarker;
+
+		var step = 0;
+
+		var scripts = [
+			"This is the Okavango Delta.",
+			"Located in Botswana, it is one of the richest wildlife areas on the planet.",
+			"On September 7th, an expedition led by Dr. Steve Boyes entered the area to explore and survey new parts of the central delta.",
+			"On this site, you can follow along with the expedition, and access all of the data they are collecting, including wildlife sightings, colour samples, and position and heartrate data for individual expedition members.",
+			"This is the last reported location of the expedition.",
+			" Click, drag, and zoom the map to see previous data points. For help & information about the expedition API, click on the help button at the top of the page."
+		]
+
 		$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
 		  L.geoJson(data.features, {
 		    filter: function(feature, layer) {
@@ -92,27 +106,32 @@
 		    style: function(feature) {
 		    	//Here we can apply styling to markers depending on properties. Cool.
 		    	var c = Math.floor(feature.properties["Speed"] * 4);
-		        return {fillColor: "rgb(" + 255 + "," + c + "," + 0 +  ")"};
+		        return {fillColor: "#FFFFFF"};
 		    }
 			}).addTo(map);
 		    map.panTo(markers[markers.length - 1].getLatLng());
+		    var lm = markers[markers.length - 1];
+			focusMarker = L.marker(lm.getLatLng()).addTo(map);
+			nextStep();
 		});
 
 		function zoomIn() {
 			console.log("zoom");
-			map.zoomIn(4);
-			
-			if (map.getZoom() < 13) {
-				setTimeout(zoomIn, 5000);
-			} else {
-				L.marker(markers[markers.length - 1].getLatLng()).addTo(map)
-			    .bindPopup('This is the last recorded position of the expedition.')
-			    .openPopup();
+			if (map.getZoom() < 17) map.zoomIn(3);
+			if (step < scripts.length) {
+				nextStep();
+				setTimeout(zoomIn, 8000)
 			}
+			
 		}
 
+		function nextStep() {
+			focusMarker.bindPopup(scripts[step])
+			focusMarker.openPopup();
+			step ++;
+		}
 
-		setTimeout(zoomIn, 5000)
+		setTimeout(zoomIn, 5000);
 
 
 					
