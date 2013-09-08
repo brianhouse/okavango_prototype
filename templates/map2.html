@@ -69,6 +69,7 @@
 
 		var lastPoint;
 		var markers = [];
+		var beaconMarkers = [];
 
 		var d = new Date();
 		var focusMarker;
@@ -107,7 +108,8 @@
 			    },
 			    pointToLayer: function (feature, latlng) {
 			        var marker = L.circleMarker(latlng, beaconOptions);
-			        markers.push(marker);
+			        beaconMarkers.push(marker);
+			        markers.push(marker)
 			        return marker;
 			    },
 			    style: function(feature) {
@@ -117,7 +119,7 @@
 			    }
 				}).addTo(map);
 			    map.panTo(markers[markers.length - 1].getLatLng());
-			    var lm = markers[markers.length - 1];
+			    var lm = beaconMarkers[beaconMarkers.length - 1];
 				focusMarker = L.marker(lm.getLatLng()).addTo(map);
 				nextStep();
 			});
@@ -182,6 +184,7 @@
 		}
 
 		loadBeacons();
+		loadSightings();
 		setTimeout(zoomIn, 5000);
 
 
