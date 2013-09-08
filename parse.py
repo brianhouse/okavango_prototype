@@ -70,29 +70,28 @@ def injest_ambit(path):
             model.insert_feature('ambit', t, geojson.dumps(feature))
 
 
-def injest_image(path):
+def injest_image(path, i):
     log.info("injest_image %s" % path)
     date_string = path.split('/')[-1] 
     dt = datetime.datetime.strptime(date_string.split('_')[0], "%d%m%Y%H%M")
-    dt.replace(microsecond=int(date_string.split('_')[1].split('.')[0]))
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
     t = util.timestamp(dt)
-    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s.jpg" % t})
+    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s-%s.jpg" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('image', t, geojson.dumps(feature))
-    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s.jpg" % t)
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s-%s.jpg" % (t, i))
     shutil.copy(path, new_path)
 
 
-def injest_audio(path):
+def injest_audio(path, i):
     log.info("injest_audio %s" % path)
     dt = datetime.datetime.strptime(path.split('/')[-1], "audio %d%m%Y_%H%M.mp3")
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
     t = util.timestamp(dt)
-    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s.mp3" % t, 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
+    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.amr" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
-    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s.mp3" % t)
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.amr" % (t, i))
     shutil.copy(path, new_path)
 
 
@@ -186,13 +185,13 @@ for m, message in enumerate(messages):
                     os.mkdir(p)
                     with zipfile.ZipFile(path, 'r') as archive:
                         archive.extractall(p)
-                        for filename in os.listdir(p):
+                        for i, filename in enumerate(os.listdir(p)):
                             if kind == 'ambit' and filename[-3:] == "xml":
                                 injest_ambit(os.path.join(p, filename))
                             elif kind == 'image' and filename[-3:] == "jpg":
-                                injest_image(os.path.join(p, filename))
+                                injest_image(os.path.join(p, filename), i)
                             elif kind == 'audio' and filename[-3:] == "mp3":
-                                injest_audio(os.path.join(p, filename))
+                                injest_audio(os.path.join(p, filename), i)
                             else:
                                 log.warning("--> unknown file type %s, skipping..." % filename)
                     break

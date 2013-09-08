@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sqlite3, json, time, sys, os, geojson
-from housepy import config, log
+from housepy import config, log, util
 
 connection = sqlite3.connect("data.db")
 connection.row_factory = sqlite3.Row
@@ -9,7 +9,7 @@ db = connection.cursor()
 
 def init():
     try:
-        db.execute("CREATE TABLE IF NOT EXISTS features (t INTEGER, kind TEXT, data TEXT)")
+        db.execute("CREATE TABLE IF NOT EXISTS features (t INTEGER, kind TEXT, data TEXT, t_created INTEGER)")
         db.execute("CREATE INDEX IF NOT EXISTS kind_t ON features(kind, t)")
     except Exception as e:
         log.error(log.exc(e))
@@ -19,7 +19,7 @@ init()
 
 def insert_feature(kind, t, data):
     try:
-        db.execute("INSERT INTO features (kind, t, data) VALUES (?, ?, ?)", (kind, t, data))
+        db.execute("INSERT INTO features (kind, t, data, t_created) VALUES (?, ?, ?, ?)", (kind, t, data, util.timestamp()))
         entry_id = db.lastrowid
     except Exception as e:
         log.error(log.exc(e))
