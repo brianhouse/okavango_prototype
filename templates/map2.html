@@ -75,14 +75,19 @@
 		};
 
 
-		$.getJSON('/api/timeline?date=20130908&types=beacon', function(data) {
+		var lastPoint;
+		var markers = [];
+
+		$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
 		  L.geoJson(data.features, {
 		    filter: function(feature, layer) {
 		    	//Filter out 0,0 points
 		        return (feature.geometry.coordinates[0] != 0);
 		    },
 		    pointToLayer: function (feature, latlng) {
-		        return L.circleMarker(latlng, geojsonMarkerOptions);
+		        var marker = L.circleMarker(latlng, geojsonMarkerOptions);
+		        markers.push(marker);
+		        return marker;
 		    },
 		    style: function(feature) {
 		    	//Here we can apply styling to markers depending on properties. Cool.
@@ -90,14 +95,24 @@
 		        return {fillColor: "rgb(" + 255 + "," + c + "," + 0 +  ")"};
 		    }
 			}).addTo(map);
+		    map.panTo(markers[markers.length - 1].getLatLng());
 		});
 
 		function zoomIn() {
 			console.log("zoom");
-			map.setZoom(15);
+			map.zoomIn(4);
+			
+			if (map.getZoom() < 13) {
+				setTimeout(zoomIn, 5000);
+			} else {
+				L.marker(markers[markers.length - 1].getLatLng()).addTo(map)
+			    .bindPopup('This is the last recorded position of the expedition.')
+			    .openPopup();
+			}
 		}
 
-		setTimeout(zoomIn, 3000)
+
+		setTimeout(zoomIn, 5000)
 
 
 					
