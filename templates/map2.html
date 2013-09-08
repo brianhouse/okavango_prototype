@@ -127,12 +127,19 @@
 
 			var sightingOptions = {
 			    radius: 2,
-			    fillColor: "#0000ff",
+			    fillColor: "#ff9900",
 			    color: "#000",
 			    weight: 1,
 			    opacity: 0,
 			    fillOpacity: 0.8,
 			};
+
+			function onEachFeature(feature, layer) {
+			    // does this feature have a property named popupContent?
+			    if (feature.properties && feature.properties.popupContent) {
+			        layer.bindPopup(feature.properties.count + " " + feature.properties.Bird_Name );
+			    }
+			}
 
 
 			$.getJSON('/api/timeline?date=20130907&types=sightings&days=100', function(data) {
@@ -146,6 +153,7 @@
 			        markers.push(marker);
 			        return marker;
 			    },
+			    onEachFeature: onEachFeature,
 			    style: function(feature) {
 			    	//Here we can apply styling to markers depending on properties. Cool.
 			    	var c = Math.sqrt(feature.properties["Count"]);
