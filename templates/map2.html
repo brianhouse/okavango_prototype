@@ -76,6 +76,7 @@
 
 
 		var lastPoint;
+		var markers = [];
 
 		$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
 		  L.geoJson(data.features, {
@@ -84,7 +85,9 @@
 		        return (feature.geometry.coordinates[0] != 0);
 		    },
 		    pointToLayer: function (feature, latlng) {
-		        return L.circleMarker(latlng, geojsonMarkerOptions);
+		        var marker = L.circleMarker(latlng, geojsonMarkerOptions);
+		        markers.push(marker);
+		        return marker;
 		    },
 		    style: function(feature) {
 		    	//Here we can apply styling to markers depending on properties. Cool.
@@ -97,6 +100,7 @@
 		function zoomIn() {
 			console.log("zoom");
 			map.setZoom(15);
+			map.panTo(markers[0].getLatLng());
 		}
 
 		setTimeout(zoomIn, 3000)
