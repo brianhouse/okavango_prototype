@@ -42,9 +42,8 @@ def ingest_geo_feature(path, kind):
                 continue
 
 
-def ingest_ambit(path):    
+def ingest_ambit(path, t_protect):    
     log.info("ingest_ambit %s" % path)
-    t_protect = model.get_protect('ambit_geo')
     with open(path, 'r') as f:
         content = f.read()        
         content = content.split("<IBI>")[0]
@@ -57,7 +56,9 @@ def ingest_ambit(path):
         for s, sample in enumerate(samples):            
             try:
                 if 'VerticalSpeed' not in sample:
-                    # satellite data sample                
+                    # satellite data sample          
+                    lon, lat, alt = None, None, None      
+                    t, dt = None, None
                     for key, value in sample.items():
                         if key == "UTC":
                             dt = util.parse_date(sample['UTC']) # these are UTC in the data
@@ -119,9 +120,8 @@ def ingest_ambit(path):
                 log.error(log.exc(e))
 
 
-def ingest_image(path, i):
+def ingest_image(path, i, t_protect):
     log.info("ingest_image %s" % path)
-    t_protect = model.get_protect('image')    
     date_string = path.split('/')[-1] 
     dt = datetime.datetime.strptime(date_string.split('_')[0], "%d%m%Y%H%M")
     tz = pytz.timezone(config['local_tz'])
@@ -136,9 +136,8 @@ def ingest_image(path, i):
     shutil.copy(path, new_path)
 
 
-def ingest_audio(path, i):
+def ingest_audio(path, i, t_protect):
     log.info("ingest_audio %s" % path)
-    t_protect = model.get_protect('audio')    
     dt = datetime.datetime.strptime(path.split('/')[-1], "audio %d%m%Y_%H%M.mp3")
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
@@ -236,6 +235,7 @@ def main():
                         break
 
                     elif kind in ('ambit', 'image', 'audio'): 
+                        t_protect = model.get_protect(kind)
                         if path[-3:] != "zip":
                             log.warning("--> expected zip file, got %s" % path)
                             continue
@@ -249,11 +249,11 @@ def main():
                             archive.extractall(p)
                             for i, filename in enumerate(os.listdir(p)):
                                 if kind == 'ambit' and filename[-3:] == "xml":
-                                    ingest_ambit(os.path.join(p, filename))
+                                    ingest_ambit(os.path.join(p, filename), t_protect)
                                 elif kind == 'image' and filename[-3:] == "jpg":
-                                    ingest_image(os.path.join(p, filename), i)
+                                    ingest_image(os.path.join(p, filename), i, t_protect)
                                 elif kind == 'audio' and filename[-3:] == "mp3":
-                                    ingest_audio(os.path.join(p, filename), i)
+                                    ingest_audio(os.path.join(p, filename), i, t_protect)
                                 else:
                                     log.warning("--> unknown file type %s, skipping..." % filename)
                         break
