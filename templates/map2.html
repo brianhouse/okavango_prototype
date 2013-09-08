@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Map</title>
+    <title>The Digital Bushman: Into the Okavango</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
@@ -46,8 +46,7 @@
 
   </head>
   <body>
-	
-	
+
 	
 	<!--Google Maps APIv3 Background-->
 	<div id="map_holder">
@@ -88,7 +87,6 @@
 		    style: function(feature) {
 		    	//Here we can apply styling to markers depending on properties. Cool.
 		    	var c = Math.floor(feature.properties["Speed"] * 4);
-		    	console.log(c);
 		        return {fillColor: "rgb(" + 255 + "," + c + "," + 0 +  ")"};
 		    }
 			}).addTo(map);
