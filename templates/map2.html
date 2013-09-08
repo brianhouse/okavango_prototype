@@ -78,6 +78,8 @@
 		var lastPoint;
 		var markers = [];
 
+		var d = new Date();
+
 		$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
 		  L.geoJson(data.features, {
 		    filter: function(feature, layer) {
@@ -100,7 +102,7 @@
 
 		function zoomIn() {
 			console.log("zoom");
-			map.zoomIn(4);
+			map.zoomIn(3);
 			
 			if (map.getZoom() < 13) {
 				setTimeout(zoomIn, 5000);
