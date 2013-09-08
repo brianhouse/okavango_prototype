@@ -119,7 +119,7 @@
 			    map.panTo(markers[markers.length - 1].getLatLng());
 			    var lm = markers[markers.length - 1];
 				focusMarker = L.marker(lm.getLatLng()).addTo(map);
-				nextStep();
+				//nextStep();
 			});
 		}
 
@@ -142,7 +142,7 @@
 			        return (feature.geometry.coordinates[0] != 0);
 			    },
 			    pointToLayer: function (feature, latlng) {
-			        var marker = L.circleMarker(latlng, beaconOptions);
+			        var marker = L.circleMarker(latlng, sightingOptions);
 			        markers.push(marker);
 			        return marker;
 			    },
