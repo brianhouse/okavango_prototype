@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    
+    <link rel="stylesheet" href="../static/css/leaflet.css" />
+    <script src="../static/js/leaflet.js"></script>
+	
+	<script language="Javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+	 <style type="text/css">
+		
+		iframe { 
+			vertical-align: top;
+		}
+		
+		#map_holder{
+			position: fixed;
+			top: 0px;
+			left: 0px;
+			width:100%; 
+			height:100%;
+			z-index: 0;
+		}
+		
+		#map{
+			width:100%;
+			height:100%; 
+			position: "absolute"; 
+			top: 0px; 
+			left: 0px; 
+			overflow: "hidden";
+		}
+		
+		
+		a{
+			color: white;
+		}
+      }
+    </style>
+  	
+	
+
+  </head>
+  <body>
+	
+	
+	
+	<!--Google Maps APIv3 Background-->
+	<div id="map_holder">
+		<div id="map"></div>
+	</div><!-- End Google Maps Background -->
+
+	<script type="text/javascript">
+	  	// create a map in the "map" div, set the view to a given place and zoom
+		var map = L.map('map').setView([-19.2571, 22.6560], 16);
+
+		// add an OpenStreetMap tile layer
+		L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
+		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+		// add a marker in the given location, attach some popup content to it and open the popup
+		L.marker([-19.2571, 22.6560]).addTo(map)
+		    .bindPopup('A pretty CSS3 popup. <br> Easily customizable.')
+		    .openPopup();
+					
+	</script>
+	
+</body>
+</html>
