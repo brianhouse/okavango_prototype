@@ -78,7 +78,7 @@
 		    fillOpacity: 0.8,
 		};
 
-		$.getJSON('http://digitalbushman.net/timeline?date=20130802&types=beacon', function(data) {
+		$.getJSON('/timeline?date=20130802&types=beacon', function(data) {
 		  L.geoJson(data.features, {
 		    filter: function(feature, layer) {
 		    	//For some bizarre reason I have to invert the points in the sample data to get them to render correctly.
