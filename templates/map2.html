@@ -78,7 +78,7 @@
 		    fillOpacity: 0.8,
 		};
 
-		$.getJSON('../data/breadcrumbs.json', function(data) {
+		$.getJSON('../data/beacons.json', function(data) {
 		  L.geoJson(data.features, {
 		    filter: function(feature, layer) {
 		    	//For some bizarre reason I have to invert the points in the sample data to get them to render correctly.
@@ -93,7 +93,7 @@
 		    },
 		    style: function(feature) {
 		    	//Here we can apply styling to markers depending on properties. Cool.
-		    	var c = Math.floor(feature.properties["Light "] / 5);
+		    	var c = Math.floor(feature.properties["speed"] * 4);
 		        return {fillColor: "rgb(" + c + "," + c + "," + c +  ")"};
 		    }
 			}).addTo(map);
