@@ -34,6 +34,17 @@
 			left: 0px; 
 			overflow: "hidden";
 		}
+
+		#holder{
+			width: 270px;
+			left:50px;
+			background: rgba(0,0,0,0.8);
+			z-index: 1000;
+			position: absolute;
+			font: 14px Verdana, Helvetica, sans-serif; 
+			color: white;
+			padding: 10px;
+		}
 		
 		
 		a{
@@ -53,6 +64,13 @@
 		<div id="map"></div>
 	</div><!-- End Google Maps Background -->
 
+	<div id="holder">
+		<a href="#" id="expedition">About the Expedition</a>
+		<a href="#" id="api">Public API</a>
+		<a href="#" id="help">Help</a>
+	</div>	
+
+
 	<script type="text/javascript">
 	  	// create a map in the "map" div, set the view to a given place and zoom
 		var map = L.map('map').setView([-19.2571, 22.6560], 5);
@@ -62,9 +80,6 @@
 		L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
 		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
-
-
-		
 
 
 		var lastPoint;
@@ -80,7 +95,7 @@
 			"This is the Okavango Delta.",
 			"Located in Botswana, it is one of the richest wildlife areas on the planet.",
 			"On September 7th, an expedition led by Dr. Steve Boyes entered the area to explore and survey new parts of the central delta.",
-			"On this site, you can follow along with the expedition, and access all of the data they are collecting, including wildlife sightings, colour samples, and position and heartrate data for individual expedition members.",
+			"On this site, you can follow along with the expedition, and access all of the data they are collecting, including wildlife sightings, colour samples, and position and heart rate data for individual expedition members.",
 			"This is the last reported location of the expedition.",
 			" Click, drag, and zoom the map to see previous data points. For help & information about the expedition API, click on the help button at the top of the page."
 		]
@@ -184,8 +199,32 @@
 		}
 
 		loadBeacons();
-		
+
 		setTimeout(zoomIn, 5000);
+
+		//Buttons
+		/*
+		onLoad
+		*/
+		$(function(){
+ 
+			$("#expedition").click(function(event){
+				event.preventDefault(); 
+				console.log("expedition");
+			});
+ 
+			$("#api").click(function(event){
+				event.preventDefault(); 
+				window.location = "http://digitalbushman.org/api";
+				console.log("API");
+			});
+ 
+			$("#help").click(function(event){
+				event.preventDefault(); 
+				console.log("help");
+			});
+ 
+		});
 
 
 					
