@@ -148,8 +148,8 @@
 			    },
 			    style: function(feature) {
 			    	//Here we can apply styling to markers depending on properties. Cool.
-			    	var c = Math.floor(feature.properties["Speed"] * 4);
-			        return {fillColor: "#FFFFFF"};
+			    	var c = Math.sqrt(feature.properties["Count"]);
+			        return {radius: 2 + c};
 			    }
 				}).addTo(map);
 			});
