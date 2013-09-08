@@ -5,9 +5,9 @@ html {
 
 body {
     height: 100%;
-    font: 18px Verdana, Helvetica, sans-serif; 
-    color: #333;        
-    background-color: white;
+    font: 14px Verdana, Helvetica, sans-serif; 
+    color: #CCCCCC;        
+    background-color: #50545F;
     line-height: 24px;
     word-spacing: 0.33em;
 }       
@@ -19,7 +19,7 @@ div {
 a {
    text-decoration: none;
    font-weight: normal;
-   color: #333;
+   color: #FF3300;
    background-color: #ccc;
    padding: 2px;
 }
