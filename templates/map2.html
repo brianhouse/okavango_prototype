@@ -87,9 +87,7 @@
 		    filter: function(feature, layer) {
 		    	//For some bizarre reason I have to invert the points in the sample data to get them to render correctly.
 		    	//*** HACK WARNING ***
-		    	//feature.geometry.coordinates[0] *= -1;
-		    	//feature.geometry.coordinates[1] *= -1;
-		    	console.log(feature.geometry.coordinates);
+		    	//console.log(feature.geometry.coordinates);
 		    	//Filter out 0,0 points
 		        return (feature.geometry.coordinates[0] != 0);
 		    },
@@ -100,6 +98,7 @@
 		    style: function(feature) {
 		    	//Here we can apply styling to markers depending on properties. Cool.
 		    	var c = Math.floor(feature.properties["speed"] * 4);
+		    	console.log(c);
 		        return {fillColor: "rgb(" + 255 + "," + c + "," + 0 +  ")"};
 		    }
 			}).addTo(map);
