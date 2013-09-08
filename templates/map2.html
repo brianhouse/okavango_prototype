@@ -79,6 +79,7 @@
 		var markers = [];
 
 		var d = new Date();
+		var focusMarker;
 
 		$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
 		  L.geoJson(data.features, {
@@ -107,14 +108,14 @@
 			if (map.getZoom() < 13) {
 				setTimeout(zoomIn, 5000);
 			} else {
-				var lm = markers[markers.length - 1];
-				L.marker(lm.getLatLng()).addTo(map)
-			    .bindPopup('This is the last reported position of the expedition.')
-			    .openPopup();
+				
+			    focusMarker.bindPopup('This is the last reported position of the expedition.' + map.getZoom())
+			    focusMarker.openPopup();
 			}
 		}
 
-
+		var lm = markers[markers.length - 1];
+		focusMarker = L.marker(lm.getLatLng()).addTo(map)
 		setTimeout(zoomIn, 5000)
 
 
