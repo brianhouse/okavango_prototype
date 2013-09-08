@@ -107,7 +107,7 @@
 			} else {
 				var lm = markers[markers.length - 1];
 				L.marker(lm.getLatLng()).addTo(map)
-			    .bindPopup('This is the last recorded position of the expedition. \n Timestamp: ' + lm.getJSON)
+			    .bindPopup('This is the last reported position of the expedition. \n Timestamp: ' + lm.getJSON())
 			    .openPopup();
 			}
 		}
