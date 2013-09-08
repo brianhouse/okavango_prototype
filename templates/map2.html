@@ -63,14 +63,6 @@
 		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-		// add a marker in the given location, attach some popup content to it and open the popup
-		L.marker([-19.2571, 22.6560]).addTo(map)
-		    .bindPopup('A pretty CSS3 popup. <br> Easily customizable.')
-		    .openPopup();
-
-		L.marker([-19.0178366666667, 22.3453066666667]).addTo(map)
-		    .bindPopup('Test point.')
-		    .openPopup();
 
 		// load breadcrumb data
 		var geojsonMarkerOptions = {
@@ -85,9 +77,6 @@
 		$.getJSON('/api/timeline?date=20130908&types=beacon', function(data) {
 		  L.geoJson(data.features, {
 		    filter: function(feature, layer) {
-		    	//For some bizarre reason I have to invert the points in the sample data to get them to render correctly.
-		    	//*** HACK WARNING ***
-		    	//console.log(feature.geometry.coordinates);
 		    	//Filter out 0,0 points
 		        return (feature.geometry.coordinates[0] != 0);
 		    },
