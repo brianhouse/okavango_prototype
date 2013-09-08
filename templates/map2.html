@@ -81,7 +81,6 @@
 		        return (feature.geometry.coordinates[0] != 0);
 		    },
 		    pointToLayer: function (feature, latlng) {
-		    	console.log(latlng);
 		        return L.circleMarker(latlng, geojsonMarkerOptions);
 		    },
 		    style: function(feature) {
@@ -97,7 +96,7 @@
 			L.Map.setZoom(10);
 		}
 
-		setTimeOut(zoomIn, 3000)
+		setTimeout(zoomIn, 3000)
 
 
 					
