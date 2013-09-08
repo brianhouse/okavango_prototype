@@ -8,13 +8,11 @@ We are providing open access to all of the data recorded during the 18 day exped
 </p>
 	
 <p>
-There are 6 content types available: 'ambit', 'sighting', 'breadcrumb', 'image', 'audio', 'beacon'
-</p>
-<p>
+There are 6 content types available: 'ambit', 'sighting', 'breadcrumb', 'image', 'audio', 'beacon'. 
 Each of these content types returns a data file in GeoJSON format. The structure of a call to the API is always the same:
 <p>
 <p>
-http://digitalbushman.org/api/timeline?date=YYYYMMDD&types=TYPE
+<em>http://digitalbushman.org/api/timeline?date=YYYYMMDD&types=TYPE</em>
 </p>
 <p>
 To request multiple days, you can append a 'days' parameter:
@@ -23,7 +21,7 @@ To request multiple days, you can append a 'days' parameter:
 http://digitalbushman.org/api/timeline?date=YYYYMMDD&types=TYPE&days=#
 </p>
 <p>
-For example, to get all of the animan sightings within two days of September 7th:
+For example, to get all of the animal sightings within two days of September 7th:
 </p>
 <p>
 <a href="/api/timeline?date=20130907&types=sighting&days=2">/api/timeline?date=20130908&amp;types=sighting&amp;days=2</a>
