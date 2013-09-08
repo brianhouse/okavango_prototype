@@ -34,6 +34,20 @@
 			left: 0px; 
 			overflow: "hidden";
 		}
+
+		#holder{
+			width: 300px;
+			background: rgba(0,0,0,0.8);
+			z-index: 1000;
+			position: absolute;
+			color: white;
+			padding: 10px;
+			border-radius: 10px;
+			-moz-border-radius: 10px;
+			-o-border-radius: 10px;
+			-webkit-border-radius: 10px;
+			-ms-border-radius: 10px;
+		}
 		
 		
 		a{
@@ -196,7 +210,6 @@
 		onLoad
 		*/
 		$(function(){
-			initialize();
  
 			$("#expedition").click(function(event){
 				event.preventDefault(); 
