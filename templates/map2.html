@@ -106,7 +106,7 @@
 				setTimeout(zoomIn, 5000);
 			} else {
 				L.marker(markers[markers.length - 1].getLatLng()).addTo(map)
-			    .bindPopup('This is the last recorded position of the expedition.')
+			    .bindPopup('This is the last recorded position of the expedition. \n Timestamp: ')
 			    .openPopup();
 			}
 		}
