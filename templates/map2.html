@@ -70,7 +70,7 @@
 
 		// load breadcrumb data
 		var geojsonMarkerOptions = {
-		    radius: 2,
+		    radius: 4,
 		    fillColor: "#ff7800",
 		    color: "#000",
 		    weight: 1,
@@ -78,7 +78,7 @@
 		    fillOpacity: 0.8,
 		};
 
-		$.getJSON('/api/timeline?date=20130802&types=beacon', function(data) {
+		$.getJSON('/api/timeline?date=20130908&types=beacon', function(data) {
 		  L.geoJson(data.features, {
 		    filter: function(feature, layer) {
 		    	//For some bizarre reason I have to invert the points in the sample data to get them to render correctly.
@@ -94,7 +94,7 @@
 		    style: function(feature) {
 		    	//Here we can apply styling to markers depending on properties. Cool.
 		    	var c = Math.floor(feature.properties["speed"] * 4);
-		        return {fillColor: "rgb(" + c + "," + c + "," + c +  ")"};
+		        return {fillColor: "rgb(" + 255 + "," + c + "," + 0 +  ")"};
 		    }
 			}).addTo(map);
 		});
