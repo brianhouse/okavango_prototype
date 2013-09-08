@@ -129,7 +129,7 @@ def ingest_image(path, i):
     t = util.timestamp(dt)
     if t <= t_protect:
         log.warning("Protected t, skipping...")
-        continue                    
+        return                    
     feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s-%s.jpg" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('image', t, geojson.dumps(feature))
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s-%s.jpg" % (t, i))
@@ -145,7 +145,7 @@ def ingest_audio(path, i):
     t = util.timestamp(dt)
     if t <= t_protect:
         log.warning("Protected t, skipping...")
-        continue                    
+        return                    
     feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.amr" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.amr" % (t, i))
@@ -188,7 +188,7 @@ def ingest_beacon(content):
                 continue
         if t <= t_protect:
             log.warning("Protected t, skipping...")
-            continue                                
+            return                                
         feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
         feature_id = model.insert_feature('beacon', t, geojson.dumps(feature))
     except Exception as e:
