@@ -31,10 +31,18 @@ For example, to get all of the animal sightings within two days of September 7th
 <strong>Ambit</strong>
 </p>
 <p>
-Three expedition members (Steve, John &amp; GB) are wearing Suunto Ambit watches, which record a variety of data, including heartrate, energy consumption, and positional data. 
+Three expedition members (Steve, John &amp; GB) are wearing Suunto Ambit watches, which record a variety of data, including heartrate, energy consumption, and positional data (see below). This data is measured at extremely high frequency (once every 10 seconds, for each person), so returns from this call can be quite large. 
 </p>
 
 <p><a href="/api/timeline?date=20130908&types=ambit">/api/timeline?date=20130908&amp;types=ambit</a></p>
+
+<strong>Ambit Geo</strong>
+</p>
+<p>
+Each of the three Ambit watches is also recording GPS coordinates. These are measure approximately once per minute.
+</p>
+
+<p><a href="/api/timeline?date=20130908&types=ambit_geo">/api/timeline?date=20130908&amp;types=ambit_geo</a></p>
 
 <strong>Sightings</strong>
 </p>
