@@ -261,6 +261,4 @@ def main():
                 except Exception as e:
                     log.error(log.exc(e))
 
-# main()
-
-ingest_ambit("data/1378684107-9_log-5414984620002500-2013-09-08t10_21_56-0/log-5414984620002500-2013-09-08T10_21_56-0.xml")
+main()
