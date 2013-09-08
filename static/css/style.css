@@ -6,8 +6,8 @@ html {
 body {
     height: 100%;
     font: 18px Verdana, Helvetica, sans-serif; 
-    color: #333;        
-    background-color: white;
+    color: #CCCCCC;        
+    background-color: #50545F;
     line-height: 24px;
     word-spacing: 0.33em;
 }       
