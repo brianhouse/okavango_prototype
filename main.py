@@ -23,13 +23,18 @@ class Api(server.Handler):
         return self.not_found()
 
     def get_timeline(self):
-        kinds = self.get_argument('types', "positions").split(',')
+        kinds = self.get_argument('types', "beacon").split(',')
         kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ambit', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon']]   # sanitizes
-        dt = self.get_argument('date', datetime.datetime.now(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%d"))
-        dt = util.parse_date(dt, tz=config['local_tz'])
+        try:
+            dt = self.get_argument('date', datetime.datetime.now(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%d"))
+            log.debug(dt)
+            dt = util.parse_date(dt, tz=config['local_tz'])
+            days = int(self.get_argument('days', 1))
+        except Exception as e:
+            return self.error("Bad parameters: %s" % log.exc(e))
         t = util.timestamp(dt)        
         log.debug("--> search for kinds: %s" % kinds)
-        features = model.fetch_features(kinds, t, t + (24 * 60 * 60))
+        features = model.fetch_features(kinds, t, t + (days * (24 * 60 * 60)))
         feature_collection = geojson.FeatureCollection(features)
         return self.json(feature_collection)
 
