@@ -6,10 +6,18 @@ from housepy import config, log, server, util, process
 process.secure_pid(os.path.join(os.path.dirname(__file__), "run"))
 
 class Home(server.Handler):
+
+    def get(self, page=None):
+        if len(page):
+            return self.not_found()
+        return self.render("home.html")
+
+
+class Api(server.Handler):
     
     def get(self, page=None):
         if not len(page):
-            return self.render("home.html")    
+            return self.render("api.html")    
         if page == "timeline":
             return self.get_timeline()
         return self.not_found()
@@ -27,6 +35,7 @@ class Home(server.Handler):
 
 
 handlers = [
+    (r"/api/?([^/]*)", Api),
     (r"/?([^/]*)", Home),
 ]    
 
