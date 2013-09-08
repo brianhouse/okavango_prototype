@@ -118,7 +118,10 @@
 		function zoomIn() {
 			console.log("zoom");
 			if (map.getZoom < 14) map.zoomIn(3);
-			if (step < scripts.length) nextStep();
+			if (step < scripts.length) {
+				nextStep();
+				setTimeout(zoomIn, 8000)
+			}
 			
 		}
 
@@ -128,7 +131,7 @@
 			step ++;
 		}
 
-		setTimeout(zoomIn, 5000)
+		setTimeout(zoomIn, 5000);
 
 
 					
