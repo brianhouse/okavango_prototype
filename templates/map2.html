@@ -74,7 +74,7 @@
 		    fillOpacity: 0.8,
 		};
 
-		int i =0 ;
+		var i =0 ;
 
 		$.getJSON('/api/timeline?date=20130908&types=beacon', function(data) {
 		  L.geoJson(data.features, {
