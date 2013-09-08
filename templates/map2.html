@@ -64,15 +64,7 @@
 		}).addTo(map);
 
 
-		// load breadcrumb data
-		var geojsonMarkerOptions = {
-		    radius: 4,
-		    fillColor: "#ff7800",
-		    color: "#000",
-		    weight: 1,
-		    opacity: 0,
-		    fillOpacity: 0.8,
-		};
+		
 
 
 		var lastPoint;
@@ -92,28 +84,76 @@
 			" Click, drag, and zoom the map to see previous data points. For help & information about the expedition API, click on the help button at the top of the page."
 		]
 
-		$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
-		  L.geoJson(data.features, {
-		    filter: function(feature, layer) {
-		    	//Filter out 0,0 points
-		        return (feature.geometry.coordinates[0] != 0);
-		    },
-		    pointToLayer: function (feature, latlng) {
-		        var marker = L.circleMarker(latlng, geojsonMarkerOptions);
-		        markers.push(marker);
-		        return marker;
-		    },
-		    style: function(feature) {
-		    	//Here we can apply styling to markers depending on properties. Cool.
-		    	var c = Math.floor(feature.properties["Speed"] * 4);
-		        return {fillColor: "#FFFFFF"};
-		    }
-			}).addTo(map);
-		    map.panTo(markers[markers.length - 1].getLatLng());
-		    var lm = markers[markers.length - 1];
-			focusMarker = L.marker(lm.getLatLng()).addTo(map);
-			nextStep();
-		});
+		loadBeacons();
+
+		//DATA LOAD FUNCTIONS
+		function loadBeacons() {
+
+			var beaconOptions = {
+			    radius: 4,
+			    fillColor: "#ff7800",
+			    color: "#000",
+			    weight: 1,
+			    opacity: 0,
+			    fillOpacity: 0.8,
+			};
+
+
+			$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
+			  L.geoJson(data.features, {
+			    filter: function(feature, layer) {
+			    	//Filter out 0,0 points
+			        return (feature.geometry.coordinates[0] != 0);
+			    },
+			    pointToLayer: function (feature, latlng) {
+			        var marker = L.circleMarker(latlng, beaconOptions);
+			        markers.push(marker);
+			        return marker;
+			    },
+			    style: function(feature) {
+			    	//Here we can apply styling to markers depending on properties. Cool.
+			    	var c = Math.floor(feature.properties["Speed"] * 4);
+			        return {fillColor: "#FFFFFF"};
+			    }
+				}).addTo(map);
+			    map.panTo(markers[markers.length - 1].getLatLng());
+			    var lm = markers[markers.length - 1];
+				focusMarker = L.marker(lm.getLatLng()).addTo(map);
+				nextStep();
+			});
+		}
+
+		function loadSightings() {
+
+			var sightingOptions = {
+			    radius: 2,
+			    fillColor: "#0000ff",
+			    color: "#000",
+			    weight: 1,
+			    opacity: 0,
+			    fillOpacity: 0.8,
+			};
+
+
+			$.getJSON('/api/timeline?date=20130907&types=sightings&days=100', function(data) {
+			  L.geoJson(data.features, {
+			    filter: function(feature, layer) {
+			    	//Filter out 0,0 points
+			        return (feature.geometry.coordinates[0] != 0);
+			    },
+			    pointToLayer: function (feature, latlng) {
+			        var marker = L.circleMarker(latlng, beaconOptions);
+			        markers.push(marker);
+			        return marker;
+			    },
+			    style: function(feature) {
+			    	//Here we can apply styling to markers depending on properties. Cool.
+			    	var c = Math.floor(feature.properties["Speed"] * 4);
+			        return {fillColor: "#FFFFFF"};
+			    }
+				}).addTo(map);
+			});
+		}
 
 		function zoomIn() {
 			console.log("zoom");
@@ -121,6 +161,8 @@
 			if (step < scripts.length) {
 				nextStep();
 				setTimeout(zoomIn, 8000)
+			} else {
+				loadSightings();
 			}
 			
 		}
@@ -131,6 +173,7 @@
 			step ++;
 		}
 
+		loadBeacons();
 		setTimeout(zoomIn, 5000);
 
 
