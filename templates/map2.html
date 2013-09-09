@@ -91,7 +91,7 @@
 		<h2>Digital Bushman : An Live-data Expedition into the Okavango Delta</h2>
 	</div>	
 
-	<div id="help">
+	<div id="helppanel">
 		Help.
 	</div>	
 
@@ -99,7 +99,7 @@
 	<script type="text/javascript">
 
 		$("#about").hide();
-		$("#help").hide();
+		$("#helppanel").hide();
 	  	// create a map in the "map" div, set the view to a given place and zoom
 		var map = L.map('map').setView([-19.2571, 22.6560], 5);
 		map.zoomAnimationThreshold = 20;
@@ -249,7 +249,7 @@
 			$("#expedition").click(function(event){
 				event.preventDefault(); 
 				$("#about").show();
-				$("#help").hide();
+				$("#helppanel").hide();
 				console.log("expedition");
 			});
  
@@ -262,7 +262,7 @@
 			$("#help").click(function(event){
 				event.preventDefault(); 
 				$("#about").hide();
-				$("#help").show();
+				$("#helppanel").show();
 				console.log("help");
 			});
  
