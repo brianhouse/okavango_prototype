@@ -5,7 +5,7 @@ Data streams from Dr. Steve Boyes trip down the delta
 
 Issues
 ------
-Image filenames -- microseconds?
+See Google Doc
 
 
 Installation

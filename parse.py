@@ -7,6 +7,7 @@ from housepy import config, log, util, strings, emailer, net
 
 def ingest_geo_feature(path, kind):
     log.info("ingest_geo_feature %s" % path)
+    t_protect = model.get_protect(kind)
     sightings = []
     headings = {}
     with open(path) as f:
@@ -19,6 +20,9 @@ def ingest_geo_feature(path, kind):
             try:
                 dt = util.parse_date("%s %s" % (row[headings['Date']], row[headings['Time']]), tz=config['local_tz'], dayfirst=True)
                 t = util.timestamp(dt)
+                if t <= t_protect:
+                    log.warning("Protected t, skipping...")
+                    continue                
                 try:
                     coordinates = strings.as_numeric(row[headings['Longitude']]), strings.as_numeric(row[headings['Latitude']]), strings.as_numeric(row[headings['Altitude']])
                 except Exception as e:
@@ -38,7 +42,7 @@ def ingest_geo_feature(path, kind):
                 continue
 
 
-def ingest_ambit(path):    
+def ingest_ambit(path, t_protect):    
     log.info("ingest_ambit %s" % path)
     with open(path, 'r') as f:
         content = f.read()        
@@ -52,7 +56,9 @@ def ingest_ambit(path):
         for s, sample in enumerate(samples):            
             try:
                 if 'VerticalSpeed' not in sample:
-                    # satellite data sample                
+                    # satellite data sample          
+                    lon, lat, alt = None, None, None      
+                    t, dt = None, None
                     for key, value in sample.items():
                         if key == "UTC":
                             dt = util.parse_date(sample['UTC']) # these are UTC in the data
@@ -77,10 +83,13 @@ def ingest_ambit(path):
                         if type(value) != str:
                             del sample[key]
                             continue                            
-                        sample[key] = strings.as_numeric(value)                            
+                        sample[key] = strings.as_numeric(value) 
+                    # if t <= t_protect:
+                    #     log.warning("Protected t, skipping...")
+                    #     continue
                     sample['DateTime'] = dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")
                     sample['t_utc'] = t
-                    sample['ContentType'] = 'ambit'
+                    sample['ContentType'] = 'ambit_geo'
                     sample['Person'] = person         
                     feature = geojson.Feature(geometry={'type': "Point", 'coordinates': [lon, lat, alt]}, properties=sample)            
                     model.insert_feature('ambit_geo', t, geojson.dumps(feature))
@@ -97,6 +106,9 @@ def ingest_ambit(path):
                             del sample[key]
                             continue
                         sample[key] = strings.as_numeric(value)
+                    # if t <= t_protect:
+                    #     log.warning("Protected t, skipping...")
+                    #     continue                        
                     sample['DateTime'] = dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")
                     sample['t_utc'] = t
                     sample['ContentType'] = 'ambit'
@@ -108,25 +120,31 @@ def ingest_ambit(path):
                 log.error(log.exc(e))
 
 
-def ingest_image(path, i):
+def ingest_image(path, i, t_protect):
     log.info("ingest_image %s" % path)
     date_string = path.split('/')[-1] 
     dt = datetime.datetime.strptime(date_string.split('_')[0], "%d%m%Y%H%M")
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
     t = util.timestamp(dt)
+    # if t <= t_protect:
+    #     log.warning("Protected t, skipping...")
+    #     return                    
     feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s-%s.jpg" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('image', t, geojson.dumps(feature))
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s-%s.jpg" % (t, i))
     shutil.copy(path, new_path)
 
 
-def ingest_audio(path, i):
+def ingest_audio(path, i, t_protect):
     log.info("ingest_audio %s" % path)
     dt = datetime.datetime.strptime(path.split('/')[-1], "audio %d%m%Y_%H%M.mp3")
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
-    t = util.timestamp(dt)
+    t = util.timestamp(dt)    
+    # if t <= t_protect:
+    #     log.warning("Protected t, skipping...")
+    #     return                    
     feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.amr" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.amr" % (t, i))
@@ -135,6 +153,7 @@ def ingest_audio(path, i):
 
 def ingest_beacon(content):
     log.info("ingest_beacon")
+    t_protect = model.get_protect('beacon')    
     properties = {}
     coordinates = [None, None, None]
     t = None
@@ -166,6 +185,9 @@ def ingest_beacon(content):
             except Exception as e:
                 log.error(log.exc(e))
                 continue
+        if t <= t_protect:
+            log.warning("Protected t, skipping...")
+            return                                
         feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
         feature_id = model.insert_feature('beacon', t, geojson.dumps(feature))
     except Exception as e:
@@ -213,6 +235,7 @@ def main():
                         break
 
                     elif kind in ('ambit', 'image', 'audio'): 
+                        t_protect = model.get_protect(kind)
                         if path[-3:] != "zip":
                             log.warning("--> expected zip file, got %s" % path)
                             continue
@@ -226,11 +249,11 @@ def main():
                             archive.extractall(p)
                             for i, filename in enumerate(os.listdir(p)):
                                 if kind == 'ambit' and filename[-3:] == "xml":
-                                    ingest_ambit(os.path.join(p, filename))
+                                    ingest_ambit(os.path.join(p, filename), t_protect)
                                 elif kind == 'image' and filename[-3:] == "jpg":
-                                    ingest_image(os.path.join(p, filename), i)
+                                    ingest_image(os.path.join(p, filename), i, t_protect)
                                 elif kind == 'audio' and filename[-3:] == "mp3":
-                                    ingest_audio(os.path.join(p, filename), i)
+                                    ingest_audio(os.path.join(p, filename), i, t_protect)
                                 else:
                                     log.warning("--> unknown file type %s, skipping..." % filename)
                         break
@@ -238,6 +261,4 @@ def main():
                 except Exception as e:
                     log.error(log.exc(e))
 
-# main()
-
-ingest_ambit("data/1378684107-9_log-5414984620002500-2013-09-08t10_21_56-0/log-5414984620002500-2013-09-08T10_21_56-0.xml")
+main()
