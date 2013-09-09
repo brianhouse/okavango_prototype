@@ -158,6 +158,9 @@
 			    }
 			}
 
+			var sightingsCluster = new L.MarkerClusterGroup();
+			var sightingsMarkers = [];
+
 
 			$.getJSON('/api/timeline?date=20130907&types=sightings&days=100', function(data) {
 			  L.geoJson(data.features, {
@@ -168,6 +171,7 @@
 			    pointToLayer: function (feature, latlng) {
 			        var marker = L.circleMarker(latlng, sightingOptions);
 			        markers.push(marker);
+			        sightingsMarkers.push(marker)
 			        return marker;
 			    },
 			    onEachFeature: onEachFeature,
@@ -176,8 +180,14 @@
 			    	var c = Math.sqrt(feature.properties["Count"]);
 			        return {radius: 2 + c};
 			    }
-				}).addTo(map);
+				})
+
+			  	for (var i = 0; i < sightingsMarkers.length; i++) {
+			  		sightingsCluster.addLayer(sightingsMarkers[i]);
+			  	}
 			});
+
+			map.addLayer(sightingsCluster);
 		}
 
 		function zoomIn() {
