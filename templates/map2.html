@@ -201,7 +201,7 @@
 				focusMarker = L.marker(lm.getLatLng()).addTo(map);
 
 				//Create the polygon
-				var path = {
+				var paths = [{
 					"type":"Feature",
 					"properties":{
 						"test":"yes"
@@ -210,12 +210,12 @@
 						"type":"Polygon",
 						"coordinates":[[0,0],[10,0],[10,10],[0,10]]
 					}
-				}
+				}]
 
-				console.log(path);
+				console.log(paths);
 				
 				//Add the polygon to the map
-				L.geoJson(path).addTo(map);
+				L.geoJson(paths).addTo(map);
 				
 
 				nextStep();
