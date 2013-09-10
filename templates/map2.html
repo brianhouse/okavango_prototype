@@ -294,9 +294,9 @@
 			var sightingOptions = {
 			    radius: 2,
 			    fillColor: "#78BD52",
-			    color: "#78BD52",
+			    color: "#FFF",
 			    weight: 4,
-			    opacity: 0.5,
+			    opacity: 1,
 			    fillOpacity: 0.8,
 			};
 
@@ -350,7 +350,7 @@
 			    		var bn = feature.properties["Bird Name"];
 			    		if (colorMap[bn] == undefined) {
 			    			var c = colorGen.get(true);
-			    			so.color = c;
+			    			so.fillColor = c;
 			    			colorMap[bn] = c;
 			    		} else {
 			    			so.color = colorMap[bn];
