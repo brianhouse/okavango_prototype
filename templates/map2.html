@@ -369,6 +369,7 @@
 			function drawPaths() {
 
 			var names = ["Steve","John","GB"];
+			var dashes = ["15,1", "5,5", "1,1"];
 			
 			for (var i = 0; i < names.length; i++) {
 				var n = names[i];
@@ -394,7 +395,8 @@
 				    weight: 1,
 				    opacity: 0.5,
 				    fillOpacity: 0,
-				    smoothFactor:2
+				    smoothFactor:2,
+				    dashArray: dashes[i];
 				};
 				
 				//Add the polygon to the map
