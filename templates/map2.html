@@ -471,7 +471,7 @@
 		};
 
 
-		L.control.layers().addTo(map);
+		L.control.layers(baseMaps, overlays).addTo(map);
 		setTimeout(zoomIn, 5000);
 
 		//Buttons
