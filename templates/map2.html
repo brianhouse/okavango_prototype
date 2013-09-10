@@ -188,6 +188,7 @@
 			        beaconMarkers.push(marker);
 			        markers.push(marker);
 			        beaconCoords.push([latlng.lng, latlng.lat]);
+			        console.log([latlng.lng, latlng.lat]);
 			        return marker;
 			    },
 			    onEachFeature:onEachBeacon,
@@ -214,9 +215,9 @@
 				console.log(path);
 				
 				//Add the polygon to the map
-				L.geoJson(path).addTo(map);
+				//L.geoJson(path).addTo(map);
 				
-				
+
 				nextStep();
 			});
 		}
