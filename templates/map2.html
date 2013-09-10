@@ -144,7 +144,7 @@
 		map.zoomAnimationThreshold = 20;
 
 		// add an OpenStreetMap tile layer
-		L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
+		var satLayer = L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
 		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 17
 		}).addTo(map);
 
@@ -462,7 +462,7 @@
 		//loadBeacons();
 
 		var baseMaps = {
-
+			"Sattelite":satLayer
 		};
 
 		var overlays = {
