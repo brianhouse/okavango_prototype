@@ -354,7 +354,7 @@
 			    pointToLayer: function (feature, latlng) {
 			    	var name = feature.properties.Person;
 			    	if (pathMap[name] == undefined) pathMap[name] = [];
-			        var marker = L.circleMarker(latlng, sightingOptions);
+			        var marker = L.circleMarker(latlng);
 			        pathMap[name].push([latlng.lng, latlng.lat]);
 			        
 			        return marker;
