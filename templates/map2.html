@@ -393,7 +393,7 @@
 				console.log("**" + n);
 				console.log(pathMap[n]);
 			//Create the path polygons
-				pathMap[n] = simplify(pathMap[n], 100, false);
+				simplify(pathMap[n], 0.8, false);
 				
 				var paths = [{
 					"type":"Feature",
