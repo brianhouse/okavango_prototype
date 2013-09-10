@@ -340,7 +340,7 @@
 
 		function loadPaths() {
 			console.log("LOAD PATHS!");
-			var pathMap = {};
+			var pathMap = [];
 			var pathCoors = [];
 
 			$.getJSON('/api/timeline?date=20130907&types=ambit_geo&days=100', function(data) {
