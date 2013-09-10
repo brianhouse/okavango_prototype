@@ -296,7 +296,7 @@
 			    }
 			}
 
-			var sightingsCluster = new L.MarkerClusterGroup({ disableClusteringAtZoom: 14 });
+			var sightingsCluster = new L.MarkerClusterGroup({ disableClusteringAtZoom: 12 });
 			var sightingsMarkers = [];
 			var quoteMarkers = [];
 			var colorMap = [];
@@ -392,8 +392,8 @@
 				var n = names[i];
 				console.log("**" + n);
 				console.log(pathMap[n]);
-			//Create the path polygons
-				simplify(pathMap[n], 0.8, false);
+				//Create the path polygons
+				//simplify(pathMap[n], 0.8, false);
 				
 				var paths = [{
 					"type":"Feature",
