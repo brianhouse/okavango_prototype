@@ -299,6 +299,7 @@
 
 			var sightingsCluster = new L.MarkerClusterGroup({ disableClusteringAtZoom: 14 });
 			var sightingsMarkers = [];
+			var quoteMarkers = [];
 
 
 			$.getJSON('/api/timeline?date=20130907&types=sightings&days=100', function(data) {
@@ -310,7 +311,12 @@
 			    pointToLayer: function (feature, latlng) {
 			        var marker = L.circleMarker(latlng, sightingOptions);
 			        markers.push(marker);
-			        sightingsMarkers.push(marker)
+			        if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
+			        	quoteMarkers.push(marker);
+			        } else {
+			        	sightingsMarkers.push(marker);
+			        }
+			        
 			        return marker;
 			    },
 			    onEachFeature: onEachSighting,
@@ -326,6 +332,10 @@
 			        return so;
 			    }
 				})
+
+			  	for (var i = 0; i < quoteMarkers.length; i++) {
+			  		quoteMarkers[i].addTo(map);
+			  	}
 
 			  	for (var i = 0; i < sightingsMarkers.length; i++) {
 			  		sightingsCluster.addLayer(sightingsMarkers[i]);
