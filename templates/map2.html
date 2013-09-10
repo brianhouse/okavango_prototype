@@ -230,38 +230,6 @@
 					}
 				}]
 
-				
-
-				/*
-
-				var paths = [{
-				    "type": "Feature",
-				    "properties": {"party": "Republican"},
-				    "geometry": {
-				        "type": "Polygon",
-				        "coordinates": [[
-				            [-104.05, 48.99],
-				            [-97.22,  48.98],
-				            [-96.58,  45.94],
-				            [-104.03, 45.94],
-				            [-104.05, 48.99]
-				        ]]
-				    }
-				}, {
-				    "type": "Feature",
-				    "properties": {"party": "Democrat"},
-				    "geometry": {
-				        "type": "Polygon",
-				        "coordinates": [[
-				            [-109.05, 41.00],
-				            [-102.06, 40.99],
-				            [-102.03, 36.99],
-				            [-109.04, 36.99],
-				            [-109.05, 41.00]
-				        ]]
-				    }
-				}];
-				*/
 
 				var pathStyle = {
 				    fillColor: "#fff",
@@ -372,6 +340,30 @@
 			map.addLayer(sightingsCluster);
 		}
 
+		function loadPaths {
+			var pathMap = {};
+			var pathCoors = [];
+
+			$.getJSON('/api/timeline?date=20130907&types=ambit_geo&days=100', function(data) {
+			  L.geoJson(data.features, {
+			    filter: function(feature, layer) {
+			    	//Filter out 0,0 points
+			        return (feature.geometry.coordinates[0] != 0);
+			    },
+			    pointToLayer: function (feature, latlng) {
+			    	var name = feature.properties.Person;
+			    	if (pathMap[name] == undefined) pathMap[name] = [];
+			        var marker = L.circleMarker(latlng, sightingOptions);
+			        pathMap[name].push([latlng.lng, latlng.lat]);
+			        
+			        return marker;
+			    },
+				})
+			});
+			console.log(pathMap);
+
+		}
+
 		function zoomIn() {
 			map.panTo(focusMarker.getLatLng());
 			console.log("zoom");
@@ -435,6 +427,7 @@
 				event.preventDefault(); 
 				$("#about").hide();
 				$("#helppanel").show();
+				loadPaths();
 				console.log("help");
 			});
 
