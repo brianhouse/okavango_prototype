@@ -148,6 +148,11 @@
 		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 17
 		}).addTo(map);
 
+		//Build some layers
+		var beaconLayer = new L.layerGroup();
+		var sightingsLayer = new L.layerGroup();
+		var geoLayer = new L.layerGroup();
+
 
 		var lastPoint;
 		var markers = [];
