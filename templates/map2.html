@@ -200,6 +200,7 @@
 				focusMarker = L.marker(lm.getLatLng()).addTo(map);
 
 				//Create the polygon
+				/*
 				var paths = [{
 					"type":"Feature",
 					"properties":{
@@ -211,10 +212,40 @@
 					}
 				}]
 
+				*/
+
+				var paths = [{
+				    "type": "Feature",
+				    "properties": {"party": "Republican"},
+				    "geometry": {
+				        "type": "Polygon",
+				        "coordinates": [[
+				            [-104.05, 48.99],
+				            [-97.22,  48.98],
+				            [-96.58,  45.94],
+				            [-104.03, 45.94],
+				            [-104.05, 48.99]
+				        ]]
+				    }
+				}, {
+				    "type": "Feature",
+				    "properties": {"party": "Democrat"},
+				    "geometry": {
+				        "type": "Polygon",
+				        "coordinates": [[
+				            [-109.05, 41.00],
+				            [-102.06, 40.99],
+				            [-102.03, 36.99],
+				            [-109.04, 36.99],
+				            [-109.05, 41.00]
+				        ]]
+				    }
+				}];
+
 				console.log(paths);
 				
 				//Add the polygon to the map
-				//L.geoJson(paths).addTo(map);
+				L.geoJson(paths).addTo(map);
 				
 				nextStep();
 			});
