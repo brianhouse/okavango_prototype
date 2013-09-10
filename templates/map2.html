@@ -343,6 +343,7 @@
 			console.log("LOAD PATHS!");
 			var pathMap = [];
 			var pathCoors = [];
+			var pathLats = [];
 
 			$.getJSON('/api/timeline?date=20130907&types=ambit_geo&days=100', function(data) {
 			  L.geoJson(data.features, {
@@ -357,7 +358,7 @@
 			    		pathMap[name] = [];
 			    	}
 			        var marker = L.circleMarker(latlng);
-			        pathMap[name].push(latlng);
+			        pathMap[name].push([latlng.lng, latlng.lat]);
 			        
 			        return marker;
 			    },
@@ -376,7 +377,17 @@
 				console.log("**" + n);
 				console.log(pathMap[n]);
 			//Create the path polygons
-
+				
+				var paths = [{
+					"type":"Feature",
+					"properties":{
+						"test":"yes"
+					},
+					"geometry":{
+						"type":"LineString",
+						"coordinates":pathMap[n]
+					}
+				}]
 
 
 				var pathStyle = {
@@ -390,7 +401,7 @@
 				}
 				
 				//Add the polygon to the map
-				new L.Polyline(pathMap[n], {
+				L.geoJson(paths, {
 					style:pathStyle
 				}).addTo(map);
 				}
