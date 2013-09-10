@@ -136,6 +136,7 @@
 		var lastPoint;
 		var markers = [];
 		var beaconMarkers = [];
+		var beaconCoords = [];
 
 		var d = new Date();
 		var focusMarker;
@@ -183,7 +184,8 @@
 			    pointToLayer: function (feature, latlng) {
 			        var marker = L.circleMarker(latlng, beaconOptions);
 			        beaconMarkers.push(marker);
-			        markers.push(marker)
+			        markers.push(marker);
+			        console.log(marker.getLatLng());
 			        return marker;
 			    },
 			    onEachFeature:onEachBeacon,
