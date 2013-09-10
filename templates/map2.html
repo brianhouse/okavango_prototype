@@ -640,7 +640,7 @@
 		function nextStep() {
 			if (step < 100) {
 				map.panTo(focusMarker.getLatLng());
-				focusMarker.bindPopup(scripts[step])
+				focusMarker.bindPopup(scripts[step], {maxWidth:400})
 				focusMarker.openPopup();
 				step ++;
 			}
