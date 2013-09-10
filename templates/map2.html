@@ -176,6 +176,8 @@
 
 
 			$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
+
+				//Create the beacon objects
 			  L.geoJson(data.features, {
 			    filter: function(feature, layer) {
 			    	//Filter out 0,0 points
@@ -185,7 +187,7 @@
 			        var marker = L.circleMarker(latlng, beaconOptions);
 			        beaconMarkers.push(marker);
 			        markers.push(marker);
-			        console.log(marker.getLatLng());
+			        beaconCoords.push([marker.getLatLng.lng, marker.getLatLng.lat]);
 			        return marker;
 			    },
 			    onEachFeature:onEachBeacon,
@@ -196,6 +198,19 @@
 			    
 			    var lm = beaconMarkers[beaconMarkers.length - 1];
 				focusMarker = L.marker(lm.getLatLng()).addTo(map);
+
+				//Create the polygon
+				var path = {
+					"type":"Feature",
+					"geometry":{
+						"type":"Polygon",
+						"coordinates":beaconCoords;
+					}
+				}
+
+				L.geoJSON(path,{
+
+				}).addTo(map);
 
 				nextStep();
 			});
