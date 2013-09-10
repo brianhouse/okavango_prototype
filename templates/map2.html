@@ -165,14 +165,6 @@
 			    fillOpacity: 0.8,
 			};
 
-			function onEachBeacon(feature, layer) {
-			    // does this feature have a property named popupContent?
-			    if (feature.properties && feature.properties.Count) {
-			    	var d = new Date(feature.properties.t_utc);
-			        layer.bindPopup("Beacon report from " + d.toString );
-			    }
-			}
-
 
 			$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
 			  L.geoJson(data.features, {
@@ -186,16 +178,15 @@
 			        markers.push(marker)
 			        return marker;
 			    },
-			    onEachFeature:onEachBeacon,
 			    style: function(feature) {
 			    	//Here we can apply styling to markers depending on properties. Cool.
 			    	var c = Math.floor(feature.properties["Speed"] * 4);
 			        return {fillColor: "#FFFFFF"};
 			    }
-				});
+				}).addToMap(map);
 			    map.panTo(markers[markers.length - 1].getLatLng());
 			    var lm = beaconMarkers[beaconMarkers.length - 1];
-				focusMarker = L.marker(lm.getLatLng()).addToMap(map);
+				focusMarker = L.marker(lm.getLatLng()).addTo(map);
 				nextStep();
 			});
 		}
@@ -211,7 +202,7 @@
 			    fillOpacity: 0.8,
 			};
 
-			function onEachSighting(feature, layer) {
+			function onEachFeature(feature, layer) {
 			    // does this feature have a property named popupContent?
 			    if (feature.properties && feature.properties.Count) {
 			        layer.bindPopup(feature.properties.Count + " " + feature.properties["Bird Name"] );
@@ -234,7 +225,7 @@
 			        sightingsMarkers.push(marker)
 			        return marker;
 			    },
-			    onEachFeature: onEachSighting,
+			    onEachFeature: onEachFeature,
 			    style: function(feature) {
 			    	//Here we can apply styling to markers depending on properties. Cool.
 			    	var c = Math.sqrt(feature.properties["Count"]);
