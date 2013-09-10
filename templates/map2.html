@@ -149,9 +149,9 @@
 		}).addTo(map);
 
 		//Build some layers
-		var beaconLayer = new L.layerGroup();
-		var sightingsLayer = new L.layerGroup();
-		var geoLayer = new L.layerGroup();
+		var beaconLayer = new L.layerGroup().addTo(map);
+		var sightingsLayer = new L.layerGroup().addTo(map);
+		var geoLayer = new L.layerGroup().addTo(map);
 
 
 		var lastPoint;
