@@ -351,6 +351,7 @@
 			    },
 			    pointToLayer: function (feature, latlng) {
 			    	var name = feature.properties.Person;
+			    	console.log(pathMap[name]);
 			    	if (pathMap[name] == undefined) {
 			    		console.log("new path for " + name);
 			    		pathMap[name] = [];
