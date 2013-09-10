@@ -288,7 +288,7 @@
 			    // does this feature have a property named popupContent?
 			    if (feature.properties && feature.properties.Count) {
 			    	if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
-			    		layer.bindPopup("\"" + feature.properties["Bird Name"].split("quote.")[1] ) + "\"" + "\n" + "Date");
+			    		layer.bindPopup("\"" + feature.properties["Bird Name"].split("quote.")[1] + "\"" + "\n" + "Date");
 			    	} else {
 			    		layer.bindPopup(feature.properties.Count + " " + feature.properties["Bird Name"] + "\n" + "Date");
 			    	}
