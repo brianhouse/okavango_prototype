@@ -312,6 +312,7 @@
 			    	//Here we can apply styling to markers depending on properties. Cool.
 			    	var c = Math.sqrt(feature.properties["Count"]);
 			    	var so = {radius: 2 + c};
+			    	console.log("looking for quote.");
 			    	if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
 			    		console.log("Found quote:" + feature.properties["Bird Name"])
 			    		so.fillColor = "#FF0000";
