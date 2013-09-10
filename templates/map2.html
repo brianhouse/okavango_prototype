@@ -167,8 +167,9 @@
 
 			function onEachBeacon(feature, layer) {
 			    // does this feature have a property named popupContent?
-			    if (feature.properties && feature.properties.Count) {
-			        layer.bindPopup("This is a beacon");
+			    if (feature.properties && feature.properties.t_utc) {
+			    	var d = new Date(feature.properties.t_utc);
+			        layer.bindPopup("Position beacon from " + d.toString());
 			    }
 			}
 
@@ -192,9 +193,10 @@
 			        return {fillColor: "#FFFFFF"};
 			    }
 				});
-			    map.panTo(markers[markers.length - 1].getLatLng());
+			    
 			    var lm = beaconMarkers[beaconMarkers.length - 1];
 				focusMarker = L.marker(lm.getLatLng()).addTo(map);
+
 				nextStep();
 			});
 		}
@@ -269,6 +271,7 @@
 		}
 
 		function nextStep() {
+			map.panTo(focusMarker.getLatLng());
 			focusMarker.bindPopup(scripts[step])
 			focusMarker.openPopup();
 			step ++;
