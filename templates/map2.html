@@ -440,11 +440,13 @@
 			}
 			//Smooth it
 			vectorList = simplify(vectorList, 0.8, false);
+			console.log("Unsimplified");
+			consoloe.log(vectorList);
 			console.log("Simplified.");
 			console.log(vectorList);
 			//Now turn it back into a flat list
 			var flatList = [];
-			for(var i = 0; i < pointList.length; i++) {
+			for(var i = 0; i < vectorList.length; i++) {
 				flatList[i] = [vectorList[i].x, vectorList[i].y];
 			}
 			//Spit it out
