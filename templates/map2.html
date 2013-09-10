@@ -73,6 +73,14 @@
 			color: white;
 			padding: 10px;
 		}
+
+		#skip {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			margin-top: 0px;
+			margin-left: -25px;
+		}
 		
 		
 		a{
@@ -117,6 +125,10 @@
 		<p>New data is uploaded once per day, at around 12pm, EST. This data will immediately be available through the <a href="/api">public API</a>, and will be visible on the map at the same time.</p>
 		<p>For specific questions, please get in touch - <a href="mailto:okavango@o-c-r.org>">okavango@o-c-r.org</a></p>
 	</div>	
+
+	<div id="skip">
+		<a href="#">Skip</a>
+	</div>
 
 
 	<script type="text/javascript">
@@ -355,6 +367,7 @@
 			} else {
 				loadSightings();
 				showBeacons();
+				$("#skip").hide();
 			}
 			
 		}
@@ -407,6 +420,13 @@
 				event.preventDefault(); 
 				$("#about").hide();
 				$("#helppanel").hide();
+				console.log("help");
+			});
+
+			$("#skip").click(function(event){
+				event.preventDefault(); 
+				doSkip();
+				$("#skip").hide();
 				console.log("help");
 			});
  
