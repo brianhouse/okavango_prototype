@@ -246,9 +246,11 @@
 				
 				//Add the polygon to the map
 				
-				L.geoJson(paths, {
+				var beaconPath = L.geoJson(paths, {
 					style:pathStyle
-				}).addTo(map);
+				});
+
+				beaconLayer.addLayer(beaconMarkers[i])
 				
 				
 				nextStep();
@@ -257,7 +259,8 @@
 
 		function showBeacons() {
 			for(var i = 0; i < beaconMarkers.length; i++) {
-				beaconMarkers[i].addTo(map);
+				//beaconMarkers[i].addTo(map);
+				beaconLayer.addLayer(beaconMarkers[i])
 			}
 		}
 
