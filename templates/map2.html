@@ -357,7 +357,7 @@
 			    		pathMap[name] = [];
 			    	}
 			        var marker = L.circleMarker(latlng);
-			        pathMap[name].push([latlng.lng, latlng.lat]);
+			        pathMap[name].push(latLng);
 			        
 			        return marker;
 			    },
@@ -376,17 +376,7 @@
 				console.log("**" + n);
 				console.log(pathMap[n]);
 			//Create the path polygons
-				
-				var paths = [{
-					"type":"Feature",
-					"properties":{
-						"test":"yes"
-					},
-					"geometry":{
-						"type":"LineString",
-						"coordinates":pathMap[n]
-					}
-				}]
+
 
 
 				var pathStyle = {
@@ -400,7 +390,7 @@
 				}
 				
 				//Add the polygon to the map
-				L.geoJson(paths, {
+				L.Polyline(paths, {
 					style:pathStyle
 				}).addTo(map);
 				}
