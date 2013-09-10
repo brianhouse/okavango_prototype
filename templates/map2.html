@@ -361,7 +361,10 @@
 			        return marker;
 			    },
 				})
+			  	drawPaths();
 			});
+
+			function drawPaths() {
 
 			var names = ["Steve","John","GB"];
 			
@@ -396,6 +399,7 @@
 				L.geoJson(paths, {
 					style:pathStyle
 				}).addTo(map);
+				}
 			}
 
 		}
