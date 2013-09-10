@@ -341,7 +341,7 @@
 			    style: function(feature) {
 			    	//Here we can apply styling to markers depending on properties. Cool.
 			    	var c = Math.sqrt(feature.properties["Count"]);
-			    	var so = {radius: 4 + c};
+			    	var so = {radius: 2 + (c * 2)};
 			    	if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
 			    		so.fillColor = "#FFF";
 			    		so.radius = 8;
