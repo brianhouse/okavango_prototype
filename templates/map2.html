@@ -168,7 +168,7 @@
 			function onEachBeacon(feature, layer) {
 			    // does this feature have a property named popupContent?
 			    if (feature.properties && feature.properties.t_utc) {
-			    	var d = new Date(feature.properties.t_utc);
+			    	var d = new Date(feature.properties.t_utc * 1000);
 			        layer.bindPopup("Position beacon from " + d.toString());
 			    }
 			}
