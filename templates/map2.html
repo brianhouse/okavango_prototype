@@ -195,7 +195,7 @@
 				}).addToMap(map);
 			    map.panTo(markers[markers.length - 1].getLatLng());
 			    var lm = beaconMarkers[beaconMarkers.length - 1];
-				focusMarker = L.marker(lm.getLatLng());
+				focusMarker = L.marker(lm.getLatLng()).addToMap(map);
 				nextStep();
 			});
 		}
