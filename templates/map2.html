@@ -208,14 +208,14 @@
 					},
 					"geometry":{
 						"type":"Polygon",
-						"coordinates":beaconCoords
+						"coordinates":[[0,0],[10,0],[10,10],[0,10]]
 					}
 				}
 
 				console.log(path);
 				
 				//Add the polygon to the map
-				//L.geoJson(path).addTo(map);
+				L.geoJson(path).addTo(map);
 				
 
 				nextStep();
