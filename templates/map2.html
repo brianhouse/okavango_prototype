@@ -336,7 +336,7 @@
 				})
 
 			  	for (var i = 0; i < quoteMarkers.length; i++) {
-			  		quoteMarkers[i].addTo(map);
+			  		sightingsLayer.addLayer(quoteMarkers[i]);
 			  	}
 
 			  	for (var i = 0; i < sightingsMarkers.length; i++) {
@@ -344,7 +344,7 @@
 			  	}
 			});
 
-			map.addLayer(sightingsCluster);
+			sightingsLayer.addLayer(sightingsCluster);
 		}
 
 		function loadPaths() {
