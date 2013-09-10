@@ -315,6 +315,7 @@
 			var sightingsCluster = new L.MarkerClusterGroup({ disableClusteringAtZoom: 14 });
 			var sightingsMarkers = [];
 			var quoteMarkers = [];
+			var colorMap = [];
 
 
 			$.getJSON('/api/timeline?date=20130907&types=sightings&days=100', function(data) {
@@ -343,6 +344,15 @@
 			    		so.fillColor = "#FFF";
 			    		so.radius = 8;
 			    		so.color = "#FF6600";
+			    	} else {
+			    		var bn = feature.properties["Bird Name"];
+			    		if (colorMap[bn] == undefined) {
+			    			var c = '#'+Math.floor(Math.random()*16777215).toString(16);
+			    			so.color = c;
+			    			colorMap[bn] = c;
+			    		} else {
+			    			so.color = colorMap[bn];
+			    		}
 			    	}
 			        return so;
 			    }
