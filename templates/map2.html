@@ -459,6 +459,18 @@
 		}
 
 		//loadBeacons();
+
+		var baseMaps = {
+		    "Sattelite": map,
+		};
+
+		var overlays = {
+		    "Position Beacons": beaconLayer,
+		    "Wildlife Sightings": sightingsLayer,
+		    "GPS Positions": geoLayer
+		};
+
+
 		L.control.layers().addTo(map);
 		setTimeout(zoomIn, 5000);
 
