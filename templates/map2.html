@@ -410,9 +410,12 @@
 				}
 				
 				//Add the polygon to the map
-				L.geoJson(paths, {
+				var path = L.geoJson(paths, {
 					style:pathStyle
-				}).addTo(map);
+				})
+
+				geoLayer.addLayer(path);
+				
 				}
 			}
 
