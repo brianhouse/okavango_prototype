@@ -239,8 +239,6 @@
 				    fillOpacity: 0,
 				    dashArray: "5, 5, 1, 5"
 				};
-
-				console.log(paths);
 				
 				//Add the polygon to the map
 				L.geoJson(paths, {
@@ -361,7 +359,37 @@
 			    },
 				})
 			});
-			console.log(pathMap);
+			
+			for (var n in pathMap) {
+
+			//Create the path polygons
+				
+				var paths = [{
+					"type":"Feature",
+					"properties":{
+						"test":"yes"
+					},
+					"geometry":{
+						"type":"LineString",
+						"coordinates":pathMap[n];
+					}
+				}]
+
+
+				var pathStyle = {
+				    fillColor: "#fff",
+				    color: "#FFF",
+				    weight: 1,
+				    opacity: 1,
+				    fillOpacity: 0,
+				    dashArray: "5, 5, 1, 5"
+				};
+				
+				//Add the polygon to the map
+				L.geoJson(paths, {
+					style:pathStyle
+				}).addTo(map);
+			}
 
 		}
 
