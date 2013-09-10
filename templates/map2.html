@@ -303,7 +303,7 @@
 			    if (feature.properties && feature.properties.Count) {
 			    	var d = new Date(feature.properties.t_utc);
 			    	if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
-			    		layer.bindPopup("\"" + feature.properties["Bird Name"].split("quote.")[1] + "\"" + "<br><br>" + d.toString());
+			    		layer.bindPopup("\"" + feature.properties["Bird Name"].split("quote. ")[1] + "\"" + "<br><br>" + d.toString());
 			    	} else {
 			    		layer.bindPopup(feature.properties.Count + " " + feature.properties["Bird Name"] + "<br><br>" + d.toString());
 			    	}
