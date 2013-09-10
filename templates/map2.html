@@ -335,6 +335,7 @@
 		}
 
 		function zoomIn() {
+			map.panTo(focusMarker.getLatLng());
 			console.log("zoom");
 			if (map.getZoom() < 17) map.zoomIn(3);
 			if (step < scripts.length) {
