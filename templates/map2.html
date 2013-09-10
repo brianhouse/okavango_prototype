@@ -241,9 +241,11 @@
 				};
 				
 				//Add the polygon to the map
+				/*
 				L.geoJson(paths, {
 					style:pathStyle
 				}).addTo(map);
+				*/
 				
 				nextStep();
 			});
@@ -413,6 +415,7 @@
 				setTimeout(zoomIn, 8000)
 			} else {
 				loadSightings();
+				oadPaths();
 				showBeacons();
 				//focusMarker.bindPopup("Last reported position.");
 				$("#skip").hide();
@@ -467,7 +470,6 @@
 				event.preventDefault(); 
 				$("#about").hide();
 				$("#helppanel").show();
-				loadPaths();
 				console.log("help");
 			});
 
