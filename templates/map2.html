@@ -245,10 +245,20 @@
 				}];
 				*/
 
+				var pathStyle = {
+				    fillColor: "#fff",
+				    color: "#FFF",
+				    weight: 1,
+				    opacity: 1,
+				    fillOpacity: 0,
+				};
+
 				console.log(paths);
 				
 				//Add the polygon to the map
-				L.geoJson(paths).addTo(map);
+				L.geoJson(paths {
+					style:pathStyle
+				}).addTo(map);
 				
 				nextStep();
 			});
