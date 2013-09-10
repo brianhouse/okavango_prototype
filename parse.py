@@ -185,9 +185,9 @@ def ingest_beacon(content):
             except Exception as e:
                 log.error(log.exc(e))
                 continue
-        if t <= t_protect:
-            log.warning("Protected t, skipping...")
-            return                                
+        # if t <= t_protect:
+        #     log.warning("Protected t, skipping...")
+        #     return                                
         feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
         feature_id = model.insert_feature('beacon', t, geojson.dumps(feature))
     except Exception as e:
