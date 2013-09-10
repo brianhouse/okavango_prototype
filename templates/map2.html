@@ -148,6 +148,12 @@
 		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 17
 		}).addTo(map);
 
+
+		// add an OpenStreetMap tile layer
+		var flatLayer = L.tileLayer('http://a.tiles.mapbox.com/v3/blprnt.map-vsat7sho/{z}/{x}/{y}.png', {
+		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 17
+		})
+
 		//Build some layers
 		var beaconLayer = new L.layerGroup().addTo(map);
 		var sightingsLayer = new L.layerGroup().addTo(map);
@@ -462,7 +468,8 @@
 		//loadBeacons();
 
 		var baseMaps = {
-			"Sattelite":satLayer
+			"Sattelite":satLayer,
+			"Sattelite":flatLayer
 		};
 
 		var overlays = {
