@@ -369,6 +369,7 @@
 			} else {
 				loadSightings();
 				showBeacons();
+				//focusMarker.bindPopup("Last reported position.");
 				$("#skip").hide();
 			}
 			
@@ -388,6 +389,7 @@
 			focusMarker.closePopup();
 			map.setZoom(17);
 			map.panTo(focusMarker.getLatLng());
+			focusMarker.bindPopup("Last reported position.");
 			$("#skip").hide();
 			loadSightings();
 			showBeacons();
