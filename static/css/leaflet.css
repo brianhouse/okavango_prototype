@@ -190,7 +190,8 @@
 
 /* general typography */
 .leaflet-container {
-	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font: 1.2em Georgia, serif;
+	
 	}
 
 
@@ -427,7 +428,7 @@
 	        transform: rotate(45deg);
 	}
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
-	font: 1.2em Georgia, serif;
+
 	background: white;
 
 	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
