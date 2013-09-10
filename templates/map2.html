@@ -375,13 +375,17 @@
 		}
 
 		function nextStep() {
-			map.panTo(focusMarker.getLatLng());
-			focusMarker.bindPopup(scripts[step])
-			focusMarker.openPopup();
-			step ++;
+			if (step < 100) {
+				map.panTo(focusMarker.getLatLng());
+				focusMarker.bindPopup(scripts[step])
+				focusMarker.openPopup();
+				step ++;
+			}
 		}
 
 		function doSkip() {
+			step = 100;
+			focusMarker.closePopup();
 			map.setZoom(17);
 			map.panTo(focusMarker.getLatLng());
 			$("#skip").hide();
