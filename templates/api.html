@@ -1,15 +1,15 @@
 {% extends "page.html" %}
-{% block title %}Digital Bushman : Public API{% endblock title %}
+{% block title %}Into The Okavango : Public API{% endblock title %}
 
 {% block body %}
 
 <div id="bkg"></div>
 <div id="content">
 
-	<a href="http://digitalbushman.org/">
+	<a href="../">
 		<h1>
-			<p>Digital Bushman</p>
-			<img id="logo" src="static/img/logo.svg" width="400px" alt="Digital Bushman logo"/>
+			<p>Into The Okavango</p>
+			<img id="logo" src="static/img/logo.svg" width="400px" alt="Into The Okavango logo"/>
 		</h1>
 		<h2>API</h2>
 	</a>
@@ -19,10 +19,10 @@
 		<p>We are providing open access to all of the data recorded during the 18 day expedition in the Okavango Delta.</p>
 		
 		<p>There are 7 content types available: 'ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'beacon'. Each of these content types returns a data file in GeoJSON format. The structure of a call to the API is always the same:</p>
-		<p class="code">http://digitalbushman.org/api/timeline?date=YYYYMMDD&types=TYPE</p>
+		<p class="code">http://intotheokavango.org/api/timeline?date=YYYYMMDD&types=TYPE</p>
 
 		<p>To request multiple days, you can append a 'days' parameter:</p>
-		<p class="code">http://digitalbushman.org/api/timeline?date=YYYYMMDD&types=TYPE&days=#</p>
+		<p class="code">http://intotheokavango.org/api/timeline?date=YYYYMMDD&types=TYPE&days=#</p>
 
 		<p>For example, to get all of the animal sightings within two days of September 7th:</p>
 		<p class="code"><a href="/api/timeline?date=20130907&types=sighting&days=2">/api/timeline?date=20130908&amp;types=sighting&amp;days=2</a></p>
