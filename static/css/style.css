@@ -76,6 +76,10 @@ h2, h3{
   color:white;
 }
 
+a h2{
+  text-decoration: none;
+}
+
 h3{
   color:#443D33;
   border-bottom:1px solid rgba(0,0,0,0.1);
@@ -89,7 +93,7 @@ h3{
   height:100%;
   z-index:-1000;
   position:fixed;
-  background-image: url("static/img/apibkg.jpg");
+  background-image: url("/static/img/apibkg.jpg");
   background-size:cover;
   background-repeat:no-repeat;
 }
