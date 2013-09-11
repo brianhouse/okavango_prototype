@@ -75,8 +75,16 @@
 		}
 
 		a{
-			color:#443D33;
+			color:black;
 			text-decoration: none;
+			-webkit-transition: color 0.08s linear;
+		    -moz-transition: color 0.08s linear;
+		    -o-transition: color 0.08s linear;
+		    -ms-transition: color 0.08s linear;
+		    transition: color 0.08s linear;
+		}
+		a:hover{
+			color:white;
 		}
 		
 		#map_holder{
@@ -141,6 +149,9 @@
 					display:inline-block;
 					font-size: 70%;
 					color:white;
+				}
+				#nav a:hover{
+					color:#EEEEEE;
 				}
 				#nav img{
 					float:right;
