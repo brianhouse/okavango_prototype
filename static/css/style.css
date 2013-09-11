@@ -56,6 +56,16 @@ p{
   line-height: 1.6em;
 }
 
+a{
+  color:black;
+  text-decoration: none;
+  -webkit-transition: color 0.08s linear;
+  -moz-transition: color 0.08s linear;
+  -o-transition: color 0.08s linear;
+  -ms-transition: color 0.08s linear;
+  transition: color 0.08s linear;
+}
+
 h1{
   height:auto;
 }
@@ -74,10 +84,6 @@ h2, h3{
   margin-top:5px;
   margin-bottom:50px;
   color:white;
-}
-
-a h2{
-  text-decoration: none;
 }
 
 h3{
