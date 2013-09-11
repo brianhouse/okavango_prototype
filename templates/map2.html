@@ -311,8 +311,6 @@
 		var map = L.map('map', {zoomControl:false}).setView([-19.2571, 22.6560], 5);
 		map.zoomAnimationThreshold = 20;
 
-		new L.Control.Zoom({ position: 'topright' }).addTo(map);
-
 		// add an OpenStreetMap tile layer
 		var satLayer = L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
 		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 17
@@ -678,6 +676,7 @@
 
 
 		L.control.layers(baseMaps, overlays).addTo(map);
+		new L.Control.Zoom({ position: 'topright' }).addTo(map);
 		setTimeout(zoomIn, 5000);
 
 		//Buttons
