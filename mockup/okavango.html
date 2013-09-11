@@ -46,6 +46,8 @@
 		body {
 			line-height: 1;
 			background-color:#DDDDDD;
+			overflow: -moz-scrollbars-vertical; 
+			overflow-y: scroll;
 		}
 		ol, ul {
 			list-style: none;
@@ -208,7 +210,8 @@
 					}
 
 			#about, #helppanel{
-				position:absolute;
+				height:auto;
+				padding-bottom: 80px;
 			}
 
 			#about p{
@@ -347,7 +350,9 @@
 				event.preventDefault(); 
 				fadePanel(true);
 				$("#about").fadeIn();
+				$("#about").css("position","relative");
 				$("#helppanel").fadeOut();
+				$("#helppanel").css("position","absolute");
 				resizeYoutubeFrame();
 			});
  
@@ -360,7 +365,9 @@
 				event.preventDefault(); 
 				fadePanel(true);
 				$("#about").fadeOut();
+				$("#about").css("position","absolute");
 				$("#helppanel").fadeIn();
+				$("#helppanel").css("position","relative");
 			});
 
 			$("#closehelp").click(function(event){

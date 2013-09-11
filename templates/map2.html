@@ -71,6 +71,8 @@
 		body{
 			font: 1.2em Georgia, serif;
 			color:#443D33;
+			overflow: -moz-scrollbars-vertical; 
+			overflow-y: scroll;
 		}
 
 		p{
@@ -212,7 +214,8 @@
 					}
 
 			#about, #helppanel{
-				position:absolute;
+				height:auto;
+				padding-bottom: 100px;
 			}
 
 			#about p{
@@ -313,6 +316,7 @@
 				|
 				<a href="http://en.wikipedia.org/wiki/Bushmen">About the BaYei Bushemn</a>
 			</p>
+			<div class="bottomspace"></div>
 		</div>	
 
 		<div id="helppanel">
@@ -320,6 +324,7 @@
 			<p>This site is a work in progress. Real expedition data didn't become available until the team in the Delta arrived and started transmitting. As a result we are adding functionality on a daily basis, based on the character of the data we receive. So check back to watch the expedition progress, and to see and explore new features and new data.</p>
 			<p>New data is uploaded once per day, at around 12pm, EST. This data will immediately be available through the <a href="/api">public API</a>, and will be visible on the map at the same time.</p>
 			<p>For specific questions, please get in touch - <br><a href="mailto:okavango@o-c-r.org>">okavango@o-c-r.org</a></p>
+			<div class="bottomspace"></div>
 		</div>	
 
 		<div id="skip">
@@ -727,7 +732,9 @@
 				event.preventDefault(); 
 				fadePanel(true);
 				$("#about").fadeIn();
+				$("#about").css("position","relative");
 				$("#helppanel").fadeOut();
+				$("#helppanel").css("position","absolute");
 				resizeYoutubeFrame();
 				console.log("expedition");
 			});
@@ -742,7 +749,9 @@
 				event.preventDefault(); 
 				fadePanel(true);
 				$("#about").fadeOut();
+				$("#about").css("position","absolute");
 				$("#helppanel").fadeIn();
+				$("#helppanel").css("position","relative");
 				console.log("help");
 			});
 
