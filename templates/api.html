@@ -1,81 +1,71 @@
 {% extends "page.html" %}
-{% block title %}Digital Bushman : Public API{% endblock title %}
+{% block title %}Into The Okavango : Public API{% endblock title %}
 
 {% block body %}
 
-<h2>The Digital Bushman API</h2>
-<p>
-We are providing open access to all of the data recorded during the 18 day expedition in the Okavango Delta. 
-</p>
-	
-<p>
-There are 7 content types available: 'ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'beacon'. 
-Each of these content types returns a data file in GeoJSON format. The structure of a call to the API is always the same:
-<p>
-<p>
-<em>http://digitalbushman.org/api/timeline?date=YYYYMMDD&types=TYPE</em>
-</p>
-<p>
-To request multiple days, you can append a 'days' parameter:
-</p>
-<p>
-<em>http://digitalbushman.org/api/timeline?date=YYYYMMDD&types=TYPE&days=#</em>
-</p>
-<p>
-For example, to get all of the animal sightings within two days of September 7th:
-</p>
-<p>
-<a href="/api/timeline?date=20130907&types=sighting&days=2">/api/timeline?date=20130908&amp;types=sighting&amp;days=2</a>
-</p>
+<div id="bkg"></div>
+<div id="content">
 
-<p>
-<strong>Ambit</strong>
-</p>
-<p>
-Three expedition members (Steve, John &amp; GB) are wearing Suunto Ambit watches, which record a variety of data, including heartrate, energy consumption, and positional data (see below). This data is measured at extremely high frequency (once every 10 seconds, for each person), so returns from this call can be quite large (one day of data is about 5MB).
-</p>
+	<a href="../">
+		<h1>
+			<p>Into The Okavango</p>
+			<img id="logo" src="static/img/logo.svg" width="400px" alt="Into The Okavango logo"/>
+		</h1>
+		<h2>API</h2>
+	</a>
 
-<p><a href="/api/timeline?date=20130908&types=ambit">/api/timeline?date=20130908&amp;types=ambit</a></p>
+	<div id="intro">
 
-<strong>Ambit Geo</strong>
-</p>
-<p>
-Each of the three Ambit watches is also recording GPS coordinates. These are measure approximately once per minute.
-</p>
+		<p>We are providing open access to all of the data recorded during the 18 day expedition in the Okavango Delta.</p>
+		
+		<p>There are 7 content types available: 'ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'beacon'. Each of these content types returns a data file in GeoJSON format. The structure of a call to the API is always the same:</p>
+		<p class="code">http://intotheokavango.org/api/timeline?date=YYYYMMDD&types=TYPE</p>
 
-<p><a href="/api/timeline?date=20130908&types=ambit_geo">/api/timeline?date=20130908&amp;types=ambit_geo</a></p>
+		<p>To request multiple days, you can append a 'days' parameter:</p>
+		<p class="code">http://intotheokavango.org/api/timeline?date=YYYYMMDD&types=TYPE&days=#</p>
 
-<strong>Sightings</strong>
-</p>
-<p>
-The Okavango Delta is one of the world's richest wildlife areas. Throughout the expedition, the team will be reporting sightings of animals that they spot along the way (with a focus on birds).
-</p>
+		<p>For example, to get all of the animal sightings within two days of September 7th:</p>
+		<p class="code"><a href="/api/timeline?date=20130907&types=sighting&days=2">/api/timeline?date=20130908&amp;types=sighting&amp;days=2</a></p>
+	</div>
 
-<p><a href="/api/timeline?date=20130908&types=sighting">/api/timeline?date=20130908&amp;types=sighting</a></p>
+	<div id="data">
+		<div class="category">
+			<h3>Ambit</h3>
+			<p>Three expedition members (Steve, John &amp; GB) are wearing Suunto Ambit watches, which record a variety of data, including heartrate, energy consumption, and positional data (see below). This data is measured at extremely high frequency (once every 10 seconds, for each person), so returns from this call can be quite large (one day of data is about 5MB).</p>
+			<p class="code"><a href="/api/timeline?date=20130908&types=ambit">/api/timeline?date=20130908&amp;types=ambit</a></p>
+		</div>
 
-<strong>Images</strong>
-</p>
-<p>
-Periodically, the team will be capturing images of the surrounding habitat. Due to bandwidth restrictions, <em>the size of the images is extremely small</em> - we are using these primarily for colour extraction.
-</p>
+		<div class="category">
+			<h3>Ambit Geo</h3>
+			<p>Each of the three Ambit watches is also recording GPS coordinates. These are measure approximately once per minute.</p>
+			<p class="code"><a href="/api/timeline?date=20130908&types=ambit_geo">/api/timeline?date=20130908&amp;types=ambit_geo</a></p>
+		</div>
 
-<p><a href="/api/timeline?date=20130908&types=image">/api/timeline?date=20130908&amp;types=image</a></p>
+		<div class="category">
+			<h3>Sightings</h3>
+			<p>The Okavango Delta is one of the world's richest wildlife areas. Throughout the expedition, the team will be reporting sightings of animals that they spot along the way (with a focus on birds).</p>
+			<p class="code"><a href="/api/timeline?date=20130908&types=sighting">/api/timeline?date=20130908&amp;types=sighting</a></p>
+		</div>
 
-<strong>Audio</strong>
-</p>
-<p>
-What does the Okavango Delta sound like? Low-fi sound clips are recorded by the team every 10 minutes.
-</p>
+		<div class="category">
+			<h3>Images</h3>
+			<p>Periodically, the team will be capturing images of the surrounding habitat. Due to bandwidth restrictions, <em>the size of the images is extremely small</em> - we are using these primarily for colour extraction.</p>
+			<p class="code"><a href="/api/timeline?date=20130908&types=image">/api/timeline?date=20130908&amp;types=image</a></p>
+		</div>
 
-<p><a href="/api/timeline?date=20130908&types=audio">/api/timeline?date=20130908&amp;types=audio</a></p>
+		<div class="category">
+			<h3>Audio</h3>
+			<p>What does the Okavango Delta sound like? Low-fi sound clips are recorded by the team every 10 minutes.</p>
+			<p class="code"><a href="/api/timeline?date=20130908&types=audio">/api/timeline?date=20130908&amp;types=audio</a></p>
+		</div>
 
-<strong>Beacon</strong>
-</p>
-<p>
-All of the above data are uploaded via sattelite once per day. In between, periodic reports of GPS position are sent and stored as 'beacon reports'
-</p>
+		<div class="category">
+			<h3>Beacon</h3>
+			<p>All of the above data are uploaded via sattelite once per day. In between, periodic reports of GPS position are sent and stored as 'beacon reports'</p>
+			<p class="code"><a href="/api/timeline?date=20130908&types=beacon">/api/timeline?date=20130908&amp;types=beacon</a></p>
+		</div>
 
-<p><a href="/api/timeline?date=20130908&types=beacon">/api/timeline?date=20130908&amp;types=beacon</a></p>
-
+	</div>
+</div>
 
 {% endblock body %}
