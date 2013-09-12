@@ -10,7 +10,7 @@ class Home(server.Handler):
     def get(self, page=None):
         if len(page):
             return self.not_found()
-        if page == "beta"
+        if page == "beta":
             return self.render("map3.html")
         return self.render("map2.html")
 
