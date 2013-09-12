@@ -512,7 +512,7 @@
 			function onEachSighting(feature, layer) {
 			    // does this feature have a property named popupContent?
 			    if (feature.properties && feature.properties.Count) {
-			    	var d = new Date(feature.properties.t_utc);
+			    	var d = new Date(feature.properties.t_utc * 1000);
 			    	if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
 			    		layer.bindPopup("<h1>\"" + feature.properties["Bird Name"].split("quote. ")[1] + "\"</h1>" + "<br><br>" + d.toString());
 			    	} else {
