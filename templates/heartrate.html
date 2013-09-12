@@ -1,0 +1,23 @@
+{% extends "page.html" %}
+{% block title %}Digital Bushman : Heartrate{% endblock title %}
+
+{% block body %}
+
+<div id="imagediv"></div>
+
+<script language="Javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+	console.log('fetching images');
+	$.getJSON('/api/timeline?date=20130907&types=image&days=100', function(data) {
+		console.log(data);
+		
+		for (var i = 0; i < data.features.length; i++) {
+
+			
+		}
+		
+
+	});
+</script>
+
+{% endblock body %}
