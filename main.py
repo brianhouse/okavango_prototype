@@ -26,6 +26,12 @@ class Images(server.Handler):
             return self.not_found()
         return self.render("images.html")
 
+class HeartRate(server.Handler):
+
+    def get(self, page=None):
+        if len(page):
+            return self.not_found()
+        return self.render("heartrate.html")
 
 class Api(server.Handler):
     
@@ -58,6 +64,7 @@ handlers = [
     (r"/?([^/]*)", Home),
     (r"/beta/", Beta),
     (r"/images/?([^/]*)", Images),
+    (r"/heartrate/?([^/]*)", HeartRate),
 ]    
 
 server.start(handlers)
