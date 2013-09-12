@@ -6,6 +6,7 @@
 <div id="imagediv"></div>
 
 <script language="Javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script language="Javascript" type="text/javascript" src="/static/js/simplify.js"></script>
 <script type="text/javascript">
 	console.log('fetching images');
 	$.getJSON('/api/timeline?date=20130907&types=ambit&days=100', function(data) {
@@ -17,12 +18,15 @@
 			var f = data.features[i];	
 			var n = f.properties.Person;
 			if (heartLines[n] == undefined) heartLines[n] = [];
-			heartLines[n].push([f.properties.t_utc,f.properties.HR]);		
+			heartLines[n].push({"x":f.properties.t_utc, "y":f.properties.HR}]);		
 		}
 
 		for (var n in heartLines) {
 			console.log(n);
-			console.log(heartLines[n]);
+			console.log(heartLines[n].length);
+			heartLines[n] = simplify(heartLines[n], 0.8, false);
+			console.log(heartLines[n].length);
+
 		}
 		
 
