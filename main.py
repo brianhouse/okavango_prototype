@@ -12,6 +12,20 @@ class Home(server.Handler):
             return self.not_found()
         return self.render("map2.html")
 
+class Beta(server.Handler):
+
+    def get(self, page=None):
+        if len(page):
+            return self.not_found()
+        return self.render("map3.html")
+
+class Images(server.Handler):
+
+    def get(self, page=None):
+        if len(page):
+            return self.not_found()
+        return self.render("images.html")
+
 
 class Api(server.Handler):
     
@@ -42,6 +56,8 @@ class Api(server.Handler):
 handlers = [
     (r"/api/?([^/]*)", Api),
     (r"/?([^/]*)", Home),
+    (r"/?([^/]*)", Beta),
+    (r"/?([^/]*)", Images),
 ]    
 
 server.start(handlers)
