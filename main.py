@@ -62,7 +62,7 @@ class Api(server.Handler):
 handlers = [
     (r"/api/?([^/]*)", Api),
     (r"/?([^/]*)", Home),
-    (r"/beta/", Beta),
+    (r"/beta/?([^/]*", Beta),
     (r"/images/?([^/]*)", Images),
     (r"/heartrate/?([^/]*)", HeartRate),
 ]    
