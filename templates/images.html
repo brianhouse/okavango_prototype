@@ -3,8 +3,6 @@
 
 {% block body %}
 
-<h2>All the images.</h2>
-
 <div id="imagediv"></div>
 
 <script language="Javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -18,6 +16,7 @@
 			var f = data.features[i];
 			var img = $('<img id="okImage">');
 			img.attr('src', f.properties.url);
+			img.attr('alt', f.properties.url);
 			img.appendTo('#imagediv');
 
 		}
