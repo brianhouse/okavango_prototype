@@ -11,12 +11,17 @@
 <script type="text/javascript">
 	console.log('fetching images');
 	$.getJSON('/api/timeline?date=20130907&types=image&days=100', function(data) {
-
+		console.log(data);
+		/*
 		for (var i = 0; i < data.features.length; i++) {
 
-			
+			var f = data.features[i];
+			var img = $('<img id="okImage">');
+			img.attr('src', f.properties.url);
+			img.appendTo('#imagediv');
 
 		}
+		*/
 
 	}
 </script>
