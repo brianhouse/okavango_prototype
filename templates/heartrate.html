@@ -10,10 +10,19 @@
 	console.log('fetching images');
 	$.getJSON('/api/timeline?date=20130907&types=ambit&days=100', function(data) {
 		console.log(data);
+
+		var heartLines = [];
 		
 		for (var i = 0; i < data.features.length; i++) {
+			var f = data.features[i];	
+			var n = f.properties.Person;
+			if (heartLines[n] == undefined) heartLines[n] = [];
+			heartLines[n].push([f.properties.t_utc,f.properties.HR]);		
+		}
 
-			
+		for (var n in heartLines) {
+			console.log(n);
+			console.log(heartLinesp[n]);
 		}
 		
 
