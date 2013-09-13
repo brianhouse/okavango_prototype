@@ -72,7 +72,7 @@
 
 			var line = d3.svg.line()
 			    .x(function(d) { 
-			    	return x( new Date(d.x)); 
+			    	return x( new Date(d.x * 1000)); 
 			    })
 			    .y(function(d) { 
 			    	return -1 * y(d.y); 
