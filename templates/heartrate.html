@@ -73,7 +73,7 @@
 
 			for (var i = 0; i < names.length; i++) {
 				console.log(names[i]);
-				g.append("svg:path").attr("d", line(heartLines[names[i]]));
+				g.append("svg:path").attr("d", line(heartLines[names[i]])).attr("stroke", "#ff3300");;
 			}
 				
 			g.append("svg:line")
