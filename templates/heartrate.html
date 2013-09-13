@@ -72,7 +72,7 @@
 
 			var line = d3.svg.line()
 				.interpolate("bundle")
-				.tension(0.85)  
+				.tension(1)  
 			    .x(function(d) { 
 			    	return x( new Date(d.x * 1000)); 
 			    })
