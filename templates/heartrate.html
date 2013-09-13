@@ -65,13 +65,13 @@
 			    .attr("height", height)
 			 
 			var g = vis.append("svg:g")
-			    .attr("transform", "translate(0, " + (600 * i) + ")");
+			    .attr("transform", "translate(0, 200)");
 
 			var line = d3.svg.line()
 			    .x(function(d) { return x(d.x); })
 			    .y(function(d) { return -1 * y(d.y); })
 
-			g.append("svg:path").attr("d", line(heartLines[n]));
+			g.append("svg:path").attr("d", line(heartLines["Steve"]));
 				
 
 			g.append("svg:line")
