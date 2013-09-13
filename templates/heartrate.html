@@ -96,6 +96,7 @@
 				.interpolate("basis");
 
 				g.append("svg:path").attr("d", movingAverageLine(heartLines[names[i]])).attr("stroke", colors[i]);
+				g.append("svg:path").attr("d", line(heartLines[names[i]])).attr("stroke", colors[i]);
 				
 			}
 				
