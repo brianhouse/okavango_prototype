@@ -96,6 +96,7 @@
 			    .text(String)
 			    .attr("x", function(d) { 
 			    	console.log("xlabel:" + d);
+			    	console.log("xlabel:" + x(d.x);
 			    	return x(d.x) })
 			    .attr("y", 0)
 			    .attr("text-anchor", "middle")
@@ -106,7 +107,10 @@
 			    .attr("class", "yLabel")
 			    .text(String)
 			    .attr("x", 0)
-			    .attr("y", function(d) { return -1 * y(d.y) })
+			    .attr("y", function(d) { 
+			    	console.log("ylabel:" + d);
+			    	console.log("ylabel:" + x(d.x);
+			    	return -1 * y(d.y) })
 			    .attr("text-anchor", "right")
 			    .attr("dy", 4)
 
