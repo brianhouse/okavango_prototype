@@ -106,7 +106,7 @@
 			    	console.log("xlabel:" + x(d));
 			    	return x(d) 
 			    })
-			    .attr("y", 10)
+			    .attr("y", margin)
 			    .attr("text-anchor", "middle")
 			 
 			g.selectAll(".yLabel")
@@ -114,7 +114,7 @@
 			    .enter().append("svg:text")
 			    .attr("class", "yLabel")
 			    .text(String)
-			    .attr("x", margin - 4)
+			    .attr("x", margin - 14)
 			    .attr("y", function(d) { 
 			    	console.log("ylabel:" + d);
 			    	console.log("ylabel:" + y(d));
