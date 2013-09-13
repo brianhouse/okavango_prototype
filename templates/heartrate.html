@@ -131,9 +131,9 @@
 			    .data(y.ticks(4))
 			    .enter().append("svg:line")
 			    .attr("class", "yTicks")
-			    .attr("y1", function(d) { return -1 * y(d.y); })
+			    .attr("y1", function(d) { return -1 * y(d); })
 			    .attr("x1", x(st))
-			    .attr("y2", function(d) { return -1 * y(d.y); })
+			    .attr("y2", function(d) { return -1 * y(d); })
 			    .attr("x2", x(st))
 			
 		
