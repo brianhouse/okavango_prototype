@@ -94,7 +94,9 @@
 			    .enter().append("svg:text")
 			    .attr("class", "xLabel")
 			    .text(String)
-			    .attr("x", function(d) { return x(d.x) })
+			    .attr("x", function(d) { 
+			    	console.log("xlabel:" + d);
+			    	return x(d.x) })
 			    .attr("y", 0)
 			    .attr("text-anchor", "middle")
 			 
