@@ -71,6 +71,7 @@
 			    .attr("transform", "translate(0, 400)");
 
 			var line = d3.svg.line()
+				.interpolate("basis")  
 			    .x(function(d) { 
 			    	return x( new Date(d.x * 1000)); 
 			    })
@@ -80,20 +81,6 @@
 
 			for (var i = 0; i < names.length; i++) {
 				console.log("TRYING" + names[i]);
-				
-
-				var _movingSum;
-				var movingAverageLine = d3.svg.line()
-				.x(function(d,i) { return x( new Date(d.x * 1000)); })
-				.y(function(d,i) {
-				    if (i == 0) {
-				        return _movingSum = 0;
-				    } else {
-				        _movingSum += -1 * y(d.y);
-				    }
-				    return y(_movingSum / i);
-				})
-				.interpolate("basis");
 
 				//g.append("svg:path").attr("d", movingAverageLine(heartLines[names[i]])).attr("stroke", colors[i]);
 				g.append("svg:path").attr("d", line(heartLines[names[i]])).attr("stroke", colors[i]);
