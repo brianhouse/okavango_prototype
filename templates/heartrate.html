@@ -131,7 +131,7 @@
 
 			
 			g.selectAll(".xTicks")
-			    .data(scale.ticks(d3.time.hour))
+			    .data(x.ticks(d3.time.hour))
 			    .enter().append("svg:line")
 			    .attr("class", "xTicks")
 			    .attr("x1", function(d) { return x( new Date(d) ); })
