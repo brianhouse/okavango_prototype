@@ -66,7 +66,7 @@
 			var y = d3.scale.linear().domain([1,4]).range([0 + margin, height - margin]);
 			var x = d3.time.scale();
 
-			x.domain([st, et]);
+			x.domain([st, et]).range(0 + margin, width - margin);
 
 			var vis = d3.select("body")
 			    .append("svg:svg")
