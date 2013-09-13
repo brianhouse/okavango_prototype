@@ -40,7 +40,7 @@
 
 		for (var n in heartLines) {
 			heartLines[n] = simplify(heartLines[n], 0.1, false);
-			console.log(heartLines[n]);
+			//console.log(heartLines[n]);
 		}
 
 		var width = 3000;
@@ -54,6 +54,9 @@
 
 			var st = heartLines[n][0].x;
 			var et = heartLines[n][heartLines[n].length - 1].x;
+
+			console.log(st + ":" + et);
+			
 			var y = d3.scale.linear().domain([0,5]).range([0 + margin, height - margin]);
 			var x = d3.scale.linear().domain([st, et]).range([0 + margin, width - margin]);
 
