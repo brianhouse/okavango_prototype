@@ -35,13 +35,15 @@
 
 		for (var i = 0; i < names.length; i++) {
 
-			var st = heartLines["Steve"][0].x;
-			var et = heartLines["Steve"][heartLines["Steve"].length - 1].x;
+			var n = names[i];
+
+			var st = heartLines[n][0].x;
+			var et = heartLines[n][heartLines[n].length - 1].x;
 			var y = d3.scale.linear().domain([0,5]).range([0 + margin, height - margin]);
 			var x = d3.scale.linear().domain([st, et]).range([0 + margin, width - margin]);
 
 			var vis = d3.select("body")
-			    .append("svg:svg")
+			    .append("svg:svg" + i)
 			    .attr("width", width)
 			    .attr("height", height)
 			 
@@ -52,7 +54,7 @@
 			    .x(function(d) { return x(d.x); })
 			    .y(function(d) { return -1 * y(d.y); })
 
-			g.append("svg:path").attr("d", line(heartLines[names[i]]));
+			g.append("svg:path").attr("d", line(heartLines[n]));
 		}
 
 	});
