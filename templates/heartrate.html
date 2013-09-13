@@ -69,10 +69,9 @@
 			    .x(function(d) { return x(d.x); })
 			    .y(function(d) { return -1 * y(d.y); })
 
-			    for(var i = 0; i < names.length; i++) {
-			    	var ln = names[i];
-					g.append("svg:path").attr("d", line(heartLines[ln]));
-				}
+		
+			g.append("svg:path").attr("d", line(heartLines[n]));
+				
 
 			g.append("svg:line")
 			    .attr("x1", x(st))
