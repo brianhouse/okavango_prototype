@@ -97,7 +97,7 @@
 			    .attr("x", function(d) { 
 			    	console.log("xlabel:" + d);
 			    	console.log("xlabel:" + x(d));
-			    	return x(d.x) 
+			    	return x(d) 
 			    })
 			    .attr("y", 0)
 			    .attr("text-anchor", "middle")
@@ -111,7 +111,7 @@
 			    .attr("y", function(d) { 
 			    	console.log("ylabel:" + d);
 			    	console.log("ylabel:" + y(d));
-			    	return -1 * y(d.y) 
+			    	return -1 * y(d) 
 			    })
 			    .attr("text-anchor", "right")
 			    .attr("dy", 4)
