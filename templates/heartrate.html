@@ -71,7 +71,11 @@
 			    .attr("transform", "translate(0, 400)");
 
 			var line = d3.svg.line()
-			    .x(function(d) { return x(d.x); })
+			    .x(function(d) { 
+			    	console.log(d.x);
+			    	return x( new Date(d.x)); 
+
+			    })
 			    .y(function(d) { return -1 * y(d.y); })
 
 			for (var i = 0; i < names.length; i++) {
