@@ -53,8 +53,8 @@
 			var n = names[0];
 			var cline = heartLines[n];
 
-			var st = new Date(cline[0] * 1000);
-			var et = new Date(cline[cline.length - 1] * 1000);
+			var st = new Date(cline[0].x * 1000);
+			var et = new Date(cline[cline.length - 1].x * 1000);
 
 			//Change
 			console.log(st + ":" + et);
@@ -78,7 +78,7 @@
 			    })
 			    .y(function(d) { return -1 * y(d.y); })
 
-			//g.append("svg:path").attr("d", line(heartLines["Steve"])).attr("stroke", colors[i]);
+			g.append("svg:path").attr("d", line(heartLines["Steve"])).attr("stroke", colors[i]);
 
 
 			for (var i = 0; i < names.length; i++) {
