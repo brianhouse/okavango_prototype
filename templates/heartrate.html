@@ -11,7 +11,7 @@
 <style type="text/css">
 		path {
 
-		    stroke-width: 2;
+		    stroke-width: 1;
 		    fill: none;
 		}
 
@@ -48,6 +48,7 @@
 		var margin = 20;
 
 		var names = ["Steve", "John", "GB"];
+		var colors = ["#FF3300", "#FF9900", "#FFFF00"]
 
 			var n = names[0];
 
@@ -73,7 +74,7 @@
 
 			for (var i = 0; i < names.length; i++) {
 				console.log(names[i]);
-				g.append("svg:path").attr("d", line(heartLines[names[i]])).attr("stroke", "#ff3300");;
+				g.append("svg:path").attr("d", line(heartLines[names[i]])).attr("stroke", colors[i]);;
 			}
 				
 			g.append("svg:line")
