@@ -89,6 +89,13 @@
 			    .attr("y1", -1 * y(0))
 			    .attr("x2", x(et))
 			    .attr("y2", -1 * y(0))
+			    .selectAll("text")  
+	            .style("text-anchor", "end")
+	            .attr("dx", "-.8em")
+	            .attr("dy", ".15em")
+	            .attr("transform", function(d) {
+	                return "rotate(-65)" 
+	                });
 			 
 			g.append("svg:line")
 			    .attr("x1", x(st))
@@ -108,9 +115,7 @@
 			    })
 			    .attr("y", margin)
 			    .attr("text-anchor", "right")
-			    .attr("transform", function(d) {
-                return "rotate(-65)" 
-                });
+
 			 
 			g.selectAll(".yLabel")
 			    .data(y.ticks(4))
