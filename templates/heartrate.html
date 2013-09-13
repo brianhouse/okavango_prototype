@@ -32,8 +32,25 @@
 		var width = 800;
 		var height = 400;
 		var margin = 20;
+
+		var st = heartLines["Steve"][0].x;
+		var et = heartLines["Steve"][heartLines["Steve"].length - 1].x;
 		var y = d3.scale.linear().domain([0,5]).range([0 + margin, height - margin]);
-		var x = d3.scale.linear().domain([]).range([0 + margin, width - margin]);
+		var x = d3.scale.linear().domain([st, et]).range([0 + margin, width - margin]);
+
+		var vis = d3.select("body")
+		    .append("svg:svg")
+		    .attr("width", w)
+		    .attr("height", h)
+		 
+		var g = vis.append("svg:g")
+		    .attr("transform", "translate(0, 200)");
+
+		var line = d3.svg.line()
+		    .x(function(d,i) { return x(i); })
+		    .y(function(d) { return -1 * y(d); })
+
+		g.append("svg:path").attr("d", line(heartLines["Steve"]));
 
 	});
 </script>

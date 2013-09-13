@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>The Digital Bushman: Into the Okavango</title>
+    <title>Into the Okavango</title>
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
@@ -296,11 +296,7 @@
 			</div>
 			<div id="title">
 				<h1>
-					<p>Digital Bushman</p>
-					<!-- <img src="logo.svg" alt="digital bushman logo" width="100%"/> -->
-					<!-- <object id="svg1" type="image/svg+xml" data="logo.svg" class="logo">
-						DIGITAL BUSHMAN
-					</object> -->
+					<p>Into The Okavango</p>
 					<div id="logo"></div>
 				</h1>
 				<h2>A Live-data Expedition into the Okavango Delta</h2>
@@ -516,7 +512,7 @@
 			function onEachSighting(feature, layer) {
 			    // does this feature have a property named popupContent?
 			    if (feature.properties && feature.properties.Count) {
-			    	var d = new Date(feature.properties.t_utc);
+			    	var d = new Date(feature.properties.t_utc * 1000);
 			    	if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
 			    		layer.bindPopup("<h1>\"" + feature.properties["Bird Name"].split("quote. ")[1] + "\"</h1>" + "<br><br>" + d.toString());
 			    	} else {
@@ -771,8 +767,7 @@
  
 			$("#api").click(function(event){
 				event.preventDefault(); 
-				window.location = "http://digitalbushman.org/api";
-				console.log("API");
+				window.location = "/api";
 			});
  
 			$("#help").click(function(event){
@@ -836,7 +831,7 @@
 				$("#title").css("border-bottom","solid 1px");
 				$("#ui_holder #title").css("border-color","rgba(0,0,0,0.05)");
 				$("#ui_holder h2").css("color","rgba(68,61,51,1)");
-				$("#ui_holder #logo svg path").css("fill","#1B1C1E");
+				$("#ui_holder #logo svg path, #ui_holder #logo svg circle").css("fill","#1B1C1E");
 				$("#ui_holder .shadow").fadeIn();
 				$("#ui_holder #header a:last-child").css("opacity","1");
 				$("#ui_holder #header a:last-child").css("pointer-events","auto");
@@ -847,7 +842,7 @@
 				$("#ui_holder").css("background-color","rgba(250,174,52,0)");
 				$("#ui_holder #title").css("border-color","rgba(0,0,0,0)");
 				$("#ui_holder h2").css("color","white");
-				$("#ui_holder #logo svg path").css("fill","white");
+				$("#ui_holder #logo svg path, #ui_holder #logo svg circle").css("fill","white");
 				$("#ui_holder .shadow").fadeOut(100);
 				$("#about").fadeOut(100);
 				$("#helppanel").fadeOut(100);
