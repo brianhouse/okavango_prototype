@@ -27,28 +27,33 @@
 			console.log(heartLines[n]);
 		}
 
-		var width = 800;
-		var height = 400;
+		var width = 1200;
+		var height = 600;
 		var margin = 20;
 
-		var st = heartLines["Steve"][0].x;
-		var et = heartLines["Steve"][heartLines["Steve"].length - 1].x;
-		var y = d3.scale.linear().domain([0,5]).range([0 + margin, height - margin]);
-		var x = d3.scale.linear().domain([st, et]).range([0 + margin, width - margin]);
+		var names = ["Steve", "John", "GB"];
 
-		var vis = d3.select("body")
-		    .append("svg:svg")
-		    .attr("width", width)
-		    .attr("height", height)
-		 
-		var g = vis.append("svg:g")
-		    .attr("transform", "translate(0, 200)");
+		for (int i = 0; i < names.size(); i++) {
 
-		var line = d3.svg.line()
-		    .x(function(d) { return x(d.x); })
-		    .y(function(d) { return -1 * y(d.y); })
+			var st = heartLines["Steve"][0].x;
+			var et = heartLines["Steve"][heartLines["Steve"].length - 1].x;
+			var y = d3.scale.linear().domain([0,5]).range([0 + margin, height - margin]);
+			var x = d3.scale.linear().domain([st, et]).range([0 + margin, width - margin]);
 
-		g.append("svg:path").attr("d", line(heartLines["Steve"]));
+			var vis = d3.select("body")
+			    .append("svg:svg")
+			    .attr("width", width)
+			    .attr("height", height)
+			 
+			var g = vis.append("svg:g")
+			    .attr("transform", "translate(0, " + (600 * i) + ")");
+
+			var line = d3.svg.line()
+			    .x(function(d) { return x(d.x); })
+			    .y(function(d) { return -1 * y(d.y); })
+
+			g.append("svg:path").attr("d", line(heartLines[names[i]]));
+		}
 
 	});
 </script>
