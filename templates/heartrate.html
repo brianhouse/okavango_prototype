@@ -56,10 +56,13 @@
 			var n = names[0];
 			var cline = heartLines[n];
 
+			var st = cline[0];
+			var et = cline[cline.length - 1];
+
 			console.log(st + ":" + et);
 
 			var y = d3.scale.linear().domain([1,4]).range([0 + margin, height - margin]);
-			var x = d3.time.scale().domain(cline[0], cline[cline.length - 1]);
+			var x = d3.time.scale().domain(st, et);
 
 			var vis = d3.select("body")
 			    .append("svg:svg")
