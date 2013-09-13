@@ -40,6 +40,9 @@
 
 		for (var n in heartLines) {
 			heartLines[n] = simplify(heartLines[n], 0.05, false);
+			for (var i = 0; i < heartLines[n].length; i++) {
+				heartLines[n][i].x = new Date(f.properties.t_utc);
+			}
 			//console.log(heartLines[n]);
 		}
 
@@ -51,14 +54,12 @@
 		var colors = ["#FF3300", "#FF9900", "#FFFF00"]
 
 			var n = names[0];
-
-			var st = heartLines[n][0].x;
-			var et = heartLines[n][heartLines[n].length - 1].x;
+			var cline = heartLines[n];
 
 			console.log(st + ":" + et);
 
 			var y = d3.scale.linear().domain([1,4]).range([0 + margin, height - margin]);
-			var x = d3.time.scale().domain(new Date(st * 1000), new Date(et * 1000));
+			var x = d3.time.scale().domain(cline[0], cline[cline.length - 1]);
 
 			var vis = d3.select("body")
 			    .append("svg:svg")
@@ -69,7 +70,7 @@
 			    .attr("transform", "translate(0, 400)");
 
 			var line = d3.svg.line()
-			    .x(function(d) { return x(new Date(d.x * 1000)); })
+			    .x(function(d) { return x(d.x); })
 			    .y(function(d) { return -1 * y(d.y); })
 
 			for (var i = 0; i < names.length; i++) {
