@@ -44,7 +44,7 @@
 		}
 
 		var width = 1200;
-		var height = 400;
+		var height = 500;
 		var margin = 50;
 
 		var names = ["Steve", "John", "GB"];
@@ -57,7 +57,7 @@
 
 			console.log(st + ":" + et);
 
-			var y = d3.scale.linear().domain([0,5]).range([0 + margin, height - margin]);
+			var y = d3.scale.linear().domain([1,4]).range([0 + margin, height - margin]);
 			var x = d3.scale.linear().domain([st, et]).range([0 + margin, width - margin]);
 
 			var vis = d3.select("body")
