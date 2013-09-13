@@ -41,7 +41,7 @@
 		for (var n in heartLines) {
 			heartLines[n] = simplify(heartLines[n], 0.05, false);
 			for (var i = 0; i < heartLines[n].length; i++) {
-				heartLines[n][i].x = new Date(f.properties.t_utc);
+				heartLines[n][i].x = new Date(f.properties.t_utc * 1000);
 			}
 			console.log(heartLines[n]);
 		}
