@@ -63,7 +63,7 @@
 			console.log(st + ":" + et);
 
 			var y = d3.scale.linear().domain([1,4]).range([0 + margin, height - margin]);
-			var x = d3.time.scale().domain([minDate, maxDate]).range([0 + margin, width - margin]);
+			var x = d3.time.scale().domain([new Date(st), new Date(et)]).range([0 + margin, width - margin]);
 
 			var vis = d3.select("body")
 			    .append("svg:svg")
