@@ -71,7 +71,7 @@
 			    .attr("transform", "translate(0, 400)");
 
 			var line = d3.svg.line()
-				.interpolate("basis")  
+				.interpolate("bundle")  
 			    .x(function(d) { 
 			    	return x( new Date(d.x * 1000)); 
 			    })
