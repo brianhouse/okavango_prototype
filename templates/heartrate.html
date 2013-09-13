@@ -26,7 +26,7 @@
 </style>
 <script type="text/javascript">
 	console.log('fetching images');
-	$.getJSON('/api/timeline?date=20130910&types=ambit&days=1', function(data) {
+	$.getJSON('/api/timeline?date=20130913&types=ambit&days=1', function(data) {
 		console.log(data);
 
 		var heartLines = [];
@@ -43,7 +43,7 @@
 			console.log(heartLines[n]);
 		}
 
-		var width = 1200;
+		var width = 1800;
 		var height = 500;
 		var margin = 70;
 
@@ -109,7 +109,7 @@
 			    })
 			    .attr("y", margin)
 			    .attr("text-anchor", "right")
-			    
+
 
 			 
 			g.selectAll(".yLabel")
