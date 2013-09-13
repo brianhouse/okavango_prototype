@@ -40,9 +40,6 @@
 
 		for (var n in heartLines) {
 			heartLines[n] = simplify(heartLines[n], 0.05, false);
-			for (var i = 0; i < heartLines[n].length; i++) {
-				heartLines[n][i].x = f.properties.t_utc * 1000;
-			}
 			console.log(heartLines[n]);
 		}
 
@@ -56,14 +53,14 @@
 			var n = names[0];
 			var cline = heartLines[n];
 
-			var st = cline[0];
-			var et = cline[cline.length - 1];
+			var st = new Date(cline[0] * 1000);
+			var et = new Date(cline[cline.length - 1]);
 
 			//Change
 			console.log(st + ":" + et);
 
 			var y = d3.scale.linear().domain([1,4]).range([0 + margin, height - margin]);
-			var x = d3.time.scale().domain([new Date(st), new Date(et)]).range([0 + margin, width - margin]);
+			var x = d3.time.scale().domain([st,et]).range([0 + margin, width - margin]);
 
 			var vis = d3.select("body")
 			    .append("svg:svg")
