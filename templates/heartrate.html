@@ -78,12 +78,10 @@
 			    })
 			    .y(function(d) { return -1 * y(d.y); })
 
-			g.append("svg:path").attr("d", line(heartLines["Steve"])).attr("stroke", colors[i]);
-
-
 			for (var i = 0; i < names.length; i++) {
 				console.log("TRYING" + names[i]);
-				;
+				g.append("svg:path").attr("d", line(heartLines[names[i]])).attr("stroke", colors[i]);
+				
 			}
 				
 			g.append("svg:line")
