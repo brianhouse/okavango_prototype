@@ -107,7 +107,10 @@
 			    	return x(d) 
 			    })
 			    .attr("y", margin)
-			    .attr("text-anchor", "middle")
+			    .attr("text-anchor", "right")
+			    .attr("transform", function(d) {
+                return "rotate(-65)" 
+                });
 			 
 			g.selectAll(".yLabel")
 			    .data(y.ticks(4))
