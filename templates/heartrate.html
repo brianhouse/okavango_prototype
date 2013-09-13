@@ -71,7 +71,7 @@
 			    .x(function(d) { return x(d.x); })
 			    .y(function(d) { return -1 * y(d.y); })
 
-			for (var i = 0; i < names[length]; i++) {
+			for (var i = 0; i < names.length; i++) {
 				console.log(names[i]);
 				g.append("svg:path").attr("d", line(heartLines[names[i]]));
 			}
