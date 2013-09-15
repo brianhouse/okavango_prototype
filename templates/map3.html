@@ -821,6 +821,7 @@
 		    // with the current map bounds
 		    
 		    sightingsLayer.eachLayer(function(marker) {
+		    	console.log(marker)
 		        if (bounds.contains(marker.getLatLng())) {
 		            visibleSightings.push(marker);
 		        }
