@@ -605,7 +605,6 @@
 			        	marker = L.marker(latlng, {icon:quoteIcon})
 			        	quoteMarkers.push(marker);
 			        } else {
-			        	marker.bindLabel('Test', {noHide:true})
 			        	sightingsMarkers.push(marker);
 			        }
 			        
@@ -638,6 +637,7 @@
 
 			  	for (var i = 0; i < sightingsMarkers.length; i++) {
 			  		sightingsCluster.addLayer(sightingsMarkers[i]);
+			  		sightingsMarkers[i].bindLabel('Test', {noHide:true})
 			  	}
 			});
 
