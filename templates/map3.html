@@ -360,6 +360,7 @@
 		                this
 		                    .on('remove', this.hideLabel, this)
 		                    .on('move', this._moveLabel, this);
+		                console.log(this.getLatLng);
 		                //this._showLabel({latlng: this.getLatLng()});
 		            } else {
 		                this
@@ -600,8 +601,6 @@
 			        	marker = L.marker(latlng, {icon:quoteIcon})
 			        	quoteMarkers.push(marker);
 			        } else {
-			        	console.log("Marker");
-			        	console.log(marker);
 			        	marker.bindLabel('Test', {noHide:true})
 			        	sightingsMarkers.push(marker);
 			        }
