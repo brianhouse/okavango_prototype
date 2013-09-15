@@ -352,6 +352,10 @@
 		            this._label = new L.Label(options, this);
 		        }
 
+		        if (!this.label || this.label.options !== options) {
+		            this.label = new L.Label(options, this);
+		        }
+
 		        this._label.setContent(content);
 		        this._labelNoHide = options && options.noHide;
 
@@ -361,7 +365,7 @@
 		                    .on('remove', this.hideLabel, this)
 		                    .on('move', this._moveLabel, this);
 		                console.log(this.getLatLng);
-		                this._showLabel({latlng: this._latlng});
+		                this._showLabel({latlng: this.getLatLng()});
 		            } else {
 		                this
 		                    .on('mouseover', this._showLabel, this)
