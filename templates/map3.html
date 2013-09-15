@@ -360,7 +360,7 @@
 		                this
 		                    .on('remove', this.hideLabel, this)
 		                    .on('move', this._moveLabel, this);
-		                this._showLabel({latlng: this.getLatLng()});
+		                //this._showLabel({latlng: this.getLatLng()});
 		            } else {
 		                this
 		                    .on('mouseover', this._showLabel, this)
@@ -602,7 +602,7 @@
 			        } else {
 			        	console.log("Marker");
 			        	console.log(marker);
-			        	//marker.bindLabel('Test', {noHide:true})
+			        	marker.bindLabel('Test', {noHide:true})
 			        	sightingsMarkers.push(marker);
 			        }
 			        
