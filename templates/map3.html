@@ -803,6 +803,26 @@
 		new L.Control.Zoom({ position: 'topright' }).addTo(map);
 		setTimeout(zoomIn, 5000);
 
+		//Node selection on change of focus
+		map.on('move', function() {
+			console.log("MOVE");
+		    // construct an empty list to fill with onscreen markers
+		    var inBounds = [],
+		    // get the map bounds - the top-left and bottom-right locations
+		        bounds = map.getBounds();
+
+		    // for each marker, consider whether it is currently visible by comparing
+		    // with the current map bounds
+		    map.markerLayer.eachLayer(function(marker) {
+		        if (bounds.contains(marker.getLatLng())) {
+		            inBounds.push(marker.options.title);
+		        }
+		    });
+
+		    // display a list of markers.
+		    //document.getElementById('onscreen').innerHTML = inBounds.join('\n');
+		});
+
 		//Buttons
 		/*
 		onLoad
