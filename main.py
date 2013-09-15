@@ -61,10 +61,10 @@ class Api(server.Handler):
 
 handlers = [
     (r"/api/?([^/]*)", Api),
-    (r"/?([^/]*)", Home),
     (r"/images/?([^/]*)", Images),
     (r"/heartrate/?([^/]*)", HeartRate),
     (r"/beta/?([^/]*)", Beta),
+    (r"/?([^/]*)", Home),    
 ]    
 
 server.start(handlers)
