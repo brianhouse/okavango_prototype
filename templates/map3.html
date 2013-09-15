@@ -808,14 +808,14 @@
 
 		//Node selection on change of focus
 		map.on('move', function() {
-			console.log("MOVE" + map.getZoom());
+			//console.log("MOVE" + map.getZoom());
 		    // construct an empty list to fill with onscreen markers
 		    visibleSightings = [];
 		    visibleGeos = [];
 
 		    // get the map bounds - the top-left and bottom-right locations
 		        bounds = map.getBounds();
-		        console.log(bounds);
+		        //console.log(bounds);
 
 		    // for each marker, consider whether it is currently visible by comparing
 		    // with the current map bounds
@@ -834,7 +834,7 @@
 		    });
 */
 
-		    console.log("VISIBLE SIGHTINGS" + visibleSightings.length);
+		    //console.log("VISIBLE SIGHTINGS" + visibleSightings.length);
 			
 		    // display a list of markers.
 		    //document.getElementById('onscreen').innerHTML = inBounds.join('\n');
