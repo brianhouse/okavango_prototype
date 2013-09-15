@@ -592,7 +592,7 @@
 			        return (feature.geometry.coordinates[0] != 0);
 			    },
 			    pointToLayer: function (feature, latlng) {
-			        var marker = L.circleMarker(latlng, sightingOptions).bindLabel('Test', {noHide:true});
+			        var marker = L.circleMarker(latlng, sightingOptions);
 			        markers.push(marker);
 			        if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
 			        	marker = L.marker(latlng, {icon:quoteIcon})
@@ -630,6 +630,7 @@
 
 			  	for (var i = 0; i < sightingsMarkers.length; i++) {
 			  		sightingsCluster.addLayer(sightingsMarkers[i]);
+			  		sightingsMarkers[i].bindLabel('Test', {noHide:true})
 			  	}
 			});
 
