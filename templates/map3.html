@@ -346,8 +346,7 @@
 		L.CircleMarker.include({
 
 		    bindLabel: function (content, options) {
-		    	console.log("Bind Label");
-		    	console.log(this);
+	
 		        if (!this._label || this._label.options !== options) {
 		            this._label = new L.Label(options, this);
 		        }
@@ -364,7 +363,8 @@
 		                this
 		                    .on('remove', this.hideLabel, this)
 		                    .on('move', this._moveLabel, this);
-		                console.log(this.getLatLng);
+		                console.log("Label?");
+		                console.log(this.label);
 		                this._showLabel({latlng: this.getLatLng()});
 		            } else {
 		                this
