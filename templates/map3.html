@@ -536,7 +536,7 @@
 			        return (feature.geometry.coordinates[0] != 0);
 			    },
 			    pointToLayer: function (feature, latlng) {
-			        var marker = L.circleMarker(latlng, sightingOptions);
+			        var marker = L.circleMarker(latlng, sightingOptions).bindLabel('Test');
 			        markers.push(marker);
 			        if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
 			        	marker = L.marker(latlng, {icon:quoteIcon})
