@@ -346,7 +346,8 @@
 		L.CircleMarker.include({
 
 		    bindLabel: function (content, options) {
-		    	console.log("Bind Label" + this);
+		    	console.log("Bind Label");
+		    	console.log(this);
 		        if (!this._label || this._label.options !== options) {
 		            this._label = new L.Label(options, this);
 		        }
@@ -592,7 +593,7 @@
 			        return (feature.geometry.coordinates[0] != 0);
 			    },
 			    pointToLayer: function (feature, latlng) {
-			        var marker = L.circleMarker(latlng, sightingOptions);
+			        var marker = L.circleMarker(latlng, sightingOptions).bindLabel('Test', {noHide:true});
 			        markers.push(marker);
 			        if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
 			        	marker = L.marker(latlng, {icon:quoteIcon})
@@ -630,7 +631,6 @@
 
 			  	for (var i = 0; i < sightingsMarkers.length; i++) {
 			  		sightingsCluster.addLayer(sightingsMarkers[i]);
-			  		sightingsMarkers[i].bindLabel('Test', {noHide:true})
 			  	}
 			});
 
@@ -672,8 +672,6 @@
 			
 			for (var i = 0; i < names.length; i++) {
 				var n = names[i];
-				console.log("**" + n);
-				console.log(pathMap[n]);
 				//Create the path polygons
 				//simplify(pathMap[n], 0.8, false);
 
