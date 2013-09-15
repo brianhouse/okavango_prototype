@@ -346,7 +346,7 @@
 		L.CircleMarker.include({
 
 		    bindLabel: function (content, options) {
-		    	consoleLog("Bind Label" + this);
+		    	console.log("Bind Label" + this);
 		        if (!this._label || this._label.options !== options) {
 		            this._label = new L.Label(options, this);
 		        }
