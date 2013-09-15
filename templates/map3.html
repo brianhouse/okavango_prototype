@@ -361,7 +361,7 @@
 		                    .on('remove', this.hideLabel, this)
 		                    .on('move', this._moveLabel, this);
 		                console.log(this.getLatLng);
-		                //this._showLabel({latlng: this.getLatLng()});
+		                this._showLabel({latlng: this._latlng});
 		            } else {
 		                this
 		                    .on('mouseover', this._showLabel, this)
