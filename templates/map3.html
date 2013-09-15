@@ -638,12 +638,12 @@
 			  	}
 
 			  	for (var i = 0; i < sightingsMarkers.length; i++) {
-			  		sightingsLayer.addLayer(sightingsMarkers[i]);
+			  		sightingsCluster.addLayer(sightingsMarkers[i]);
 			  		
 			  	}
 			});
 
-			//sightingsLayer.addLayer(sightingsCluster);
+			sightingsLayer.addLayer(sightingsCluster);
 		}
 
 		function loadPaths() {
@@ -819,12 +819,13 @@
 
 		    // for each marker, consider whether it is currently visible by comparing
 		    // with the current map bounds
-		    
+		    /*
 		    sightingsLayer.eachLayer(function(marker) {
 		        if (bounds.contains(marker.getLatLng())) {
 		            visibleSightings.push(marker);
 		        }
 		    });
+			*/
 
 		    /*
 		    geoLayer.eachLayer(function(marker) {
