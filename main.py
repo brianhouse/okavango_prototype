@@ -10,8 +10,13 @@ class Home(server.Handler):
     def get(self, page=None):
         if len(page):
             return self.not_found()
-        if page == "beta":
-            return self.render("map3.html")
+        return self.render("map2.html")
+
+class Beta(server.Handler):
+
+    def get(self, page=None):
+        if len(page):
+            return self.not_found()
         return self.render("map2.html")
 
 class Images(server.Handler):
@@ -59,6 +64,7 @@ handlers = [
     (r"/?([^/]*)", Home),
     (r"/images/?([^/]*)", Images),
     (r"/heartrate/?([^/]*)", HeartRate),
+    (r"/beta/?([^/]*)", Beta),
 ]    
 
 server.start(handlers)
