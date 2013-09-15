@@ -579,7 +579,7 @@
 			    	if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
 			    		layer.bindPopup("<h1>\"" + feature.properties["Bird Name"].split("quote. ")[1] + "\"</h1>" + "<br><br>" + d.toString());
 			    	} else {
-			    		layer.bindPopup(feature.properties.Count + " " + feature.properties["Bird Name"] + "<br><br>" + d.toString());
+			    		//layer.bindPopup(feature.properties.Count + " " + feature.properties["Bird Name"] + "<br><br>" + d.toString());
 			    	}
 			        
 			    }
@@ -607,7 +607,7 @@
 			        	quoteMarkers.push(marker);
 			        } else {
 			        	sightingsMarkers.push(marker);
-			        	marker.bindLabel(feature.properties["Bird Name"])
+			        	marker.bindLabel(feature.properties.Count + " " + feature.properties["Bird Name"])
 			        }
 			        
 			        return marker;
