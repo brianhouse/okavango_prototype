@@ -341,6 +341,10 @@
 
 	<script type="text/javascript">
 
+		// create a map in the "map" div, set the view to a given place and zoom
+		var map = L.map('map', {zoomControl:false}).setView([-19.2571, 22.6560], 5);
+		map.zoomAnimationThreshold = 20;
+
 
 		//Extend to add lables on circle markers
 		L.CircleMarker.include({
@@ -355,6 +359,7 @@
 		            this.label = new L.Label(options, this);
 		        }
 
+		        this._map = map;
 		        this._label.setContent(content);
 		        this._labelNoHide = options && options.noHide;
 
@@ -401,9 +406,7 @@
 		    }
 		});
 
-	  	// create a map in the "map" div, set the view to a given place and zoom
-		var map = L.map('map', {zoomControl:false}).setView([-19.2571, 22.6560], 5);
-		map.zoomAnimationThreshold = 20;
+	  	
 
 		// add an OpenStreetMap tile layer
 		var satLayer = L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
