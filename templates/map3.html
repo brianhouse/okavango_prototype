@@ -607,6 +607,7 @@
 			        	quoteMarkers.push(marker);
 			        } else {
 			        	sightingsMarkers.push(marker);
+			        	marker.bindLabel(feature.properties["Bird Name"])
 			        }
 			        
 			        return marker;
@@ -638,7 +639,7 @@
 
 			  	for (var i = 0; i < sightingsMarkers.length; i++) {
 			  		sightingsCluster.addLayer(sightingsMarkers[i]);
-			  		sightingsMarkers[i].bindLabel('Test')
+			  		
 			  	}
 			});
 
