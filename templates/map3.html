@@ -368,8 +368,6 @@
 		                this
 		                    .on('remove', this.hideLabel, this)
 		                    .on('move', this._moveLabel, this);
-		                console.log("Label?");
-		                console.log(this.label);
 		                this._showLabel({latlng: this.getLatLng()});
 		            } else {
 		                this
@@ -640,7 +638,7 @@
 
 			  	for (var i = 0; i < sightingsMarkers.length; i++) {
 			  		sightingsCluster.addLayer(sightingsMarkers[i]);
-			  		sightingsMarkers[i].bindLabel('Test', {noHide:false})
+			  		sightingsMarkers[i].bindLabel('Test')
 			  	}
 			});
 
