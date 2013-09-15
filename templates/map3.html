@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     
     <link rel="stylesheet" href="/static/css/leaflet.css" />
-    <link rel="stylesheet" href="/static/css/leaflet.label.css" />
+    <link rel="stylesheet" href="/static/js/leaflet.label.css" />
     <link rel="stylesheet" href="/static/js/MarkerCluster.css" />
     <link rel="stylesheet" href="/static/js/MarkerCluster.Default.css" />
     <link rel="stylesheet" href="/static/js/Control.FullScreen.css" />
@@ -344,6 +344,7 @@
 
 		//Extend to add lables on circle markers
 		L.CircleMarker.include({
+			consoleLog("Bind Label" + this);
 		    bindLabel: function (content, options) {
 		        if (!this._label || this._label.options !== options) {
 		            this._label = new L.Label(options, this);
