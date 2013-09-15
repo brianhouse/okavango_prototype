@@ -344,8 +344,9 @@
 
 		//Extend to add lables on circle markers
 		L.CircleMarker.include({
-			consoleLog("Bind Label" + this);
+
 		    bindLabel: function (content, options) {
+		    	consoleLog("Bind Label" + this);
 		        if (!this._label || this._label.options !== options) {
 		            this._label = new L.Label(options, this);
 		        }
