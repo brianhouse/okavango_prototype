@@ -72,7 +72,10 @@
 		      .tickFormat(d3.format(',r'));
 
 		  chart.yAxis
-		      .axisLabel('Voltage (v)')
+		      .axisLabel('Heart Rate')
+		      .tickFormat(d3.format('.02f'));
+
+		  chart.y2Axis
 		      .tickFormat(d3.format('.02f'));
 
 		  d3.select('#chart svg')
