@@ -1,31 +1,28 @@
-{% extends "page.html" %}
-{% block title %}Digital Bushman : Heartrate{% endblock title %}
 
-{% block body %}
+<!DOCTYPE html>
+<meta charset="utf-8">
 
-<div id="imagediv"></div>
+<link href="/static/js/nv.d3.css" rel="stylesheet" type="text/css">
 
 <script language="Javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script language="Javascript" type="text/javascript" src="/static/js/simplify.js"></script>
 <script src="http://d3js.org/d3.v3.js"></script>
 <script language="Javascript" type="text/javascript" src="/static/js/nv.d3.js"></script>
 
-<style type="text/css">
-		path {
+<style>
 
-		    stroke-width: 1;
-		    fill: none;
-		}
+#chart svg {
+  height: 400px;
+}
 
-		line {
-		    stroke: black;
-		}
-
-		text {
-		    font-family: Arial;
-		    font-size: 9pt;
-		}
 </style>
+
+<body>
+
+<div id="chart">
+  <svg></svg>
+</div>
+
 <script type="text/javascript">
 	console.log('fetching images');
 	$.getJSON('/api/timeline?date=20130913&types=ambit&days=1', function(data) {
@@ -93,18 +90,5 @@
 	});
 </script>
 
-<style>
 
-#chart svg {
-  height: 400px;
-}
-
-</style>
-
-
-<div id="chart">
-  <svg></svg>
-</div>
-
-
-{% endblock body %}
+</body>
