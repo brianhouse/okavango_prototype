@@ -71,7 +71,7 @@ body {
 		console.log(dat);
 
 		nv.addGraph(function() {
-		  var chart = nv.models.lineWithFocusChart();
+		  var chart = nv.models.lineWithFocusChart().height(300);
 
 		  chart.xAxis
 		      .axisLabel('Time (ms)')
