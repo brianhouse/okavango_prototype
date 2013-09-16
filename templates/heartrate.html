@@ -29,6 +29,8 @@
 		console.log(data);
 
 		var heartLines = [];
+		var names = ["Steve","John","GB"];
+		var colors = ["#FF3300", "#FF9900", "#FFFF00"]
 		
 		for (var i = 0; i < data.features.length; i++) {
 			var f = data.features[i];	
@@ -45,19 +47,19 @@
 
 		var dat = [
 			{
-				values:heartLines["Steve"],
-				key: "Steve",
-				color:'#ff3300'
+				values:heartLines[names[0]],
+				key: names[0],
+				color: colors[0]
 			},
 			{
-				values:heartLines["John"],
-				key: "John",
-				color:'#ff9900'
+				values:heartLines[names[1]],
+				key: names[1],
+				color: colors[1]
 			},
 			{
-				values:heartLines["GB"],
-				key: "GB",
-				color:'#ffff00'
+				values:heartLines[names[2]],
+				key: names[2],
+				color: colors[2]
 			}
 
 		];
