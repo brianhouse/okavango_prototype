@@ -37,12 +37,11 @@
 			var f = data.features[i];	
 			var n = f.properties.Person;
 			if (heartLines[n] == undefined) heartLines[n] = [];
-			heartLines[n].push({"x":f.properties.t_utc, "y":f.properties.HR});		
+			heartLines[n].push({"x":heartLines[n].length * 0.01, "y":f.properties.HR});		
 		}
 
 		for (var n in heartLines) {
 			heartLines[n] = simplify(heartLines[n], 0.05, false);
-			console.log(heartLines[n]);
 		}
 
 		var dat = [
@@ -63,6 +62,8 @@
 			}
 
 		];
+
+		console.log(dat);
 
 		nv.addGraph(function() {
 		  var chart = nv.models.lineChart();
