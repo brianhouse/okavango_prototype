@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz, xmltodict, json, shutil, urllib, math
+import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz, xmltodict, json, shutil, urllib, math, subprocess
 import xml.etree.ElementTree as ET        
 from PIL import Image
 from housepy import config, log, util, strings, emailer, net
@@ -151,11 +151,18 @@ def ingest_audio(path, i, t_protect):
     t = util.timestamp(dt)    
     # if t <= t_protect:
     #     log.warning("Protected t, skipping...")
-    #     return                    
-    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.amr" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
+    #     return    
+    fixed_path = path.replace(".mp3", ".amr")
+    shutil.move(path, fixed_path)
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.wav" % (t, i))    
+    try:
+        log.debug("--> converting [%s] to [%s]" % (fixed_path, new_path))
+        subprocess.check_call("ffmpeg -i '%s' '%s'" % (fixed_path, new_path), shell=True)
+    except Exception as e:
+        log.error(log.exc(e))
+        return
+    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.wav" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
-    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.amr" % (t, i))
-    shutil.copy(path, new_path)
 
 
 def ingest_beacon(content):
@@ -202,7 +209,9 @@ def ingest_beacon(content):
 
 
 def main():
+    log.info("Fetching new messages...")
     messages = emailer.fetch()
+    log.info("--> processing...")
     for m, message in enumerate(messages):
         if message['from'] not in config['incoming']:
             log.warning("Received bunk email from %s" % message['from'])
