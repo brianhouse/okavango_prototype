@@ -37,7 +37,7 @@
 			var f = data.features[i];	
 			var n = f.properties.Person;
 			if (heartLines[n] == undefined) heartLines[n] = [];
-			if {f.properties.HR != undefined && f.properties.t_utc != undefined) {
+			if (f.properties.HR != undefined && f.properties.t_utc != undefined) {
 				heartLines[n].push({"x":f.properties.t_utc, "y":f.properties.HR});		
 			}
 		}
