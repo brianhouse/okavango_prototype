@@ -62,25 +62,7 @@
 				color:'#ffff00'
 			}
 
-		]
-
-
-		/*
-
-		return [
-		    {
-		      values: sin,
-		      key: 'Sine Wave',
-		      color: '#ff7f0e'
-		    },
-		    {
-		      values: cos,
-		      key: 'Cosine Wave',
-		      color: '#2ca02c'
-		    }
-		  ];
-
-		 */
+		];
 
 		nv.addGraph(function() {
 		  var chart = nv.models.lineChart();
@@ -94,8 +76,8 @@
 		      .tickFormat(d3.format('.02f'));
 
 		  d3.select('#chart svg')
-		      .datum(dat);
-		    .transition().duration(500)
+		      .datum(dat)
+		      .transition().duration(500)
 		      .call(chart);
 
 		  nv.utils.windowResize(chart.update);
