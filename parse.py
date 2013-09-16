@@ -254,15 +254,20 @@ def main():
                         os.mkdir(p)
                         with zipfile.ZipFile(path, 'r') as archive:
                             archive.extractall(p)
-                            for i, filename in enumerate(os.listdir(p)):
-                                if kind == 'ambit' and filename[-3:] == "xml":
-                                    ingest_ambit(os.path.join(p, filename), t_protect)
-                                elif kind == 'image' and filename[-3:] == "jpg":
-                                    ingest_image(os.path.join(p, filename), i, t_protect)
-                                elif kind == 'audio' and filename[-3:] == "mp3":
-                                    ingest_audio(os.path.join(p, filename), i, t_protect)
-                                else:
-                                    log.warning("--> unknown file type %s, skipping..." % filename)
+                            def traverse(pd):
+                                log.info("--> checking %s" % pd)
+                                for i, filename in enumerate(os.listdir(pd)):
+                                    if os.path.isdir(os.path.join(pd, filename)):
+                                        traverse(os.path.join(pd, filename))
+                                    elif kind == 'ambit' and filename[-3:] == "xml":
+                                        ingest_ambit(os.path.join(pd, filename), t_protect)
+                                    elif kind == 'image' and filename[-3:] == "jpg":
+                                        ingest_image(os.path.join(pd, filename), i, t_protect)
+                                    elif kind == 'audio' and filename[-3:] == "mp3":
+                                        ingest_audio(os.path.join(pd, filename), i, t_protect)
+                                    else:
+                                        log.warning("--> unknown file type %s, skipping..." % filename)
+                            traverse(p)
                         break
 
                 except Exception as e:
