@@ -2,6 +2,7 @@
 
 import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz, xmltodict, json, shutil, urllib, math
 import xml.etree.ElementTree as ET        
+from PIL import Image
 from housepy import config, log, util, strings, emailer, net
 
 
@@ -130,7 +131,13 @@ def ingest_image(path, i, t_protect):
     # if t <= t_protect:
     #     log.warning("Protected t, skipping...")
     #     return                    
-    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s-%s.jpg" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
+    try:
+        image = Image.open(path)
+        width, height = image.size    
+    except Exception as e:
+        log.error(log.exc(e))
+        width, height = None, None        
+    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s-%s.jpg" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z"), 'size': [width, height]})
     feature_id = model.insert_feature('image', t, geojson.dumps(feature))
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s-%s.jpg" % (t, i))
     shutil.copy(path, new_path)
