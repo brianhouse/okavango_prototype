@@ -266,7 +266,9 @@ def main():
                             def traverse(pd):
                                 log.info("--> checking %s" % pd)
                                 for i, filename in enumerate(os.listdir(pd)):
-                                    if os.path.isdir(os.path.join(pd, filename)):
+                                    if filename[0] == ".":
+                                        continue
+                                    elif os.path.isdir(os.path.join(pd, filename)):
                                         traverse(os.path.join(pd, filename))
                                     elif kind == 'ambit' and filename[-3:] == "xml":
                                         ingest_ambit(os.path.join(pd, filename), t_protect)
