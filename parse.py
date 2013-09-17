@@ -208,10 +208,9 @@ def ingest_beacon(content):
         log.error(log.exc(e))
 
 
-def main():
-    log.info("Fetching new messages...")
+def main():    
     messages = emailer.fetch()
-    log.info("--> processing...")
+    log.info("Fetched %s new messages..." % len(messages))
     for m, message in enumerate(messages):
         if message['from'] not in config['incoming']:
             log.warning("Received bunk email from %s" % message['from'])
