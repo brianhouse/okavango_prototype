@@ -556,6 +556,7 @@
 		if (currentDay > 18) currentDay == 18;
 
 		function makeDate(d) {
+			d += 8;
 			dd = (d < 10) ? ("0" + d):(d);
 			return("201309" + dd);
 		}
