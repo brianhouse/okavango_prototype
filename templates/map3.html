@@ -552,7 +552,7 @@
 
 		//Set current date (number of days into the expedition)
 		var today = new Date();
-		currentDay = (today.getMonth() == 8) ? (today.getDay() - 8):(18);
+		currentDay = (today.getMonth() == 8) ? (today.getDate() - 8):(18);
 		if (currentDay > 18) currentDay == 18;
 
 		function makeDate(d) {
