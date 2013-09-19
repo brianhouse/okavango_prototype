@@ -681,7 +681,8 @@
 
 				console.log("GET PATHS" + makeDate(d));
 
-				$.getJSON('/api/timeline?date=' +  makeDate(d) + '&types=ambit_geo&days=100', function(data) {
+				$.getJSON('/api/timeline?date=' +  makeDate(d) + '&types=ambit_geo', function(data) {
+					console.log('/api/timeline?date=' +  makeDate(d) + '&types=ambit_geo');
 					console.log(data);
 				  L.geoJson(data.features, {
 				    filter: function(feature, layer) {
@@ -702,6 +703,7 @@
 					})
 				  	drawPaths();
 				});
+
 				pathDay --;
 			  	if (pathDay > 0) getPathsDay(pathDay);
 			}
