@@ -605,7 +605,7 @@
 			function getSightingsDay(d) {
 				console.log("GETTING SIGHTINGS:" + makeDate(d));
 				$.getJSON('/api/timeline?Date=' + makeDate(d) + '&types=sightings', function(data) {
-					console.log('/api/timeline?Date=' + makeDate(d) + '&types=sightings');
+					console.log('/api/timeline?date=' + makeDate(d) + '&types=sightings');
 					console.log(data);
 				  L.geoJson(data.features, {
 				    filter: function(feature, layer) {
