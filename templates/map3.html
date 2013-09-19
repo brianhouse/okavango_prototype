@@ -552,11 +552,11 @@
 
 		//Set current date (number of days into the expedition)
 		var today = new Date();
-		currentDay = (today.getMonth() == 8) ? (today.getDate() - 8):(18);
+		currentDay = (today.getMonth() == 8) ? (today.getDate() - 7):(18);
 		if (currentDay > 18) currentDay == 18;
 
 		function makeDate(d) {
-			d += 8;
+			d += 7;
 			dd = (d < 10) ? ("0" + d):(d);
 			return("201309" + dd);
 		}
@@ -663,7 +663,7 @@
 			
 			}
 
-			sightingDay = currentDay;
+			var sightingDay = currentDay;
 			getSightingsDay(sightingDay);
 
 			sightingsLayer.addLayer(sightingsCluster);
@@ -671,30 +671,37 @@
 
 		function loadPaths() {
 			console.log("LOAD PATHS!");
-			var pathMap = [];
-			var pathCoors = [];
-			var pathLats = [];
+			
 
-			$.getJSON('/api/timeline?date=20130907&types=ambit_geo&days=100', function(data) {
-			  L.geoJson(data.features, {
-			    filter: function(feature, layer) {
-			    	//Filter out 0,0 points
-			        return (feature.geometry.coordinates[0] != 0);
-			    },
-			    pointToLayer: function (feature, latlng) {
-			    	var name = feature.properties.Person;
-			    	if (pathMap[name] == undefined) {
-			    		console.log("new path for " + name);
-			    		pathMap[name] = [];
-			    	}
-			        var marker = L.circleMarker(latlng);
-			        pathMap[name].push([latlng.lng, latlng.lat]);
-			        
-			        return marker;
-			    },
-				})
-			  	drawPaths();
-			});
+			function getPathsDay(d) {
+
+				var pathMap = [];
+				var pathCoors = [];
+				var pathLats = [];
+
+				$.getJSON('/api/timeline?date=' +  makeDate(d) + '&types=ambit_geo&days=100', function(data) {
+				  L.geoJson(data.features, {
+				    filter: function(feature, layer) {
+				    	//Filter out 0,0 points
+				        return (feature.geometry.coordinates[0] != 0);
+				    },
+				    pointToLayer: function (feature, latlng) {
+				    	var name = feature.properties.Person;
+				    	if (pathMap[name] == undefined) {
+				    		console.log("new path for " + name);
+				    		pathMap[name] = [];
+				    	}
+				        var marker = L.circleMarker(latlng);
+				        pathMap[name].push([latlng.lng, latlng.lat]);
+				        
+				        return marker;
+				    },
+					})
+				  	drawPaths();
+				});
+				pathDay --;
+			  	if (pathDay > 0) getPathsDay(pathDay);
+			}
 
 			function drawPaths() {
 
@@ -741,6 +748,9 @@
 				}
 			}
 
+			var pathDay = pathDay;
+			getPathsDay(pathDay);
+
 		}
 
 		function smoothIt(pointList) {
@@ -776,7 +786,7 @@
 				setTimeout(zoomIn, 8000)
 			} else {
 				loadSightings();
-				//loadPaths();
+				loadPaths();
 				showBeacons();
 				//focusMarker.bindPopup("Last reported position.");
 				$("#skip").hide();
