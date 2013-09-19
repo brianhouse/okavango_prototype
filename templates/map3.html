@@ -550,6 +550,16 @@
 			}
 		}
 
+		//Set current date (number of days into the expedition)
+		var today = new Date();
+		currentDay = (today.getMonth() == 8) ? (today.getDay() - 8):(18);
+		if (currentDay > 18) currentDay == 18;
+
+		function makeDate(d) {
+			dd = (d < 10) ? ("0" + d):(d);
+			return("201309" + dd);
+		}
+
 		function loadSightings() {
 
 			var quoteIcon = L.icon({
@@ -591,46 +601,47 @@
 			var colorMap = [];
 			var colorGen = new RColor;
 
+			function getSightingsDay(d) {
+				console.log("GETTING SIGHTINGS:" + makeDate(d));
+				$.getJSON('/api/timeline?Date=" + makeDate(d) + "&types=sightings', function(data) {
+				  L.geoJson(data.features, {
+				    filter: function(feature, layer) {
+				    	//Filter out 0,0 points
+				        return (feature.geometry.coordinates[0] != 0);
+				    },
+				    pointToLayer: function (feature, latlng) {
+				        var marker = L.circleMarker(latlng, sightingOptions);
 
-			$.getJSON('/api/timeline?date=20130907&types=sightings&days=100', function(data) {
-			  L.geoJson(data.features, {
-			    filter: function(feature, layer) {
-			    	//Filter out 0,0 points
-			        return (feature.geometry.coordinates[0] != 0);
-			    },
-			    pointToLayer: function (feature, latlng) {
-			        var marker = L.circleMarker(latlng, sightingOptions);
-
-			        markers.push(marker);
-			        if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
-			        	marker = L.marker(latlng, {icon:quoteIcon})
-			        	quoteMarkers.push(marker);
-			        } else {
-			        	sightingsMarkers.push(marker);
-			        	marker.bindLabel(feature.properties.Count + " " + feature.properties["Bird Name"])
-			        }
-			        
-			        return marker;
-			    },
-			    onEachFeature: onEachSighting,
-			    style: function(feature) {
-			    	//Here we can apply styling to markers depending on properties. Cool.
-			    	var c = Math.sqrt(feature.properties["Count"]);
-			    	var so = {radius: 2 + (c * 2)};
-			    	if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
-			 
-			    	} else {
-			    		var bn = feature.properties["Bird Name"];
-			    		if (colorMap[bn] == undefined) {
-			    			var c = colorGen.get(true);
-			    			so.fillColor = c;
-			    			colorMap[bn] = c;
-			    		} else {
-			    			so.fillColor = colorMap[bn];
-			    		}
-			    	}
-			        return so;
-			    }
+				        markers.push(marker);
+				        if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
+				        	marker = L.marker(latlng, {icon:quoteIcon})
+				        	quoteMarkers.push(marker);
+				        } else {
+				        	sightingsMarkers.push(marker);
+				        	marker.bindLabel(feature.properties.Count + " " + feature.properties["Bird Name"])
+				        }
+				        
+				        return marker;
+				    },
+				    onEachFeature: onEachSighting,
+				    style: function(feature) {
+				    	//Here we can apply styling to markers depending on properties. Cool.
+				    	var c = Math.sqrt(feature.properties["Count"]);
+				    	var so = {radius: 2 + (c * 2)};
+				    	if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
+				 
+				    	} else {
+				    		var bn = feature.properties["Bird Name"];
+				    		if (colorMap[bn] == undefined) {
+				    			var c = colorGen.get(true);
+				    			so.fillColor = c;
+				    			colorMap[bn] = c;
+				    		} else {
+				    			so.fillColor = colorMap[bn];
+				    		}
+				    	}
+				        return so;
+				    }
 				})
 
 			  	for (var i = 0; i < quoteMarkers.length; i++) {
@@ -641,7 +652,16 @@
 			  		sightingsCluster.addLayer(sightingsMarkers[i]);
 			  		
 			  	}
-			});
+
+			  	sightingDay --;
+			  	if (sightingDay > 0) getSightingsDay(sightingDay);
+				});
+
+			
+			}
+
+			sightingDay = currentDay;
+			getSightingsDay(sightingDay);
 
 			sightingsLayer.addLayer(sightingsCluster);
 		}
