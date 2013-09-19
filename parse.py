@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz, xmltodict, json, shutil, urllib, math
+import geojson, csv, dateutil, datetime, model, time, os, zipfile, pytz, xmltodict, json, shutil, urllib, math, subprocess
 import xml.etree.ElementTree as ET        
 from PIL import Image
 from housepy import config, log, util, strings, emailer, net
@@ -151,11 +151,18 @@ def ingest_audio(path, i, t_protect):
     t = util.timestamp(dt)    
     # if t <= t_protect:
     #     log.warning("Protected t, skipping...")
-    #     return                    
-    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.amr" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
+    #     return    
+    fixed_path = path.replace(".mp3", ".amr")
+    shutil.move(path, fixed_path)
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.wav" % (t, i))    
+    try:
+        log.debug("--> converting [%s] to [%s]" % (fixed_path, new_path))
+        subprocess.check_call("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)), shell=True)
+    except Exception as e:
+        log.error(log.exc(e))
+        return
+    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.wav" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
-    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.amr" % (t, i))
-    shutil.copy(path, new_path)
 
 
 def ingest_beacon(content):
@@ -201,8 +208,10 @@ def ingest_beacon(content):
         log.error(log.exc(e))
 
 
-def main():
+def main():    
     messages = emailer.fetch()
+    if len(messages) > 0:
+        log.info("Fetched %s new messages..." % len(messages))
     for m, message in enumerate(messages):
         if message['from'] not in config['incoming']:
             log.warning("Received bunk email from %s" % message['from'])
@@ -254,15 +263,22 @@ def main():
                         os.mkdir(p)
                         with zipfile.ZipFile(path, 'r') as archive:
                             archive.extractall(p)
-                            for i, filename in enumerate(os.listdir(p)):
-                                if kind == 'ambit' and filename[-3:] == "xml":
-                                    ingest_ambit(os.path.join(p, filename), t_protect)
-                                elif kind == 'image' and filename[-3:] == "jpg":
-                                    ingest_image(os.path.join(p, filename), i, t_protect)
-                                elif kind == 'audio' and filename[-3:] == "mp3":
-                                    ingest_audio(os.path.join(p, filename), i, t_protect)
-                                else:
-                                    log.warning("--> unknown file type %s, skipping..." % filename)
+                            def traverse(pd):
+                                log.info("--> checking %s" % pd)
+                                for i, filename in enumerate(os.listdir(pd)):
+                                    if filename[0] == ".":
+                                        continue
+                                    elif os.path.isdir(os.path.join(pd, filename)):
+                                        traverse(os.path.join(pd, filename))
+                                    elif kind == 'ambit' and filename[-3:] == "xml":
+                                        ingest_ambit(os.path.join(pd, filename), t_protect)
+                                    elif kind == 'image' and filename[-3:] == "jpg":
+                                        ingest_image(os.path.join(pd, filename), i, t_protect)
+                                    elif kind == 'audio' and filename[-3:] == "mp3":
+                                        ingest_audio(os.path.join(pd, filename), i, t_protect)
+                                    else:
+                                        log.warning("--> unknown file type %s, skipping..." % filename)
+                            traverse(p)
                         break
 
                 except Exception as e:

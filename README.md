@@ -27,6 +27,9 @@ make sure the server is on top of the time:
     sudo ntpdate time.nist.gov  # in sudo crontab, daily
 
 
+install ffmpeg: http://ffmpeg.org/trac/ffmpeg/wiki/UbuntuCompilationGuide
+
+
 Running
 -------
 

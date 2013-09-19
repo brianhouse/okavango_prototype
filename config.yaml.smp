@@ -20,3 +20,5 @@ email:
         port: 587
         username: un
         password: pw
+
+ffmpeg: /home/ubuntu/bin/ffmpeg        
