@@ -681,13 +681,17 @@
 
 		function loadPaths() {
 			console.log("LOAD PATHS!");
+
+			var pathMap = [];
+			var pathCoors = [];
+			var pathLats = [];
 			
 
 			function getPathsDay(d) {
 
-				var pathMap = [];
-				var pathCoors = [];
-				var pathLats = [];
+				pathMap = [];
+				pathCoors = [];
+				pathLats = [];
 
 				console.log("GET PATHS" + makeDate(d));
 
@@ -712,10 +716,12 @@
 				    },
 					})
 				  	drawPaths();
+
+				  	pathDay --;
+				  	if (pathDay > 0) getPathsDay(pathDay);
 				});
 
-				pathDay --;
-			  	if (pathDay > 0) getPathsDay(pathDay);
+				
 			}
 
 			function drawPaths() {
