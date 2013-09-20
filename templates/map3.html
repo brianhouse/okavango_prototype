@@ -689,6 +689,8 @@
 				var pathCoors = [];
 				var pathLats = [];
 
+				var pc = 0;
+
 				console.log("GET PATHS" + makeDate(d));
 
 				$.getJSON('/api/timeline?date=' +  makeDate(d) + '&types=ambit_geo', function(data) {
@@ -700,6 +702,7 @@
 				        return (feature.geometry.coordinates[0] != 0);
 				    },
 				    pointToLayer: function (feature, latlng) {
+				    	pc ++;
 				    	var name = feature.properties.Person;
 				    	if (pathMap[name] == undefined) {
 				    		console.log("new path for " + name);
@@ -711,7 +714,7 @@
 				        return marker;
 				    },
 					})
-				  	drawPaths(pathMap);
+				  	if (pc > 0) drawPaths(pathMap);
 
 				  	pathDay --;
 				  	if (pathDay > 0) getPathsDay(pathDay);
