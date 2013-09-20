@@ -10,14 +10,14 @@ class Home(server.Handler):
     def get(self, page=None):
         if len(page):
             return self.not_found()
-        return self.render("map2.html")
+        return self.render("map3.html")
 
 class Beta(server.Handler):
 
     def get(self, page=None):
         if len(page):
             return self.not_found()
-        return self.render("map3.html")
+        return self.render("map4.html")
 
 class Images(server.Handler):
 
