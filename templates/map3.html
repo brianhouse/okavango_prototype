@@ -423,6 +423,11 @@
 		var geoLayer = new L.layerGroup().addTo(map);
 		var commentaryLayer = new L.layerGroup().addTo(map);
 
+		var sightingsLoaded = false;
+		var pathsLoaded = false;
+		var beaconsLoaded = false;
+
+
 
 		var lastPoint;
 		var markers = [];
@@ -447,6 +452,8 @@
 
 		//DATA LOAD FUNCTIONS
 		function loadBeacons() {
+
+
 
 			var starIcon = L.icon({
 			    iconUrl: '/static/img/star2.png',
@@ -541,6 +548,7 @@
 				
 				nextStep();
 			});
+			beaconsLoaded = true;
 		}
 
 		function showBeacons() {
@@ -667,6 +675,8 @@
 			getSightingsDay(sightingDay);
 
 			sightingsLayer.addLayer(sightingsCluster);
+
+			sightingsLoaded = true;
 		}
 
 		function loadPaths() {
@@ -756,6 +766,8 @@
 			var pathDay = currentDay;
 			getPathsDay(pathDay);
 
+			pathsLoaded = true;
+
 		}
 
 		function smoothIt(pointList) {
@@ -790,9 +802,9 @@
 				nextStep();
 				setTimeout(zoomIn, 8000)
 			} else {
-				loadSightings();
-				loadPaths();
-				showBeacons();
+				if (!sightingsLoaded) loadSightings();
+				if (!pathsLoaded) loadPaths();
+				if (!beaconsLoaded) showBeacons();
 				//focusMarker.bindPopup("Last reported position.");
 				$("#skip").hide();
 			}
@@ -815,7 +827,8 @@
 			map.panTo(focusMarker.getLatLng());
 			focusMarker.bindPopup("Last reported position.");
 			$("#skip").hide();
-			loadSightings();
+			if (!pathsLoaded) loadSightings();
+			if (!pathsLoaded) loadPaths();
 			showBeacons();
 			clearTimeout(zoomIn);
 		}
