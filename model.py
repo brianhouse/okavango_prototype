@@ -28,12 +28,12 @@ def insert_feature(kind, t, data):
     log.info("Inserted feature (%s) %s" % (entry_id, t))    
     return entry_id
 
-def fetch_features(kinds, start_t, stop_t):
+def fetch_features(kinds, start_t, stop_t, skip=1):
     kindq = []
     for kind in kinds:
         kindq.append("OR kind='%s'" % kind)
-    query = "SELECT rowid, data FROM features WHERE (1=0 %s) AND t>=? AND t<? ORDER BY t" % ''.join(kindq)
-    db.execute(query, (start_t, stop_t))
+    query = "SELECT rowid, data FROM features WHERE rowid %% ? = 0 AND (1=0 %s) AND t>=? AND t<? ORDER BY t" % ''.join(kindq)
+    db.execute(query, (skip, start_t, stop_t))
     features = []
     for row in db.fetchall():
         feature = geojson.loads(row['data'])

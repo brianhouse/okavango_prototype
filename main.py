@@ -43,6 +43,7 @@ class Api(server.Handler):
         return self.not_found()
 
     def get_timeline(self):
+        skip = self.get_argument('skip', 1)
         kinds = self.get_argument('types', "beacon").split(',')
         kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon']]   # sanitizes
         try:
@@ -54,7 +55,7 @@ class Api(server.Handler):
             return self.error("Bad parameters: %s" % log.exc(e))
         t = util.timestamp(dt)        
         log.debug("--> search for kinds: %s" % kinds)
-        features = model.fetch_features(kinds, t, t + (days * (24 * 60 * 60)))
+        features = model.fetch_features(kinds, t, t + (days * (24 * 60 * 60)), skip)
         feature_collection = geojson.FeatureCollection(features)
         return self.json(feature_collection)
 
