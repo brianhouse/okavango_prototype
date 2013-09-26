@@ -1,9 +1,9 @@
 ###
 #
-# chmod 0600 monitrc_raspi
-# sudo chown root monitrc_raspi
-# sudo cp monitrc_raspi /etc/monit/monitrc
-# then set startup to 1 here: /etc/default/monit
+# chmod 0600 monitrc.smp
+# sudo chown root monitrc.smp
+# sudo cp monitrc.smp /etc/monit/monitrc
+# then set START=yes here: /etc/default/monit
 # sudo service monit start
 # sudo monit status
 #
@@ -13,6 +13,7 @@
 #
 ###
 
+set logfile /home/ubuntu/okavango/logs/monit.log
 
 # poll at 2-minute intervals
 set daemon 120
