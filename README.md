@@ -24,7 +24,7 @@ make sure your version of setuptools is upgraded
 make sure the server is on top of the time:
 
     tzselect
-    sudo ntpdate time.nist.gov  # in sudo crontab, daily
+    sudo apt-get install ntp
 
 
 install ffmpeg: http://ffmpeg.org/trac/ffmpeg/wiki/UbuntuCompilationGuide

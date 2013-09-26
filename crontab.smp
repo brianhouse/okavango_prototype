@@ -1,0 +1,1 @@
+*/5 * * * * cd /home/ubuntu/okavango; /usr/bin/python3 parse.py

@@ -1,0 +1,25 @@
+###
+#
+# chmod 0600 monitrc_raspi
+# sudo chown root monitrc_raspi
+# sudo cp monitrc_raspi /etc/monit/monitrc
+# then set startup to 1 here: /etc/default/monit
+# sudo service monit start
+# sudo monit status
+#
+# will run as root via init.d
+#
+# remember, _everything_ under monit needs absolute paths
+#
+###
+
+
+# poll at 2-minute intervals
+set daemon 120
+
+set httpd port 2812 and use address localhost   # configure monitoring webservice
+  allow 0.0.0.0/0.0.0.0                        # Allow everything to connect  
+
+check process main with pidfile /home/ubuntu/okavango/run/main.pid
+  start program = "/usr/bin/python3 /home/ubuntu/okavango/main.py" 
+  stop program = "/bin/pwd"
