@@ -9,4 +9,5 @@ run/*
 dev/*
 sample_data/*
 *.pem
-
+screenshots
+signal_processing
