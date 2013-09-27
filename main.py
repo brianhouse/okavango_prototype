@@ -45,7 +45,7 @@ class Api(server.Handler):
     def get_timeline(self):
         skip = self.get_argument('skip', 1)
         kinds = self.get_argument('types', "beacon").split(',')
-        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon']]   # sanitizes
+        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon', 'heart_spike']]   # sanitizes
         try:
             dt = self.get_argument('date', datetime.datetime.now(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%d"))
             log.debug(dt)
