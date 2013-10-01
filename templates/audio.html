@@ -73,6 +73,7 @@ function getData () {
         // urls = urls.slice(0, 5);
         // console.log(urls);
         // console.log(dates);
+        $('#startstop').html("PAUSE");
         startPlayback();
     }).fail(function () {
         console.log("failed!");
@@ -147,12 +148,14 @@ $(document).ready(function () {
 
     $('#startstop').click(function () {
         if (!playing) {
-            $('#startstop').html("PAUSE");
+            
             master_gain_node.gain.value = 1;
             playing = true;
             if (!urls.length) {
+                $('#startstop').html("LOADING...");
                 getData();
             } else {
+                $('#startstop').html("PAUSE");
                 startPlayback();
             }
         } else {
