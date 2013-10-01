@@ -5,30 +5,51 @@
 <script language="Javascript" type="text/javascript">
 
 var urls = [];
+var dates = [];
 var buffers = {};
 var context = null;
 var master_gain_node = null;   
+var playing = false;
+var d = 0;
+var start_message = "AUDIO FROM THE OKAVANGO EXPEDITION";
+
+function endPlayback () {
+    console.log("DONE")
+    $('#date').html(start_message);
+    $('#startstop').html("START");
+    playing = false;
+}
 
 function startPlayback () {
     console.log("startPlayback");
-    if (urls.length == 0) return;
+    if (urls.length == 0) {
+        endPlayback();
+        return;
+    }
     loadSound('current', urls.shift(), function () {
-        playSound('current', 0, 1, 0.5, continuePlayback);
+        playSound('current', 0, 1, 0.5, continuePlayback);      // will fail if first one is an error
+        d++;
     });
     loadSound('next', urls.shift());
 }
 
 function continuePlayback () {      // I dont have any safeties here  
     console.log("continuePlayback");
-    if (urls.length == 0) return;
-    console.log("--> " + urls.length + " remaining");
+    if (urls.length == 0) {
+        endPlayback();
+        return;
+    }
     if (buffers['next'].duration < 4.0) {
+        console.log("--> skipping...")
+        d++;
         startPlayback();
     } else {
         buffers['current'] = buffers['next'];    
         playSound('current', 0, 1, 0.5, continuePlayback);    
+        d++;
         loadSound('next', urls.shift());
     }
+    console.log("--> " + urls.length + " remaining");
 }
 
 function skipPlayback () {
@@ -37,11 +58,19 @@ function skipPlayback () {
 
 function getData () {
     console.log("getData");
-    $.get("/api/timeline", {date: "20130920", types: "audio"}, function (data) {
+    // 9/8 - 9/24
+    $.get("/api/timeline", {date: "20130908", types: "audio", days: 16}, function (data) {
         for (i in data['features']) {
             urls.push(data['features'][i]['properties']['url']);
+            var date = new Date(Date.parse(data['features'][i]['properties']['DateTime']));
+            var minutes = date.getMinutes().toString();
+            if (minutes.length != 2) minutes = "0" + minutes;
+            dates.push(date.getMonth() + "/" + date.getDate() + " " + date.getHours() + ":" + minutes);
         }
-        console.log(urls);
+        console.log("urls: " + urls.length);
+        // urls = urls.slice(0, 5);
+        // console.log(urls);
+        // console.log(dates);
         startPlayback();
     }).fail(function () {
         console.log("failed!");
@@ -72,8 +101,11 @@ function loadSound (name, url, callback) {
     request.send();
 }
 
-function playSound (name, time, volume, pan, callback) {    
-    console.log("play " + name + " at " + time + " [" + buffers[name].duration + "]");
+function playSound (name, time, volume, pan, callback) {  
+    // pan = d % 2;  
+    // console.log(pan)
+    console.log("play " + name + " at " + time + " [" + buffers[name].duration + "] " + context.currentTime);
+    $('#date').html(dates[d]);
     var source = context.createBufferSource();       // creates a sound source
     source.buffer = buffers[name];                   // tell the source which sound to play
     var pan_node = context.createPanner();           // create the panning node
@@ -83,17 +115,22 @@ function playSound (name, time, volume, pan, callback) {
     var gain_node = context.createGainNode();        // create a gain node
     pan_node.connect(gain_node);                     // connect the gain to the pan
     // gain_node.gain.value = volume;                   // set the volume    
-    gain_node.gain.linearRampToValueAtTime(0, time);
-    gain_node.gain.linearRampToValueAtTime(volume, time + 2); // 2s crossfade
+    gain_node.gain.linearRampToValueAtTime(0, context.currentTime + time);
+    gain_node.gain.linearRampToValueAtTime(volume, context.currentTime + time + 2); // 2s crossfade
     gain_node.connect(master_gain_node);             // connect to master
     source.noteOn(time);                             // play the source in x seconds
     if (callback !== undefined) {
         var timer = setTimeout(function() {
-            // gain_node.gain.linearRampToValueAtTime(0, time + source.buffer.duration + 2); // 1s crossfade            
-            // console.log("fadeout");
-            callback();
+            // console.log("volume: " + gain_node.gain.value);
+            gain_node.gain.linearRampToValueAtTime(1, context.currentTime);     // line shouldnt be necessary but it is
+            gain_node.gain.linearRampToValueAtTime(0, context.currentTime + 2);
+            // console.log("fadeout " + context.currentTime);
+            if (playing) {
+                callback();
+            }
         }, (source.buffer.duration * 1000) - 2000);      //
     }
+    console.log("");
 }  
 
 $(document).ready(function () {
@@ -106,7 +143,25 @@ $(document).ready(function () {
         window.location = "/";
     }            
 
-    getData();
+    $('#startstop').click(function () {
+        if (!playing) {
+            $('#startstop').html("PAUSE");
+            master_gain_node.gain.value = 1;
+            playing = true;
+            if (!urls.length) {
+                getData();
+            } else {
+                startPlayback();
+            }
+        } else {
+            master_gain_node.gain.value = 0;
+            playing = false;
+            $('#startstop').html("RESUME");
+            // $('#date').html(start_message);
+        }
+    });
+
+    $('#date').html(start_message);
 
 });
 
@@ -115,6 +170,13 @@ $(document).ready(function () {
 
 {% block body %}
 
+<div id="display" style="text-align: center; margin-top: 200px">
 
+    <span id="date"></span><br />
+    <hr style="width: 300px; margin-top: 30px; margin-bottom: 30px;" />
+    <a id="startstop" href="#">START</a>
+
+</div>
 
 {% endblock body %}
+
