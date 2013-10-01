@@ -62,7 +62,7 @@ def ingest_ambit(path, t_protect):
                     t, dt = None, None
                     for key, value in sample.items():
                         if key == "UTC":
-                            dt = util.parse_date(sample['UTC']) # these are UTC in the data
+                            dt = util.parse_date(sample['UTC']) # these are marked UTC in the data
                             t = util.timestamp(dt)
                             del sample[key]
                             continue
@@ -99,7 +99,7 @@ def ingest_ambit(path, t_protect):
                     # energy data sample
                     for key, value in sample.items():
                         if key == "UTC":
-                            dt = util.parse_date(value) # these are UTC in the data
+                            dt = util.parse_date(value) # these are marked UTC in the data
                             t = util.timestamp(dt)
                             del sample[key]
                             continue

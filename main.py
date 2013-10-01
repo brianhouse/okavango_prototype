@@ -26,6 +26,13 @@ class Images(server.Handler):
             return self.not_found()
         return self.render("images.html")
 
+class Audio(server.Handler):
+
+    def get(self, page=None):
+        if len(page):
+            return self.not_found()
+        return self.render("audio.html")
+
 class HeartRate(server.Handler):
 
     def get(self, page=None):
@@ -63,6 +70,7 @@ class Api(server.Handler):
 handlers = [
     (r"/api/?([^/]*)", Api),
     (r"/images/?([^/]*)", Images),
+    (r"/audio/?([^/]*)", Audio),
     (r"/heartrate/?([^/]*)", HeartRate),
     (r"/beta/?([^/]*)", Beta),
     (r"/?([^/]*)", Home),    

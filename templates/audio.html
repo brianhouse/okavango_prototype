@@ -1,0 +1,120 @@
+{% extends "page.html" %}
+{% block title %}Into the Okavango : Audio{% endblock title %}
+
+{% block head %}
+<script language="Javascript" type="text/javascript">
+
+var urls = [];
+var buffers = {};
+var context = null;
+var master_gain_node = null;   
+
+function startPlayback () {
+    console.log("startPlayback");
+    if (urls.length == 0) return;
+    loadSound('current', urls.shift(), function () {
+        playSound('current', 0, 1, 0.5, continuePlayback);
+    });
+    loadSound('next', urls.shift());
+}
+
+function continuePlayback () {      // I dont have any safeties here  
+    console.log("continuePlayback");
+    if (urls.length == 0) return;
+    console.log("--> " + urls.length + " remaining");
+    if (buffers['next'].duration < 4.0) {
+        startPlayback();
+    } else {
+        buffers['current'] = buffers['next'];    
+        playSound('current', 0, 1, 0.5, continuePlayback);    
+        loadSound('next', urls.shift());
+    }
+}
+
+function skipPlayback () {
+   console.log("continuePlayback");
+}
+
+function getData () {
+    console.log("getData");
+    $.get("/api/timeline", {date: "20130920", types: "audio"}, function (data) {
+        for (i in data['features']) {
+            urls.push(data['features'][i]['properties']['url']);
+        }
+        console.log(urls);
+        startPlayback();
+    }).fail(function () {
+        console.log("failed!");
+    });
+}
+
+function loadSound (name, url, callback) {    
+    console.log("loadSound " + name + " " + url);
+    if (url === undefined) {
+        console.log("url is undefined");
+        return;
+    }
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.responseType = 'arraybuffer';
+    request.onload = function () {
+        context.decodeAudioData(request.response, function(buffer) {
+            buffers[name] = buffer;
+            console.log("--> loaded " + name + " (" + url +")");                    
+            if (callback !== undefined) {
+                callback();
+            }            
+        }, null);
+    }
+    request.onerror = function () {
+        console.log("I am an error");
+    }
+    request.send();
+}
+
+function playSound (name, time, volume, pan, callback) {    
+    console.log("play " + name + " at " + time + " [" + buffers[name].duration + "]");
+    var source = context.createBufferSource();       // creates a sound source
+    source.buffer = buffers[name];                   // tell the source which sound to play
+    var pan_node = context.createPanner();           // create the panning node
+    source.connect(pan_node);                        // connect the pan to the source        
+    pan_node.panningModel = webkitAudioPannerNode.EQUALPOWER;
+    pan_node.setPosition((pan * 20.0) - 10.0, 0, 0); // set panning value (0-1)
+    var gain_node = context.createGainNode();        // create a gain node
+    pan_node.connect(gain_node);                     // connect the gain to the pan
+    // gain_node.gain.value = volume;                   // set the volume    
+    gain_node.gain.linearRampToValueAtTime(0, time);
+    gain_node.gain.linearRampToValueAtTime(volume, time + 2); // 2s crossfade
+    gain_node.connect(master_gain_node);             // connect to master
+    source.noteOn(time);                             // play the source in x seconds
+    if (callback !== undefined) {
+        var timer = setTimeout(function() {
+            // gain_node.gain.linearRampToValueAtTime(0, time + source.buffer.duration + 2); // 1s crossfade            
+            // console.log("fadeout");
+            callback();
+        }, (source.buffer.duration * 1000) - 2000);      //
+    }
+}  
+
+$(document).ready(function () {
+    try {
+        context = new webkitAudioContext();
+        master_gain_node = context.createGainNode();
+        master_gain_node.connect(context.destination);          // connect the master gain to the destination
+    } catch(e) {
+        alert("Web Audio API is not supported in this browser");
+        window.location = "/";
+    }            
+
+    getData();
+
+});
+
+</script>
+{% endblock head %}
+
+{% block body %}
+
+
+
+{% endblock body %}
