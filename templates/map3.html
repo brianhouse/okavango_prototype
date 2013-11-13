@@ -568,8 +568,9 @@
 
 		//Set current date (number of days into the expedition)
 		var today = new Date();
-		currentDay = (today.getMonth() == 8) ? (today.getDate() - 7):(18);
-		if (currentDay > 18) currentDay == 18;
+		//currentDay = (today.getMonth() == 8) ? (today.getDate() - 7):(18);
+		currentDay = 0;
+		//if (currentDay > 18) currentDay == 18;
 
 		function makeDate(d) {
 			d += 7;
@@ -672,8 +673,8 @@
 			  		
 			  	}
 
-			  	sightingDay --;
-			  	if (sightingDay > 0) getSightingsDay(sightingDay);
+			  	sightingDay ++;
+			  	if (sightingDay < 18) getSightingsDay(sightingDay);
 				});
 
 			
@@ -724,8 +725,8 @@
 					})
 				  	if (pc > 0) drawPaths(pathMap);
 
-				  	pathDay --;
-				  	if (pathDay > 0) getPathsDay(pathDay);
+				  	pathDay ++;
+				  	if (pathDay < 18) getPathsDay(pathDay);
 				});
 
 				
