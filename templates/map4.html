@@ -788,6 +788,21 @@
 
 			pathsLoaded = true;
 
+			startAnimation();
+
+		}
+
+		int c = 0;
+
+		function startAnimation() {
+			setInterval(doAnimation,300);
+		}
+
+		function doAnimation() {
+			for (var i = 0; i < permPaths.length; i++) {
+				permPaths[i].addData(permGeos[i][c]);
+			}
+			c++;
 		}
 
 		function smoothIt(pointList) {
