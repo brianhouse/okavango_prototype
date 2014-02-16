@@ -756,7 +756,10 @@
 				//pathMap[n] = smoothIt(pathMap[n]);
 
 				//Instantiate markers
-				personMarkers[i] = L.marker([-19.2571, 22.6560]).addTo(map);
+				var myIcon = L.divIcon({className: 'my-div-icon'});
+				// you can set .my-div-icon styles in CSS
+
+				personMarkers[i] = L.marker([-19.2571, 22.6560], {icon: myIcon}).addTo(map);
 				
 				var paths = [{
 					"type":"Feature",
