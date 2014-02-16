@@ -800,7 +800,7 @@
 
 		}
 
-		var c = 0;
+		var c = 1;
 
 		function startAnimation() {
 			setInterval(doAnimation,1000);
@@ -816,14 +816,14 @@
 					},
 					"geometry":{
 						"type":"LineString",
-						"coordinates":[permGeos[i][c],permGeos[i][c + 1],permGeos[i][c + 2]]
+						"coordinates":[permGeos[i][c - 1],permGeos[i][c]]
 					}
 				}]
 
 
 				permPaths[i].addData(point);
 			}
-			c+=3;
+			c++;
 		}
 
 		function smoothIt(pointList) {
