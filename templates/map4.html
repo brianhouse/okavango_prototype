@@ -691,7 +691,9 @@
 			console.log("LOAD PATHS!");
 			pathsLoaded = true;
 			
-			var pathMap = [];
+			pathMap = [];
+			permPaths = [];
+			permGeos = [];
 
 			function getPathsDay(d) {
 
@@ -733,8 +735,7 @@
 				
 			}
 
-			permPaths = [];
-			permGeos = [];
+			
 
 			function drawPaths(pmap) {
 
@@ -788,8 +789,6 @@
 			var pathDay = currentDay;
 			getPathsDay(pathDay);
 			drawPaths(pathMap);
-
-			
 
 			startAnimation();
 
