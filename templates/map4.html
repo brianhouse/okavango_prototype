@@ -745,7 +745,7 @@
 				    	}
 				        var marker = L.circleMarker(latlng);
 				        //pathMap[name].push([latlng.lng, latlng.lat]);
-				        pathQueue.push({name:name, latLon:[latlng.lat, latlng.lng], time:feature.properties.t_utc});
+				        pathQueues[name].push({name:name, latLon:[latlng.lat, latlng.lng], time:feature.properties.t_utc});
 				        
 				        return marker;
 				    },
