@@ -722,7 +722,7 @@
 				        return marker;
 				    },
 					})
-				  	if (pc > 0) drawPaths(pathMap);
+				  	//if (pc > 0) drawPaths(pathMap);
 
 				  	pathDay ++;
 				  	if (pathDay < 18) getPathsDay(pathDay);
@@ -785,6 +785,7 @@
 
 			var pathDay = currentDay;
 			getPathsDay(pathDay);
+			drawPaths(pathMap);
 
 			pathsLoaded = true;
 
