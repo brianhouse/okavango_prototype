@@ -837,7 +837,7 @@
 		}
 
 		function startAnimation() {
-			setInterval(doAnimation,1000);
+			setInterval(doAnimation,200);
 		}
 
 		function doAnimation() {
@@ -845,10 +845,6 @@
 			for (var i = 0; i < names.length; i++) {
 				var n = names[i];
 				var c = counters[n];
-
-				console.log(n);
-				console.log(c);
-				console.log(pathQueues[n].length);
 
 				if (c <= pathQueues[n].length - 1) {
 					var q = pathQueues[n][c];
