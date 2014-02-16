@@ -369,6 +369,7 @@
 
 		// create a map in the "map" div, set the view to a given place and zoom
 		var map = L.map('map', {zoomControl:false}).setView([-19.2571, 22.6560], 5);
+		var names = ["Steve","John","GB"];
 		map.zoomAnimationThreshold = 20;
 
 
@@ -712,7 +713,10 @@
 			permGeos = [];
 			personMarkers = [];
 
-			pathQueue = [];
+			pathQueues = [];
+			for (var n in names) {
+				pathQueues[n] = [];
+			}
 
 			function getPathsDay(d) {
 
@@ -763,7 +767,7 @@
 
 			function drawPaths() {
 
-			var names = ["Steve","John","GB"];
+			
 			var dashes = ["15,3", "5,5,2", "3,3"];
 			var colors = ["#FF3300", "#FF9900", "#FFFF00"]
 			var widths = [30,26,16]
@@ -826,31 +830,38 @@
 
 		}
 
-		var c = 1;
+		counters = [];
+		for (var n in names) {
+			counters[n] = 1;
+		}
 
 		function startAnimation() {
 			setInterval(doAnimation,1000);
 		}
 
 		function doAnimation() {
-			if (c <= pathQueue.length - 1) {
-				var q = pathQueue[c];
-				var lq = pathQueue[c - 1];
-				var point = [{
-					"type":"Feature",
-					"properties":{
-						"test":"yes"
-					},
-					"geometry":{
-						"type":"LineString",
-						"coordinates":[[lq.latLon[1], lq.latLon[0]], [q.latLon[1], q.latLon[0]]]
-					}
-				}]
-				
-				permPaths[q.name].addData(point);
-				personMarkers[q.name].setLatLng(q.latLon);
-				if (q.name == "Steve") map.setView(q.latLon, map.getZoom());
-				c++;
+
+			for (var n in names) {
+				var c = counters[n];
+				if (c <= pathQueues[n].length - 1) {
+					var q = pathQueues[n][c];
+					var lq = pathQueues[n][c - 1];
+					var point = [{
+						"type":"Feature",
+						"properties":{
+							"test":"yes"
+						},
+						"geometry":{
+							"type":"LineString",
+							"coordinates":[[lq.latLon[1], lq.latLon[0]], [q.latLon[1], q.latLon[0]]]
+						}
+					}]
+					
+					permPaths[q.name].addData(point);
+					personMarkers[q.name].setLatLng(q.latLon);
+					if (q.name == "Steve") map.setView(q.latLon, map.getZoom());
+					c++;
+				}
 			}
 			/*
 			for (var i = 0; i < permPaths.length; i++) {
