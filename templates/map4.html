@@ -846,8 +846,9 @@
 						"coordinates":[lq.latLon, q.latLon]
 					}
 				}]
-				console.log(point);
+				
 				permPaths[q.name].addData(point);
+				console.log(permPaths[q.name]);
 				personMarkers[q.name].setLatLng(q.latLon);
 				if (q.name == "Steve") map.setView(q.latLon, map.getZoom());
 				c++;
