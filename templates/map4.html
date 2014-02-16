@@ -837,8 +837,8 @@
 		}
 
 		function startAnimation() {
-			focusLatLon = map.getLatLng();
-			targetLatLon = focusLatLon;
+			focusLatLon = map.getCenter();
+			targetLatLon = map.getCenter();
 			setInterval(posMap,30);
 			setInterval(doAnimation,400);
 		}
