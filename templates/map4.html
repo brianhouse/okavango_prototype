@@ -363,6 +363,7 @@
 	<div id="credits">
 		<a href="http://www.wildbirdtrust.com/"><img src="/static/img/wbtlogo.png" alt="Wild Bird Trust logo"/></a>
 		<a href="http://www.o-c-r.org/"><img src="/static/img/ocr.png" alt="The Office for Creative Research logo"/></a>
+		<div id="timeDisplay">THIS IS THE TIME.</div>
 	</div>
 
 	<script type="text/javascript">
@@ -865,6 +866,10 @@
 			map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
 		}
 
+		function displayTime(d) {
+
+		}
+
 		function doAnimation() {
 
 
@@ -874,7 +879,7 @@
 			var d = new Date();
 			var offset = d.getTimezoneOffset();
 			d.setTime(startTime * 1000 + (offset * 60 * 1000));
-			console.log(d.toString());
+			displayTime(d);
 
 			for (var i = 0; i < names.length; i++) {
 				var n = names[i];
@@ -905,6 +910,8 @@
 				}
 				}
 			}
+
+			//Night speed up
 			/*
 			for (var i = 0; i < permPaths.length; i++) {
 
