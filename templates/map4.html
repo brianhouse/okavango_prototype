@@ -756,7 +756,7 @@
 				//pathMap[n] = smoothIt(pathMap[n]);
 
 				//Instantiate markers
-				personMarkers[i] = map.marker(map.getLatLng());
+				personMarkers[i] = L.marker(map.getLatLng()).addTo(map);
 				
 				var paths = [{
 					"type":"Feature",
