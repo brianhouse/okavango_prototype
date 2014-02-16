@@ -103,13 +103,22 @@
 			color:white;
 		}
 
-		.my-div-icon {
-			display:block;
-			font: 1.2em Georgia, serif;
-			color:#FFFFFF;
-			background-color:#FF9900;
-			margin:4px;
-			width:100px;
+		.person-marker {
+			background: #fff;
+			-moz-border-radius: 7px; 
+			-webkit-border-radius: 7px;
+			border-radius: 7px;
+			-moz-box-shadow: 0 3px 10px #888;
+			 -webkit-box-shadow: 0 3px 14px #999;
+			box-shadow: 0 3px 10px #888;
+			display: block;
+			font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+			padding: 4px 6px;
+			-ms-user-select: none;
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			user-select: none;
+			white-space: nowrap;
 		}
 		
 		#map_holder{
@@ -444,8 +453,6 @@
 		var pathsLoaded = false;
 		var beaconsLoaded = false;
 
-
-
 		var lastPoint;
 		var markers = [];
 		var beaconMarkers = [];
@@ -765,7 +772,7 @@
 				//pathMap[n] = smoothIt(pathMap[n]);
 
 				//Instantiate markers
-				var myIcon = L.divIcon({className: 'my-div-icon', html: names[i]});
+				var myIcon = L.divIcon({className: 'person-marker', html: names[i]});
 				// you can set .my-div-icon styles in CSS
 
 				personMarkers[i] = L.marker([-19.2571, 22.6560], {icon: myIcon}).addTo(map);
@@ -927,6 +934,7 @@
 		L.control.layers(baseMaps, overlays).addTo(map);
 		new L.Control.Zoom({ position: 'topright' }).addTo(map);
 		setTimeout(zoomIn, 5000);
+
 
 		var visibleSightings = [];
 		var visibleGeos = [];
