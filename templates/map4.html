@@ -808,15 +808,15 @@
 						"test":"yes"
 					},
 					"geometry":{
-						"type":"Point",
-						"coordinates":permGeos[i][c]
+						"type":"LineString",
+						"coordinates":[permGeos[i][c],permGeos[i][c + 1]]
 					}
 				}]
 
 
 				permPaths[i].addData(point);
 			}
-			c++;
+			c+=2;
 		}
 
 		function smoothIt(pointList) {
