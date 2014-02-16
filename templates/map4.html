@@ -314,7 +314,7 @@
 		</div>	
 
 		<div id="about">
-			<p>This site displays data which is uploaded daily, via sattelite, by the expedition team in the Okavango delta. Data is also available through a <a href="/api">public API</a>, allowing anyone to re-mix, analyze, or visualize the collected information.</p>
+			<p>This site displays data which was uploaded daily, via sattelite, by the expedition team in the Okavango delta. Data is also available through a <a href="/api">public API</a>, allowing anyone to re-mix, analyze, or visualize the collected information.</p>
 			<p class="videolabel">Expedition leader Dr. Steve Boyes, talking about his work in the Okavango:</p>
 			<iframe style="width:100%;" width="100%" src="//www.youtube.com/embed/vAiP1iOv23M" frameborder="0" allowfullscreen></iframe>
 			<p class="links">
@@ -451,8 +451,8 @@
 			"This is the Okavango Delta.",
 			"Located in Botswana, it is one of the richest wildlife areas on the planet.",
 			"On September 7th, a group of BaYei bushmen, scientists and journalists entered the area for an 18-day expedition. The group, led by Dr. Steve Boyes, seeks to explore and survey new parts of the central delta. <br> <img src='/static/img/team.jpg' width='400' height='225'>",
-			"On this site, you can follow along in real-time with the expedition, and access all of the data they are collecting, including wildlife sightings, colour samples, and position and heart rate data for individual expedition members.",
-			"This is the last reported GPS position of the expedition.",
+			"On this site, you can examine the data footprint of the expedition, and access all of the data they collected, including wildlife sightings, colour samples, and position and heart rate data for individual expedition members.",
+			"This is the first reported GPS position of the expedition.",
 			"Click, drag, and zoom the map to see data points (currently animal sightings, comments from the expedition team, and position reports). For help, information about the expedition, and access to the full API, click on the buttons at the top of the page."
 		]
 
@@ -520,7 +520,7 @@
 			    }
 				});
 			    
-			    var lm = beaconMarkers[beaconMarkers.length - 1];
+			    var lm = beaconMarkers[0];
 				focusMarker = L.marker(lm.getLatLng()).addTo(map);
 
 				//Create the polygon
@@ -568,8 +568,8 @@
 
 		//Set current date (number of days into the expedition)
 		var today = new Date();
-		currentDay = (today.getMonth() == 8) ? (today.getDate() - 7):(18);
-		if (currentDay > 18) currentDay == 18;
+		currentDay = 0;//(today.getMonth() == 8) ? (today.getDate() - 7):(18);
+		//if (currentDay > 18) currentDay == 18;
 
 		function makeDate(d) {
 			d += 7;
@@ -672,8 +672,8 @@
 			  		
 			  	}
 
-			  	sightingDay --;
-			  	if (sightingDay > 0) getSightingsDay(sightingDay);
+			  	sightingDay ++;
+			  	if (sightingDay < 18) getSightingsDay(sightingDay);
 				});
 
 			
@@ -724,8 +724,8 @@
 					})
 				  	if (pc > 0) drawPaths(pathMap);
 
-				  	pathDay --;
-				  	if (pathDay > 0) getPathsDay(pathDay);
+				  	pathDay ++;
+				  	if (pathDay < 18) getPathsDay(pathDay);
 				});
 
 				
