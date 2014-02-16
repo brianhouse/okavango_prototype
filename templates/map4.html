@@ -800,8 +800,21 @@
 
 		function doAnimation() {
 			for (var i = 0; i < permPaths.length; i++) {
-				permPaths[i].addData(permGeos[i][c]);
-				console.log(permGeos[i][c]);
+
+
+				var point = [{
+					"type":"Feature",
+					"properties":{
+						"test":"yes"
+					},
+					"geometry":{
+						"type":"Point",
+						"coordinates":permGeos[i][c]
+					}
+				}]
+
+
+				permPaths[i].addData(point);
 			}
 			c++;
 		}
