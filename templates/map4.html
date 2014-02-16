@@ -843,12 +843,11 @@
 					},
 					"geometry":{
 						"type":"LineString",
-						"coordinates":[lq.latLon, q.latLon]
+						"coordinates":[[lq.latLon[1], lq.latLon[0]], [q.latLon[1], q.latLon[0]]]
 					}
 				}]
 				
 				permPaths[q.name].addData(point);
-				geoLayer.addLayer(permPaths[q.name]);
 				personMarkers[q.name].setLatLng(q.latLon);
 				if (q.name == "Steve") map.setView(q.latLon, map.getZoom());
 				c++;
