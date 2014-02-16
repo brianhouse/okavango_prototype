@@ -803,13 +803,11 @@
 		var c = 0;
 
 		function startAnimation() {
-			setInterval(doAnimation,300);
+			setInterval(doAnimation,1000);
 		}
 
 		function doAnimation() {
 			for (var i = 0; i < permPaths.length; i++) {
-				console.log("***");
-				console.log(permGeos[i]);
 
 				var point = [{
 					"type":"Feature",
@@ -818,14 +816,14 @@
 					},
 					"geometry":{
 						"type":"LineString",
-						"coordinates":[permGeos[i][c],permGeos[i][c + 1]]
+						"coordinates":[permGeos[i][c],permGeos[i][c + 1],permGeos[i][c + 2]]
 					}
 				}]
 
 
 				permPaths[i].addData(point);
 			}
-			c+=2;
+			c+=3;
 		}
 
 		function smoothIt(pointList) {
