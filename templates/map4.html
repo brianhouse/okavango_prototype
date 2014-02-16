@@ -691,9 +691,9 @@
 			console.log("LOAD PATHS!");
 			pathsLoaded = true;
 			
-			var pathMap = [];
-			var permPaths = [];
-			var permGeos = [];
+			pathMap = [];
+			permPaths = [];
+			permGeos = [];
 
 			function getPathsDay(d) {
 
@@ -732,7 +732,7 @@
 				  	if (pathDay < 17) {
 				  		getPathsDay(pathDay);
 				  	} else {
-				  		drawPaths(pathMap);
+				  		drawPaths();
 				  	}
 				});
 
@@ -741,7 +741,7 @@
 
 			
 
-			function drawPaths(pmap) {
+			function drawPaths() {
 
 			var names = ["Steve","John","GB"];
 			var dashes = ["15,3", "5,5,2", "3,3"];
@@ -765,7 +765,7 @@
 					}
 				}]
 
-				permGeos[i] = pmap[n];
+				permGeos[i] = pathMap[n];
 
 
 				var pathStyle = {
