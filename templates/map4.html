@@ -872,7 +872,7 @@
 			startTime += timeStep * timeMag;
 
 			var d = new Date();
-			var offset = d.getTimezoneOffest();
+			var offset = d.getTimezoneOffset();
 			d.setTime(startTime * 1000 + (offset * 60 * 1000));
 			console.log(d.toString());
 
