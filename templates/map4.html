@@ -842,7 +842,8 @@
 
 		function doAnimation() {
 
-			for (var n in names) {
+			for (var i in names) {
+				var n = names[i];
 				var c = counters[n];
 				if (c <= pathQueues[n].length - 1) {
 					var q = pathQueues[n][c];
