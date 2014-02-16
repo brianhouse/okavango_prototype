@@ -763,6 +763,7 @@
 			var names = ["Steve","John","GB"];
 			var dashes = ["15,3", "5,5,2", "3,3"];
 			var colors = ["#FF3300", "#FF9900", "#FFFF00"]
+			var widths = [60,50,30]
 			
 			for (var i = 0; i < names.length; i++) {
 				var n = names[i];
@@ -772,7 +773,7 @@
 				//pathMap[n] = smoothIt(pathMap[n]);
 
 				//Instantiate markers
-				var myIcon = L.divIcon({className: 'person-marker', html: '<p>' + names[i] + '</p>', iconSize: [40, 20]});
+				var myIcon = L.divIcon({className: 'person-marker', html: '<p>' + names[i] + '</p>', iconSize: [widths[i], 18]});
 				// you can set .my-div-icon styles in CSS
 
 				personMarkers[i] = L.marker([-19.2571, 22.6560], {icon: myIcon}).addTo(map);
