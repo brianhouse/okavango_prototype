@@ -829,7 +829,7 @@
 		var c = 1;
 
 		function startAnimation() {
-			setInterval(doAnimation,1000);
+			setInterval(doAnimation,100);
 		}
 
 		function doAnimation() {
@@ -846,6 +846,7 @@
 						"coordinates":[lq.latLon, q.latLon]
 					}
 				}]
+				console.log(point);
 				permPaths[q.name].addData(point);
 				personMarkers[q.name].setLatLng(q.latLon);
 				map.setView(q.latLon, map.getZoom());
