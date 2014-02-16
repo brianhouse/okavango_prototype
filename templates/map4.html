@@ -829,7 +829,7 @@
 		var c = 1;
 
 		function startAnimation() {
-			setInterval(doAnimation,100);
+			setInterval(doAnimation,1000);
 		}
 
 		function doAnimation() {
@@ -849,7 +849,7 @@
 				console.log(point);
 				permPaths[q.name].addData(point);
 				personMarkers[q.name].setLatLng(q.latLon);
-				map.setView(q.latLon, map.getZoom());
+				if (n == "Steve") map.setView(q.latLon, map.getZoom());
 				c++;
 			}
 			/*
