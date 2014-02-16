@@ -756,7 +756,7 @@
 				//pathMap[n] = smoothIt(pathMap[n]);
 
 				//Instantiate markers
-				var myIcon = L.divIcon({className: 'my-div-icon'});
+				var myIcon = L.divIcon({className: 'my-div-icon', html: names[i]});
 				// you can set .my-div-icon styles in CSS
 
 				personMarkers[i] = L.marker([-19.2571, 22.6560], {icon: myIcon}).addTo(map);
@@ -829,11 +829,11 @@
 
 
 				permPaths[i].addData(point);
-				console.log(personMarkers[i]);
+				//console.log(personMarkers[i]);
 				personMarkers[i].setLatLng([permGeos[i][c][1], permGeos[i][c][0]]);
 			}
-			console.log("**");
-			console.log([permGeos[0][c][1], permGeos[0][c][0]]);
+			//console.log("**");
+			//console.log([permGeos[0][c][1], permGeos[0][c][0]]);
 			map.setView([permGeos[0][c][1], permGeos[0][c][0]], map.getZoom());
 			c++;
 		}
