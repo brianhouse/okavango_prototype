@@ -363,7 +363,7 @@
 	<div id="credits">
 		<a href="http://www.wildbirdtrust.com/"><img src="/static/img/wbtlogo.png" alt="Wild Bird Trust logo"/></a>
 		<a href="http://www.o-c-r.org/"><img src="/static/img/ocr.png" alt="The Office for Creative Research logo"/></a>
-		<div id="timeDisplay">THIS IS THE TIME.</div>
+		<div class="timeDisplay">THIS IS THE TIME.</div>
 	</div>
 
 	<script type="text/javascript">
@@ -867,7 +867,7 @@
 		}
 
 		function displayTime(d) {
-			$('#timeDisplay').text(d.toTimeString());
+			$('div.timeDisplay').text(d.toTimeString());
 		}
 
 		function doAnimation() {
