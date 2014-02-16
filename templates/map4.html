@@ -712,6 +712,8 @@
 			permGeos = [];
 			personMarkers = [];
 
+			pathQueue = [];
+
 			function getPathsDay(d) {
 
 				
@@ -739,6 +741,7 @@
 				    	}
 				        var marker = L.circleMarker(latlng);
 				        pathMap[name].push([latlng.lng, latlng.lat]);
+				        pathQueue.push({name:name, latLon:[latlng.lng, latlng.lat], time:feature.properties.t_utc});
 				        
 				        return marker;
 				    },
