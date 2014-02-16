@@ -867,7 +867,12 @@
 
 		function doAnimation() {
 
+
+
 			startTime += timeStep * timeMag;
+
+			var d = new Date(startTime * 1000);
+			console.log(d.toString());
 
 			for (var i = 0; i < names.length; i++) {
 				var n = names[i];
