@@ -714,9 +714,9 @@
 			personMarkers = [];
 
 			pathQueues = [];
-			for (var n in names) {
-				console.log("MAKE QUEUE FOR " + names[n]);
-				pathQueues[names[n]] = [];
+			for (int i = 0; i < names.length; i++) {
+				console.log("MAKE QUEUE FOR " + names[i]);
+				pathQueues[names[i]] = [];
 			}
 
 			function getPathsDay(d) {
@@ -846,6 +846,7 @@
 				var n = names[i];
 				
 				var c = counters[n];
+
 
 				console.log(n);
 				console.log(pathQueues[n].length);
