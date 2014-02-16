@@ -890,37 +890,43 @@
 			d.setTime(startTime * 1000 + (offset * 60 * 1000));
 			displayTime(d);
 
+			var skip = 0;
+
 			for (var i = 0; i < names.length; i++) {
 				var n = names[i];
 				var c = counters[n];
 
 				if (c <= pathQueues[n].length - 1) {
 					var q = pathQueues[n][c];
-					if (startTime > q.time) {
 					var lq = pathQueues[n][c - 1];
-					var point = [{
-						"type":"Feature",
-						"properties":{
-							"test":"yes"
-						},
-						"geometry":{
-							"type":"LineString",
-							"coordinates":[[lq.latLon[1], lq.latLon[0]], [q.latLon[1], q.latLon[0]]]
-						}
-					}]
-					
-					permPaths[q.name].addData(point);
-					personMarkers[q.name].setLatLng(q.latLon);
-					if (i == 0) {
-						targetLatLon[0] = q.latLon[0];
-						targetLatLon[1] = q.latLon[1];
-					}//map.setView(q.latLon, map.getZoom());
-					counters[n]++;
-				}
+					if (startTime > q.time) {
+						
+						var point = [{
+							"type":"Feature",
+							"properties":{
+								"test":"yes"
+							},
+							"geometry":{
+								"type":"LineString",
+								"coordinates":[[lq.latLon[1], lq.latLon[0]], [q.latLon[1], q.latLon[0]]]
+							}
+						}]
+						
+						permPaths[q.name].addData(point);
+						personMarkers[q.name].setLatLng(q.latLon);
+						if (i == 0) {
+							targetLatLon[0] = q.latLon[0];
+							targetLatLon[1] = q.latLon[1];
+						}//map.setView(q.latLon, map.getZoom());
+						counters[n]++;
+					} else {
+						if (q.time - lq.time > 60 * 30) skip += 60 * 10;
+					}
 				}
 			}
 
 			//Night speed up
+			startTime += skip;
 			/*
 			for (var i = 0; i < permPaths.length; i++) {
 
