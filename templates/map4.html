@@ -779,7 +779,7 @@
 				var myIcon = L.divIcon({className: 'person-marker', html: '<p>' + names[i] + '</p>', iconSize: [widths[i], 18]});
 				// you can set .my-div-icon styles in CSS
 
-				personMarkers[i] = L.marker([-19.2571, 22.6560], {icon: myIcon}).addTo(map);
+				personMarkers[n] = L.marker([-19.2571, 22.6560], {icon: myIcon}).addTo(map);
 				
 				var paths = [{
 					"type":"Feature",
@@ -812,7 +812,7 @@
 
 				geoLayer.addLayer(path);
 
-				permPaths[names[i]] = path;
+				permPaths[n] = path;
 
 				}
 
@@ -847,7 +847,7 @@
 					}
 				}]
 				permPaths[q.name].addData(point);
-				personMarkers[i].setLatLng(q.latLon);
+				personMarkers[q.name].setLatLng(q.latLon);
 				map.setView(q.latLon, map.getZoom());
 				c++;
 			}
