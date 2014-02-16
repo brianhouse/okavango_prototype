@@ -844,9 +844,12 @@
 
 			for (var i = 0; i < names.length; i++) {
 				var n = names[i];
-				console.log(n);
-				console.log(counters);
+				
 				var c = counters[n];
+
+				console.log(n);
+				console.log(pathQueues[n].length);
+
 				if (c <= pathQueues[n].length - 1) {
 					var q = pathQueues[n][c];
 					var lq = pathQueues[n][c - 1];
