@@ -848,7 +848,7 @@
 				}]
 				
 				permPaths[q.name].addData(point);
-				console.log(permPaths[q.name]);
+				geoLayer.addLayer(permPaths[q.name]);
 				personMarkers[q.name].setLatLng(q.latLon);
 				if (q.name == "Steve") map.setView(q.latLon, map.getZoom());
 				c++;
