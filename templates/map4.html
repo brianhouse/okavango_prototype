@@ -729,7 +729,11 @@
 				  	//if (pc > 0) drawPaths(pathMap);
 
 				  	pathDay ++;
-				  	if (pathDay < 18) getPathsDay(pathDay);
+				  	if (pathDay < 18) {
+				  		getPathsDay(pathDay);
+				  	} else {
+				  		drawPaths();
+				  	}
 				});
 
 				
@@ -784,13 +788,15 @@
 				permPaths[i] = path;
 
 				}
+
+				startAnimation();
 			}
 
 			var pathDay = currentDay;
 			getPathsDay(pathDay);
-			drawPaths(pathMap);
+			//drawPaths(pathMap);
 
-			startAnimation();
+			//startAnimation();
 
 		}
 
