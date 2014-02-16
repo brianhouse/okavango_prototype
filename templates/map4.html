@@ -848,7 +848,7 @@
 		function posMap() {
 			focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * 0.1;
 			focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * 0.1;
-			map.setView(focusLatLon, map.getZoom());
+			map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
 		}
 
 		function doAnimation() {
@@ -873,7 +873,10 @@
 					
 					permPaths[q.name].addData(point);
 					personMarkers[q.name].setLatLng(q.latLon);
-					if (i == 0) targetLatLon = q.latLon;//map.setView(q.latLon, map.getZoom());
+					if (i == 0) {
+						targetLatLon[0] = q.latLon[0];
+						targetLatLon[1] = q.latLon[1];
+					}//map.setView(q.latLon, map.getZoom());
 					counters[n]++;
 				}
 			}
