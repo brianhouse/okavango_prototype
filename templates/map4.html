@@ -731,6 +731,9 @@
 				
 			}
 
+			permPaths = [];
+			permGeos = [];
+
 			function drawPaths(pmap) {
 
 			var names = ["Steve","John","GB"];
@@ -751,9 +754,11 @@
 					},
 					"geometry":{
 						"type":"LineString",
-						"coordinates":pmap[n]
+						"coordinates":[]
 					}
 				}]
+
+				permGeos[i] = pmap[n];
 
 
 				var pathStyle = {
@@ -772,6 +777,8 @@
 				})
 
 				geoLayer.addLayer(path);
+
+				permPaths[i] = path;
 
 				}
 			}
