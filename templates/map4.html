@@ -832,6 +832,10 @@
 		}
 
 		counters = [];
+		startTime = 1378628000;
+		timeMag = 100;
+		timeStep = 0.400;
+
 		for (var i = 0; i < names.length; i++) {
 			counters[names[i]] = 1;
 		}
@@ -848,7 +852,7 @@
 			
 	
 			setInterval(posMap,30);
-			setInterval(doAnimation,400);
+			setInterval(doAnimation,timeStep * 1000);
 		}
 
 
@@ -863,12 +867,15 @@
 
 		function doAnimation() {
 
+			startTime += timeStep * timeMag;
+
 			for (var i = 0; i < names.length; i++) {
 				var n = names[i];
 				var c = counters[n];
 
 				if (c <= pathQueues[n].length - 1) {
 					var q = pathQueues[n][c];
+					if (startTime > q.time) {
 					var lq = pathQueues[n][c - 1];
 					var point = [{
 						"type":"Feature",
@@ -888,6 +895,7 @@
 						targetLatLon[1] = q.latLon[1];
 					}//map.setView(q.latLon, map.getZoom());
 					counters[n]++;
+				}
 				}
 			}
 			/*
