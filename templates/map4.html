@@ -872,7 +872,7 @@
 		}
 
 		function displayTime(d) {
-			$('div.timeDisplay').text(d.toString());
+			$('div.timeDisplay').text(d.toString().split("GMT")[0]);
 		}
 
 		function doAnimation() {
