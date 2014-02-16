@@ -740,8 +740,8 @@
 				    		pathMap[name] = [];
 				    	}
 				        var marker = L.circleMarker(latlng);
-				        pathMap[name].push([latlng.lng, latlng.lat]);
-				        pathQueue.push({name:name, latLon:[latlng.lng, latlng.lat], time:feature.properties.t_utc});
+				        //pathMap[name].push([latlng.lng, latlng.lat]);
+				        pathQueue.push({name:name, latLon:[latlng.lat, latlng.lng], time:feature.properties.t_utc});
 				        
 				        return marker;
 				    },
@@ -752,7 +752,7 @@
 				  	if (pathDay < 17) {
 				  		getPathsDay(pathDay);
 				  	} else {
-				  		drawPaths();
+				  		//drawPaths();
 				  	}
 				});
 
@@ -812,14 +812,16 @@
 
 				geoLayer.addLayer(path);
 
-				permPaths[i] = path;
+				permPaths[names[i]] = path;
 
 				}
 
-				startAnimation();
+				
 			}
 
 			var pathDay = currentDay;
+			startAnimation();
+			drawPaths();
 			getPathsDay(pathDay);
 
 		}
@@ -831,6 +833,25 @@
 		}
 
 		function doAnimation() {
+			if (c <= pathQueue.length - 1) {
+				var q = pathQueue[c];
+				var lq = pathQueue[c -];
+				var point = [{
+					"type":"Feature",
+					"properties":{
+						"test":"yes"
+					},
+					"geometry":{
+						"type":"LineString",
+						"coordinates":[lq.latLon, q.latLon]
+					}
+				}]
+				permPaths[q.name].addData(point);
+				personMarkers[i].setLatLng(q.latLon);
+				map.setView(q.latLon, map.getZoom());
+				c++;
+			}
+			/*
 			for (var i = 0; i < permPaths.length; i++) {
 
 				var point = [{
@@ -853,6 +874,7 @@
 			//console.log([permGeos[0][c][1], permGeos[0][c][0]]);
 			map.setView([permGeos[0][c][1], permGeos[0][c][0]], map.getZoom());
 			c++;
+			*/
 		}
 
 		function smoothIt(pointList) {
