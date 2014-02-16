@@ -832,8 +832,8 @@
 		}
 
 		counters = [];
-		for (var n in names) {
-			counters[names[n]] = 1;
+		for (var i = 0; i < names.length; i++) {
+			counters[names[i]] = 1;
 		}
 
 		function startAnimation() {
@@ -842,7 +842,7 @@
 
 		function doAnimation() {
 
-			for (var i in names) {
+			for (int i = 0; i < names.length; i++) {
 				var n = names[i];
 				var c = counters[n];
 				if (c <= pathQueues[n].length - 1) {
