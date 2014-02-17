@@ -895,7 +895,7 @@
 
 			//Sightings
 			if (sightingsQueue[sightingCounter].time < startTime) {
-				console.log(sightingsQueue[sightingCounter].marker);
+				sightingsQueue[sightingCounter].marker.showLabel();
 				sightingCounter ++;
 			}
 
