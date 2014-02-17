@@ -669,7 +669,7 @@
 				        	sightingsMarkers.push(marker);
 				        	marker.bindLabel(feature.properties.Count + " " + feature.properties["Bird Name"])
 				        }
-				        sightingsQueue.push({marker:marker, time:feature.properties.t_utc});
+				        sightingsQueue.push({marker:marker, time:feature.properties.t_utc, tries:0});
 				        return marker;
 				    },
 				    onEachFeature: onEachSighting,
