@@ -904,6 +904,8 @@
 
 			var temp = [];	
 
+			console.log(startTime);
+			console.log(revealedMarkers);
 			for (var i = 0; i < revealedMarkers.length; i++) {
 				if (revealedMarkers[i].time < startTime - (60 * 5)) {
 					revealedMarkers[i].hideLabel();
