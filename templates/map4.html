@@ -896,10 +896,12 @@
 			displayTime(d);
 
 			//Sightings
-			if (sightingsQueue[sightingCounter].time < startTime) {
+			if (sightingsQueue[sightingCounter].time < startTime || sightingsQueue[sightingCounter].tries > 10) {
 				sightingsQueue[sightingCounter].marker.showLabel();
 				revealedMarkers.push(sightingsQueue[sightingCounter]);
 				sightingCounter ++;
+			} else {
+				sightingsQueue[sightingCounter].tries ++;
 			}
 
 			var temp = [];	
