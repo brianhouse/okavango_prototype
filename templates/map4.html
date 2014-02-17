@@ -905,7 +905,7 @@
 			var temp = [];	
 
 			for (var i = 0; i < revealedMarkers.length; i++) {
-				if (revealedMarkers[i].time < startTime - 60 * 10) {
+				if (revealedMarkers[i].time < startTime - (60 * 5)) {
 					revealedMarkers[i].hideLabel();
 				} else {
 					temp.push(revealedMarkers[i]);
