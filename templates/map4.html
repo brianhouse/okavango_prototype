@@ -883,6 +883,8 @@
 			$('div.timeDisplay').text(d.toString().split("GMT")[0]);
 		}
 
+		revealedMarkers = [];
+
 		function doAnimation() {
 
 
@@ -896,8 +898,20 @@
 			//Sightings
 			if (sightingsQueue[sightingCounter].time < startTime) {
 				sightingsQueue[sightingCounter].marker.showLabel();
+				revealedMarkers.push(sightingsQueue[sightingCounter].marker);
 				sightingCounter ++;
 			}
+
+			var temp = [];	
+
+			for (var i = 0; i < revealedMarkers.length; i++) {
+				if (revealedMarkers[i].time < startTime - 60 * 10) {
+					revealedMarkers[i].hideLabel();
+				} else {
+					temp.push(revealedMarkers[i]);
+				}
+			}	
+			revealedMarkers = temp[];
 
 			//Paths
 
