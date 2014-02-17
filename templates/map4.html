@@ -898,17 +898,17 @@
 			//Sightings
 			if (sightingsQueue[sightingCounter].time < startTime) {
 				sightingsQueue[sightingCounter].marker.showLabel();
-				revealedMarkers.push(sightingsQueue[sightingCounter].marker);
+				revealedMarkers.push(sightingsQueue[sightingCounter]);
 				sightingCounter ++;
 			}
 
 			var temp = [];	
 
-			console.log(startTime);
-			console.log(revealedMarkers);
+			//console.log(startTime);
+			//console.log(revealedMarkers);
 			for (var i = 0; i < revealedMarkers.length; i++) {
 				if (revealedMarkers[i].time < startTime - (60 * 5)) {
-					revealedMarkers[i].hideLabel();
+					revealedMarkers[i].marker.hideLabel();
 				} else {
 					temp.push(revealedMarkers[i]);
 				}
