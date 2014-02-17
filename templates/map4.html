@@ -605,6 +605,8 @@
 			return("201309" + dd);
 		}
 
+		sightingQueue = [];
+
 		function loadSightings() {
 
 			var quoteIcon = L.icon({
@@ -667,7 +669,7 @@
 				        	sightingsMarkers.push(marker);
 				        	marker.bindLabel(feature.properties.Count + " " + feature.properties["Bird Name"])
 				        }
-				        
+				        sightingsQueue.push({marker:marker, time:feature.properties.t_utc});
 				        return marker;
 				    },
 				    onEachFeature: onEachSighting,
@@ -846,6 +848,7 @@
 		startTime = 1378628000;
 		timeMag = 100;
 		timeStep = 0.400;
+		sightingCounter = 0;
 
 		for (var i = 0; i < names.length; i++) {
 			counters[names[i]] = 1;
@@ -889,6 +892,14 @@
 			var offset = d.getTimezoneOffset();
 			d.setTime(startTime * 1000 + (offset * 60 * 1000));
 			displayTime(d);
+
+			//Sightings
+			if (sightingsQueue[sightingCounter].time < startTime) {
+				console.log("ACTIVATE SIGHTING:" + sightingsQueue[sightingCounter]);
+				sightingCounter ++;
+			}
+
+			//Paths
 
 			var skip = 0;
 
