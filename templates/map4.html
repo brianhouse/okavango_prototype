@@ -863,6 +863,7 @@
 			$( "div.timeDisplay" ).click(function() {
 			  startTime += 60 * 60 * 24;
 			  console.log("DAY ADVANCE");
+			  daySkip = true;
 			});
 
 			console.log(map.getCenter());
@@ -908,11 +909,12 @@
 			//Sightings
 			if (sightingsQueue[sightingCounter].time < startTime || sightingsQueue[sightingCounter].tries > 10) {
 				sightingsQueue[sightingCounter].marker.showLabel();
-				if (!skipDay) revealedMarkers.push(sightingsQueue[sightingCounter]);
+				if (!daySkip) revealedMarkers.push(sightingsQueue[sightingCounter]);
 				sightingCounter ++;
 			} else {
 				sightingsQueue[sightingCounter].tries ++;
 			}
+
 
 			var temp = [];	
 
@@ -966,6 +968,8 @@
 
 			//Night speed up
 			startTime += skip;
+
+			daySkip = false;
 			/*
 			for (var i = 0; i < permPaths.length; i++) {
 
