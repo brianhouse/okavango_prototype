@@ -937,7 +937,9 @@
 				var n = names[i];
 				var c = counters[n];
 
-				if (c <= pathQueues[n].length - 1) {
+
+				while (c <= pathQueues[n].length - 1) {
+					c = counters[n];
 					var q = pathQueues[n][c];
 					var lq = pathQueues[n][c - 1];
 					if (startTime > q.time) {
