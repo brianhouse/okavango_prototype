@@ -378,10 +378,14 @@
 
 	<script type="text/javascript">
 
+
 		// create a map in the "map" div, set the view to a given place and zoom
 		var map = L.map('map', {zoomControl:false}).setView([-19.2571, 22.6560], 5);
 		var names = ["Steve","John","GB"];
 		map.zoomAnimationThreshold = 20;
+
+		//Day skipping
+		var daySkip = false;
 
 
 		//Extend to add lables on circle markers
@@ -856,6 +860,11 @@
 
 		function startAnimation() {
 
+			$( "div.timeDisplay" ).click(function() {
+			  startTime += 60 * 60 * 24;
+			  console.log("DAY ADVANCE");
+			});
+
 			console.log(map.getCenter());
 			
 			focusLatLon[0] = map.getCenter().lat;
@@ -899,7 +908,7 @@
 			//Sightings
 			if (sightingsQueue[sightingCounter].time < startTime || sightingsQueue[sightingCounter].tries > 10) {
 				sightingsQueue[sightingCounter].marker.showLabel();
-				revealedMarkers.push(sightingsQueue[sightingCounter]);
+				if (!skipDay) revealedMarkers.push(sightingsQueue[sightingCounter]);
 				sightingCounter ++;
 			} else {
 				sightingsQueue[sightingCounter].tries ++;
