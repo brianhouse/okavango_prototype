@@ -456,6 +456,7 @@
 		})
 
 		//Build some layers
+		//*****
 		var beaconLayer = new L.layerGroup().addTo(map);
 		var sightingsLayer = new L.layerGroup();//.addTo(map);
 		var geoLayer = new L.layerGroup();//.addTo(map);
@@ -590,7 +591,8 @@
 		function showBeacons() {
 			for(var i = 0; i < beaconMarkers.length; i++) {
 				//beaconMarkers[i].addTo(map);
-				beaconLayer.addLayer(beaconMarkers[i])
+				//*****
+				//beaconLayer.addLayer(beaconMarkers[i])
 			}
 		}
 
@@ -864,7 +866,8 @@
 			targetLatLon[0] = focusLatLon[0];
 			targetLatLon[1] = focusLatLon[1];
 			
-	
+
+			//*****
 			//setInterval(posMap,30);
 			//setInterval(doAnimation,timeStep * 1000);
 		}
