@@ -797,7 +797,7 @@
 				var myIcon = L.divIcon({className: 'person-marker', html: '<p>' + names[i] + '</p>', iconSize: [widths[i], 18]});
 				// you can set .my-div-icon styles in CSS
 
-				personMarkers[n] = L.marker([-19.2571, 22.6560], {icon: myIcon});//.addTo(map);
+				personMarkers[n] = L.marker([-19.2571, 22.6560], {icon: myIcon}).addTo(map);
 				
 				var paths = [{
 					"type":"Feature",
