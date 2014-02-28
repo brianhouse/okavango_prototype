@@ -861,9 +861,7 @@
 		function startAnimation() {
 
 			$( "div.timeDisplay" ).click(function() {
-			  startTime += 60 * 60 * 24;
-			  console.log("DAY ADVANCE");
-			  daySkip = true;
+			  daySkip = !daySkip;
 			});
 
 			console.log(map.getCenter());
@@ -938,8 +936,8 @@
 				var c = counters[n];
 
 
-				while (c <= pathQueues[n].length - 1) {
-					c = counters[n];
+				if (c <= pathQueues[n].length - 1) {
+					
 					var q = pathQueues[n][c];
 					var lq = pathQueues[n][c - 1];
 					if (startTime > q.time) {
@@ -963,7 +961,7 @@
 						}//map.setView(q.latLon, map.getZoom());
 						counters[n]++;
 					} else {
-						if (q.time - lq.time > 60 * 30) skip += 60 * 30;
+						if (q.time - lq.time > 60 * 30 || daySkip) skip += 60 * 30;
 					}
 				}
 			}
@@ -971,7 +969,6 @@
 			//Night speed up
 			startTime += skip;
 
-			daySkip = false;
 			/*
 			for (var i = 0; i < permPaths.length; i++) {
 
