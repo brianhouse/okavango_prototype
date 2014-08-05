@@ -64,7 +64,7 @@ class Api(server.Handler):
         except Exception as e:
             return self.error("Bad parameters: %s" % log.exc(e))
         t = util.timestamp(dt)        
-        log.debug("--> search for kinds: %s" % kinds)
+        log.debug("--> !!!! search for kinds: %s" % kinds)
         features = model.fetch_features(kinds, t, t + (days * (24 * 60 * 60)), skip)
         feature_collection = geojson.FeatureCollection(features)
         return self.json(feature_collection)
