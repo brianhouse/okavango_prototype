@@ -40,6 +40,9 @@ class HeartRate(server.Handler):
             return self.not_found()
         return self.render("heartrate.html")
 
+class Upload(server.Handler):
+
+
 class Api(server.Handler):
     
     def get(self, page=None):
@@ -52,7 +55,7 @@ class Api(server.Handler):
     def get_timeline(self):
         skip = self.get_argument('skip', 1)
         kinds = self.get_argument('types', "beacon").split(',')
-        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon', 'heart_spike']]   # sanitizes
+        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon', 'heart_spike', 'tweet']]   # sanitizes
         try:
             dt = self.get_argument('date', datetime.datetime.now(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%d"))
             log.debug(dt)
@@ -69,6 +72,7 @@ class Api(server.Handler):
 
 handlers = [
     (r"/api/?([^/]*)", Api),
+    (r"/upload/?([^/]*)", Upload),
     (r"/images/?([^/]*)", Images),
     (r"/audio/?([^/]*)", Audio),
     (r"/heartrate/?([^/]*)", HeartRate),

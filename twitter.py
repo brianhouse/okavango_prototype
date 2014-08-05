@@ -19,7 +19,7 @@ def init_twitter():
 
 	twitter.verify_credentials();
 
-	# Get timeline for @okavangodata feed
+	# 1.  Get timeline for @okavangodata feed
 	try: 
 		data_timeline = twitter.get_user_timeline(screen_name='okavangodata')
 	except TwythonError as e:
@@ -71,6 +71,24 @@ def init_twitter():
 				feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
 				model.insert_feature('beacon', t, geojson.dumps(feature))
 				print(feature);
+
+	# 2.  Get timeline for all associated feeds
+	try: 
+		data_timeline = twitter.get_user_timeline(screen_name='intotheokavango')
+	except TwythonError as e:
+	    print(e)
+
+	# File these tweets into the DB
+	for tweet in data_timeline:
+		#Get Time
+		#Mon Aug 04 15:21:31 +0000 2014
+		dt = tweet.get('created_at')
+		date_object = datetime.strptime(dt, '%a %b %d %H:%M:%S +0000 %Y')
+		t = (date_object - datetime(1970,1,1)).total_seconds();
+		coordinates = (0,0,0);
+		properties = {'DateTime': date_object.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': 'tweet', 'tweet': tweet}
+		feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
+		model.insert_feature('beacon', t, geojson.dumps(feature))
 
 
 init_twitter()
