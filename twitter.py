@@ -89,7 +89,7 @@ def init_twitter():
 		properties = {'DateTime': date_object.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': 'tweet', 'tweet': tweet}
 		feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
 		model.insert_feature('tweet', t, geojson.dumps(feature))
-		print(feature)
+		print(t)
 
 
 init_twitter()
