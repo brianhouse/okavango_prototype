@@ -69,7 +69,7 @@ def init_twitter():
 				coordinates = (lon,lat,alt);
 				properties = {'DateTime': date_object.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': 'beacon'}
 				feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
-				model.insert_feature(kind, t, geojson.dumps(feature))
+				model.insert_feature('beacon', t, geojson.dumps(feature))
 				print(feature);
 
 
