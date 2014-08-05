@@ -5,6 +5,8 @@ from housepy import config, log, server, util, process
 
 process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
 
+__UPLOADS__ = "uploads/"
+
 class Home(server.Handler):
 
     def get(self, page=None):
@@ -48,7 +50,6 @@ class Userform(server.Handler):
 class Upload(server.Handler):
     def post(self):
         fileinfo = self.request.files['filearg'][0]
-        print ("fileinfo is" +  fileinfo)
         fname = fileinfo['filename']
         extn = os.path.splitext(fname)[1]
         cname = str(uuid.uuid4()) + extn
