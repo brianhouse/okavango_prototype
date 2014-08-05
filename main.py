@@ -95,3 +95,4 @@ handlers = [
 ]    
 
 server.start(handlers)
+print("Okavango server starter. Version 1.0")
