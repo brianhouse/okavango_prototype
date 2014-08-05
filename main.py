@@ -40,12 +40,12 @@ class HeartRate(server.Handler):
             return self.not_found()
         return self.render("heartrate.html")
 
-class Userform(tornado.web.RequestHandler):
+class Userform(server.RequestHandler):
     def get(self):
         self.render("fileuploadform.html")
  
  
-class Upload(tornado.web.RequestHandler):
+class Upload(server.RequestHandler):
     def post(self):
         fileinfo = self.request.files['filearg'][0]
         print ("fileinfo is" +  fileinfo)
