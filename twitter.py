@@ -70,7 +70,7 @@ def init_twitter():
 				properties = {'DateTime': date_object.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': 'beacon'}
 				feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
 				model.insert_feature('beacon', t, geojson.dumps(feature))
-				print(feature);
+				#print(feature);
 
 	# 2.  Get timeline for all associated feeds
 	try: 
@@ -88,7 +88,7 @@ def init_twitter():
 		coordinates = (0,0,0);
 		properties = {'DateTime': date_object.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': 'tweet', 'tweet': tweet}
 		feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
-		model.insert_feature('beacon', t, geojson.dumps(feature))
+		model.insert_feature('tweet', t, geojson.dumps(feature))
 
 
 init_twitter()
