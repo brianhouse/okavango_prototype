@@ -74,12 +74,12 @@ def init_twitter():
 
 	# 2.  Get timeline for all associated feeds
 	try: 
-		data_timeline = twitter.get_user_timeline(screen_name='intotheokavango')
+		main_timeline = twitter.get_user_timeline(screen_name='intotheokavango')
 	except TwythonError as e:
 	    print(e)
 
 	# File these tweets into the DB
-	for tweet in data_timeline:
+	for tweet in main_timeline:
 		#Get Time
 		#Mon Aug 04 15:21:31 +0000 2014
 		dt = tweet.get('created_at')
@@ -89,6 +89,7 @@ def init_twitter():
 		properties = {'DateTime': date_object.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': 'tweet', 'tweet': tweet}
 		feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
 		model.insert_feature('tweet', t, geojson.dumps(feature))
+		print(feature)
 
 
 init_twitter()
