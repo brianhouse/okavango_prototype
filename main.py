@@ -40,8 +40,21 @@ class HeartRate(server.Handler):
             return self.not_found()
         return self.render("heartrate.html")
 
-class Upload(server.Handler):
-    print('test')
+class Userform(tornado.web.RequestHandler):
+    def get(self):
+        self.render("fileuploadform.html")
+ 
+ 
+class Upload(tornado.web.RequestHandler):
+    def post(self):
+        fileinfo = self.request.files['filearg'][0]
+        print "fileinfo is", fileinfo
+        fname = fileinfo['filename']
+        extn = os.path.splitext(fname)[1]
+        cname = str(uuid.uuid4()) + extn
+        fh = open(__UPLOADS__ + cname, 'w')
+        fh.write(fileinfo['body'])
+        self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
 
 class Api(server.Handler):
     
@@ -72,7 +85,8 @@ class Api(server.Handler):
 
 handlers = [
     (r"/api/?([^/]*)", Api),
-    (r"/upload/?([^/]*)", Upload),
+    (r"/upload", Upload),
+    (r"/uploadform", Userform),
     (r"/images/?([^/]*)", Images),
     (r"/audio/?([^/]*)", Audio),
     (r"/heartrate/?([^/]*)", HeartRate),
