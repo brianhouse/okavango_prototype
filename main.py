@@ -41,7 +41,7 @@ class HeartRate(server.Handler):
         return self.render("heartrate.html")
 
 class Upload(server.Handler):
-
+    print('test')
 
 class Api(server.Handler):
     
