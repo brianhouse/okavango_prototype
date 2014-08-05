@@ -40,12 +40,12 @@ class HeartRate(server.Handler):
             return self.not_found()
         return self.render("heartrate.html")
 
-class Userform(server.RequestHandler):
+class Userform(server.Handler):
     def get(self):
         self.render("fileuploadform.html")
  
  
-class Upload(server.RequestHandler):
+class Upload(server.Handler):
     def post(self):
         fileinfo = self.request.files['filearg'][0]
         print ("fileinfo is" +  fileinfo)
