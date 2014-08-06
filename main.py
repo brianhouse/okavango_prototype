@@ -9,7 +9,8 @@ __UPLOADS__ = "uploads/"
 
 def ingest_image_api(path):
     log.info("ingest_image %s" % path)
-    date_string = path.split('/')[-1].split['.'][0]
+    date_string = path.split('/')[-1]
+    date_string = date_string.split('.')[0]
     log.info("ingest_image %s" % date_string)
     dt = datetime.datetime.strptime(date_string.split('_')[0], "%d%m%Y%H%M%S")
     tz = pytz.timezone(config['local_tz'])
