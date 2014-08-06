@@ -7,6 +7,8 @@ process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run"
 
 __UPLOADS__ = "uploads/"
 
+#2014 ingest via API
+
 def ingest_image_api(path):
     log.info("ingest_image %s" % path)
     date_string = path.split('/')[-1]
@@ -30,6 +32,27 @@ def ingest_image_api(path):
     feature_id = model.insert_feature('image', t, geojson.dumps(feature))
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s.jpg" % (t))
     shutil.copy(path, new_path)
+
+def ingest_audio_api(path, i):
+    log.info("ingest_audio %s" % path)
+    dt = datetime.datetime.strptime(path.split('/')[-1], "audio %d%m%Y_%H%M.mp3")
+    tz = pytz.timezone(config['local_tz'])
+    dt = tz.localize(dt)
+    t = util.timestamp(dt)    
+    # if t <= t_protect:
+    #     log.warning("Protected t, skipping...")
+    #     return    
+    fixed_path = path.replace(".mp3", ".amr")
+    shutil.move(path, fixed_path)
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.wav" % (t, i))    
+    try:
+        log.debug("--> converting [%s] to [%s]" % (fixed_path, new_path))
+        subprocess.check_call("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)), shell=True)
+    except Exception as e:
+        log.error(log.exc(e))
+        return
+    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.wav" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
+    feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
 
 
 

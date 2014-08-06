@@ -51,3 +51,11 @@ def get_protect(kind):
         return 0
     return result['t']
 
+def get_coords_by_time(time):
+    db.execute("SELECT t,data FROM features WHERE kind='beacon' AND t < ? ORDER BY t DESC LIMIT 1", (time,))
+    result = db.fetchone()
+    closeFeature = row['data'];
+
+    print("CLOSEST FEATURE TO ? IS ?", (time,closeFeature))
+    return closeFeature;
+
