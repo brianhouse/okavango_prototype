@@ -11,6 +11,12 @@ def ingest_image_api(path):
     log.info("ingest_image %s" % path)
     date_string = path.split('/')[-1] 
     log.info("ingest_image %s" % date_string)
+    dt = datetime.datetime.strptime(date_string.split('_')[0], "%d%m%Y%H%M%S")
+    tz = pytz.timezone(config['local_tz'])
+    dt = tz.localize(dt)
+    t = util.timestamp(dt)
+    log.info("timestamp %s" % t)
+
 
 
 
