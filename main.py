@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import datetime, pytz, geojson, model, os, uuid
+import datetime, pytz, geojson, model, os, uuid, shutil
 from housepy import config, log, server, util, process
 
 process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
@@ -19,6 +19,17 @@ def ingest_image_api(path):
     dt = tz.localize(dt)
     t = util.timestamp(dt)
     log.info("timestamp %s" % t)
+
+    try:
+        image = Image.open(path)
+        width, height = image.size    
+    except Exception as e:
+        log.error(log.exc(e))
+        width, height = None, None        
+    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s.jpg" % (t), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z"), 'size': [width, height]})
+    feature_id = model.insert_feature('image', t, geojson.dumps(feature))
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s.jpg" % (t))
+    shutil.copy(path, new_path)
 
 
 
