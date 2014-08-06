@@ -48,7 +48,6 @@ class Userform(server.Handler):
  
  
 class Upload(server.Handler):
-    print("UPLOAD REQUESTED.")
     def post(self):
         fileinfo = self.request.files['filearg'][0]
         fname = fileinfo['filename']
@@ -58,6 +57,7 @@ class Upload(server.Handler):
         fh = open(__UPLOADS__ + cname, 'wb')
         fh.write(fileinfo['body'])
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
+        ingest_image_api(__UPLOADS__ + cname)
 
 class Api(server.Handler):
     

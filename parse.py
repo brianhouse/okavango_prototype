@@ -142,6 +142,11 @@ def ingest_image(path, i, t_protect):
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s-%s.jpg" % (t, i))
     shutil.copy(path, new_path)
 
+def injest_image_api(path):
+    log.info("ingest_image %s" % path)
+    date_string = path.split('/')[-1] 
+    log.info("ingest_image %s" % date_string)
+
 
 def ingest_audio(path, i, t_protect):
     log.info("ingest_audio %s" % path)
