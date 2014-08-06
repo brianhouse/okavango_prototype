@@ -59,6 +59,11 @@ class Upload(server.Handler):
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
         ingest_image_api(__UPLOADS__ + cname)
 
+def injest_image_api(path):
+    log.info("ingest_image %s" % path)
+    date_string = path.split('/')[-1] 
+    log.info("ingest_image %s" % date_string)
+
 class Api(server.Handler):
     
     def get(self, page=None):
