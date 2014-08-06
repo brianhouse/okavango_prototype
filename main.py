@@ -56,8 +56,7 @@ class Upload(server.Handler):
         cname = fname #str(uuid.uuid4()) + extn
         #body = self.request.data
         fh = open(__UPLOADS__ + cname, 'w')
-        print(fileinfo);
-        fh.write(fileinfo)
+        fh.write(fileinfo['body'])
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
 
 class Api(server.Handler):
