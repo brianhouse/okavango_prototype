@@ -48,11 +48,12 @@ class Userform(server.Handler):
  
  
 class Upload(server.Handler):
+    print("UPLOAD REQUESTED.")
     def post(self):
         fileinfo = self.request.files['filearg'][0]
         fname = fileinfo['filename']
         extn = os.path.splitext(fname)[1]
-        cname = str(uuid.uuid4()) + extn
+        cname = fname #str(uuid.uuid4()) + extn
         fh = open(__UPLOADS__ + cname, 'w')
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
 
@@ -95,4 +96,4 @@ handlers = [
 ]    
 
 server.start(handlers)
-print("Okavango server starter. Version 1.0")
+print("Okavango server starter. Version 1.1")
