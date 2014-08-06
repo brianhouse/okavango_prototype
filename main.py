@@ -7,12 +7,12 @@ process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run"
 
 __UPLOADS__ = "uploads/"
 
-def injest_image_api(path):
+def ingest_image_api(path):
     log.info("ingest_image %s" % path)
     date_string = path.split('/')[-1] 
     log.info("ingest_image %s" % date_string)
 
-    
+
 
 class Home(server.Handler):
 
