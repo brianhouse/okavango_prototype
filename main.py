@@ -7,6 +7,13 @@ process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run"
 
 __UPLOADS__ = "uploads/"
 
+def injest_image_api(path):
+    log.info("ingest_image %s" % path)
+    date_string = path.split('/')[-1] 
+    log.info("ingest_image %s" % date_string)
+
+    
+
 class Home(server.Handler):
 
     def get(self, page=None):
@@ -58,11 +65,6 @@ class Upload(server.Handler):
         fh.write(fileinfo['body'])
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
         ingest_image_api(__UPLOADS__ + cname)
-
-def injest_image_api(path):
-    log.info("ingest_image %s" % path)
-    date_string = path.split('/')[-1] 
-    log.info("ingest_image %s" % date_string)
 
 class Api(server.Handler):
     
