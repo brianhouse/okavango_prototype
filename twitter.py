@@ -71,7 +71,7 @@ def init_twitter():
 				feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
 
 				#check protect
-				t_protect = model.get_protect('tweet')
+				t_protect = model.get_protect('beacon')
 				if (t > t_protect):    
 					model.insert_feature('beacon', t, geojson.dumps(feature))
 				#print(feature);
