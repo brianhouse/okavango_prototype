@@ -143,6 +143,8 @@ def ingest_image(path, i, t_protect):
     shutil.copy(path, new_path)
 
 
+
+
 def ingest_audio(path, i, t_protect):
     log.info("ingest_audio %s" % path)
     dt = datetime.datetime.strptime(path.split('/')[-1], "audio %d%m%Y_%H%M.mp3")

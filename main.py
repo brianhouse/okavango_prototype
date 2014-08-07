@@ -1,9 +1,38 @@
 #!/usr/bin/env python3
 
-import datetime, pytz, geojson, model, os
+import datetime, pytz, geojson, model, os, uuid, shutil
 from housepy import config, log, server, util, process
 
 process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
+
+__UPLOADS__ = "uploads/"
+
+def ingest_image_api(path):
+    log.info("ingest_image %s" % path)
+    date_string = path.split('/')[-1]
+    date_string = date_string.split('.')[0]
+    log.info("ingest_image %s" % date_string)
+    #060814154100
+    dt = datetime.datetime.strptime(date_string.split('_')[0], "%d%m%y%H%M%S")
+    log.info("datetime %s" % dt)
+    tz = pytz.timezone(config['local_tz'])
+    dt = tz.localize(dt)
+    t = util.timestamp(dt)
+    log.info("timestamp %s" % t)
+
+    try:
+        image = Image.open(path)
+        width, height = image.size    
+    except Exception as e:
+        log.error(log.exc(e))
+        width, height = None, None        
+    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s.jpg" % (t), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z"), 'size': [width, height]})
+    feature_id = model.insert_feature('image', t, geojson.dumps(feature))
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s.jpg" % (t))
+    shutil.copy(path, new_path)
+
+
+
 
 class Home(server.Handler):
 
@@ -40,6 +69,23 @@ class HeartRate(server.Handler):
             return self.not_found()
         return self.render("heartrate.html")
 
+class Userform(server.Handler):
+    def get(self):
+        self.render("fileuploadform.html")
+ 
+ 
+class Upload(server.Handler):
+    def post(self):
+        fileinfo = self.request.files['filearg'][0]
+        fname = fileinfo['filename']
+        extn = os.path.splitext(fname)[1]
+        cname = fname #str(uuid.uuid4()) + extn
+        #body = self.request.data
+        fh = open(__UPLOADS__ + cname, 'wb')
+        fh.write(fileinfo['body'])
+        self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
+        ingest_image_api(__UPLOADS__ + cname)
+
 class Api(server.Handler):
     
     def get(self, page=None):
@@ -52,7 +98,7 @@ class Api(server.Handler):
     def get_timeline(self):
         skip = self.get_argument('skip', 1)
         kinds = self.get_argument('types', "beacon").split(',')
-        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon', 'heart_spike']]   # sanitizes
+        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon', 'heart_spike', 'tweet']]   # sanitizes
         try:
             dt = self.get_argument('date', datetime.datetime.now(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%d"))
             log.debug(dt)
@@ -61,7 +107,7 @@ class Api(server.Handler):
         except Exception as e:
             return self.error("Bad parameters: %s" % log.exc(e))
         t = util.timestamp(dt)        
-        log.debug("--> search for kinds: %s" % kinds)
+        log.debug("--> !!!! search for kinds: %s" % kinds)
         features = model.fetch_features(kinds, t, t + (days * (24 * 60 * 60)), skip)
         feature_collection = geojson.FeatureCollection(features)
         return self.json(feature_collection)
@@ -69,6 +115,8 @@ class Api(server.Handler):
 
 handlers = [
     (r"/api/?([^/]*)", Api),
+    (r"/upload", Upload),
+    (r"/uploadform", Userform),
     (r"/images/?([^/]*)", Images),
     (r"/audio/?([^/]*)", Audio),
     (r"/heartrate/?([^/]*)", HeartRate),
@@ -77,3 +125,4 @@ handlers = [
 ]    
 
 server.start(handlers)
+print("Okavango server starter. Version 1.1")

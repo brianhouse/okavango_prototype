@@ -1,0 +1,97 @@
+
+# Into the Okavango Twitter Scraper
+# Gets feeds from @okavangodata and pipes into server
+
+import geojson, model;
+
+from twython import Twython
+from twython import TwythonError
+from datetime import datetime
+from time import mktime
+
+def init_twitter():
+	APP_KEY = "PDtNJXpCD1v6oqtelAA7JuGzq";
+	APP_SECRET = "q4mBpZGKIDFEHzURtQpbCBuZyF3tyU0078oWfsYdq4HJ5VLPf6";
+	OAUTH_TOKEN = "2690906527-6pdw88pGs2Vrbw4QXb8Y57l4LXfYRb3zUnInrAr";
+	OAUTH_TOKEN_SECRET = "Qus7rdrsA0wD4AzJ46J6byeHKmNrPajhoVJMyaXVMG9CG";
+
+	twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+
+	twitter.verify_credentials();
+
+	# 1.  Get timeline for @okavangodata feed
+	try: 
+		data_timeline = twitter.get_user_timeline(screen_name='okavangodata')
+	except TwythonError as e:
+	    print(e)
+
+	# Look for tweets that are location reports.
+	# ie: I am here Lat+40.704750 Lon-73.988217  Alt+139ft GPS Sats seen: 05 http://map.iridium.com/m?lat=40.704750&lon=-73.988217  Sent via Iridiu 
+	for tweet in data_timeline:
+		#Does it contain Lat Lon and Alt?
+		txt = tweet.get('text')
+		if ('Lat' in txt and 'Lon' in txt and 'Alt' in txt):
+			lat = 0
+			lon = 0
+			#Get Lat
+			p = txt.index('Lat')
+			# is it in degree notation?
+			if ('deg' in txt):
+				#print txt[p + 3:p + 13]
+				print('degrees')
+			else:
+				lat = float(txt[p + 3:p + 13])
+
+			#print(txt);
+
+			#Get Lon
+			p = txt.index('Lon')
+			# is it in degree notation?
+			if ('deg' in txt):
+				#print txt[p + 3:p + 13]
+				print('degrees')
+			else:
+				lon = float(txt[p + 3:p + 13])
+
+			#Get Alt
+			p = txt.index('Alt')
+			# is it in degree notation?
+			alt = float(txt[p + 3:p + 7])
+
+			#Get Time
+			#Mon Aug 04 15:21:31 +0000 2014
+			dt = tweet.get('created_at')
+			date_object = datetime.strptime(dt, '%a %b %d %H:%M:%S +0000 %Y')
+
+			#Make JSON
+			if (lat != 0):
+				t = (date_object - datetime(1970,1,1)).total_seconds();
+				coordinates = (lon,lat,alt);
+				properties = {'DateTime': date_object.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': 'beacon'}
+				feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
+				model.insert_feature('beacon', t, geojson.dumps(feature))
+				#print(feature);
+
+	# 2.  Get timeline for all associated feeds
+	try: 
+		main_timeline = twitter.get_user_timeline(screen_name='intotheokavango')
+	except TwythonError as e:
+	    print(e)
+
+	# File these tweets into the DB
+	for tweet in main_timeline:
+		#Get Time
+		#Mon Aug 04 15:21:31 +0000 2014
+		dt = tweet.get('created_at')
+		date_object = datetime.strptime(dt, '%a %b %d %H:%M:%S +0000 %Y')
+		t = (date_object - datetime(1970,1,1)).total_seconds();
+		coordinates = (0,0,0);
+		properties = {'DateTime': date_object.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': 'tweet', 'tweet': tweet}
+		feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
+		model.insert_feature('tweet', t, geojson.dumps(feature))
+		print(t)
+
+
+init_twitter()
+
+
