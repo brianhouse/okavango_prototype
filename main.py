@@ -11,8 +11,17 @@ __UPLOADS__ = "uploads/"
 
 def ingest_image_api(path):
     log.info("ingest_image %s" % path)
-    date_string = path.split('/')[-1]
-    date_string = date_string.split('.')[0]
+
+    file_name = path.split('/')[-1]
+    file_name = date_string.split('.')[0]
+    front = 'img'
+
+    if ('_'  in file_name):
+        front = file_name.split('_')[0]
+        date_string = file_name.split('_')[1]
+    else:
+        date_string = file_name
+    
     log.info("ingest_image %s" % date_string)
     #060814154100
     dt = datetime.datetime.strptime(date_string.split('_')[0], "%d%m%y%H%M%S")
@@ -32,7 +41,7 @@ def ingest_image_api(path):
     coords = model.get_coords_by_time(t);
     feature = geojson.Feature(geometry=coords,properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s.jpg" % (t), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z"), 'size': [width, height]})
     feature_id = model.insert_feature('image', t, geojson.dumps(feature))
-    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s.jpg" % (t))
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s_%s.jpg" % (front,t))
     shutil.copy(path, new_path)
 
 def ingest_audio_api(path, i):
