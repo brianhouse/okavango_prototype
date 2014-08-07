@@ -69,7 +69,11 @@ def init_twitter():
 				coordinates = (lon,lat,alt);
 				properties = {'DateTime': date_object.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': 'beacon'}
 				feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
-				model.insert_feature('beacon', t, geojson.dumps(feature))
+
+				#check protect
+				t_protect = model.get_protect('tweet')
+				if (t > t_protect):    
+					model.insert_feature('beacon', t, geojson.dumps(feature))
 				#print(feature);
 
 	# 2.  Get timeline for all associated feeds
@@ -85,12 +89,13 @@ def init_twitter():
 		dt = tweet.get('created_at')
 		date_object = datetime.strptime(dt, '%a %b %d %H:%M:%S +0000 %Y')
 		t = (date_object - datetime(1970,1,1)).total_seconds();
-		coordinates = (0,0,0);
+		coords = model.get_coords_by_time(t);
 		properties = {'DateTime': date_object.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': 'tweet', 'tweet': tweet}
-		feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
-		model.insert_feature('tweet', t, geojson.dumps(feature))
-		print(t)
-
+		feature = geojson.Feature(geometry=coords, properties=properties)
+		#check protect
+		t_protect = model.get_protect('tweet')
+		if (t > t_protect):  
+			model.insert_feature('tweet', t, geojson.dumps(feature))
 
 init_twitter()
 
