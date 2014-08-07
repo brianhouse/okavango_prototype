@@ -96,6 +96,8 @@ def init_twitter():
 		t_protect = model.get_protect('tweet')
 		if (t > t_protect):  
 			model.insert_feature('tweet', t, geojson.dumps(feature))
+		else:
+			print("TWEET NOT NEWEST. NEWEST IS:" + t_protect + " THIS ONE IS:" + t)
 
 init_twitter()
 
