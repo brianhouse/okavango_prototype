@@ -29,9 +29,8 @@ def ingest_image_api(path):
         log.error(log.exc(e))
         width, height = None, None      
 
-    coords = model.get_coords_by_time(t)  
-    print("COORDS: " + coords)
-    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s.jpg" % (t), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z"), 'size': [width, height]})
+    coords = model.get_coords_by_time(t);
+    feature = geojson.Feature(geometry=coords,properties={'utc_t': t, 'ContentType': "image", 'url': "/static/data/images/%s.jpg" % (t), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z"), 'size': [width, height]})
     feature_id = model.insert_feature('image', t, geojson.dumps(feature))
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s.jpg" % (t))
     shutil.copy(path, new_path)
