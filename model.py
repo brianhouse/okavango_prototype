@@ -56,6 +56,9 @@ def get_coords_by_time(time):
     result = db.fetchone()
     closeFeature = result['data'];
 
-    print("CLOSEST FEATURE TO ? IS ?", (time,closeFeature))
-    return closeFeature;
+    j = json.loads(closeFeature);
+    geom = json.dumps(closeFeature['geometry']);
+
+    print("CLOSEST FEATURE TO ? IS ?", (time,geom))
+    return geom;
 
