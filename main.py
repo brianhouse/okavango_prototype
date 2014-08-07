@@ -13,8 +13,9 @@ def ingest_image_api(path):
     log.info("ingest_image %s" % path)
 
     file_name = path.split('/')[-1]
-    file_name = date_string.split('.')[0]
+    file_name = file_name.split('.')[0]
     front = 'img'
+
 
     if ('_'  in file_name):
         front = file_name.split('_')[0]
