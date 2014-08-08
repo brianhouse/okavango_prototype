@@ -151,14 +151,14 @@ def ingest_audio(path, i, t_protect):
     # if t <= t_protect:
     #     log.warning("Protected t, skipping...")
     #     return    
-    fixed_path = path.replace(".mp3", ".amr")
+    #fixed_path = path.replace(".mp3", ".amr")
     shutil.move(path, fixed_path)
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.wav" % (t, i))    
 
     log.debug("CONVERTING SOUND.")
     try:
         log.debug("--> converting [%s] to [%s]" % (fixed_path, new_path))
-        
+
         subprocess.check_call("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)), shell=True)
 
     except Exception as e:
