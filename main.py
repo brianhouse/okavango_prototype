@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-import datetime, pytz, geojson, model, os, uuid, shutil
+import datetime, pytz, geojson, model, os, uuid, shutil, subprocess, pipes
 from housepy import config, log, server, util, process
+from PIL import Image
 
 process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
 
@@ -45,7 +46,7 @@ def ingest_image_api(path):
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s_%s.jpg" % (front,t))
     shutil.copy(path, new_path)
 
-def ingest_audio_api(path, i):
+def ingest_audio_api(path):
     log.info("ingest_audio %s" % path)
 
     file_name = path.split('/')[-1]
@@ -70,15 +71,20 @@ def ingest_audio_api(path, i):
     fixed_path = path.replace(".mp3", ".amr")
     shutil.move(path, fixed_path)
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.wav" % (front, t))    
+
+    log.debug("CONVERTING SOUND.")
     try:
         log.debug("--> converting [%s] to [%s]" % (fixed_path, new_path))
+        log.debug("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)));
         subprocess.check_call("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)), shell=True)
     except Exception as e:
+        log.debug("ERROR.")
         log.error(log.exc(e))
         return
+    log.debug("DONE CONVERTING SOUND.")
 
     coords = model.get_coords_by_time(t);
-    feature = geojson.Feature(geometry=coords,properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.wav" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
+    feature = geojson.Feature(geometry=coords,properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.wav" % (front, t), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
 
 
@@ -136,7 +142,7 @@ class Upload(server.Handler):
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
         if ('jpg' in cname):
             ingest_image_api(__UPLOADS__ + cname)
-        else if ('mp3' in cname):
+        elif ('mp3' in cname):
             ingest_audio_api(__UPLOADS__ + cname)
 
 class Api(server.Handler):
