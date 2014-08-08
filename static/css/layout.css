@@ -249,6 +249,7 @@ ul {
 			padding:0;
 			cursor:pointer;
 			background-color: black;
+			height:auto;
 		} 
 
 			#fullPanelWrapper div.page div#aboutWrapper div#video svg.playButton{

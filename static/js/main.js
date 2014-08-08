@@ -9,7 +9,7 @@ var currentPage = "Map";
 
 
 window.onload = function (){ 
-	init();
+	initLayout();
 }
 
 window.onresize = function(){
@@ -22,7 +22,8 @@ window.onkeypress = function(){
 }
 
 
-var init = function(){
+var initLayout = function(){
+
 	setHr();
 	setVideoHeight();
 	initNav();
@@ -38,8 +39,11 @@ var init = function(){
 
 var setVideoHeight = function(){
 
+	console.log(d3.select('#video').node().clientWidth*0.6);
+
 	d3.select('#video')
-		.style('height',d3.select('#video').node().clientWidth*0.6);
+		.style('height',d3.select('#video').node().clientWidth*0.6 + 'px');
+
 	d3.select('#video img.poster')
 		.attr('height',d3.select('#video').node().clientWidth*0.6);
 
