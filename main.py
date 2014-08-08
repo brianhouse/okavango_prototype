@@ -71,6 +71,8 @@ def ingest_audio_api(path):
     fixed_path = path.replace(".mp3", ".amr")
     shutil.move(path, fixed_path)
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.wav" % (front, t))    
+
+    log.debug("CONVERTING SOUND.")
     try:
         log.debug("--> converting [%s] to [%s]" % (fixed_path, new_path))
         log.debug("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)));
@@ -79,6 +81,7 @@ def ingest_audio_api(path):
         log.debug("ERROR.")
         log.error(log.exc(e))
         return
+    log.debug("DONE CONVERTING SOUND.")
 
     coords = model.get_coords_by_time(t);
     feature = geojson.Feature(geometry=coords,properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.wav" % (front, t), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
