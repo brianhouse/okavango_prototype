@@ -8,19 +8,19 @@
 var currentPage = "Map";
 
 
-window.onload = function (){ 
-	console.log('load');
-	initLayout();
-}
+// window.onload = function (){ 
+// 	console.log('load');
+// 	initLayout();
+// }
 
 window.onresize = function(){
 	setVideoHeight();
 	setHr();
 }
 
-window.onkeypress = function(){
-	// toggleTwitterPanel();
-}
+// window.onkeypress = function(){
+// 	// toggleTwitterPanel();
+// }
 
 
 var initLayout = function(){

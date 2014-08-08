@@ -201,6 +201,10 @@
 	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
 
+		console.log('a1');
+		initLayout();
+		console.log('a2');
+
 		// create a map in the "map" div, set the view to a given place and zoom
 		var map = L.map('map', {zoomControl:false}).setView([-19.2571, 22.6560], 5);
 		var names = ["Steve","John","GB"];
