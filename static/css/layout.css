@@ -1,0 +1,392 @@
+
+
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400);
+
+body {
+    background-color: #141414;
+    margin: 0px;
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    color:#FFFFFF;
+    min-width:1024px;
+    font-family: Georgia, serif;
+	font-weight: normal;
+	font-size: 13px;
+	color: #FFFFFF;
+	line-height: 25px;
+}
+
+p {
+	letter-spacing: 0.1em;a
+	margin-bottom:20px;
+	margin-top: 0;
+}
+
+p a{
+	text-decoration: none;
+	font-style: italic;
+	color:#CCC;
+	transition: color 0.15s;
+}
+
+p a:hover{
+	color:#FFB637;
+}
+
+h1 {
+	font-family: "Montserrat";
+	font-size: 1.3em;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+}
+
+h2 {
+	font-family: Palatino, Georgia, serif;
+	font-style: italic;
+	font-weight: lighter;
+	color:#FFB637;
+	font-size: 42px;
+	letter-spacing: 0.1em;
+	margin:0;
+	margin-bottom: 35px;
+	margin-top: 10px;
+	display: inline-block;
+	margin-right:5px;
+}
+
+hr.subline{
+	display: inline-block;
+	width:0;
+	height:2px;
+	border:none;
+	background-color: #FFB637;
+	vertical-align: text-bottom;
+}
+
+h3 {
+	font-family: "Montserrat";
+	font-size: 19px;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	margin-top:24px;
+}
+
+h4 {
+	font-weight: normal;
+	font-size: 13px;
+	letter-spacing: 0.1em;
+}
+
+ul {
+	list-style: none;
+}
+
+
+#mainWrapper{
+    position:absolute;
+    width:100%;
+    height:100%;
+    margin:auto;
+    padding:0;
+}
+
+#headerWrapper{
+	width:100%;
+	height:100.1%;
+	position:absolute;
+    z-index:2;
+    pointer-events:none;
+}
+
+	#headerWrapper *:not(.transparent){
+		pointer-events:auto;
+	}
+
+	div#navWrapper, div#logoWrapper{
+		border-bottom:solid 1px rgba(255,255,255,0.2);
+		position:relative;
+		width:100%;
+	}
+
+	div#navWrapper {
+		height:70px;
+		position:relative;
+	}
+
+		div#navWrapper ul{
+			position:absolute;
+			margin:0;
+			margin-top:25px;
+		}
+
+		div#navWrapper ul#pagesNav{
+			width: 29%;
+			padding-left:3.25%;
+			padding-right:3.75%;
+		}
+
+		div#navWrapper ul#mapControls{
+			right:4%;
+		}
+
+			div#navWrapper ul li{
+				display:inline-block;
+				margin-right:-3px;
+				vertical-align: top;
+				text-transform: uppercase;
+				font-weight: normal;
+				font-size: 15px;
+				letter-spacing: 0.1em;
+				cursor: pointer;
+				opacity: 0.6;
+				transition: opacity 0.15s;
+			}
+
+			div#navWrapper ul#pagesNav li{
+				text-align: center;
+				width:25%;
+			}
+			
+				div#navWrapper ul li.focused, div#navWrapper ul li:hover:not(.inactive){
+					opacity: 1;
+				}
+
+				div#navWrapper ul li.focused, div#navWrapper ul li.inactive{
+					cursor: auto;
+				}
+
+
+			div#navWrapper ul#mapControls li{
+				height:26px;
+				width:26px;
+				background-color: #FFFFFF;
+			}
+
+			div#navWrapper ul#mapControls li:first-child{
+				margin-right:20px;
+				width:auto;
+				background-color: transparent;
+			}
+
+	div#logoWrapper {
+		position:relative;
+		height:120px;
+	}
+
+		div#logo {
+			width: 25%;
+			padding-left:5.5%;
+			padding-right:5.5%;
+			position:absolute;
+		}
+
+			div#logo h1{
+				margin-top: 35px;
+				margin-bottom: 0;
+				text-align: center;
+			}
+
+			div#logo h4{
+				margin: 0;
+				margin-top: 15px;
+				text-align: center;
+			}
+
+
+
+#fullPanelWrapper{
+    width: 97%;
+    height: auto;
+	min-height:100%;
+    background-color: rgba(4,0,26,0.65);
+    z-index:1;
+    position: absolute;
+    opacity: 0;
+	/*transition: opacity 0.3s;*/
+}
+
+	#fullPanelWrapper div.page{
+		width:100%;
+		height:auto;
+		min-height:100%;
+		opacity: 1;
+	}
+
+	#fullPanelWrapper div.page div#aboutWrapper{
+		width:100%;
+		height:auto;
+		position: relative;
+		padding-top:70px;
+		border-bottom:solid 1px rgba(255,255,255,0.2);
+	} 
+
+		#fullPanelWrapper div.page div#aboutWrapper div#about{
+			display: inline-block;
+			margin-left:-2px;
+			vertical-align: top;
+			margin-top: 120px;
+			width: 26%;
+			padding:4% 6% 2% 6%;
+		} 
+
+			#fullPanelWrapper div.page div#aboutWrapper div#about span{
+				width:3px;
+				height:13px;
+				background-color:#FFB637;
+				display: inline-block;
+				margin-left:10px; 
+				margin-right:10px; 
+				vertical-align: middle;
+			} 
+
+		#fullPanelWrapper div.page div#aboutWrapper div#video{
+			display: inline-block;
+			margin-left:-2px;
+			vertical-align: top;
+			width:62%;
+			padding:0;
+			cursor:pointer;
+			background-color: black;
+		} 
+
+			#fullPanelWrapper div.page div#aboutWrapper div#video svg.playButton{
+				z-index:60;
+				left:45.5%;
+				top:45.5%;
+				position:absolute;
+			} 
+
+			/* hacking youtube poster image */
+			#video { position: relative; padding-bottom: 56.25%; /* 16:9 */ height: 0; }
+			#video img.poster { position: absolute; display: block; top: 0; left: 0; width: 100%; z-index: 50; cursor: pointer; }
+			#video:after { content: ""; position: absolute; display: block; 
+			    background: url(play-button.png) no-repeat 0 0; 
+			    top: 45%; left: 45%; width: 46px; height: 36px; z-index: 30; cursor: pointer; } 
+			#video iframe { position: absolute; top: 0; left: 0; width: 100%; }
+			#video.player:after { display: none; }
+
+	#fullPanelWrapper div.page div#teamWrapper{
+		height:auto;
+		position: relative;
+		width:91.5%;
+		padding: 40px 5.75% 40px 2.75%;
+	}
+
+		#fullPanelWrapper div.page div#teamWrapper h2{
+			margin:20px 0 40px 3%;
+		} 
+
+		#fullPanelWrapper div.page div#teamWrapper div.column{
+			width:22%;
+			display: inline-block;
+			vertical-align: top;
+			margin-right: -3px;
+			margin-left:3%;
+		} 
+
+			#fullPanelWrapper div.page div#teamWrapper div.column hr{
+				border:none;
+				height:1px;
+				background-color: rgba(255,255,255,0.2);
+				margin-bottom: 40px;
+				margin-top: 30px;
+				display:block;				
+			} 
+
+				#fullPanelWrapper div.page div#teamWrapper div.column div.teammate img{
+					display: block;
+					width:100%;
+				} 
+
+				#fullPanelWrapper div.twitter, #fullPanelWrapper div.website{
+					float:right;
+					width:20px;				
+					height:20px;
+					background-color: rgba(255,255,255,0.25);
+					margin-top:25px;
+					border-radius:2px;
+					transition: background-color 0.15s;
+					margin-left:5px;
+					background-size: 16px 16px;
+					background-repeat: no-repeat;
+					background-position:center; 
+				} 
+
+				#fullPanelWrapper div.twitter{
+					background-image: url('../img/twitter.svg')
+				}
+				#fullPanelWrapper div.website{
+					background-image: url('../img/website.svg')
+				}
+
+				#fullPanelWrapper div.twitter:hover, #fullPanelWrapper div.website:hover{
+					background-color: #FFB637;				
+				}
+
+	#fullPanelWrapper div.page div.footer{
+		margin-top: 10px;
+		margin-bottom: 30px;
+		width:88.5%;
+		padding: 30px 5.75% 40px 5.75%;
+	}
+
+		#fullPanelWrapper div.page div.footer hr{
+			display: inline-block;
+			vertical-align: center;
+			width:48%;
+			height:2px;
+			background-color: #FFB637;
+			margin-right: -3px;
+			border: none;
+		}
+
+		#fullPanelWrapper div.page div.footer div.marker{
+			display: inline-block;
+			vertical-align: center;
+			width:4%;
+			margin-right: -3px;
+			text-align: center;
+		}
+
+	#fullPanelWrapper div.page div#aga{
+		width:27.5%;
+		padding-left:5.5%;
+		padding-right:5.5%;
+		height:50px;
+		margin:192px 0 0 61.5%;
+		background-color: #f00;
+	}
+
+#map_holder{
+	width:100%;
+	height:100%;
+	position:fixed;
+    /*background-color: #515C58;*/
+    z-index:0;
+}
+
+
+
+#skip {
+	font: 14px Verdana, Helvetica, sans-serif; 
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: 8px;
+	margin-left: -15px;
+}
+#skip a{
+	color:white;
+}
+
+
+#credits{
+	position:fixed;
+	bottom:40px;
+	right:50px;
+}
+#credits a{
+	margin-left: 20px;
+}
