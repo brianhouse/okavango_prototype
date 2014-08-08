@@ -6,11 +6,12 @@
         content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
     
-    <link rel="stylesheet" href="/static/css/leaflet.css" />
-    <link rel="stylesheet" href="/static/js/leaflet.label.css" />
-    <link rel="stylesheet" href="/static/js/MarkerCluster.css" />
-    <link rel="stylesheet" href="/static/js/MarkerCluster.Default.css" />
-    <link rel="stylesheet" href="/static/js/Control.FullScreen.css" />
+    <link rel="stylesheet" href="../static/css/layout.css" />
+    <link rel="stylesheet" href="../static/css/leaflet.css" />
+    <link rel="stylesheet" href="../static/js/leaflet.label.css" />
+    <link rel="stylesheet" href="../static/js/MarkerCluster.css" />
+    <link rel="stylesheet" href="../static/js/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="../static/js/Control.FullScreen.css" />
 
 	<script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -20,359 +21,176 @@
 	  ga('create', 'UA-44288217-1', 'intotheokavango.org');
 	  ga('send', 'pageview');
 	</script>    
-    <script src="/static/js/leaflet.js"></script>
-    <script src="/static/js/leaflet.markercluster.js"></script>
-    <script src="/static/js/leaflet.label.js"></script>
-    <script src="/static/js/rcolor.js"></script>
-    <script src="/static/js/simplify.js"></script>
- 	<script src="/static/js/Control.FullScreen.js"></script>
+    <script src="../static/js/leaflet.js"></script>
+    <script src="../static/js/leaflet.markercluster.js"></script>
+    <script src="../static/js/leaflet.label.js"></script>
+    <script src="../static/js/rcolor.js"></script>
+    <script src="../static/js/simplify.js"></script>
+ 	<script src="../static/js/Control.FullScreen.js"></script>
 	
-	<script language="Javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-
-	<style type="text/css">
-
-
-	 	/*Reset CSS*/
-	 	html, body, div, span, applet, object, iframe,
-		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-		a, abbr, acronym, address, big, cite, code,
-		del, dfn, em, img, ins, kbd, q, s, samp,
-		small, strike, strong, sub, sup, tt, var,
-		b, u, i, center,
-		dl, dt, dd, ol, ul, li,
-		fieldset, form, label, legend,
-		table, caption, tbody, tfoot, thead, tr, th, td,
-		article, aside, canvas, details, embed, 
-		figure, figcaption, footer, header, hgroup, 
-		menu, nav, output, ruby, section, summary,
-		time, mark, audio, video {
-			margin: 0;
-			padding: 0;
-			border: 0;
-			font-size: 100%;
-			font: inherit;
-			vertical-align: baseline;
-		}
-		article, aside, details, figcaption, figure, 
-		footer, header, hgroup, menu, nav, section {
-			display: block;
-		}
-		body {
-			line-height: 1;
-			background-color:#DDDDDD;
-		}
-		ol, ul {
-			list-style: none;
-		}
-		blockquote, q {
-			quotes: none;
-		}
-		blockquote:before, blockquote:after,
-		q:before, q:after {
-			content: '';
-			content: none;
-		}
-		table {
-			border-collapse: collapse;
-			border-spacing: 0;
-		}
-		/*Reset CSS*/
-
-		body{
-			font: 1.2em Georgia, serif;
-			color:#443D33;
-			overflow: -moz-scrollbars-vertical; 
-			overflow-y: scroll;
-		}
-
-		p{
-			font-style: italic;
-			line-height: 1.6em;
-		}
-
-		a{
-			color:black;
-			text-decoration: none;
-			-webkit-transition: color 0.08s linear;
-		    -moz-transition: color 0.08s linear;
-		    -o-transition: color 0.08s linear;
-		    -ms-transition: color 0.08s linear;
-		    transition: color 0.08s linear;
-		}
-		a:hover{
-			color:white;
-		}
-
-		.timeDisplay {
-			position:absolute;
-			top:10px;
-			left:78%;
-			font: 18px/2.0 Georgia, serif;
-			color:white;
-		}
-
-		.person-marker {
-			background: #fff;
-			-moz-border-radius: 7px; 
-			-webkit-border-radius: 7px;
-			border-radius: 7px;
-			-moz-box-shadow: 0 3px 10px #888;
-			 -webkit-box-shadow: 0 3px 14px #999;
-			box-shadow: 0 3px 10px #888;
-			display: block;
-			font: 12px/1.5 Georgia, serif;
-			padding: 4px 6px;
-			-ms-user-select: none;
-			-moz-user-select: none;
-			-webkit-user-select: none;
-			user-select: none;
-			white-space: nowrap;
-		}
-		
-		#map_holder{
-			position: fixed;
-			top: 0px;
-			left: 0px;
-			width:100%; 
-			height:100%;
-			z-index: 0;
-		}
-		
-		#map{
-			width:100%;
-			height:100%; 
-			position: "absolute"; 
-			top: 0px; 
-			left: 0px; 
-			overflow: "hidden";
-		}
-		
-		#ui_holder{
-			width: 37.9%;
-			min-width:480px;
-			height:auto;
-			min-height: 100%;
-			z-index: 1000;
-			position: absolute;
-			margin:0;
-			background-color: rgba(250,174,52,0.8);
-		}
-		#ui-holder.bkgtransition{
-			-webkit-transition: background-color 0.25s linear;
-		    -moz-transition: background-color 0.25s linear;
-		    -o-transition: background-color 0.25s linear;
-		    -ms-transition: background-color 0.25s linear;
-		    transition: background-color 0.25s linear;
-		}
-
-			.shadow{
-				position:absolute;
-				left:100%;
-				top:-3%;
-				width:4px;
-				height:103%;
-				background-color: rgba(0,0,0,0.15);
-			}
-
-
-			#header{
-				z-index: 10000;
-			}
-
-
-				#nav{
-					height:auto;
-					margin:0;
-					width:80%;
-					padding:1.5% 10% 2% 10%;
-				}
-
-				#nav a{
-					display:inline-block;
-					font-size: 70%;
-					color:white;
-				}
-				#nav a:hover{
-					color:#EEEEEE;
-				}
-				#nav img{
-					float:right;
-				}
-
-				#title{
-					width:60%;
-					height:auto;
-					padding:8% 20% 8% 20%;
-					border-top:1px solid rgba(0,0,0,0.05);
-					border-bottom:1px solid rgba(0,0,0,0.05);
-					-webkit-transition: border 0.1s linear;
-				    -moz-transition: border 0.1s linear;
-				    -o-transition: border 0.1s linear;
-				    -ms-transition: border 0.1s linear;
-				    transition: border 0.1s linear;
-				    -webkit-transition: padding 0.25s linear;
-				    -moz-transition: padding 0.25s linear;
-				    -o-transition: padding 0.25s linear;
-				    -ms-transition: padding 0.25s linear;
-				    transition: padding 0.25s linear;
-				}
-					h1{
-						height:auto;
-					}
-
-					h1 p{
-						width:60%;
-						position: absolute;
-						padding:0;
-						margin:0;
-						visibility: hidden;
-					}
-
-					.logotransition{
-						-webkit-transition: fill 0.25s linear;
-					    -moz-transition: fill 0.25s linear;
-					    -o-transition: fill 0.25s linear;
-					    -ms-transition: fill 0.25s linear;
-					    transition: fill 0.25s linear;
-					}
-
-					h2{
-						font-size: 0.8em;
-						letter-spacing: 0.15em;
-						text-align: center;
-						margin-top:5px;
-						color:#443D33;
-						-webkit-transition: color 0.25s linear;
-					    -moz-transition: color 0.25s linear;
-					    -o-transition: color 0.25s linear;
-					    -ms-transition: color 0.25s linear;
-					    transition: color 0.25s linear;
-					}
-
-			#about, #helppanel{
-				height:auto;
-				padding-bottom: 100px;
-			}
-
-			#about p{
-				padding:5% 10% 5% 10%;
-			}
-
-
-			#about .videolabel{
-				background-color: #1B1C1E;
-				color:#F4B04E;
-				font-size: 0.8em;
-				font-style: normal;
-				letter-spacing: 0.12em;
-				text-align: center;
-				width:80%;
-				padding:3% 10% 3% 10%;
-			}
-
-			#about .links{
-				width:80%;
-				text-align: center;
-				font-size: 0.8em;
-				padding:2% 10% 2% 10%;
-			}
-
-			#helppanel p{
-				padding:5% 10% 5% 10%;
-			}
-
-			#helppanel h2{
-				margin-top:5%;
-			}
-
-			#skip {
-				font: 14px Verdana, Helvetica, sans-serif; 
-				position: fixed;
-				top: 50%;
-				left: 50%;
-				margin-top: 8px;
-				margin-left: -15px;
-			}
-			#skip a{
-				color:white;
-			}
-
-
-			#credits{
-				position:fixed;
-				bottom:40px;
-				right:50px;
-			}
-			#credits a{
-				margin-left: 20px;
-			}
- 
-		
-    </style>
-  	
-	
+	<script language="Javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
 
   </head>
   <body>
 
-	
-	<!--Google Maps APIv3 Background-->
-	<div id="map_holder">
-		<div id="map"></div>
-	</div><!-- End Google Maps Background -->
+	<div id="globalWrapper">
+            <div id="headerWrapper">
+                <div id="navWrapper" class="transparent">
+                    <ul id="pagesNav" class="transparent">
+                        <li class="focused">Map</li>
+                        <li class="inactive">Data</li>
+                        <li class="inactive">API</li>
+                        <li>About</li>
+                    </ul>
+                    <ul id="mapControls" class="transparent">
+                        <!-- <li>See 2013 Expedition</li> -->
+                       <!--  <li>+</li>
+                        <li>-</li> -->
+                        <li class="timeDisplay"></li>
+                    </ul>
+                </div>
+                <div id="logoWrapper" class="transparent">
+                    <div id="logo" class="transparent">
+                        <h1 class="transparent"><img src="../static/img/logo.svg" width="100%" alt="Into the Okavango"/></h1>
+                        <h4>A Live-data Expedition into the Okavango Delta</h4>
+                    </div>
+                </div>
 
-	<div id="ui_holder">
-		<div class="shadow"></div>
-		<div id="header">
-			<div id="nav">
-				<a href="#" id="expedition" style="width:45%">ABOUT THE EXPEDITION</a>
-				<a href="#" id="api" style="width:28%">PUBLIC API</a>
-				<a href="#" id="help" style="width:20%">HELP</a>
-				<a href="#" id="closeabout" style="width:3%"><img src="/static/img/exit.svg" alt="exit button"/></a>
-			</div>
-			<div id="title">
-				<h1>
-					<p>Into The Okavango</p>
-					<div id="logo"></div>
-				</h1>
-				<h2>A Live-data Expedition into the Okavango Delta</h2>
-			</div>
-		</div>	
+            </div>
+            <div id="fullPanelWrapper">
+                <div class="page">
+                    <div id="aboutWrapper2">
+                        <div id="about2">
+                           <div><h2>About</h2><hr class="subline"/></div>
+                            <p>This site dipslays data which was uploaded daily, via satellite, by the expedition team in the Okavango delta. Data is also available through a public API, allowing anyone to re-miw, analyze, or visualize the collected information.</p>
+                            <p><a href="https://en.wikipedia.org/wiki/Okavango_Delta">the Okavango delta</a><span></span><a href="http://en.wikipedia.org/wiki/Bushmen">the BaYei bushmen</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="page">
+                </div>
+                <div class="page">
+                    <div id="aboutWrapper">
+                        <div id="about">
+                           <div><h2>About</h2><hr class="subline"/></div>
+                            <p>This site dipslays data which was uploaded daily, via satellite, by the expedition team in the Okavango delta. Data is also available through a public API, allowing anyone to re-miw, analyze, or visualize the collected information.</p>
+                            <p><a href="https://en.wikipedia.org/wiki/Okavango_Delta">the Okavango delta</a><span></span><a href="http://en.wikipedia.org/wiki/Bushmen">the BaYei bushmen</a></p>
+                        </div>
+                        <div id="video">
+                            <!-- <iframe width="100%" height="auto" src="http://www.youtube.com/embed/vAiP1iOv23M?autoplay=1&enablejsapi=1" frameborder="0" allowfullscreen></iframe> -->
+                            <img src="../static/img/video.jpg" class="poster">
+                            <svg width="9%" class="playButton" viewBox="0 0 78 78" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                                <defs></defs>
+                                <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                                    <g id="ABOUT" sketch:type="MSArtboardGroup" transform="translate(-892.000000, -276.000000)" fill-opacity="0.85" fill="#040019">
+                                        <path d="M895.009899,276 C893.347578,276 892,277.337425 892,279.009899 L892,350.990101 C892,352.652422 893.337425,354 895.009899,354 L966.990101,354 C968.652422,354 970,352.662575 970,350.990101 L970,279.009899 C970,277.347578 968.662575,276 966.990101,276 L895.009899,276 Z M941.780876,314.989431 L925.709147,325.172764 L925.709147,304.806098 L941.780876,314.989431 Z" id="Rectangle-16" sketch:type="MSShapeGroup"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
 
-		<div id="about">
-			<p>This site displays data which was uploaded daily, via satellite, by the expedition team in the Okavango delta. Data is also available through a <a href="/api">public API</a>, allowing anyone to re-mix, analyze, or visualize the collected information.</p>
-			<p class="videolabel">Expedition leader Dr. Steve Boyes, talking about his work in the Okavango:</p>
-			<iframe style="width:100%;" width="100%" src="//www.youtube.com/embed/vAiP1iOv23M" frameborder="0" allowfullscreen></iframe>
-			<p class="links">
-				<a href="https://en.wikipedia.org/wiki/Okavango_Delta">About the Okavango Delta</a>
-				|
-				<a href="http://en.wikipedia.org/wiki/Bushmen">About the BaYei Bushmen</a>
-			</p>
-			<div class="bottomspace"></div>
-		</div>	
+                    <div id="teamWrapper">
+                        <div><h2>Team</h2><hr class="subline"/></div>
+                        <div class="column">
+                            <div class="teammate">
+                                <img src="../static/img/sBoyes.png" alt="Steve Boyes' portrait"/>
+                                <a href="http://twitter.com/drsteveboyes"><div class="twitter"></div></a>
+                                <h3>Steve Boyes</h3>
+                                <p class="bio">Steve Boyes did his PhD on the Meyer’s parrot in the Okavango Delta and lived permanently in this wilderness for 7 years. He runs several research project in the Okavango Delta for the Wild Bird Trust and Percy FitzPatrick Institute, and will be the Expedition Leader on the 2014 Okavango Expedition. This year will be his 5th crossing of the Okavango Delta on dug-out canoes or mokoros. All in preparation for the expedition 1,000 miles down the length of the Okavango River next year in support of the designation of new protected areas and a multi-national UNESCO World Heritage Site that includes the entire catchment.</p>
+                            </div>
+                            <hr/>
+                            <div class="teammate">
+                                <img src="../static/img/nGelinas.png" alt="Neil Gelinas' portrait"/>
+                                <h3>Neil Gelinas</h3>
+                                <p class="bio">Neil Gelinas is a Producer, Cameraman and Editor for National Geographic.  For the past 4 years, his focus has been making one-hour-documentary broadcast specials following expeditions lead by Nat Geo Explorers-In-Residence Enric Sala and Mike Fay. Okavango will be his first documentary feature.</p>
+                            </div>
+                            <hr/>
+                            <div class="teammate">
+                                <img src="../static/img/gTreinish.png" alt="Gregg Treinish' portrait"/>
+                                <a href="http://twitter.com/AdventurScience"><div class="twitter"></div></a>
+                                <h3>Gregg Treinish</h3>
+                                <p class="bio">Gregg Treinish founded the nonprofit Adventurers and Scientists for Conservation in 2011, mobilizing outdoor enthusiasts in collaborative efforts to protect our natural world.<br/><br/>National Geographic named Gregg Adventurer of the Year in 2008, when he and a friend completed a 7,800-mile trek along the spine of the Andes Mountain Range. He was included on the Christian Science Monitor's 30 under 30 list in 2012, and the following year became a National Geographic Emerging Explorer for his work with ASC.</p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="teammate">
+                                <img src="../static/img/cBoyes.png" alt="Chris Boyes' portrait"/>
+                                <h3>Chris Boyes</h3>
+                                <p class="bio">"My love and appreciation for places where natural systems function as they have for millions of years drives my passion to understand and protect these areas. Although primarily a marine biologist, I have had the privilege of working in pristine marine and terrestrial ecosystems. I view the Okavango Delta as the epitome of the perfect terrestrial wilderness I seek."</p>
+                            </div>
+                            <hr/>
+                            <div class="teammate">
+                                <img src="../static/img/gTrevethick.png" alt="Giles Trevethick' portrait"/>
+                                <h3>Giles Trevethick</h3>
+                                <p class="bio">An environmental management graduate with a passion for wilderness and adventure. Cycled 2 continents including Africa & South America and about to undertake the 4th trans Okavango Mokoro Expedition with the Wild Bird Trust.</p>
+                            </div>
+                            <hr/>
+                            <div class="teammate">
+                                <img src="../static/img/sSelbe.png" alt="Shah Selbe' portrait"/>
+                                <a href="http://shahselbe.com/"><div class="website"></div></a>
+                                <a href="http://twitter.com/shahselbe"><div class="twitter"></div></a>
+                                <h3>Shah Selbe</h3>
+                                <p class="bio">Shah Selbe is an engineer, conservation technologist, and technology expert working to identify and implement innovative approaches to environmental problems. He works with communities, nonprofits, and developing countries to identify and deploy technologies that could help them with the conservation of their environment. It was this work within ocean conservation, often called “FishNET”, that resulted in National Geographic naming him as one of their 2013 Emerging Explorers. He works to inject low cost technological innovation into how we monitor and protect some of the most pristine parts of this planet.</p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="teammate">
+                                <img src="../static/img/jHilton.png" alt="John Hilton' portrait"/>
+                                <h3>John Hilton</h3>
+                                <p class="bio">For the past 4 years John has dedicated his life to spending time in the African wilderness, and sharing his experiences with as many people as possible. In 2010 he and his wife, Liz, travelled around sub-saharan Africa in their Land Cruiser visiting the national parks and wild places of South Africa, Mozambique, Malawi, Kenya, Zambia, Zimbabwe, Botswana and Namibia – an awesome adventure! More recently John has joined Dr Steve Boyes at The Wild Bird Trust as Trustee and Commercial Director.</p>
+                            </div>
+                            <hr/>
+                            <div class="teammate">
+                                <img src="../static/img/pHugo.png" alt="Pieter Hugo' portrait"/>
+                                <h3>Pieter Hugo</h3>
+                                <p class="bio">Pieter Hugo has an MA Degree in English Literature, and has published articles in several different magazines and newspapers. Pieter has worked as a nightclub bouncer, a stage manager, a set-builder, and a pyrotechnics and special effects technician. He currently live in Hogsback, in the Eastern Cape Province of South Africa, where he owns a sawmill and works as a carpenter.</p>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="teammate">
+                                <img src="../static/img/jThorpe.png" alt="Jer Thorp' portrait"/>
+                                <a href="http://o-c-r.org"><div class="website"></div></a>
+                                <a href="http://twitter.com/blprnt"><div class="twitter"></div></a>
+                                <h3>Jer Thorp</h3>
+                                <p class="bio">Jer Thorp is a software artist, writer, and educator living in Brooklyn. Coming from a background in genetics, his digital art practice explores the many-folded boundaries between science, data, art, and culture. He is a co-founder of The Office for Creative Research & adjunct professor at ITP.</p>
+                            </div>
+                            <hr/>
+                            <div class="teammate">
+                                <img src="../static/img/jKydd.png" alt="James Kydd' portrait"/>
+                                <a href="http://rangerdiaries.com"><div class="website"></div></a>
+                                <a href="http://twitter.com/rangerdiaries"><div class="twitter"></div></a>
+                                <h3>James Kydd</h3>
+                                <p class="bio">James Kydd is an international safari guide and wildlife photographer. He is the creator of the multiple award winning website Rangerdiaries.com.</p>
+                            </div>
+                        </div>
+                    </div>
 
-		<div id="helppanel">
-			<p>This site was built by <a href="http://brianhouse.net/">Brian House</a>, <a href="http://blprnt.com">Jer Thorp</a>, with design by <a href="http://twitter.com/iaaaan">Ian Ardouin-Fumat</a>.</p>
-			<p>It's a work in progress. Real expedition data didn't become available until the team in the Delta arrived and started transmitting. As a result we are adding functionality on a daily basis, based on the character of the data we receive. So check back to watch the expedition progress, and to see and explore new features and new data.</p>
-			<p>New data is uploaded once per day, at around 12pm, EST. This data will immediately be available through the <a href="/api">public API</a>, and will be visible on the map at the same time.</p>
-			<h2>Need Help?</h2>
-			<p>For specific questions, please get in touch - <br><a href="mailto:okavango@o-c-r.org>">okavango@o-c-r.org</a></p>
-			<h2>Thank you, Thank you</h2>
-			<p>We're using a lot of open source tools to make this thing work, including <a href="leafletjs.com">Leaflet.js</a>, <a href="http://www.python.org/">Python</a> and <a href="http://www.tornadoweb.org/en/stable/">Tornado.</a> Huge thanks to all of the clever people involved in making these invaluable tools.</p>
-			<div class="bottomspace"></div>
+                    <div class="footer">
+                        <hr/>
+                        <div class="marker"><img src="../static/img/marker.svg"/></div>
+                        <hr/>
+                    </div>
+                </div>
 
-		</div>	
+                <div class="page">
+                    <div id="aga">
+                        
+                    </div>
+                </div>
 
-		<div id="skip">
-			<a href="#">Skip</a>
-		</div>
-	</div>
+            </div>
+            <!--Google Maps APIv3 Background-->
+			<div id="map_holder">
+				<div id="map"></div>
 
-	<div class="timeDisplay"></div>
+			</div><!-- End Google Maps Background -->
+        </div>
+
 
 	<div id="credits">
-		<a href="http://www.wildbirdtrust.com/"><img src="/static/img/wbtlogo.png" alt="Wild Bird Trust logo"/></a>
-		<a href="http://www.o-c-r.org/"><img src="/static/img/ocr.png" alt="The Office for Creative Research logo"/></a>
+		<a href="http://www.wildbirdtrust.com/"><img src="../static/img/wbtlogo.png" alt="Wild Bird Trust logo"/></a>
+		<a href="http://www.o-c-r.org/"><img src="../static/img/ocr.png" alt="The Office for Creative Research logo"/></a>
 		
 	</div>
 
@@ -482,7 +300,7 @@
 		var scripts = [
 			"This is the Okavango Delta.",
 			"Located in Botswana, it is one of the richest wildlife areas on the planet.",
-			"On September 7th, a group of BaYei bushmen, scientists and journalists entered the area for an 18-day expedition. The group, led by Dr. Steve Boyes, seeks to explore and survey new parts of the central delta. <br> <img src='/static/img/team.jpg' width='400' height='225'>",
+			"On September 7th, a group of BaYei bushmen, scientists and journalists entered the area for an 18-day expedition. The group, led by Dr. Steve Boyes, seeks to explore and survey new parts of the central delta. <br> <img src='../static/img/team.jpg' width='400' height='225'>",
 			"On this site, you can examine the data footprint of the expedition, and access all of the data they collected, including wildlife sightings, colour samples, and position and heart rate data for individual expedition members.",
 			"This is the first reported GPS position of the expedition.",
 			"Click, drag, and zoom the map to see data points (currently animal sightings, comments from the expedition team, and position reports). For help, information about the expedition, and access to the full API, click on the buttons at the top of the page."
@@ -496,8 +314,8 @@
 
 
 			var starIcon = L.icon({
-			    iconUrl: '/static/img/star2.png',
-			    shadowUrl: '/static/img/starShadow2.png',
+			    iconUrl: '../static/img/star2.png',
+			    shadowUrl: '../static/img/starShadow2.png',
 
 			    iconSize:     [20,20], // size of the icon
 			    shadowSize:   [20,20], // size of the shadow
@@ -614,8 +432,8 @@
 		function loadSightings() {
 
 			var quoteIcon = L.icon({
-			    iconUrl: '/static/img/quote.png',
-			    shadowUrl: '/static/img/quoteShadow.png',
+			    iconUrl: '../static/img/quote.png',
+			    shadowUrl: '../static/img/quoteShadow.png',
 
 			    iconSize:     [40,40], // size of the icon
 			    shadowSize:   [40,40], // size of the shadow
@@ -1124,7 +942,7 @@
 		*/
 		$(function(){
 
-			$("#logo").load("/static/img/logo.svg", function(){
+			$("#logo").load("../static/img/logo.svg", function(){
 				$("#logo svg").width("100%"); 
 				$("#logo svg").height("30px"); 
 				$("#logo svg path").addClass("logotransition"); 
@@ -1233,80 +1051,81 @@
 			}
 		}
 
-simplifyPath = function( points, tolerance ) {
- 
-	// helper classes 
-	var Vector = function( x, y ) {
-		this.x = x;
-		this.y = y;
-		
-	};
-	var Line = function( p1, p2 ) {
-		this.p1 = p1;
-		this.p2 = p2;
-		
-		this.distanceToPoint = function( point ) {
-			// slope
-			var m = ( this.p2.y - this.p1.y ) / ( this.p2.x - this.p1.x ),
-				// y offset
-				b = this.p1.y - ( m * this.p1.x ),
-				d = [];
-			// distance to the linear equation
-			d.push( Math.abs( point.y - ( m * point.x ) - b ) / Math.sqrt( Math.pow( m, 2 ) + 1 ) );
-			// distance to p1
-			d.push( Math.sqrt( Math.pow( ( point.x - this.p1.x ), 2 ) + Math.pow( ( point.y - this.p1.y ), 2 ) ) );
-			// distance to p2
-			d.push( Math.sqrt( Math.pow( ( point.x - this.p2.x ), 2 ) + Math.pow( ( point.y - this.p2.y ), 2 ) ) );
-			// return the smallest distance
-			return d.sort( function( a, b ) {
-				return ( a - b ); //causes an array to be sorted numerically and ascending
-			} )[0];
+		simplifyPath = function( points, tolerance ) {
+		 
+			// helper classes 
+			var Vector = function( x, y ) {
+				this.x = x;
+				this.y = y;
+				
+			};
+			var Line = function( p1, p2 ) {
+				this.p1 = p1;
+				this.p2 = p2;
+				
+				this.distanceToPoint = function( point ) {
+					// slope
+					var m = ( this.p2.y - this.p1.y ) / ( this.p2.x - this.p1.x ),
+						// y offset
+						b = this.p1.y - ( m * this.p1.x ),
+						d = [];
+					// distance to the linear equation
+					d.push( Math.abs( point.y - ( m * point.x ) - b ) / Math.sqrt( Math.pow( m, 2 ) + 1 ) );
+					// distance to p1
+					d.push( Math.sqrt( Math.pow( ( point.x - this.p1.x ), 2 ) + Math.pow( ( point.y - this.p1.y ), 2 ) ) );
+					// distance to p2
+					d.push( Math.sqrt( Math.pow( ( point.x - this.p2.x ), 2 ) + Math.pow( ( point.y - this.p2.y ), 2 ) ) );
+					// return the smallest distance
+					return d.sort( function( a, b ) {
+						return ( a - b ); //causes an array to be sorted numerically and ascending
+					} )[0];
+				};
+			};
+			
+			var douglasPeucker = function( points, tolerance ) {
+				if ( points.length <= 2 ) {
+					return [points[0]];
+				}
+				var returnPoints = [],
+					// make line from start to end 
+					line = new Line( points[0], points[points.length - 1] ),
+					// find the largest distance from intermediate poitns to this line
+					maxDistance = 0,
+					maxDistanceIndex = 0,
+					p;
+				for( var i = 1; i <= points.length - 2; i++ ) {
+					var distance = line.distanceToPoint( points[ i ] );
+					if( distance > maxDistance ) {
+						maxDistance = distance;
+						maxDistanceIndex = i;
+					}
+				}
+				// check if the max distance is greater than our tollerance allows 
+				if ( maxDistance >= tolerance ) {
+					p = points[maxDistanceIndex];
+					line.distanceToPoint( p, true );
+					// include this point in the output 
+					returnPoints = returnPoints.concat( douglasPeucker( points.slice( 0, maxDistanceIndex + 1 ), tolerance ) );
+					// returnPoints.push( points[maxDistanceIndex] );
+					returnPoints = returnPoints.concat( douglasPeucker( points.slice( maxDistanceIndex, points.length ), tolerance ) );
+				} else {
+					// ditching this point
+					p = points[maxDistanceIndex];
+					line.distanceToPoint( p, true );
+					returnPoints = [points[0]];
+				}
+				return returnPoints;
+			};
+			var arr = douglasPeucker( points, tolerance );
+			// always have to push the very last point on so it doesn't get left off
+			arr.push( points[points.length - 1 ] );
+			return arr;
 		};
-	};
-	
-	var douglasPeucker = function( points, tolerance ) {
-		if ( points.length <= 2 ) {
-			return [points[0]];
-		}
-		var returnPoints = [],
-			// make line from start to end 
-			line = new Line( points[0], points[points.length - 1] ),
-			// find the largest distance from intermediate poitns to this line
-			maxDistance = 0,
-			maxDistanceIndex = 0,
-			p;
-		for( var i = 1; i <= points.length - 2; i++ ) {
-			var distance = line.distanceToPoint( points[ i ] );
-			if( distance > maxDistance ) {
-				maxDistance = distance;
-				maxDistanceIndex = i;
-			}
-		}
-		// check if the max distance is greater than our tollerance allows 
-		if ( maxDistance >= tolerance ) {
-			p = points[maxDistanceIndex];
-			line.distanceToPoint( p, true );
-			// include this point in the output 
-			returnPoints = returnPoints.concat( douglasPeucker( points.slice( 0, maxDistanceIndex + 1 ), tolerance ) );
-			// returnPoints.push( points[maxDistanceIndex] );
-			returnPoints = returnPoints.concat( douglasPeucker( points.slice( maxDistanceIndex, points.length ), tolerance ) );
-		} else {
-			// ditching this point
-			p = points[maxDistanceIndex];
-			line.distanceToPoint( p, true );
-			returnPoints = [points[0]];
-		}
-		return returnPoints;
-	};
-	var arr = douglasPeucker( points, tolerance );
-	// always have to push the very last point on so it doesn't get left off
-	arr.push( points[points.length - 1 ] );
-	return arr;
-};
-
-
 					
 	</script>
+
+	<script src="../static/js/main.js"></script>
+	<script src="../static/js/d3.min.js"></script>
 	
 </body>
 </html>

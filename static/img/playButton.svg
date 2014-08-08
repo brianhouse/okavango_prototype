@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="78px" height="78px" viewBox="0 0 78 78" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.0.4 (8053) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 16</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Welcome" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="ABOUT" sketch:type="MSArtboardGroup" transform="translate(-892.000000, -276.000000)" fill-opacity="0.85" fill="#040019">
+            <path d="M895.009899,276 C893.347578,276 892,277.337425 892,279.009899 L892,350.990101 C892,352.652422 893.337425,354 895.009899,354 L966.990101,354 C968.652422,354 970,352.662575 970,350.990101 L970,279.009899 C970,277.347578 968.662575,276 966.990101,276 L895.009899,276 Z M941.780876,314.989431 L925.709147,325.172764 L925.709147,304.806098 L941.780876,314.989431 Z" id="Rectangle-16" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>
