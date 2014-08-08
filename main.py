@@ -47,7 +47,20 @@ def ingest_image_api(path):
 
 def ingest_audio_api(path, i):
     log.info("ingest_audio %s" % path)
-    dt = datetime.datetime.strptime(path.split('/')[-1], "audio %d%m%Y_%H%M.mp3")
+
+    file_name = path.split('/')[-1]
+    file_name = file_name.split('.')[0]
+    front = 'img'
+
+
+    if ('_'  in file_name):
+        front = file_name.split('_')[0]
+        date_string = file_name.split('_')[1]
+    else:
+        date_string = file_name
+
+    #dt = datetime.datetime.strptime(path.split('/')[-1], "audio %d%m%Y_%H%M.mp3")
+    dt = datetime.datetime.strptime(date_string.split('_')[0], "%d%m%y%H%M%S")
     tz = pytz.timezone(config['local_tz'])
     dt = tz.localize(dt)
     t = util.timestamp(dt)    
@@ -56,14 +69,16 @@ def ingest_audio_api(path, i):
     #     return    
     fixed_path = path.replace(".mp3", ".amr")
     shutil.move(path, fixed_path)
-    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.wav" % (t, i))    
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.wav" % (front, t))    
     try:
         log.debug("--> converting [%s] to [%s]" % (fixed_path, new_path))
         subprocess.check_call("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)), shell=True)
     except Exception as e:
         log.error(log.exc(e))
         return
-    feature = geojson.Feature(properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.wav" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
+
+    coords = model.get_coords_by_time(t);
+    feature = geojson.Feature(geometry=coords,properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.wav" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
 
 
@@ -119,7 +134,10 @@ class Upload(server.Handler):
         fh = open(__UPLOADS__ + cname, 'wb')
         fh.write(fileinfo['body'])
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
-        ingest_image_api(__UPLOADS__ + cname)
+        if ('jpg' in cname):
+            ingest_image_api(__UPLOADS__ + cname)
+        else if ('mp3' in cname):
+            ingest_audio_api(__UPLOADS__ + cname)
 
 class Api(server.Handler):
     
