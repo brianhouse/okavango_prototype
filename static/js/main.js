@@ -9,6 +9,7 @@ var currentPage = "Map";
 
 
 window.onload = function (){ 
+	console.log('load');
 	initLayout();
 }
 
@@ -24,10 +25,15 @@ window.onkeypress = function(){
 
 var initLayout = function(){
 
+	console.log('init1');
 	setHr();
+	console.log('init2');
 	setVideoHeight();
+	console.log('init3');
 	initNav();
+	console.log('init4');
 	initVideo();
+	console.log('init5');
 	d3.select('#fullPanelWrapper')
 		.style('display','none');
 	d3.selectAll('div.page')
