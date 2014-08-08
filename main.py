@@ -134,7 +134,10 @@ class Upload(server.Handler):
         fh = open(__UPLOADS__ + cname, 'wb')
         fh.write(fileinfo['body'])
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
-        ingest_image_api(__UPLOADS__ + cname)
+        if ('jpg' in cname):
+            ingest_image_api(__UPLOADS__ + cname)
+        else if ('mp3' in cname):
+            ingest_audio_api(__UPLOADS__ + cname)
 
 class Api(server.Handler):
     
