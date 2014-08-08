@@ -45,7 +45,7 @@ def ingest_image_api(path):
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "images", "%s_%s.jpg" % (front,t))
     shutil.copy(path, new_path)
 
-def ingest_audio_api(path, i):
+def ingest_audio_api(path):
     log.info("ingest_audio %s" % path)
 
     file_name = path.split('/')[-1]
@@ -78,7 +78,7 @@ def ingest_audio_api(path, i):
         return
 
     coords = model.get_coords_by_time(t);
-    feature = geojson.Feature(geometry=coords,properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.wav" % (t, i), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
+    feature = geojson.Feature(geometry=coords,properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.wav" % (front, t), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
 
 
