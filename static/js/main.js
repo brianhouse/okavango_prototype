@@ -39,7 +39,9 @@ var initLayout = function(){
 
 var setVideoHeight = function(){
 
+	console.log('aga');
 	console.log(d3.select('#video').node().clientWidth*0.6);
+	console.log('aga');
 
 	d3.select('#video')
 		.style('height',d3.select('#video').node().clientWidth*0.6 + 'px');
