@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import datetime, pytz, geojson, model, os, uuid, shutil
+import datetime, pytz, geojson, model, os, uuid, shutil, subprocess
 from housepy import config, log, server, util, process
 
 process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
