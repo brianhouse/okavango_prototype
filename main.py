@@ -136,7 +136,7 @@ class Upload(server.Handler):
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
         if ('jpg' in cname):
             ingest_image_api(__UPLOADS__ + cname)
-        else if ('mp3' in cname):
+        else ('mp3' in cname):
             ingest_audio_api(__UPLOADS__ + cname)
 
 class Api(server.Handler):
