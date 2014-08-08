@@ -23,8 +23,8 @@ window.onkeypress = function(){
 
 
 var init = function(){
-	setVideoHeight();
 	setHr();
+	setVideoHeight();
 	initNav();
 	initVideo();
 	d3.select('#fullPanelWrapper')
@@ -66,7 +66,11 @@ var setHr = function(){
 			var m = d3.select(this).style('margin-left');
 			m = m.substring(0,m.length-2);
 			var w = d3.select(this).node().parentNode.clientWidth - d3.select(this).node().clientWidth - 6 - m;
+			// console.log(w);
+			// w = 100;
 			d3.select(d3.select(this).node().parentNode).select('hr').style('width',w);
+			// console.log(d3.select(d3.select(this).node().parentNode).select('hr'));
+			// console.log(w);
 		})
 }
 
