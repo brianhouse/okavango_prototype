@@ -2,6 +2,7 @@
 
 import datetime, pytz, geojson, model, os, uuid, shutil, subprocess
 from housepy import config, log, server, util, process
+from PIL import Image
 
 process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
 
@@ -75,6 +76,7 @@ def ingest_audio_api(path):
         log.debug("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)));
         subprocess.check_call("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)), shell=True)
     except Exception as e:
+        log.debug("ERROR.")
         log.error(log.exc(e))
         return
 
