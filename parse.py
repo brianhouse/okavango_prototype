@@ -159,6 +159,7 @@ def ingest_audio(path, i, t_protect):
     try:
         log.debug("--> converting [%s] to [%s]" % (fixed_path, new_path))
         subprocess.check_call("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)), shell=True)
+        log.debug("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)));
     except Exception as e:
         log.error(log.exc(e))
         return
