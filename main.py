@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import datetime, pytz, geojson, model, os, uuid, shutil, subprocess, pipes
+import datetime, pytz, geojson, model, os, uuid, shutil, subprocess, pipes, json
 from housepy import config, log, server, util, process
 from PIL import Image
 
