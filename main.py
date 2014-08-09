@@ -163,6 +163,7 @@ class Upload(server.Handler):
         #body = self.request.data
         fh = open(__UPLOADS__ + cname, 'wb')
         fh.write(fileinfo['body'])
+        fh.flush();
 
         os.fsync(fh)
 
