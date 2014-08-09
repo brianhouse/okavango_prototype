@@ -13,12 +13,12 @@ __UPLOADS__ = "uploads/"
 def ingest_json_api(path):
     log.info("ingest_json_api %s" % path)
 
-    d = open(path);
+    d = open(path)
     print(d);
 
-    print(d.read());
+    print(d.read())
 
-    data = json.loads(d.read())
+    data = json.loads(d)
 
     t = data['DateTime']
     lat = data['Longitude']
