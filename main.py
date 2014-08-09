@@ -73,7 +73,6 @@ def ingest_image_api(path):
 
 def ingest_audio_api(path):
     log.info("ingest_audio %s" % path)
-    time.sleep(5);
 
     file_name = path.split('/')[-1]
     file_name = file_name.split('.')[0]
@@ -93,7 +92,7 @@ def ingest_audio_api(path):
     # if t <= t_protect:
     #     log.warning("Protected t, skipping...")
     #     return    
-    fixed_path = path.replace(".mp3", ".amr")
+    fixed_path = path #.replace(".mp3", ".amr")
     shutil.move(path, fixed_path)
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.wav" % (front, t))    
 
