@@ -15,7 +15,7 @@ def ingest_json_api(path):
 
     d = open(path);
 
-    print(d.getValue());
+    print(d.read());
 
     data = json.loads(d)
 
