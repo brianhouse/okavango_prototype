@@ -27,7 +27,7 @@ def ingest_json_api(path):
     coords = [float(lat),float(lon),0]
     print(coords)
 
-    feature = geojson.Feature(geometry=coords,properties=data)
+    feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coords},properties=data)
 
     if (data['Exhaustion']):
         feature_id = model.insert_feature('ethnographic', t, geojson.dumps(feature))
@@ -162,6 +162,7 @@ class Upload(server.Handler):
         fname = fileinfo['filename']
         extn = os.path.splitext(fname)[1]
         cname = fname #str(uuid.uuid4()) + extn
+
         #body = self.request.data
         fh = open(__UPLOADS__ + cname, 'wb')
         fh.write(fileinfo['body'])
