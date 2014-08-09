@@ -12,8 +12,11 @@ __UPLOADS__ = "uploads/"
 
 def ingest_json_api(path):
     log.info("ingest_json_api %s" % path)
-    json_data=open(path)
-    data = json.load(json_data)
+    #json_data=open(path)
+    #data = json.load(json_data)
+
+    data = JSON.parse(fs.readFileSync(path, 'utf8'));
+
     t = data['DateTime']
     lat = data['Longitude']
     lon = data['Latitude']
