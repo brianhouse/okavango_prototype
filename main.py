@@ -16,8 +16,6 @@ def ingest_json_api(path):
     d = open(path)
     txt = d.read();
 
-    print(txt)
-
     data = json.loads(txt)
 
     t = data['DateTime']
@@ -25,7 +23,7 @@ def ingest_json_api(path):
     lon = data['Latitude']
 
     coords = [float(lat),float(lon),0]
-    print(coords)
+    print(data)
 
     feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coords},properties=data)
 
