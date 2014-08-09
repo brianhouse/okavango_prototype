@@ -13,7 +13,7 @@ __UPLOADS__ = "uploads/"
 def ingest_json_api(path):
     log.info("ingest_json_api %s" % path)
 
-    d = open(path).read();
+    d = open(path);
 
     print(d);
 
