@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import datetime, pytz, geojson, model, os, uuid, shutil, subprocess, pipes, json
+import datetime, pytz, geojson, model, os, uuid, shutil, subprocess, pipes, json, time
 from housepy import config, log, server, util, process
 from PIL import Image
 
@@ -73,6 +73,7 @@ def ingest_image_api(path):
 
 def ingest_audio_api(path):
     log.info("ingest_audio %s" % path)
+    time.sleep(5);
 
     file_name = path.split('/')[-1]
     file_name = file_name.split('.')[0]
