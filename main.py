@@ -15,7 +15,7 @@ def ingest_json_api(path):
     #json_data=open(path)
     #data = json.load(json_data)
 
-    data = JSON.parse(fs.readFileSync(path, 'utf8'));
+    data = json.parse(fs.readFileSync(path, 'utf8'));
 
     t = data['DateTime']
     lat = data['Longitude']
