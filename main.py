@@ -14,8 +14,7 @@ def ingest_json_api(path):
     log.info("ingest_json_api %s" % path)
 
 
-    json_data=open(path)
-    data = json.load(json_data.read())
+    data = json.loads(open(path).read())
 
     t = data['DateTime']
     lat = data['Longitude']
