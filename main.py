@@ -27,7 +27,7 @@ def ingest_json_api(path):
 
     feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coords},properties=data)
 
-    if (data['Exhaustion']):
+    if ('Exhaustion' in data):
         feature_id = model.insert_feature('ethnographic', t, geojson.dumps(feature))
         log.info("ingest_json_api ETHNO")
     else:
