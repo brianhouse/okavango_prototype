@@ -194,8 +194,16 @@
 		
 	</div>
 
+
+
+
+	<script src="../static/js/d3.min.js"></script>
+	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
 
+		console.log('a1');
+		initLayout();
+		console.log('a2');
 
 		// create a map in the "map" div, set the view to a given place and zoom
 		var map = L.map('map', {zoomControl:false}).setView([-19.2571, 22.6560], 5);
@@ -940,116 +948,7 @@
 		/*
 		onLoad
 		*/
-		$(function(){
 
-			$("#logo").load("../static/img/logo.svg", function(){
-				$("#logo svg").width("100%"); 
-				$("#logo svg").height("30px"); 
-				$("#logo svg path").addClass("logotransition"); 
- 			});
-
- 			init();
-			fadePanel(false);
- 
-			$("#expedition").click(function(event){
-				event.preventDefault(); 
-				fadePanel(true);
-				$("#about").fadeIn();
-				$("#about").css("position","relative");
-				$("#helppanel").fadeOut();
-				$("#helppanel").css("position","absolute");
-				resizeYoutubeFrame();
-				console.log("expedition");
-			});
- 
-			$("#api").click(function(event){
-				event.preventDefault(); 
-				window.location = "/api";
-			});
- 
-			$("#help").click(function(event){
-				event.preventDefault(); 
-				fadePanel(true);
-				$("#about").fadeOut();
-				$("#about").css("position","absolute");
-				$("#helppanel").fadeIn();
-				$("#helppanel").css("position","relative");
-				console.log("help");
-			});
-
-			$("#closehelp").click(function(event){
-				event.preventDefault(); 
-				$("#about").fadeOut();
-				$("#helppanel").fadeOut();
-				console.log("help");
-			});
-
-			$("#closeabout").click(function(event){
-				event.preventDefault(); 
-				fadePanel(false);
-				console.log("help");
-			});
-
-			$("#skip").click(function(event){
-				event.preventDefault(); 
-				doSkip();
-				$("#skip").hide();
-				console.log("help");
-			});
-
-			$(window).resize(function() {
-			 	resizeYoutubeFrame();
-			});
- 
-		});
-
-		function init(){
-			$("#about, #helppanel, .shadow").css("display","none");
-			$("#title").css("border","none");
-			$("#ui_holder").css("background-color","rgba(250,174,52,0)");
-			$("#ui_holder").addClass("bkgtransition");
-			$("#ui_holder h2").css("color","white");
-			$("#ui_holder #title").css("padding","2% 20% 2% 20%");
-			$("#ui_holder").height("150px");
-			$("#ui_holder").css("min-height","150px");
-		}
-
-		function resizeYoutubeFrame(){
-			$("#helppanel").fadeOut(100);
-			var youtube = $("#about iframe");
-			console.log(youtube.width() + youtube.css("display"));
-			youtube.height(youtube.width()*0.5625+"px");
-		}
-
-		function fadePanel(intro){
-			if(intro){
-				$("#ui_holder").css("background-color","rgba(250,174,52,0.8)");
-				$("#title").css("border-top","solid 1px");
-				$("#title").css("border-bottom","solid 1px");
-				$("#ui_holder #title").css("border-color","rgba(0,0,0,0.05)");
-				$("#ui_holder h2").css("color","rgba(68,61,51,1)");
-				$("#ui_holder #logo svg path, #ui_holder #logo svg circle").css("fill","#1B1C1E");
-				$("#ui_holder .shadow").fadeIn();
-				$("#ui_holder #header a:last-child").css("opacity","1");
-				$("#ui_holder #header a:last-child").css("pointer-events","auto");
-				$("#ui_holder #title").css("padding","8% 20% 8% 20%");
-				$("#ui_holder").height("auto");
-				$("#ui_holder").css("min-height","100%");
-			} else {
-				$("#ui_holder").css("background-color","rgba(250,174,52,0)");
-				$("#ui_holder #title").css("border-color","rgba(0,0,0,0)");
-				$("#ui_holder h2").css("color","white");
-				$("#ui_holder #logo svg path, #ui_holder #logo svg circle").css("fill","white");
-				$("#ui_holder .shadow").fadeOut(100);
-				$("#about").fadeOut(100);
-				$("#helppanel").fadeOut(100);
-				$("#ui_holder #header a:last-child").css("opacity","0.5");
-				$("#ui_holder #header a:last-child").css("pointer-events","none");
-				$("#ui_holder #title").css("padding","2% 20% 2% 20%");
-				$("#ui_holder").height("150px");
-				$("#ui_holder").css("min-height","150px");
-			}
-		}
 
 		simplifyPath = function( points, tolerance ) {
 		 
@@ -1123,9 +1022,6 @@
 		};
 					
 	</script>
-
-	<script src="../static/js/main.js"></script>
-	<script src="../static/js/d3.min.js"></script>
 	
 </body>
 </html>

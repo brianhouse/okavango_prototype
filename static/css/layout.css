@@ -190,7 +190,7 @@ ul {
 
 			div#logo h4{
 				margin: 0;
-				margin-top: 15px;
+				margin-top: 5px;
 				text-align: center;
 			}
 
@@ -249,6 +249,7 @@ ul {
 			padding:0;
 			cursor:pointer;
 			background-color: black;
+			height:auto;
 		} 
 
 			#fullPanelWrapper div.page div#aboutWrapper div#video svg.playButton{
@@ -366,6 +367,12 @@ ul {
     /*background-color: #515C58;*/
     z-index:0;
 }
+
+	#map_holder #map{
+		width:100%;
+		height:100%;
+		position:relative;
+	}
 
 
 

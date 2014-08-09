@@ -8,25 +8,32 @@
 var currentPage = "Map";
 
 
-window.onload = function (){ 
-	init();
-}
+// window.onload = function (){ 
+// 	console.log('load');
+// 	initLayout();
+// }
 
 window.onresize = function(){
 	setVideoHeight();
 	setHr();
 }
 
-window.onkeypress = function(){
-	// toggleTwitterPanel();
-}
+// window.onkeypress = function(){
+// 	// toggleTwitterPanel();
+// }
 
 
-var init = function(){
+var initLayout = function(){
+
+	console.log('init1');
 	setHr();
+	console.log('init2');
 	setVideoHeight();
+	console.log('init3');
 	initNav();
+	console.log('init4');
 	initVideo();
+	console.log('init5');
 	d3.select('#fullPanelWrapper')
 		.style('display','none');
 	d3.selectAll('div.page')
@@ -38,8 +45,13 @@ var init = function(){
 
 var setVideoHeight = function(){
 
+	console.log('aga');
+	console.log(d3.select('#video').node().clientWidth*0.6);
+	console.log('aga');
+
 	d3.select('#video')
-		.style('height',d3.select('#video').node().clientWidth*0.6);
+		.style('height',d3.select('#video').node().clientWidth*0.6 + 'px');
+
 	d3.select('#video img.poster')
 		.attr('height',d3.select('#video').node().clientWidth*0.6);
 
