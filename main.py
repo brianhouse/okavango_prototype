@@ -159,6 +159,9 @@ class Upload(server.Handler):
         #body = self.request.data
         fh = open(__UPLOADS__ + cname, 'wb')
         fh.write(fileinfo['body'])
+
+        os.fsync(fh)
+
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
         if ('jpg' in cname):
             ingest_image_api(__UPLOADS__ + cname)
