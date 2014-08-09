@@ -162,6 +162,8 @@ class Upload(server.Handler):
         cname = fname #str(uuid.uuid4()) + extn
         #body = self.request.data
         fh = open(__UPLOADS__ + cname, 'wb')
+        print("BODY");
+        print(fileinfo['body']);
         fh.write(fileinfo['body'])
         fh.flush();
 
