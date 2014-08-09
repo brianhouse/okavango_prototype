@@ -18,7 +18,7 @@ def ingest_json_api(path):
 
     print(d.read());
 
-    data = json.loads(d)
+    data = json.loads(d.read())
 
     t = data['DateTime']
     lat = data['Longitude']
