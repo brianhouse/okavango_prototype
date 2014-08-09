@@ -14,6 +14,7 @@ def ingest_json_api(path):
     log.info("ingest_json_api %s" % path)
 
     d = open(path);
+    print(d);
 
     print(d.read());
 
@@ -162,11 +163,8 @@ class Upload(server.Handler):
         cname = fname #str(uuid.uuid4()) + extn
         #body = self.request.data
         fh = open(__UPLOADS__ + cname, 'wb')
-        print("BODY");
-        print(fileinfo['body']);
         fh.write(fileinfo['body'])
         fh.flush();
-
         os.fsync(fh.fileno())
 
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
