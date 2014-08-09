@@ -10,6 +10,26 @@ __UPLOADS__ = "uploads/"
 
 #2014 ingest via API
 
+def ingest_json_api(path):
+    log.info("ingest_json_api %s" % path)
+    json_data=open(path)
+    data = json.load(json_data)
+    t = data['DateTime']
+    lat = data['Longitude']
+    lon = data['Latitude']
+
+    coords = (lat,lon)
+
+    feature = geojson.Feature(geometry=coords,properties=data)
+
+    if (data['Exhaustion']):
+        feature_id = model.insert_feature('ethnographic', t, geojson.dumps(feature))
+        log.info("ingest_json_api ETHNO")
+    else:
+        feature_id = model.insert_feature('sighting', t, geojson.dumps(feature))
+        log.info("ingest_json_api SIGHTING")
+
+
 def ingest_image_api(path):
     log.info("ingest_image %s" % path)
 
@@ -53,7 +73,6 @@ def ingest_audio_api(path):
     file_name = file_name.split('.')[0]
     front = 'img'
 
-
     if ('_'  in file_name):
         front = file_name.split('_')[0]
         date_string = file_name.split('_')[1]
@@ -75,7 +94,7 @@ def ingest_audio_api(path):
     log.debug("CONVERTING SOUND.")
     try:
         log.debug("--> converting [%s] to [%s]" % (fixed_path, new_path))
-        log.debug("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)));
+        log.debug("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)))
         subprocess.check_call("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)), shell=True)
     except Exception as e:
         log.debug("ERROR.")
@@ -144,6 +163,8 @@ class Upload(server.Handler):
             ingest_image_api(__UPLOADS__ + cname)
         elif ('mp3' in cname):
             ingest_audio_api(__UPLOADS__ + cname)
+        elif ('json' in cname):
+            ingest_json_api(__UPLOADS__ + cname)
 
 class Api(server.Handler):
     
@@ -157,7 +178,7 @@ class Api(server.Handler):
     def get_timeline(self):
         skip = self.get_argument('skip', 1)
         kinds = self.get_argument('types', "beacon").split(',')
-        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon', 'heart_spike', 'tweet']]   # sanitizes
+        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ethnographic', 'ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon', 'heart_spike', 'tweet']]   # sanitizes
         try:
             dt = self.get_argument('date', datetime.datetime.now(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%d"))
             log.debug(dt)
