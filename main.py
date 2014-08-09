@@ -24,7 +24,7 @@ def ingest_json_api(path):
     lat = data['Longitude']
     lon = data['Latitude']
 
-    coords = (lat,lon)
+    coords = (float(lat),float(lon))
 
     feature = geojson.Feature(geometry=coords,properties=data)
 
