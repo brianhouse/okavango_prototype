@@ -14,11 +14,11 @@ def ingest_json_api(path):
     log.info("ingest_json_api %s" % path)
 
     d = open(path)
-    print(d);
+    txt = d.read();
 
-    print(d.read())
+    print(txt)
 
-    data = json.loads(d)
+    data = json.loads(txt)
 
     t = data['DateTime']
     lat = data['Longitude']
