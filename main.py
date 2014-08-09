@@ -167,7 +167,7 @@ class Upload(server.Handler):
         fh.write(fileinfo['body'])
         fh.flush();
 
-        os.fsync(fh)
+        os.fsync(fh.fileno())
 
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
         if ('jpg' in cname):
