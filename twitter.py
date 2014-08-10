@@ -102,7 +102,7 @@ def init_twitter():
 			print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
 
 	## b. others - #okavango14 tagged 
-	accts = ('blprnt','shahselbe','rustictoad','AdventurScience','rangerdiaries')
+	accts = ('blprnt','shahselbe','rustictoad','AdventurScience','rangerdiaries','jameskydd','okavangowild')
 	for ac in accts:
 
 		try: 
