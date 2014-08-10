@@ -32,14 +32,17 @@
 
     <script>
         $(document).ready(function() {
+            console.log("SHUFFLE");
             var $container = $(".randcol");
             $container.html(shuffle($container.children().get()));
 
-            function shuffle(o){
-                for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-                return o;
-            };
+            
         })
+
+        function shuffle(o){
+            for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+            return o;
+        };
     </script>
 
   </head>
