@@ -20,10 +20,6 @@ window.onresize = function(){
 	setHr();
 }
 
-window.onkeypress = function(){
-	toggleTwitterPanel();
-}
-
 
 var initLayout = function(){
 
@@ -440,11 +436,6 @@ var toggleTwitterPanel = function(){
 			.style('right',(w*0.645) + 'px')
 			.style('opacity',1)
 
-		d3.select('#map_holder')
-			.style('cursor','pointer')
-			.on('click',function(){
-				togglePanel(this, true, 0);
-			});
 		currentPage = 'Twitter';
 	} else {
 		var w = d3.select('#fullPanelWrapper').style('width');
@@ -473,50 +464,63 @@ var toggleTwitterPanel = function(){
 }
 
 var loadTweets = function(){
+	var daysRange = Math.ceil((new Date().getTime() - new Date('August 7, 2014').getTime())/(1000*3600*24));
+	var url = 'http://intotheokavango.org/api/timeline?date=20140807&types=tweet&days=' + daysRange
+	d3.json(url, function (json) {
+		if(!json)return;    
+    	var tweets = [];
+		for(var i =0; i<json.features.length; i++){
+			var t = {
+				username: json.features[i].properties.tweet.user.name,
+				message: json.features[i].properties.tweet.text,
+				date: new Date(Math.round(parseFloat(json.features[i].properties.t_utc))),
+				coords: json.features[i].geometry.coordinates,
+				profilePicUrl: json.features[i].properties.tweet.user.profile_image_url,
+			};
+			try{
+				if(t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].type == 'photo'){
+					t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].media_url;
+				}
+			} catch(e){}
+			tweets.push(t);
+		}
 
-	// var url = "http://storageName.blob.core.windows.net/containerName/file.json";
- //    d3.json("url", function (json) {
-    	
- //     //code here
- //    })
+		var m_names = new Array("Jan", "Feb", "Mar", 
+		"Apr", "May", "Jun", "Jul", "Aug", "Sep", 
+		"Oct", "Nov", "Dec");
 
-	var tweets = [];
-	for(var i =0; i<10; i++){
-		tweets.push({
-			username:'john',
-			message:'lorem ipsum',
-			date: new Date(new Date().getTime() - Math.random()*1000*3600*24)
-		})
-	}
+		d3.select('#twitterWrapper').selectAll('div.tweet')
+	        .data(tweets)
+	        .enter()
+	        .append('div')
+	        .classed('tweet',true)
+	        .html(function(d,i){
+	        	return '<div class="controls"><div class="locationFinder"></div><a><div class="twitter"></div></a></div><p class="meta">        	</p><hr class="innerSeparator"/><div class="body"><img src = "'+d.profilePicUrl+'" width="10%" height="10%" class="profile"/><p class="message"></p>' + (d.photoUrl ? '<img src = "'+d.photoUrl+'" width="100%" class="pic"/>' : '') + '</div><hr class="outerSeparator"/>'
+	        })
+	        .each(function(d,i){
+	        	d3.select(this).select('a')
+	        		.attr('href','http://www.twitter.com')
 
-	d3.select('#twitterWrapper').selectAll('div.tweet')
-        .data(tweets)
-        .enter()
-        .append('div')
-        .classed('tweet',true)
-        .html('<div class="controls"><div class="locationFinder"></div><a><div class="twitter"></div></a></div><p class="meta">        	</p><hr class="innerSeparator"/><div class="body"><img src = "" width="10%" height="10%" class="profile"/><p class="message"></p>' +(d3.select(this).datum.pic ? '<img src = "" width="100%" class="pic"/>' : '') + '</div><hr class="outerSeparator"/>')
-        .each(function(d,i){
-        	d3.select(this).select('a')
-        		.attr('href','http://www.twitter.com')
+	        	var t = new Date(d.date.getTime());
+	        	t = ((t.getDay()+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
 
-        	var t = new Date(d.date.getTime());
-        	t = (t.getMonth()+1) + '/' + (t.getDay()+1) + ' ' + t.getHours() + ':' +t.getMinutes();
-        	d3.select(this).select('p.meta')
-        		.html(t + '<span></span>' + d.username);
-        	d3.select(this).select('p.message')
-        		.html(d.message);
-        	d3.select(this).selectAll('div.body, div.locationFinder')
-        		.on('click',findTweetLocation);
-        })
+	        	d3.select(this).select('p.meta')
+	        		.html(t + '<span></span>' + d.username);
+	        	d3.select(this).select('p.message')
+	        		.html(d.message);
+	        	var _this = this;
+	        	d3.select(this).selectAll('div.body, div.locationFinder')
+	        		.on('click',function(d){findTweetLocation(d3.select(_this).datum().coords)});
+	        })	
+
+	    d3.select('#tweetsButton')
+	    	.style('display','block')
+	    	.style('opacity',1)
+	    	.on('click',function(){toggleTwitterPanel();})
+
+    })
+	
 }
-
-var findTweetLocation  = function(){
-	console.log('findTweetLocation');
-}
-
-
-
-
 
 
 

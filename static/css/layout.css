@@ -130,7 +130,7 @@ ul {
 			right:4%;
 		}
 
-			div#navWrapper ul li{
+			div#navWrapper ul li, div#navWrapper ul a li{
 				display:inline-block;
 				margin-right:-3px;
 				vertical-align: top;
@@ -141,6 +141,7 @@ ul {
 				cursor: pointer;
 				opacity: 0.6;
 				transition: opacity 0.15s;
+				color:white;
 			}
 
 			div#navWrapper ul#pagesNav li{
@@ -204,6 +205,21 @@ ul {
     position: absolute;
     opacity: 0;
 }
+
+/*	#fullPanelWrapper div.closeButton{
+	    position:absolute;
+	    right:-32px;
+	    top:26px;
+	    width:7px;
+	    height:11px;
+	    background-color: white;
+	    border-radius:2px;
+	    font-family: "Montserrat";
+	    font-size: 18px;
+	    color: rgba(4,0,26,0.75);
+	    padding:0px 10px 13px 7px;
+	    cursor:pointer;
+	}*/
 
 	#fullPanelWrapper div.page{
 		width:100%;
@@ -506,6 +522,7 @@ ul {
 				vertical-align: top;
 				height:38px;
 				margin-right:7%;
+				padding-top:5px;
 			}
 
 			div#twitterWrapper div.tweet p.message{
@@ -513,10 +530,11 @@ ul {
 				vertical-align: top;
 				font-family: Georgia;
 				font-style: italic;
-				font-size: 18px;
+				font-size: 15px;
 				color: #fff;
-				line-height: 29px;
+				line-height: 25px;
 				letter-spacing: 0.1em;
+				width:82%;
 			}
 
 			div#twitterWrapper div.tweet:hover div.locationFinder{
@@ -527,8 +545,8 @@ ul {
 				border:none;
 				height:1px;
 				background-color: rgba(255,255,255,0.2);
-				margin-bottom: 20px;
-				margin-top: 10px;
+				margin-bottom: 12px;
+				margin-top: 2px;
 				display:block;
 			}
 
@@ -553,6 +571,26 @@ ul {
 		position:relative;
 	}
 
+	#map_holder #tweetsButton{
+		position:absolute;
+		width:100px;
+		top:25px;
+		right:11%;
+		font-weight: normal;
+		font-size: 15px;
+		letter-spacing: 0.1em;
+		cursor: pointer;
+		opacity: 0;
+		transition: opacity 0.15s;
+		color:white;
+		text-transform: uppercase;
+		display:none;
+	}
+
+		#map_holder #tweetsButton:hover{
+			opacity: 1;
+		}
+
 #skip {
 	font: 14px Verdana, Helvetica, sans-serif; 
 	position: fixed;
@@ -570,7 +608,6 @@ ul {
 	position:fixed;
 	bottom:30px;
 	left:5.5%;
-	opacity: 0.5;
 }
 #credits a{
 	margin-right: 20px;
@@ -578,12 +615,13 @@ ul {
 
 #credits a img{
 	height:40px;
+	opacity: 0.5;
 }
 
 
 #map div.leaflet-control-container div.leaflet-top:nth-child(2){
-	right:5.5%;
-	top:75px;
+	right:3.8%;
+	top:25px;
 }
 
 div.leaflet-popup-content-wrapper{
@@ -613,6 +651,7 @@ div.leaflet-popup-content{
 	color:white;
 	line-height: 1.6em;
 	letter-spacing: 0.1em;
+	margin:19px;
 }
 
 div.leaflet-label{
@@ -629,4 +668,49 @@ div.leaflet-label{
 
 div.leaflet-popup-tip{
 	background-color: rgba(4,0,26,0.75);
+}
+
+div.leaflet-control, div.leaflet-control a{
+	display: inline-block;
+	vertical-align: top;
+	margin:0;
+	margin-top:0 !important;
+	margin-right:0 !important;
+	clear:none;
+	height:26px !important;
+}
+
+div.leaflet-control-zoom{
+	margin-right:15px !important;
+}
+
+div.leaflet-control a:first-child{
+	border-top-left-radius:2px;
+	border-bottom-left-radius:2px;
+	border-top-right-radius:0px;
+	border-bottom-right-radius:0px;
+}
+
+div.leaflet-control a:last-child{
+	border-top-right-radius:2px;
+	border-bottom-right-radius:2px;
+	border-top-left-radius:0px;
+	border-bottom-left-radius:0px;
+}
+
+a.leaflet-control-zoom-fullscreen{
+	border-top-left-radius:2px !important;
+	border-bottom-left-radius:2px !important;
+	border-top-right-radius:2px;
+	border-bottom-right-radius:2px;
+}
+
+div.leaflet-control:hover, div.leaflet-control a:hover{
+	display: inline-block;
+	vertical-align: top;
+	margin-right:-2px;
+	clear:none;
+	margin:0;
+	margin-top:0;
+	margin-right:0;
 }
