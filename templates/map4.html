@@ -33,8 +33,10 @@
     <script>
         $(document).ready(function() {
             console.log("SHUFFLE");
-            var $container = $("#col1");
-            $container.html(shuffle($container.children().get()));
+            var $container = $(".randcol");
+            $container.each(function() {
+                $(this).html(shuffle($(this).children().get()));
+            })
 
             
         })
