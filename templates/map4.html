@@ -33,7 +33,7 @@
     <script>
         $(document).ready(function() {
             console.log("SHUFFLE");
-            var $container = $(".randcol");
+            var $container = $("#col1");
             $container.html(shuffle($container.children().get()));
 
             
@@ -147,7 +147,7 @@
 
                     <div id="teamWrapper">
                         <div><h2>Team</h2><hr class="subline"/></div>
-                        <div class="column" class="randCol">
+                        <div class="column" class="randCol" id = "col1">
                             <div class="teammate">
                                 <img src="../static/img/sBoyes.png" alt="Steve Boyes' portrait"/>
                                 <a href="http://twitter.com/drsteveboyes"><div class="twitter"></div></a>
