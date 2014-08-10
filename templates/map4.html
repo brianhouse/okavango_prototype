@@ -33,9 +33,14 @@
     <script>
         $(document).ready(function() {
             console.log("SHUFFLE");
-            $(".randcol").each(function() {
-                $(this).html(shuffle($(this).children().get()));
-            })
+            var $container = $("#col1");
+            $container.html(shuffle($container.children().get()));
+            var $container = $("#col2");
+            $container.html(shuffle($container.children().get()));
+            var $container = $("#col3");
+            $container.html(shuffle($container.children().get()));
+            var $container = $("#col4");
+            $container.html(shuffle($container.children().get()));
 
             
         })
@@ -173,7 +178,7 @@
 
                             
                         </div>
-                        <div class="column" class="randcol">
+                        <div class="column" class="randcol" id="col2">
 
                             <div class="teammate">
                                 <!--img src="../static/img/nGelinas.png" alt="Neil Gelinas' portrait"/-->
@@ -203,7 +208,7 @@
                             <hr/>
                         
                         </div>
-                        <div class="column" class="randcol">
+                        <div class="column" class="randcol" id="col3">
                             <div class="teammate">
                                 <img src="../static/img/jHilton.png" alt="John Hilton' portrait"/>
                                 <h3>John Hilton</h3>
@@ -233,7 +238,7 @@
                             
 
                         </div>
-                        <div class="column" class="randcol">
+                        <div class="column" class="randcol" id="col4">
                             <div class="teammate">
                                 <img src="../static/img/jThorpe.png" alt="Jer Thorp' portrait"/>
                                 <a href="http://o-c-r.org"><div class="website"></div></a>
