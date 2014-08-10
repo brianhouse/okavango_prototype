@@ -178,6 +178,14 @@ class Upload(server.Handler):
         elif ('json' in cname):
             ingest_json_api(__UPLOADS__ + cname)
 
+class Api2(server.Handler):
+    
+    def get(self, page=None):
+        if not len(page):
+            return self.render("api14.html")    
+        return self.not_found()
+}
+
 class Api(server.Handler):
     
     def get(self, page=None):
@@ -207,6 +215,7 @@ class Api(server.Handler):
 
 handlers = [
     (r"/api/?([^/]*)", Api),
+    (r"/api14/?([^/]*)", Api2),
     (r"/upload", Upload),
     (r"/uploadform", Userform),
     (r"/images/?([^/]*)", Images),
