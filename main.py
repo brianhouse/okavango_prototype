@@ -189,7 +189,7 @@ class Api(server.Handler):
     
     def get(self, page=None):
         if not len(page):
-            return self.render("api.html")    
+            return self.render("api14.html")    
         if page == "timeline":
             return self.get_timeline()
         return self.not_found()
@@ -214,7 +214,6 @@ class Api(server.Handler):
 
 handlers = [
     (r"/api/?([^/]*)", Api),
-    (r"/api14", Api2),
     (r"/upload", Upload),
     (r"/uploadform", Userform),
     (r"/images/?([^/]*)", Images),
