@@ -103,7 +103,7 @@ def init_twitter():
 
 	## b. others - #okavango14 tagged 
 	accts = ('blprnt','shahselbe','rustictoad','AdventurScience','rangerdiaries')
-	for(ac in accts):
+	for ac in accts:
 
 		try: 
 			main_timeline = twitter.get_user_timeline(screen_name=ac)
