@@ -38,7 +38,7 @@
                 <div id="navWrapper" class="transparent">
                     <ul id="pagesNav" class="transparent">
                         <li class="focused">Map</li>
-                        <li class="inactive">Data</li>
+                        <li>Data</li>
                         <li class="inactive">API</li>
                         <li>About</li>
                     </ul>
@@ -59,12 +59,52 @@
             </div>
             <div id="fullPanelWrapper">
                 <div class="page">
-                    <div id="aboutWrapper2">
-                        <div id="about2">
-                           <div><h2>About</h2><hr class="subline"/></div>
-                            <p>This site dipslays data which was uploaded daily, via satellite, by the expedition team in the Okavango delta. Data is also available through a public API, allowing anyone to re-miw, analyze, or visualize the collected information.</p>
-                            <p><a href="https://en.wikipedia.org/wiki/Okavango_Delta">the Okavango delta</a><span></span><a href="http://en.wikipedia.org/wiki/Bushmen">the BaYei bushmen</a></p>
+                    <div id="dataWrapper">
+                        <div id="data">
+                            <div class="column">
+                               <div><h2>Data</h2><hr class="subline"/></div>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in ante porta, faucibus justo non, blandit orci. Phasellus ut leo sem. Maecenas tortor nisl, facilisis nec varius eget, malesuada placerat enim. Sed suscipit erat vitae urna elementum ullamcorper.</p>
+                            </div>
+                            <div class="column">
+                                <h3>distance</h3>
+                                <p class="counter"><span>27,7km </span><span>total distance</span></p>
+                                <p class="counter"><span>average speed</span><span> 3.9km/h</span></p>
+                            </div>
+                            <div class="column">
+                                <h3>sightings</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in ante porta, faucibus justo non, blandit orci. Phasellus ut leo sem. Maecenas tortor nisl, facilisis nec varius eget, malesuada placerat enim. Sed suscipit erat vitae urna elementum ullamcorper.</p>
+                            </div>
                         </div>
+                    </div>
+
+                    <div id="timelineWrapper">
+                        <div id="timeline">
+                            <svg class="timeline"></svg>
+                        </div>
+                    </div>
+
+                    <div id="graphWrapper">
+                        <div class="graph" id="scale">
+                            <svg class="labels"></svg><svg class="graph"></svg>
+                        </div>
+                        <h3>heartrate</h3>
+                        <div class="graph" id="heartRate">
+                            <svg class="labels"></svg><svg class="graph"></svg>
+                        </div>
+                        <h3>energy consumption</h3>
+                        <div class="graph" id="energyConsumption">
+                            <svg class="labels"></svg><svg class="graph"></svg>
+                        </div>
+                        <h3>speed</h3>
+                        <div class="graph" id="speed">
+                            <svg class="labels"></svg><svg class="graph"></svg>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <hr/>
+                        <div class="marker"><img src="../static/img/marker.svg"/></div>
+                        <hr/>
                     </div>
                 </div>
                 <div class="page">
@@ -174,9 +214,7 @@
                 </div>
 
                 <div class="page">
-                    <div id="aga">
-                        
-                    </div>
+                    <div id="twitterWrapper"></div>
                 </div>
 
             </div>
@@ -189,8 +227,8 @@
 
 
 	<div id="credits">
+        <a href="http://www.o-c-r.org/"><img src="../static/img/ocr.png" alt="The Office for Creative Research logo"/></a>
 		<a href="http://www.wildbirdtrust.com/"><img src="../static/img/wbtlogo.png" alt="Wild Bird Trust logo"/></a>
-		<a href="http://www.o-c-r.org/"><img src="../static/img/ocr.png" alt="The Office for Creative Research logo"/></a>
 		
 	</div>
 
@@ -201,9 +239,9 @@
 	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
 
-		console.log('a1');
+		// console.log('a1');
 		initLayout();
-		console.log('a2');
+		// console.log('a2');
 
 		// create a map in the "map" div, set the view to a given place and zoom
 		var map = L.map('map', {zoomControl:false}).setView([-19.2571, 22.6560], 5);
@@ -901,7 +939,7 @@
 		var fullScreen = new L.Control.FullScreen({ position: 'topright' }); 
 		map.addControl(fullScreen);
 
-		L.control.layers(baseMaps, overlays).addTo(map);
+		// L.control.layers(baseMaps, overlays).addTo(map);
 		new L.Control.Zoom({ position: 'topright' }).addTo(map);
 		setTimeout(zoomIn, 5000);
 

@@ -1,11 +1,13 @@
 
 
 /*
-
+	set back map (display:none)
+	rétablir color body
 */
 
 
 var currentPage = "Map";
+var cursorRange = [0.1,0.66];
 
 
 // window.onload = function (){ 
@@ -18,22 +20,20 @@ window.onresize = function(){
 	setHr();
 }
 
-// window.onkeypress = function(){
-// 	// toggleTwitterPanel();
-// }
+window.onkeypress = function(){
+	toggleTwitterPanel();
+}
 
 
 var initLayout = function(){
 
-	console.log('init1');
 	setHr();
-	console.log('init2');
+	setColumns();
 	setVideoHeight();
-	console.log('init3');
 	initNav();
-	console.log('init4');
 	initVideo();
-	console.log('init5');
+	initTimeline();
+	initGraphs();
 	d3.select('#fullPanelWrapper')
 		.style('display','none');
 	d3.selectAll('div.page')
@@ -45,9 +45,9 @@ var initLayout = function(){
 
 var setVideoHeight = function(){
 
-	console.log('aga');
-	console.log(d3.select('#video').node().clientWidth*0.6);
-	console.log('aga');
+	// console.log('aga');
+	// console.log(d3.select('#video').node().clientWidth*0.6);
+	// console.log('aga');
 
 	d3.select('#video')
 		.style('height',d3.select('#video').node().clientWidth*0.6 + 'px');
@@ -59,13 +59,14 @@ var setVideoHeight = function(){
 		.attr('height',d3.select('#video svg.playButton').node().clientWidth)
 	d3.select('#video')
 		.on('mouseover',function(){
-			d3.select(this).select('svg.playButton g#about')
+			console.log(d3.select(this).select('svg.playButton g#ABOUT'))
+			d3.select(this).select('svg.playButton g#ABOUT')
 				.transition()
 				.duration(100)
 				.attr('fill','#FFB637')
 		})
 		.on('mouseout',function(){
-			d3.select(this).select('svg.playButton g#about')
+			d3.select(this).select('svg.playButton g#ABOUT')
 				.transition()
 				.duration(100)
 				.attr('fill','#040019')
@@ -78,11 +79,19 @@ var setHr = function(){
 			var m = d3.select(this).style('margin-left');
 			m = m.substring(0,m.length-2);
 			var w = d3.select(this).node().parentNode.clientWidth - d3.select(this).node().clientWidth - 6 - m;
-			// console.log(w);
-			// w = 100;
-			d3.select(d3.select(this).node().parentNode).select('hr').style('width',w);
-			// console.log(d3.select(d3.select(this).node().parentNode).select('hr'));
-			// console.log(w);
+			d3.select(d3.select(this).node().parentNode).select('hr').style('width',w + 'px');
+		})
+}
+
+var setColumns = function(){
+	var h = 0;
+	d3.selectAll('#data div.column')
+		.each(function(){
+			if(d3.select(this).node().clientHeight-80 > h) h = d3.select(this).node().clientHeight-80;
+
+		})
+		.each(function(){
+			d3.select(this).style('height',h+'px');
 		})
 }
 
@@ -117,6 +126,171 @@ var initVideo = function(){
 	    });
 }
 
+
+var initTimeline = function(){
+
+	var w = d3.select('svg.timeline').style('width');
+	w = +w.substring(0,w.length-2)-4;
+	var h = d3.select('svg.timeline').style('height');
+	h = +h.substring(0,h.length-2)-4;
+
+	var timeline = d3.select('svg.timeline')
+		.attr('width',w)
+		.attr('height',h)
+		.style('margin-top','2px')
+		.style('margin-left','2px')
+
+	var updateSelection = function(){
+		timeline.select('rect.selection')
+			.attr('x',function(d){return w*d[0]+h})
+			.attr('width',function(d){return w*(d[1]-d[0])-h*2})
+
+		timeline.selectAll('rect.outside')
+			.data(cursorRange)
+			.attr('x',function(d,i){return i==0?0:w*d})
+			.attr('width',function(d,i){return i==0?w*d:w-w*d})
+
+	}
+
+	var sliderBehavior = function(){
+        
+        var _this = this;
+		
+		var drag = d3.behavior.drag()
+        	.on('drag', function(d,i) {
+
+        		var coords = [];
+        		for(var j=1; j<=2; j++){
+        			var x = d3.select('g.slider:nth-child('+j+')').attr('transform');
+        			x = +x.substring(10,x.length-3);
+        			coords.push(x);
+        		}
+        		var min = i==0?0:(coords[0]+h*2+90);
+        		var max = i==1?w:(coords[1]-h*2-90);
+
+        		var x = d3.select(this).attr('transform');
+        		x = +x.substring(10,x.length-3);
+	        	x = Math.min(max,Math.max(min,x+d3.event.dx));
+	        	d3.select(this)
+	        		.attr('transform','translate('+x+',0)')
+
+	        	d3.select(this)
+	        		.datum(x/w);
+	        	cursorRange[i] = x/w;
+
+	        	updateSelection();
+
+        		return this;
+        	})
+
+		this
+			.on('mouseover',function(){
+				d3.select(this).select('rect')
+					.transition()
+					.duration(150)
+					.attr('fill','rgb(255,255,255)')
+			})
+			.on('mouseout',function(){
+				d3.select(this).select('rect')
+					.transition()
+					.duration(150)
+					.attr('fill','rgb(255,182,55)')
+			})
+			.call(drag)
+		return this;
+	}
+
+	// var selectionDrag = d3.behavior.drag()
+ //    	.on('drag', function() {
+ //    		console.log(d3.event.dx);
+ //    		var x = 
+ //    		return this;
+ //    	})
+
+	timeline.selectAll('g.slider')
+		.data(cursorRange)
+        .enter()
+		.append('g')
+		.classed('slider',true)
+		.attr('transform',function(d,i){return 'translate(' + (i==0?w*cursorRange[0]:w*cursorRange[1])+',0)'})
+		.call(sliderBehavior);
+
+	timeline.selectAll('g.slider')
+		.append('rect')
+		.attr('width',h)
+		.attr('height',h)
+		.attr('x',function(d,i){return i==0 ? 0:-h})
+		.attr('fill','rgb(255,182,55)')
+		.style('cursor','pointer')
+
+	timeline.selectAll('g.slider')
+		.append('text')
+		.text('12:45')
+		.attr('x',function(d,i){return i==0 ? h+5:-5-h})
+		.attr('y',h*0.66)
+		.attr('text-anchor',function(d,i){return i==0 ? 'start':'end'})
+		.attr('fill','rgb(255,255,255)')
+		
+	timeline
+		.append('rect')
+		.datum(cursorRange)
+		.classed('selection',true)
+		.attr('height',h)
+		.attr('fill','rgba(255,182,55,0.5)')
+		// .style('cursor','pointer')
+		// .on('mouseover',function(){
+		// 	d3.select(this)
+		// 		.transition()
+		// 		.duration(150)
+		// 		.attr('fill','rgba(255,182,55,0.66)')
+		// })
+		// .on('mouseout',function(){
+		// 	d3.select(this)
+		// 		.transition()
+		// 		.duration(150)
+		// 		.attr('fill','rgba(255,182,55,0.5)')
+		// })
+		// .call(selectionDrag)
+
+	timeline.selectAll('rect.outside')
+		.data(cursorRange)
+        .enter()
+		.append('rect')
+		.classed('outside',true)
+		.attr('height',h)
+		.attr('fill','rgba(255,255,255,0.1)')
+
+	updateSelection();
+
+}
+
+var initGraphs = function(){
+
+	var w = d3.select('#scale svg.graph').style('width');
+	w = +w.substring(0,w.length-2);
+	var h = d3.select('#scale svg.graph').style('height');
+	h = +h.substring(0,h.length-2);
+
+	d3.select('#scale svg.labels')
+		.append('text')
+		.text('time')
+		.attr('text-anchor','end')
+		.attr('y',h*0.58)
+		.attr('fill','white')
+		.attr('x',function(){
+			var w = d3.select('#scale svg.labels').style('width');
+			return +w.substring(0,w.length-2)-10;
+		})
+
+	d3.select('#scale svg.graph')
+		.append('line')
+        .attr('x2',w)
+        .attr('y1',h/2)
+        .attr('y2',h/2)
+        .attr('stroke','rgba(255,255,255,0.3')
+
+}
+
 var togglePanel = function(node, mapClick, i){
 
 	if(currentPage == 'Twitter'){
@@ -128,8 +302,8 @@ var togglePanel = function(node, mapClick, i){
 			.transition()
 			.duration(400)
 			.ease("cubic-out")
-			.style('right',w*0.03+1)
-			.style('opacity',1)
+			.style('right',(d3.select(node).text() != "Map" ? (w*0.03+1) : (w*0.68)) + 'px')
+			.style('opacity',d3.select(node).text() != "Map" ? 1:0)
 
 		d3.select('#map_holder')
 			.style('cursor','pointer')
@@ -138,7 +312,7 @@ var togglePanel = function(node, mapClick, i){
 			});
 	}
 
-	if(mapClick || (d3.select(node).text() == "Map" && currentPage != "Map")){
+	if(mapClick || (d3.select(node).text() == "Map" && currentPage != "Map" && currentPage != "Twitter")){
 
 		var w = d3.select('#fullPanelWrapper').style('width');
 		w = +w.substring(0,w.length-2);
@@ -148,12 +322,12 @@ var togglePanel = function(node, mapClick, i){
 			.style('opacity',1)
 
 		d3.select('#fullPanelWrapper')
-			.style('right',w*0.03+1)
+			.style('right',(w*0.03+1) + 'px')
 			.transition()
 			.duration(200)
 			.ease("cubic-in")
 			.style('opacity',0)
-			.style('right',w*0.08)
+			.style('right',(w*0.08)+'px')
 			.each('end',function(){
 				d3.select(this).style('display','none');
 			});
@@ -162,7 +336,7 @@ var togglePanel = function(node, mapClick, i){
 	    	.style('cursor','auto')
 			.on('click',null);
 
-	} else if(d3.select(node).text() != "Map" && currentPage == "Map"){
+	} else if(d3.select(node).text() != "Map" && (currentPage == "Map" || currentPage =='Twitter')){
 
 		d3.select('#credits')
 			.transition()
@@ -176,11 +350,11 @@ var togglePanel = function(node, mapClick, i){
 
 		d3.select('#fullPanelWrapper')
 			.style('display','block')
-			.style('right',w*0.08)
+			.style('right',(w*0.08)+'px')
 			.transition()
 			.duration(200)
 			.ease("cubic-out")
-			.style('right',w*0.03+1)
+			.style('right',(w*0.03+1) + 'px')
 			.style('opacity',1)
 
 		d3.select('#map_holder')
@@ -237,6 +411,10 @@ var toggleTwitterPanel = function(){
 		})
 
 	if(currentPage != 'Twitter'){
+		d3.select('#credits')
+			.transition()
+			.style('opacity',0)
+
 		d3.select('#fullPanelWrapper div.page:nth-child(4)')
 			.style('display','block')
 			.style('margin-left',-50)
@@ -255,11 +433,11 @@ var toggleTwitterPanel = function(){
 
 		d3.select('#fullPanelWrapper')
 			.style('display','block')
-			.style('right',w*0.68)
+			.style('right',(w*0.68) + 'px')
 			.transition()
 			.duration(200)
 			.ease("cubic-out")
-			.style('right',w*0.645)
+			.style('right',(w*0.645) + 'px')
 			.style('opacity',1)
 
 		d3.select('#map_holder')
@@ -273,11 +451,11 @@ var toggleTwitterPanel = function(){
 		w = +w.substring(0,w.length-2);
 
 		d3.select('#fullPanelWrapper')
-			.style('right',w*0.645)
+			.style('right',(w*0.645) + 'px')
 			.transition()
 			.duration(200)
 			.ease("cubic-in")
-			.style('right',w*0.68)
+			.style('right',(w*0.68) + 'px')
 			.style('opacity',0)
 			.each('end',function(){
 				d3.select(this).style('display','none');
@@ -287,6 +465,10 @@ var toggleTwitterPanel = function(){
 	    	.style('cursor','auto')
 			.on('click',null);
 		currentPage = 'Map';
+
+		d3.select('#credits')
+			.transition()
+			.style('opacity',1)
 	}
 }
 
@@ -298,7 +480,42 @@ var loadTweets = function(){
  //     //code here
  //    })
 
+	var tweets = [];
+	for(var i =0; i<10; i++){
+		tweets.push({
+			username:'john',
+			message:'lorem ipsum',
+			date: new Date(new Date().getTime() - Math.random()*1000*3600*24)
+		})
+	}
+
+	d3.select('#twitterWrapper').selectAll('div.tweet')
+        .data(tweets)
+        .enter()
+        .append('div')
+        .classed('tweet',true)
+        .html('<div class="controls"><div class="locationFinder"></div><a><div class="twitter"></div></a></div><p class="meta">        	</p><hr class="innerSeparator"/><div class="body"><img src = "" width="10%" height="10%" class="profile"/><p class="message"></p>' +(d3.select(this).datum.pic ? '<img src = "" width="100%" class="pic"/>' : '') + '</div><hr class="outerSeparator"/>')
+        .each(function(d,i){
+        	d3.select(this).select('a')
+        		.attr('href','http://www.twitter.com')
+
+        	var t = new Date(d.date.getTime());
+        	t = (t.getMonth()+1) + '/' + (t.getDay()+1) + ' ' + t.getHours() + ':' +t.getMinutes();
+        	d3.select(this).select('p.meta')
+        		.html(t + '<span></span>' + d.username);
+        	d3.select(this).select('p.message')
+        		.html(d.message);
+        	d3.select(this).selectAll('div.body, div.locationFinder')
+        		.on('click',findTweetLocation);
+        })
 }
+
+var findTweetLocation  = function(){
+	console.log('findTweetLocation');
+}
+
+
+
 
 
 

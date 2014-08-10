@@ -1,6 +1,6 @@
 
 
-@import url(http://fonts.googleapis.com/css?family=Montserrat:400);
+@import url(http://fonts.googleapis.com/css?family=Montserrat);
 
 body {
     background-color: #141414;
@@ -9,17 +9,16 @@ body {
     height:100%;
     position:absolute;
     top:0;
-    color:#FFFFFF;
+    color:white;
     min-width:1024px;
     font-family: Georgia, serif;
 	font-weight: normal;
 	font-size: 13px;
-	color: #FFFFFF;
 	line-height: 25px;
 }
 
 p {
-	letter-spacing: 0.1em;a
+	letter-spacing: 0.1em;
 	margin-bottom:20px;
 	margin-top: 0;
 }
@@ -27,7 +26,7 @@ p {
 p a{
 	text-decoration: none;
 	font-style: italic;
-	color:#CCC;
+	color:#fff;
 	transition: color 0.15s;
 }
 
@@ -75,8 +74,8 @@ h3 {
 
 h4 {
 	font-weight: normal;
-	font-size: 13px;
-	letter-spacing: 0.1em;
+	font-size: 12px;
+	letter-spacing: 0.05em;
 }
 
 ul {
@@ -161,7 +160,7 @@ ul {
 			div#navWrapper ul#mapControls li{
 				height:26px;
 				width:26px;
-				background-color: #FFFFFF;
+				background-color: #fff;
 			}
 
 			div#navWrapper ul#mapControls li:first-child{
@@ -200,11 +199,10 @@ ul {
     width: 97%;
     height: auto;
 	min-height:100%;
-    background-color: rgba(4,0,26,0.65);
+    background-color: rgba(4,0,26,0.75);
     z-index:1;
     position: absolute;
     opacity: 0;
-	/*transition: opacity 0.3s;*/
 }
 
 	#fullPanelWrapper div.page{
@@ -214,34 +212,146 @@ ul {
 		opacity: 1;
 	}
 
-	#fullPanelWrapper div.page div#aboutWrapper{
-		width:100%;
-		height:auto;
-		position: relative;
-		padding-top:70px;
-		border-bottom:solid 1px rgba(255,255,255,0.2);
-	} 
-
-		#fullPanelWrapper div.page div#aboutWrapper div#about{
-			display: inline-block;
-			margin-left:-2px;
-			vertical-align: top;
-			margin-top: 120px;
-			width: 26%;
-			padding:4% 6% 2% 6%;
+		div#dataWrapper div#data{
+			width: 90%;
+			padding:190px 6.5% 0 6%;
+			margin-left:-2.5%;
+			height:auto;
+			border-bottom: 1px solid rgba(255,255,255,0.2);
 		} 
 
-			#fullPanelWrapper div.page div#aboutWrapper div#about span{
-				width:3px;
-				height:13px;
-				background-color:#FFB637;
-				display: inline-block;
-				margin-left:10px; 
-				margin-right:10px; 
-				vertical-align: middle;
+			div#data div.column{
+				display:inline-block;
+				vertical-align: top;
+				width:28.6%;
+				height:auto;
+				padding:55px 2.5% 2.5%;
+				border-right: 1px solid rgba(255,255,255,0.2);
+			} 
+			
+			div#data div.column:first-child{
+				height: auto;
 			} 
 
-		#fullPanelWrapper div.page div#aboutWrapper div#video{
+			div#data div.column:nth-child(2){
+				width:21.5%;
+			} 
+
+			div#data div.column:last-child{
+				width:36.5%;
+				padding-right: 0;
+				border-right: none;
+			} 
+
+			div#data div.column h3{
+				margin-top:0;
+				margin-bottom:44px;
+			} 
+
+				div#data div.column:nth-child(2) h3{
+					padding-top:0;
+					padding-bottom:12px;
+				} 
+
+				div#data p.counter{
+					margin-bottom: 20px;
+				}
+
+					div#data p:last-child span:first-child, div#data p:nth-child(2) span:last-child{
+						vertical-align: top;
+						display: inline-block;
+						border-bottom: 1px solid rgba(255,255,255,0.2);
+					} 
+
+					div#data p:last-child span:last-child, div#data p:nth-child(2) span:first-child{
+						font-family: Palatino, Georgia, serif;
+						font-style: italic;
+						font-weight: lighter;
+						color:#FFB637;
+						font-size: 42px;
+					} 
+
+		div#graphWrapper{
+			width: 89%;
+			padding: 45px 5.5% 0 5.5%;
+			margin:0;
+			height:auto;
+		} 
+
+			div#graphWrapper div.graph{
+				height:115px;
+				padding-left: 3.25%;
+				width:96.75%;
+				border-bottom: 1px solid rgba(255,255,255,0.2);
+			}
+
+			div#graphWrapper div.graph:first-child{
+				height:50px;
+			}
+
+				div#scale svg{
+					height:100%;
+					display: inline-block;
+					vertical-align: top;
+				}
+
+
+					div#scale svg.labels{
+						width:6.5%;
+					}
+
+					div#scale svg.graph{
+						width:93.5%;
+					}
+
+		div#timelineWrapper{
+			width: 89%;
+			height:32px;
+			padding:0 5.5% 0 5.5%;
+			border-bottom: 1px solid rgba(255,255,255,0.2);
+		} 
+
+			div#timelineWrapper div#timeline{
+				width: 100%;
+				height:32px;
+				border-left: 1px solid rgba(255,255,255,0.2);
+				border-right: 1px solid rgba(255,255,255,0.2);
+			} 
+
+					div#timeline svg{
+						width:100%;
+						height:100%;
+					} 
+
+
+		div#aboutWrapper{
+			width:100%;
+			height:auto;
+			position: relative;
+			padding-top:70px;
+			border-bottom:solid 1px rgba(255,255,255,0.2);
+		} 
+
+			div#aboutWrapper div#about{
+				display: inline-block;
+				margin-left:-2px;
+				vertical-align: top;
+				margin-top: 120px;
+				width: 26%;
+				padding:4% 6% 2% 6%;
+			} 
+
+				div#aboutWrapper div#about span{
+					width:3px;
+					height:13px;
+					background-color:#FFB637;
+					display: inline-block;
+					margin-left:10px; 
+					margin-right:10px; 
+					vertical-align: middle;
+				} 
+
+		div#aboutWrapper div#video{
 			display: inline-block;
 			margin-left:-2px;
 			vertical-align: top;
@@ -252,7 +362,7 @@ ul {
 			height:auto;
 		} 
 
-			#fullPanelWrapper div.page div#aboutWrapper div#video svg.playButton{
+			div#aboutWrapper div#video svg.playButton{
 				z-index:60;
 				left:45.5%;
 				top:45.5%;
@@ -262,24 +372,22 @@ ul {
 			/* hacking youtube poster image */
 			#video { position: relative; padding-bottom: 56.25%; /* 16:9 */ height: 0; }
 			#video img.poster { position: absolute; display: block; top: 0; left: 0; width: 100%; z-index: 50; cursor: pointer; }
-			#video:after { content: ""; position: absolute; display: block; 
-			    background: url(play-button.png) no-repeat 0 0; 
-			    top: 45%; left: 45%; width: 46px; height: 36px; z-index: 30; cursor: pointer; } 
+			#video:after { content: ""; position: absolute; display: block; top: 45%; left: 45%; width: 46px; height: 36px; z-index: 30; cursor: pointer; } 
 			#video iframe { position: absolute; top: 0; left: 0; width: 100%; }
 			#video.player:after { display: none; }
 
-	#fullPanelWrapper div.page div#teamWrapper{
-		height:auto;
-		position: relative;
-		width:91.5%;
-		padding: 40px 5.75% 40px 2.75%;
-	}
+		div#teamWrapper{
+			height:auto;
+			position: relative;
+			width:91.5%;
+			padding: 40px 5.75% 40px 2.75%;
+		}
 
-		#fullPanelWrapper div.page div#teamWrapper h2{
-			margin:20px 0 40px 3%;
-		} 
+			div#teamWrapper h2{
+				margin:20px 0 40px 3%;
+			} 
 
-		#fullPanelWrapper div.page div#teamWrapper div.column{
+		div#teamWrapper div.column{
 			width:22%;
 			display: inline-block;
 			vertical-align: top;
@@ -287,7 +395,7 @@ ul {
 			margin-left:3%;
 		} 
 
-			#fullPanelWrapper div.page div#teamWrapper div.column hr{
+			div#teamWrapper div.column hr{
 				border:none;
 				height:1px;
 				background-color: rgba(255,255,255,0.2);
@@ -296,12 +404,12 @@ ul {
 				display:block;				
 			} 
 
-				#fullPanelWrapper div.page div#teamWrapper div.column div.teammate img{
+				div#teamWrapper div.column div.teammate img{
 					display: block;
 					width:100%;
 				} 
 
-				#fullPanelWrapper div.twitter, #fullPanelWrapper div.website{
+				#fullPanelWrapper div.twitter, #fullPanelWrapper div.website, #fullPanelWrapper div.locationFinder{
 					float:right;
 					width:20px;				
 					height:20px;
@@ -313,58 +421,129 @@ ul {
 					background-size: 16px 16px;
 					background-repeat: no-repeat;
 					background-position:center; 
+					cursor: pointer;
 				} 
 
-				#fullPanelWrapper div.twitter{
-					background-image: url('../img/twitter.svg')
-				}
-				#fullPanelWrapper div.website{
-					background-image: url('../img/website.svg')
-				}
+	#fullPanelWrapper div.twitter{
+		background-image: url('../img/twitter.svg')
+	}
+	#fullPanelWrapper div.website{
+		background-image: url('../img/website.svg')
+	}
 
-				#fullPanelWrapper div.twitter:hover, #fullPanelWrapper div.website:hover{
-					background-color: #FFB637;				
-				}
+	#fullPanelWrapper div.locationFinder{
+		background-image: url('../img/geoloc.svg')
+	}
 
-	#fullPanelWrapper div.page div.footer{
+	#fullPanelWrapper div.twitter:hover, #fullPanelWrapper div.website:hover, #fullPanelWrapper div.locationFinder:hover{
+		background-color: #FFB637;				
+	}
+
+	#fullPanelWrapper div.footer{
 		margin-top: 10px;
 		margin-bottom: 30px;
 		width:88.5%;
 		padding: 30px 5.75% 40px 5.75%;
 	}
 
-		#fullPanelWrapper div.page div.footer hr{
-			display: inline-block;
-			vertical-align: center;
-			width:48%;
-			height:2px;
-			background-color: #FFB637;
-			margin-right: -3px;
-			border: none;
-		}
-
-		#fullPanelWrapper div.page div.footer div.marker{
-			display: inline-block;
-			vertical-align: center;
-			width:4%;
-			margin-right: -3px;
-			text-align: center;
-		}
-
-	#fullPanelWrapper div.page div#aga{
-		width:27.5%;
-		padding-left:5.5%;
-		padding-right:5.5%;
-		height:50px;
-		margin:192px 0 0 61.5%;
-		background-color: #f00;
+	#fullPanelWrapper div.footer hr{
+		display: inline-block;
+		vertical-align: center;
+		width:48%;
+		height:2px;
+		background-color: #FFB637;
+		margin-right: -3px;
+		border: none;
 	}
+
+	#fullPanelWrapper div.footer div.marker{
+		display: inline-block;
+		vertical-align: center;
+		width:4%;
+		margin-right: -3px;
+		text-align: center;
+	}
+
+	div#twitterWrapper{
+		width:27.5%;
+		padding: 45px 5.5% 45px 5.5%;
+		height:auto;
+		margin:192px 0 0 61.5%;
+	}
+
+		div#twitterWrapper div.tweet{
+			width:100%;
+			height:auto;
+			margin-bottom:5px;
+		}
+
+			div#twitterWrapper div.tweet div.body{
+				cursor:pointer;
+			}
+
+			div#twitterWrapper div.tweet p.meta{
+				font-family: "Montserrat";
+				font-size: 13px;
+				color: #fff;
+				letter-spacing: 1px;
+			}
+
+				div#twitterWrapper div.tweet p.meta span{
+					display: inline-block;
+					width:5px;
+					height:5px;
+					border-radius: 3px;
+					background-color: white;
+					margin:0 10px 0 10px;
+				}
+
+				div#twitterWrapper div.tweet div{
+					margin-top:4px;
+				}
+
+			div#twitterWrapper div.tweet img.profile{
+				display: inline-block;
+				vertical-align: top;
+				height:38px;
+				margin-right:7%;
+			}
+
+			div#twitterWrapper div.tweet p.message{
+				display: inline-block;
+				vertical-align: top;
+				font-family: Georgia;
+				font-style: italic;
+				font-size: 18px;
+				color: #fff;
+				line-height: 29px;
+				letter-spacing: 0.1em;
+			}
+
+			div#twitterWrapper div.tweet:hover div.locationFinder{
+				background-color: #FFB637;
+			}
+
+			div#twitterWrapper div.tweet hr.innerSeparator{
+				border:none;
+				height:1px;
+				background-color: rgba(255,255,255,0.2);
+				margin-bottom: 20px;
+				margin-top: 10px;
+				display:block;
+			}
+
+			div#twitterWrapper div.tweet hr.outerSeparator{
+				width:100%;
+				height:2px;
+				background-color: #FFB637;
+				border: none;
+				margin:35px 0 35px 0;
+			}
 
 #map_holder{
 	width:100%;
 	height:100%;
 	position:fixed;
-    /*background-color: #515C58;*/
     z-index:0;
 }
 
@@ -373,8 +552,6 @@ ul {
 		height:100%;
 		position:relative;
 	}
-
-
 
 #skip {
 	font: 14px Verdana, Helvetica, sans-serif; 
@@ -391,9 +568,65 @@ ul {
 
 #credits{
 	position:fixed;
-	bottom:40px;
-	right:50px;
+	bottom:30px;
+	left:5.5%;
+	opacity: 0.5;
 }
 #credits a{
-	margin-left: 20px;
+	margin-right: 20px;
+}
+
+#credits a img{
+	height:40px;
+}
+
+
+#map div.leaflet-control-container div.leaflet-top:nth-child(2){
+	right:5.5%;
+	top:75px;
+}
+
+div.leaflet-popup-content-wrapper{
+	background-color:rgba(4,0,26,0.75);
+	border-radius:2px
+}
+
+a.leaflet-popup-close-button{
+	padding:12px 12px 0 0;
+}
+
+div.leaflet-popup-content h1{
+	font-family: Georgia;
+	font-style: italic;
+	font-size: 15px;
+	color: #fff;
+	line-height: 29px;
+	letter-spacing: 0.1em;
+}
+
+div.leaflet-popup-content{
+	font-family: Georgia;
+	font-style: italic;
+	font-family: Georgia, serif;
+	font-weight: normal;
+	font-size: 13px;
+	color:white;
+	line-height: 1.6em;
+	letter-spacing: 0.1em;
+}
+
+div.leaflet-label{
+	background-color:rgba(4,0,26,0.75);
+	border-color: rgba(4,0,26,0.75);
+	border-radius: 2px;
+	font-family: Georgia;
+	font-style: italic;
+	font-family: Georgia, serif;
+	font-weight: normal;
+	font-size: 13px;
+	color:white;
+}
+
+div.leaflet-popup-tip{
+	background-color: rgba(4,0,26,0.75);
 }
