@@ -515,7 +515,7 @@ var loadTweets = function(){
 
 	    d3.select('#tweetsButton')
 	    	.style('display','block')
-	    	.style('opacity',1)
+	    	.style('opacity',0.6)
 	    	.on('click',function(){toggleTwitterPanel();})
 
     })
