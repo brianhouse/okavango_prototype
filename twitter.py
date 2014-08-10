@@ -77,6 +77,8 @@ def init_twitter():
 				#print(feature);
 
 	# 2.  Get timeline for all associated feeds
+
+	## a. intotheokavango - all tweets
 	try: 
 		main_timeline = twitter.get_user_timeline(screen_name='intotheokavango')
 	except TwythonError as e:
@@ -98,6 +100,35 @@ def init_twitter():
 			model.insert_feature('tweet', t, geojson.dumps(feature))
 		else:
 			print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
+
+	## b. others - #okavango14 tagged 
+	accts = ('blprnt','shahselbe','rustictoad','AdventurScience','rangerdiaries')
+	for(ac in accts):
+
+		try: 
+			main_timeline = twitter.get_user_timeline(screen_name=ac)
+		except TwythonError as e:
+		    print(e)
+
+		# File these tweets into the DB
+		for tweet in main_timeline:
+			#Get Time
+			#Mon Aug 04 15:21:31 +0000 2014
+			if ('#okavango14' in tweet['text']):
+				dt = tweet.get('created_at')
+				date_object = datetime.strptime(dt, '%a %b %d %H:%M:%S +0000 %Y')
+				t = (date_object - datetime(1970,1,1)).total_seconds();
+				coords = model.get_coords_by_time(t);
+				properties = {'DateTime': date_object.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': 'tweet', 'tweet': tweet}
+				feature = geojson.Feature(geometry=coords, properties=properties)
+				#check protect
+				t_protect = model.get_protect('tweet')
+				if (t > t_protect):  
+					model.insert_feature('tweet', t, geojson.dumps(feature))
+				else:
+					print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
+
+
 
 init_twitter()
 
