@@ -30,6 +30,18 @@
 	
 	<script language="Javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
 
+    <script>
+        $(document).ready(function() {
+            var $container = $(".randcol");
+            $container.html(shuffle($container.children().get()));
+
+            function shuffle(o){
+                for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+                return o;
+            };
+        })
+    </script>
+
   </head>
   <body>
 
@@ -132,7 +144,7 @@
 
                     <div id="teamWrapper">
                         <div><h2>Team</h2><hr class="subline"/></div>
-                        <div class="column">
+                        <div class="column" class="randCol">
                             <div class="teammate">
                                 <img src="../static/img/sBoyes.png" alt="Steve Boyes' portrait"/>
                                 <a href="http://twitter.com/drsteveboyes"><div class="twitter"></div></a>
@@ -157,7 +169,7 @@
 
                             
                         </div>
-                        <div class="column">
+                        <div class="column" class="randcol">
 
                             <div class="teammate">
                                 <!--img src="../static/img/nGelinas.png" alt="Neil Gelinas' portrait"/-->
@@ -187,7 +199,7 @@
                             <hr/>
                         
                         </div>
-                        <div class="column">
+                        <div class="column" class="randcol">
                             <div class="teammate">
                                 <img src="../static/img/jHilton.png" alt="John Hilton' portrait"/>
                                 <h3>John Hilton</h3>
@@ -212,12 +224,12 @@
                                 <p class="bio">Delta navigator and human GPS, Chaps has also crossed the Okavango Delta 4 times with Steve and has been able to find our way out of remote locations in the delta many times. He is a rock solid member of the expedition team and an important source of support..</p>
                             </div>
                             <hr/>
-                            
+
                             <hr/>
                             
 
                         </div>
-                        <div class="column">
+                        <div class="column" class="randcol">
                             <div class="teammate">
                                 <img src="../static/img/jThorpe.png" alt="Jer Thorp' portrait"/>
                                 <a href="http://o-c-r.org"><div class="website"></div></a>
