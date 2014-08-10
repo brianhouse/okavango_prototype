@@ -18,7 +18,7 @@ body {
 }
 
 p {
-	letter-spacing: 0.1em;a
+	letter-spacing: 0.1em;
 	margin-bottom:20px;
 	margin-top: 0;
 }
@@ -611,6 +611,8 @@ div.leaflet-popup-content{
 	font-weight: normal;
 	font-size: 13px;
 	color:white;
+	line-height: 1.6em;
+	letter-spacing: 0.1em;
 }
 
 div.leaflet-label{
