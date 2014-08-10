@@ -30,6 +30,9 @@ def ingest_json_api(path):
     if ('Exhaustion' in data):
         feature_id = model.insert_feature('ethnographic', t, geojson.dumps(feature))
         log.info("ingest_json_api ETHNO")
+    elif ('Hardness' in data):
+        feature_id = model.insert_feature('hydro', t, geojson.dumps(feature))
+        log.info("ingest_json_api HYDRO")
     else:
         feature_id = model.insert_feature('sighting', t, geojson.dumps(feature))
         log.info("ingest_json_api SIGHTING")
@@ -187,7 +190,7 @@ class Api(server.Handler):
     def get_timeline(self):
         skip = self.get_argument('skip', 1)
         kinds = self.get_argument('types', "beacon").split(',')
-        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ethnographic', 'ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon', 'heart_spike', 'tweet']]   # sanitizes
+        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['hydro', 'hydrosensor', 'ethnographic', 'ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon', 'heart_spike', 'tweet']]   # sanitizes
         try:
             dt = self.get_argument('date', datetime.datetime.now(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%d"))
             log.debug(dt)
