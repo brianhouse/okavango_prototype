@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import datetime, pytz, geojson, model, os, uuid, shutil, subprocess, pipes
+import datetime, pytz, geojson, model, os, uuid, shutil, subprocess, pipes, json, time
 from housepy import config, log, server, util, process
 from PIL import Image
 
@@ -9,6 +9,31 @@ process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run"
 __UPLOADS__ = "uploads/"
 
 #2014 ingest via API
+
+def ingest_json_api(path):
+    log.info("ingest_json_api %s" % path)
+
+    d = open(path)
+    txt = d.read();
+
+    data = json.loads(txt)
+
+    t = data['t_utc']
+    lat = data['Longitude']
+    lon = data['Latitude']
+
+    coords = [float(lat),float(lon),0]
+    print(data)
+
+    feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coords},properties=data)
+
+    if ('Exhaustion' in data):
+        feature_id = model.insert_feature('ethnographic', t, geojson.dumps(feature))
+        log.info("ingest_json_api ETHNO")
+    else:
+        feature_id = model.insert_feature('sighting', t, geojson.dumps(feature))
+        log.info("ingest_json_api SIGHTING")
+
 
 def ingest_image_api(path):
     log.info("ingest_image %s" % path)
@@ -53,7 +78,6 @@ def ingest_audio_api(path):
     file_name = file_name.split('.')[0]
     front = 'img'
 
-
     if ('_'  in file_name):
         front = file_name.split('_')[0]
         date_string = file_name.split('_')[1]
@@ -68,14 +92,14 @@ def ingest_audio_api(path):
     # if t <= t_protect:
     #     log.warning("Protected t, skipping...")
     #     return    
-    fixed_path = path.replace(".mp3", ".amr")
+    fixed_path = path #.replace(".mp3", ".amr")
     shutil.move(path, fixed_path)
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.wav" % (front, t))    
 
     log.debug("CONVERTING SOUND.")
     try:
         log.debug("--> converting [%s] to [%s]" % (fixed_path, new_path))
-        log.debug("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)));
+        log.debug("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)))
         subprocess.check_call("%s -y -i '%s' '%s'" % (config['ffmpeg'], os.path.abspath(fixed_path), os.path.abspath(new_path)), shell=True)
     except Exception as e:
         log.debug("ERROR.")
@@ -136,14 +160,20 @@ class Upload(server.Handler):
         fname = fileinfo['filename']
         extn = os.path.splitext(fname)[1]
         cname = fname #str(uuid.uuid4()) + extn
+
         #body = self.request.data
         fh = open(__UPLOADS__ + cname, 'wb')
         fh.write(fileinfo['body'])
+        fh.flush();
+        os.fsync(fh.fileno())
+
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
         if ('jpg' in cname):
             ingest_image_api(__UPLOADS__ + cname)
-        elif ('mp3' in cname):
+        elif ('amr' in cname):
             ingest_audio_api(__UPLOADS__ + cname)
+        elif ('json' in cname):
+            ingest_json_api(__UPLOADS__ + cname)
 
 class Api(server.Handler):
     
@@ -157,7 +187,7 @@ class Api(server.Handler):
     def get_timeline(self):
         skip = self.get_argument('skip', 1)
         kinds = self.get_argument('types', "beacon").split(',')
-        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon', 'heart_spike', 'tweet']]   # sanitizes
+        kinds = [kind.rstrip('s') for kind in kinds if kind.rstrip('s') in ['ethnographic', 'ambit', 'ambit_geo', 'sighting', 'breadcrumb', 'image', 'audio', 'breadcrumb', 'beacon', 'heart_spike', 'tweet']]   # sanitizes
         try:
             dt = self.get_argument('date', datetime.datetime.now(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%d"))
             log.debug(dt)
