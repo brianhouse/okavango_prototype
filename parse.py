@@ -213,6 +213,8 @@ def ingest_beacon(content):
 
 
 def main():    
+    log.info("Checking e-mail box.")
+    lof.ingo( "Found %s new messages..." % len(messages))
     messages = emailer.fetch()
     if len(messages) > 0:
         log.info("Fetched %s new messages..." % len(messages))
