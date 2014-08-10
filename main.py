@@ -184,7 +184,6 @@ class Api2(server.Handler):
         if not len(page):
             return self.render("api14.html")    
         return self.not_found()
-}
 
 class Api(server.Handler):
     
