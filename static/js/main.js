@@ -469,6 +469,7 @@ var loadTweets = function(){
 	d3.json(url, function (json) {
 		if(!json)return;    
     	var tweets = [];
+    	json.features.reverse();
 		for(var i =0; i<json.features.length; i++){
 			var t = {
 				username: json.features[i].properties.tweet.user.name,
