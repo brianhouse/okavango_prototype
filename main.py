@@ -214,7 +214,7 @@ class Api(server.Handler):
 
 handlers = [
     (r"/api/?([^/]*)", Api),
-    (r"/api14/?([^/]*)", Api2),
+    (r"/api14", Api2),
     (r"/upload", Upload),
     (r"/uploadform", Userform),
     (r"/images/?([^/]*)", Images),
