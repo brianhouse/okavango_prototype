@@ -469,7 +469,6 @@ var loadTweets = function(){
 	d3.json(url, function (json) {
 		if(!json)return;    
     	var tweets = [];
-    	json.features.reverse();
 		for(var i =0; i<json.features.length; i++){
 			var t = {
 				username: json.features[i].properties.tweet.user.name,
@@ -483,7 +482,7 @@ var loadTweets = function(){
 					t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].media_url;
 				}
 			} catch(e){}
-			tweets.push(t);
+			tweets.shift(t);
 		}
 
 		var m_names = new Array("Jan", "Feb", "Mar", 
