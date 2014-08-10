@@ -30,6 +30,9 @@ def ingest_json_api(path):
     if ('Exhaustion' in data):
         feature_id = model.insert_feature('ethnographic', t, geojson.dumps(feature))
         log.info("ingest_json_api ETHNO")
+    elif ('Hardness' in data):
+        feature_id = model.insert_feature('hydro', t, geojson.dumps(feature))
+        log.info("ingest_json_api HYDRO")
     else:
         feature_id = model.insert_feature('sighting', t, geojson.dumps(feature))
         log.info("ingest_json_api SIGHTING")
