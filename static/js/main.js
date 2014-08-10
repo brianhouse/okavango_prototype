@@ -501,7 +501,7 @@ var loadTweets = function(){
 	        	d3.select(this).select('a')
 	        		.attr('href','http://www.twitter.com')
 
-	        	var t = new Date(d.date.getTime());
+	        	var t = new Date(d.date.getTime() * 1000);
 	        	t = ((t.getDay()+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
 
 	        	d3.select(this).select('p.meta')
