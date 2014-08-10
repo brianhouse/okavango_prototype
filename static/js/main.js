@@ -482,7 +482,7 @@ var loadTweets = function(){
 					t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].media_url;
 				}
 			} catch(e){}
-			tweets.shift(t);
+			tweets.unshift(t);
 		}
 
 		var m_names = new Array("Jan", "Feb", "Mar", 
