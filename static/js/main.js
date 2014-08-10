@@ -99,7 +99,7 @@ var initNav = function(){
 
 	d3.selectAll('#pagesNav li')
 		.on('click',function(d,i){
-			if(i != 2) togglePanel(this,false,i);
+			if(i == 0 || i==3) togglePanel(this,false,i);
 		})
 }
 
@@ -411,6 +411,10 @@ var toggleTwitterPanel = function(){
 		})
 
 	if(currentPage != 'Twitter'){
+		d3.select('#credits')
+			.transition()
+			.style('opacity',0)
+
 		d3.select('#fullPanelWrapper div.page:nth-child(4)')
 			.style('display','block')
 			.style('margin-left',-50)
@@ -461,6 +465,10 @@ var toggleTwitterPanel = function(){
 	    	.style('cursor','auto')
 			.on('click',null);
 		currentPage = 'Map';
+
+		d3.select('#credits')
+			.transition()
+			.style('opacity',1)
 	}
 }
 

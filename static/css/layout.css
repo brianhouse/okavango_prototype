@@ -9,12 +9,11 @@ body {
     height:100%;
     position:absolute;
     top:0;
-    color:#CCC;
+    color:white;
     min-width:1024px;
     font-family: Georgia, serif;
 	font-weight: normal;
 	font-size: 13px;
-	color: #CCC;
 	line-height: 25px;
 }
 
@@ -27,7 +26,7 @@ p {
 p a{
 	text-decoration: none;
 	font-style: italic;
-	color:#CCC;
+	color:#fff;
 	transition: color 0.15s;
 }
 
@@ -75,8 +74,8 @@ h3 {
 
 h4 {
 	font-weight: normal;
-	font-size: 13px;
-	letter-spacing: 0.1em;
+	font-size: 12px;
+	letter-spacing: 0.05em;
 }
 
 ul {
@@ -161,7 +160,7 @@ ul {
 			div#navWrapper ul#mapControls li{
 				height:26px;
 				width:26px;
-				background-color: #CCC;
+				background-color: #fff;
 			}
 
 			div#navWrapper ul#mapControls li:first-child{
@@ -485,7 +484,7 @@ ul {
 			div#twitterWrapper div.tweet p.meta{
 				font-family: "Montserrat";
 				font-size: 13px;
-				color: #CCC;
+				color: #fff;
 				letter-spacing: 1px;
 			}
 
@@ -515,7 +514,7 @@ ul {
 				font-family: Georgia;
 				font-style: italic;
 				font-size: 18px;
-				color: #CCC;
+				color: #fff;
 				line-height: 29px;
 				letter-spacing: 0.1em;
 			}
@@ -569,11 +568,16 @@ ul {
 
 #credits{
 	position:fixed;
-	bottom:40px;
-	right:50px;
+	bottom:30px;
+	left:5.5%;
+	opacity: 0.5;
 }
 #credits a{
-	margin-left: 20px;
+	margin-right: 20px;
+}
+
+#credits a img{
+	height:40px;
 }
 
 
@@ -582,3 +586,41 @@ ul {
 	top:75px;
 }
 
+div.leaflet-popup-content-wrapper{
+	background-color:rgba(4,0,26,0.75);
+	border-radius:2px
+}
+
+a.leaflet-popup-close-button{
+	padding:12px 12px 0 0;
+}
+
+div.leaflet-popup-content h1{
+	font-family: Georgia;
+	font-style: italic;
+	font-size: 15px;
+	color: #fff;
+	line-height: 29px;
+	letter-spacing: 0.1em;
+}
+
+div.leaflet-popup-content{
+	font-family: Georgia;
+	font-style: italic;
+	font-family: Georgia, serif;
+	font-weight: normal;
+	font-size: 13px;
+	color:white;
+}
+
+div.leaflet-label{
+	background-color:rgba(4,0,26,0.75);
+	border-color: rgba(4,0,26,0.75);
+	border-radius: 2px;
+	font-family: Georgia;
+	font-style: italic;
+	font-family: Georgia, serif;
+	font-weight: normal;
+	font-size: 13px;
+	color:white;
+}
