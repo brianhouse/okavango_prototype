@@ -507,38 +507,43 @@
 			    }
 				});
 			    
-			    var lm = beaconMarkers[0];
-				focusMarker = L.marker(lm.getLatLng()).addTo(map);
+                if (beaconMarkers.length > 0) {
+    			    var lm = beaconMarkers[0];
+    				focusMarker = L.marker(lm.getLatLng()).addTo(map);
 
-				//Create the polygon
-				
-				var paths = [{
-					"type":"Feature",
-					"properties":{
-						"test":"yes"
-					},
-					"geometry":{
-						"type":"LineString",
-						"coordinates":beaconCoords
-					}
-				}]
+    				//Create the polygon
+    				
+    				var paths = [{
+    					"type":"Feature",
+    					"properties":{
+    						"test":"yes"
+    					},
+    					"geometry":{
+    						"type":"LineString",
+    						"coordinates":beaconCoords
+    					}
+    				}]
 
 
-				var pathStyle = {
-				    fillColor: "#fff",
-				    color: "#60C4D7",
-				    weight: 3,
-				    opacity: 0.2,
-				    fillOpacity: 0,
-				};
-				
-				//Add the polygon to the map
-				
-				var beaconPath = L.geoJson(paths, {
-					style:pathStyle
-				});
+    				var pathStyle = {
+    				    fillColor: "#fff",
+    				    color: "#60C4D7",
+    				    weight: 3,
+    				    opacity: 0.2,
+    				    fillOpacity: 0,
+    				};
+    				
+    				//Add the polygon to the map
+    				
+    				var beaconPath = L.geoJson(paths, {
+    					style:pathStyle
+    				});
 
-				beaconLayer.addLayer(beaconPath)
+    				beaconLayer.addLayer(beaconPath)
+                } else {
+                    // No focus marker because we haven't started the expedition yet?
+                    focusMarker = L.marker(map.getCenter()).addTo(map)
+                }
 				
 				
 				nextStep();
@@ -804,7 +809,7 @@
 		}
 
 		counters = [];
-		startTime = 1408233600 + (currentDay * 60 * 60 * 24);
+		startTime = 1408233600     + (currentDay * 60 * 60 * 24);
 		timeMag = 100;
 		timeStep = 0.400;
 		sightingCounter = 0;
