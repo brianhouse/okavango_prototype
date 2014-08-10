@@ -624,3 +624,7 @@ div.leaflet-label{
 	font-size: 13px;
 	color:white;
 }
+
+div.leaflet-popup-tip{
+	background-color: rgba(4,0,26,0.75);
+}
