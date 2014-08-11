@@ -756,4 +756,5 @@ div.leaflet-control-attribution.leaflet-control a{
 	font-family: "Montserrat";
 	color:#FFFFFF;
 	font-size:14px;
+	width:auto;
 }
