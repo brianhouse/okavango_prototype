@@ -514,8 +514,6 @@ var loadTweets = function(){
 	    d3.select('#tweetsButton')
 	    	.style('display','block')
 	    	.on('click',function(){toggleTwitterPanel();})
-	    	.on('mouseover',function(){d3.select(this).style('opacity',1)})
-	    	.on('mouseout',function(){d3.select(this).style('opacity',0.6)})
 	    	.transition()
 	    	.style('opacity',1)
 

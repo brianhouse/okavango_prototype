@@ -574,7 +574,7 @@ ul {
 
 	#map_holder #tweetsButton{
 		position:absolute;
-		width:100px;
+		width:auto;
 		top:25px;
 		right:11.4%;
 		font-weight: normal;
@@ -584,7 +584,7 @@ ul {
 		opacity: 0;
 		transition: opacity 0.15s;
 		transition: background-color 0.15s;
-		color:white;
+		color:rgb(4,0,26);
 		text-transform: uppercase;
 		display:none;
 		padding: 1px 10px;
