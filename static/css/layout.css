@@ -744,6 +744,7 @@ div.leaflet-bottom.leaflet-right{
 div.leaflet-control-attribution.leaflet-control{
 	background-color: transparent !important;
 	color:white !important;
+	letter-spacing: 0.1em;
 }
 
 div.leaflet-control-attribution.leaflet-control a{

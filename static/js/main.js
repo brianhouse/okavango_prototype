@@ -8,6 +8,8 @@
 
 var currentPage = "Map";
 var cursorRange = [0.1,0.66];
+var tweets = [];
+var metrics = [];
 
 
 
@@ -24,14 +26,13 @@ var initLayout = function(){
 	setVideoHeight();
 	initNav();
 	initVideo();
-	// initTimeline();
-	// initGraphs();
+	loadMetrics();
+	loadTweets();
 	d3.select('#fullPanelWrapper')
 		.style('display','none');
 	d3.selectAll('div.page')
 		.style('display','none');
 
-	loadTweets();
 
 }
 
@@ -117,6 +118,20 @@ var initVideo = function(){
 	        	.transition()
 	        	.style('opacity',0)
 	    });
+}
+
+
+var loadMetrics = function(){
+
+	// // var daysRange = Math.ceil((new Date().getTime() - new Date('August 7, 2014').getTime())/(1000*3600*24));
+	// // var url = 'http://intotheokavango.org/api/timeline?date=20140807&types=tweet&days=' + daysRange
+	// // d3.json(url, function (json) {
+	// 	if(!json) return;
+	// 	metrics = json.features;
+	// 	initTimeline();
+	// 	initGraphs();
+	// // }
+
 }
 
 
@@ -478,7 +493,6 @@ var loadTweets = function(){
 	var url = 'http://intotheokavango.org/api/timeline?date=20140807&types=tweet&days=' + daysRange
 	d3.json(url, function (json) {
 		if(!json)return;    
-    	var tweets = [];
 		for(var i =0; i<json.features.length; i++){
 			var t = {
 				username: json.features[i].properties.tweet.user.name,
@@ -532,3 +546,4 @@ var loadTweets = function(){
 
     })	
 }
+
