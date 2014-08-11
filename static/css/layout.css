@@ -749,3 +749,9 @@ div.leaflet-control-attribution.leaflet-control{
 div.leaflet-control-attribution.leaflet-control a{
 	color:white !important;
 }
+
+.person-marker {
+	font-family: "Montserrat";
+	color:#FF0000;
+	font-size:14px;
+}
