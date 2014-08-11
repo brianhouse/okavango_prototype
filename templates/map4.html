@@ -764,8 +764,8 @@
 				var myIcon = L.divIcon({className: 'person-marker', html: '<p>' + names[i] + '</p>', iconSize: [widths[i], 18]});
 				
 
-                var xdrift = Math.random(* 0.001) - 0.0005;
-                var ydrift = Math.random(* 0.001) - 0.0005;
+                var xdrift = (Math.random()* 0.001) - 0.0005;
+                var ydrift = (Math.random()* 0.001) - 0.0005;
 				personMarkers[n] = L.marker([focusLatLon.x + xdrift, focusLatLon.y + ydrift], {icon: myIcon}).addTo(map);
 				
 				var paths = [{
