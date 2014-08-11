@@ -24,8 +24,8 @@ var initLayout = function(){
 	setVideoHeight();
 	initNav();
 	initVideo();
-	initTimeline();
-	initGraphs();
+	// initTimeline();
+	// initGraphs();
 	d3.select('#fullPanelWrapper')
 		.style('display','none');
 	d3.selectAll('div.page')
