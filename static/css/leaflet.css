@@ -467,3 +467,7 @@
 	-webkit-border-radius: 2px;
 	        border-radius: 2px;
 	}
+
+.person-marker {
+	color:#FF0000;
+}
