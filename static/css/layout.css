@@ -757,4 +757,6 @@ div.leaflet-control-attribution.leaflet-control a{
 	color:#FFFFFF;
 	font-size:14px;
 	width:auto;
+	padding:4px;
+	height:20px;
 }
