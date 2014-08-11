@@ -777,6 +777,8 @@
                 var shiftX = (Math.random() *0.002) - 0.001;
                 var shiftY = (Math.random() *0.002) - 0.001;
 				personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
+
+                $('.person-marker').css('width','auto')
 				
 				var paths = [{
 					"type":"Feature",
