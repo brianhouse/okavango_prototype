@@ -369,7 +369,8 @@ ul {
 
 		div#aboutWrapper div#video{
 			display: inline-block;
-			margin-left:-2px;
+			margin-left:-1px;
+			margin-top:122px;
 			vertical-align: top;
 			width:62%;
 			padding:0;
@@ -575,20 +576,26 @@ ul {
 		position:absolute;
 		width:100px;
 		top:25px;
-		right:11%;
+		right:11.4%;
 		font-weight: normal;
 		font-size: 15px;
 		letter-spacing: 0.1em;
 		cursor: pointer;
 		opacity: 0;
 		transition: opacity 0.15s;
+		transition: background-color 0.15s;
 		color:white;
 		text-transform: uppercase;
 		display:none;
+		padding: 1px 10px;
+		border-radius:2px;
+		background-color: rgb(255,255,255);
+
 	}
 
 		#map_holder #tweetsButton:hover{
-			opacity: 1;
+			background-color: rgb(220,220,220);
+
 		}
 
 #skip {
@@ -678,6 +685,7 @@ div.leaflet-control, div.leaflet-control a{
 	margin-right:0 !important;
 	clear:none;
 	height:26px !important;
+	box-shadow:none !important;
 }
 
 div.leaflet-control-zoom{
@@ -713,4 +721,33 @@ div.leaflet-control:hover, div.leaflet-control a:hover{
 	margin:0;
 	margin-top:0;
 	margin-right:0;
+}
+
+svg.closeButton{
+	display: block;
+	position:absolute;
+	right:24px;
+	top:24px;
+	opacity: 0.6;
+	transition: opacity 0.15s;
+	cursor: pointer;
+}
+
+	svg.closeButton:hover{
+		opacity: 1;
+	}
+
+div.leaflet-bottom.leaflet-right{
+	bottom:25px;
+	right:3.8%;
+	opacity: 0.5;
+}
+
+div.leaflet-control-attribution.leaflet-control{
+	background-color: transparent !important;
+	color:white !important;
+}
+
+div.leaflet-control-attribution.leaflet-control a{
+	color:white !important;
 }

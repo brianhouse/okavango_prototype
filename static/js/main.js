@@ -10,10 +10,6 @@ var currentPage = "Map";
 var cursorRange = [0.1,0.66];
 
 
-// window.onload = function (){ 
-// 	console.log('load');
-// 	initLayout();
-// }
 
 window.onresize = function(){
 	setVideoHeight();
@@ -40,10 +36,6 @@ var initLayout = function(){
 }
 
 var setVideoHeight = function(){
-
-	// console.log('aga');
-	// console.log(d3.select('#video').node().clientWidth*0.6);
-	// console.log('aga');
 
 	d3.select('#video')
 		.style('height',d3.select('#video').node().clientWidth*0.6 + 'px');
@@ -96,6 +88,11 @@ var initNav = function(){
 	d3.selectAll('#pagesNav li')
 		.on('click',function(d,i){
 			if(i == 0 || i==3) togglePanel(this,false,i);
+		})
+	d3.select('svg.closeButton')
+		.on('click',function(){
+			if(currentPage == 'Twitter') toggleTwitterPanel();
+			else togglePanel(d3.select('#pagesNav li:first-child').node(),false, 0);
 		})
 }
 
@@ -313,7 +310,7 @@ var togglePanel = function(node, mapClick, i){
 		var w = d3.select('#fullPanelWrapper').style('width');
 		w = +w.substring(0,w.length-2);
 
-		d3.select('#credits')
+		d3.select('#credits, div.leaflet-top.leaflet-right, #tweetsButton')
 			.transition()
 			.style('opacity',1)
 
@@ -334,7 +331,7 @@ var togglePanel = function(node, mapClick, i){
 
 	} else if(d3.select(node).text() != "Map" && (currentPage == "Map" || currentPage =='Twitter')){
 
-		d3.select('#credits')
+		d3.select('#credits, div.leaflet-top.leaflet-right, #tweetsButton')
 			.transition()
 			.style('opacity',0)
 
@@ -484,6 +481,7 @@ var loadTweets = function(){
 			} catch(e){}
 			tweets.push(t);
 		}
+		tweets.reverse();
 
 		var m_names = new Array("Jan", "Feb", "Mar", 
 		"Apr", "May", "Jun", "Jul", "Aug", "Sep", 
@@ -502,7 +500,7 @@ var loadTweets = function(){
 	        		.attr('href','http://www.twitter.com')
 
 	        	var t = new Date(d.date.getTime() * 1000);
-	        	t = ((t.getDay()+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
+	        	t = ((+t.getDay()+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
 
 	        	d3.select(this).select('p.meta')
 	        		.html(t + '<span></span>' + d.username);
@@ -515,10 +513,11 @@ var loadTweets = function(){
 
 	    d3.select('#tweetsButton')
 	    	.style('display','block')
-	    	.style('opacity',0.6)
 	    	.on('click',function(){toggleTwitterPanel();})
 	    	.on('mouseover',function(){d3.select(this).style('opacity',1)})
 	    	.on('mouseout',function(){d3.select(this).style('opacity',0.6)})
+	    	.transition()
+	    	.style('opacity',1)
 
     })
 	
