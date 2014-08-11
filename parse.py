@@ -213,6 +213,7 @@ def ingest_beacon(content):
 
 
 def main():    
+    print('E-MAIL.')
     log.info("Checking e-mail box.")
 
     messages = emailer.fetch()

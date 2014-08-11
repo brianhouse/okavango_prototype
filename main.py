@@ -122,14 +122,21 @@ class Home(server.Handler):
     def get(self, page=None):
         if len(page):
             return self.not_found()
-        return self.render("map3.html")
+        return self.render("map4.html")
 
 class Beta(server.Handler):
 
     def get(self, page=None):
         if len(page):
             return self.not_found()
-        return self.render("map4.html")
+        return self.render("map5.html")
+
+class Archive(server.Handler):
+
+    def get(self, page=None):
+        if len(page):
+            return self.not_found()
+        return self.render("map3.html")
 
 class Images(server.Handler):
 
@@ -220,6 +227,7 @@ handlers = [
     (r"/audio/?([^/]*)", Audio),
     (r"/heartrate/?([^/]*)", HeartRate),
     (r"/beta/?([^/]*)", Beta),
+    (r"/2013/?([^/]*)", Archive),
     (r"/?([^/]*)", Home),    
 ]    
 

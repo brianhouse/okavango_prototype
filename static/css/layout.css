@@ -750,3 +750,15 @@ div.leaflet-control-attribution.leaflet-control{
 div.leaflet-control-attribution.leaflet-control a{
 	color:white !important;
 }
+
+.person-marker {
+	border-left: 2px solid #FFB637;
+	background-color:rgba(4,0,26,0.5);
+	border-radius:2px
+	font-family: "Montserrat";
+	color:#FFFFFF;
+	font-size:14px;
+	width:auto;
+	padding:4px;
+	height:20px;
+}
