@@ -581,8 +581,6 @@ ul {
 		font-size: 15px;
 		letter-spacing: 0.1em;
 		cursor: pointer;
-		opacity: 0;
-		transition: opacity 0.15s;
 		transition: background-color 0.15s;
 		color:rgb(4,0,26);
 		text-transform: uppercase;
