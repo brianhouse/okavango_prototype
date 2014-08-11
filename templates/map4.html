@@ -329,6 +329,9 @@
 	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
 
+        focusLatLon = [-19.2575, 22.6560];
+        targetLatLon = [-19.2575, 22.6560];
+
 		// console.log('a1');
 		initLayout();
 		// console.log('a2');
@@ -839,8 +842,7 @@
 		}
 
 
-		focusLatLon = [-19.2575, 22.6560];
-		targetLatLon = [-19.2575, 22.6560];
+		
 
 		function posMap() {
 			focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * 0.1;
