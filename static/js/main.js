@@ -87,7 +87,7 @@ var initNav = function(){
 
 	d3.selectAll('#pagesNav li')
 		.on('click',function(d,i){
-			if(i == 0 || i==3) togglePanel(this,false,i);
+			if(i!=2) togglePanel(this,false,i);
 		})
 	d3.select('svg.closeButton')
 		.on('click',function(){
