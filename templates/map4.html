@@ -773,8 +773,8 @@
 				var myIcon = L.divIcon({className: 'person-marker', html: '<p>' + names[i] + '</p>', iconSize: [widths[i], 18]});
 				// you can set .my-div-icon styles in CSS
 
-                float shiftX = (Math.random() *0.0002) - 0.0001;
-                float shiftY = (Math.random() *0.0002) - 0.0001;
+                var shiftX = (Math.random() *0.0002) - 0.0001;
+                var shiftY = (Math.random() *0.0002) - 0.0001;
 				personMarkers[n] = L.marker([focusLatLon.x + shiftX, focusLatLon.y + shiftY], {icon: myIcon}).addTo(map);
 				
 				var paths = [{
