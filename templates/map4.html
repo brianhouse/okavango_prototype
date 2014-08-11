@@ -337,12 +337,16 @@
 	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
 
+        focusLatLon = [-19.2571, 22.6560];
+        targetLatLon = [-19.2571, 22.6560];
+
 		// console.log('a1');
 		initLayout();
 		// console.log('a2');
 
 		// create a map in the "map" div, set the view to a given place and zoom
-		var map = L.map('map', {zoomControl:false}).setView([-19.2571, 22.6560], 5);
+		var map = L.map('map', {zoomControl:false}).setView(focusLatLon
+            , 5);
 		var names = ["Steve","Jer","Shah","Gregg"];
 		map.zoomAnimationThreshold = 20;
 
@@ -769,7 +773,9 @@
 				var myIcon = L.divIcon({className: 'person-marker', html: '<p>' + names[i] + '</p>', iconSize: [widths[i], 18]});
 				// you can set .my-div-icon styles in CSS
 
-				personMarkers[n] = L.marker([-19.2571, 22.6560], {icon: myIcon}).addTo(map);
+                float shiftX = (Math.random() *0.0002) - 0.0001;
+                float shiftY = (Math.random() *0.0002) - 0.0001;
+				personMarkers[n] = L.marker([focusLatLon.x + shiftX, focusLatLon.y + shiftY], {icon: myIcon}).addTo(map);
 				
 				var paths = [{
 					"type":"Feature",
@@ -847,8 +853,7 @@
 		}
 
 
-		focusLatLon = [-19.2571, 22.6560];
-		targetLatLon = [-19.2571, 22.6560];
+		
 
 		function posMap() {
 			focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * 0.1;
