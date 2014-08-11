@@ -5,8 +5,6 @@ server:
 
 incoming:
     - brian.house@gmail.com
-    - okavangosensors@gmail.com
-    - jer.blprnt@gmail.com
 
 satellite: TSO90180
 
