@@ -767,6 +767,8 @@
                 var xdrift = (Math.random()* 0.001) - 0.0005;
                 var ydrift = (Math.random()* 0.001) - 0.0005;
 				personMarkers[n] = L.marker([focusLatLon[0] + xdrift, focusLatLon[1] + ydrift], {icon: myIcon}).addTo(map);
+
+                $('.person-marker').css('width','auto')
 				
 				var paths = [{
 					"type":"Feature",
