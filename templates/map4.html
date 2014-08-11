@@ -775,7 +775,7 @@
 
                 var shiftX = (Math.random() *0.0002) - 0.0001;
                 var shiftY = (Math.random() *0.0002) - 0.0001;
-				personMarkers[n] = L.marker([focusLatLon.x + shiftX, focusLatLon.y + shiftY], {icon: myIcon}).addTo(map);
+				personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
 				
 				var paths = [{
 					"type":"Feature",
