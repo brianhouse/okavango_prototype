@@ -15,6 +15,7 @@ def init():
         #db.execute("DROP INDEX t_kind ON features");
        # db.execute("DELETE FROM features WHERE t > 1400000000");
         db.execute("CREATE TABLE IF NOT EXISTS hydrodrops (t INTEGER, id TEXT, lat REAL, lon REAL, t_created INTEGER)")
+        db.execute("CREATE UNIQUE INDEX IF NOT EXISTS id_lat_lon ON hydrodrops(id, lat, lon)")
     except Exception as e:
         log.error(log.exc(e))
         return
@@ -40,7 +41,7 @@ def insert_hydrodrop(t, hydrosensor_id, lat, lon):
         log.error(log.exc(e))
         return
     connection.commit()
-    log.info("Inserted hydrodrop (%s) %s %s" % (entry_id, hydrosensor_id, t))  
+    log.info("Inserted hydrodrop (%s) %s %s" % (hydrodrop_id, hydrosensor_id, t))  
     return hydrodrop_id  
 
 def fetch_features(kinds, start_t, stop_t, skip=1):
