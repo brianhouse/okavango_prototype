@@ -95,6 +95,13 @@ var initNav = function(){
 			if(currentPage == 'Twitter') toggleTwitterPanel();
 			else togglePanel(d3.select('#pagesNav li:first-child').node(),false, 0);
 		})
+
+	$("#skip").click(function(event){
+		event.preventDefault(); 
+		doSkip();
+		$("#skip").hide();
+		console.log("SKIP");
+	});
 }
 
 var initVideo = function(){
