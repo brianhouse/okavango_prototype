@@ -270,7 +270,7 @@ def main():
                 break
         if kind is None and config['satellite'].lower() in subject:
             kind = 'beacon'
-        if kind is None and "SMS" in subject:
+        if kind is None and "sms from" in subject:
             kind = 'hydrosensor'
         if kind is None:
             log.error("subject not recognized")
