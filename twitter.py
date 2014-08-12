@@ -8,6 +8,7 @@ from twython import Twython
 from twython import TwythonError
 from datetime import datetime
 from time import mktime
+from housepy import util
 
 def init_twitter():
 	APP_KEY = "PDtNJXpCD1v6oqtelAA7JuGzq";
@@ -30,7 +31,18 @@ def init_twitter():
 	for tweet in data_timeline:
 		#Does it contain Lat Lon and Alt?
 		txt = tweet.get('text')
-		if ('Lat' in txt and 'Lon' in txt and 'Alt' in txt):
+
+		if 'dropped!' in txt:
+			data = {}
+			tokens = txt.split(' ')
+			for token in tokens:
+				if ':' in token:
+					key, value = token.split(':')
+					data[key] = value
+			if 'lat' in data and 'lon' in data and 'id' in data:
+				model.insert_hydrodrop(util.timestamp(), data['id'], data['lat'], data['lon'])
+
+		elif ('Lat' in txt and 'Lon' in txt and 'Alt' in txt):
 			lat = 0
 			lon = 0
 			#Get Lat

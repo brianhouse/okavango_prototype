@@ -212,6 +212,41 @@ def ingest_beacon(content):
         log.error(log.exc(e))
 
 
+def ingest_hydrosensor(hydrosensor_id, content, dt):
+    log.info("ingest_hydrosensor")
+    t_protect = model.get_protect('hydrosensor')    
+    lat, lon = model.get_drop_by_id(hydrosensor_id)
+    coordinates = [lat, lon, 0]
+    t = util.timestamp(dt)
+    properties = {'DateTime': dt.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': "hydrosensor"}    
+    try:
+        lines = content.split('\n')
+        for line in lines:
+            if not len(line.strip()):
+                continue
+            try:
+                if "Temp" in line:
+                    temperature = strings.as_numeric(line.replace("Temp (deg C) = (", "").replace("):", "").strip())
+                    properties['temperature'] = temperature
+                if "pH" in line:
+                    ph = strings.as_numeric(line.replace("pH = (", "").replace(")", "").strip())
+                    properties['ph'] = ph
+                if "Conductivity" in line:
+                    conductivity = line.replace("Conductivity (Cond,TDS,Sal,SG) = (", ")").replace(")", "").strip()
+                    conductivity = [strings.as_numeric(element) for element in conductivity.split(",")]
+                    properties['conductivity'] = conductivity                    
+            except Exception as e:
+                log.error(log.exc(e))
+                continue
+        # if t <= t_protect:
+        #     log.warning("Protected t, skipping...")
+        #     return         
+        feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coordinates}, properties=properties)
+        feature_id = model.insert_feature('hydrosensor', t, geojson.dumps(feature))
+    except Exception as e:
+        log.error(log.exc(e))
+
+
 def main():    
     log.info("Checking e-mail box.")
 
@@ -235,12 +270,17 @@ def main():
                 break
         if kind is None and config['satellite'].lower() in subject:
             kind = 'beacon'
+        if kind is None and "SMS" in subject:
+            kind = 'hydrosensor'
         if kind is None:
             log.error("subject not recognized")
         else:
             log.info("--> kind: %s" % kind)
         if kind == 'beacon':
             ingest_beacon(message['body'])
+        elif kind == 'hydrosensor':
+            hydrosensor_id = subject.split('-')[-1]
+            ingest_hydrosensor(hydrosensor_id, message['body'], message['date'])
         else:
             log.info("--> %s attachments" % len(message['attachments']))
             for attachment in message['attachments']:
