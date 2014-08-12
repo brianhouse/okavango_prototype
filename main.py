@@ -79,7 +79,7 @@ def ingest_audio_api(path):
 
     file_name = path.split('/')[-1]
     file_name = file_name.split('.')[0]
-    front = 'img'
+    front = 'mp3'
 
     if ('_'  in file_name):
         front = file_name.split('_')[0]
@@ -95,6 +95,8 @@ def ingest_audio_api(path):
     # if t <= t_protect:
     #     log.warning("Protected t, skipping...")
     #     return    
+
+    """
     fixed_path = path #.replace(".mp3", ".amr")
     shutil.move(path, fixed_path)
     new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.wav" % (front, t))    
@@ -109,9 +111,13 @@ def ingest_audio_api(path):
         log.error(log.exc(e))
         return
     log.debug("DONE CONVERTING SOUND.")
+    """
+
+    new_path = os.path.join(os.path.dirname(__file__), "static", "data", "audio", "%s-%s.mp3" % (front, t))   
+    shutil.move(path, new_path)
 
     coords = model.get_coords_by_time(t);
-    feature = geojson.Feature(geometry=coords,properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.wav" % (front, t), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
+    feature = geojson.Feature(geometry=coords,properties={'utc_t': t, 'ContentType': "audio", 'url': "/static/data/audio/%s-%s.mp3" % (front, t), 'DateTime': dt.astimezone(pytz.timezone(config['local_tz'])).strftime("%Y-%m-%dT%H:%M:%S%z")})
     feature_id = model.insert_feature('audio', t, geojson.dumps(feature))
 
 
@@ -180,7 +186,7 @@ class Upload(server.Handler):
         self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
         if ('jpg' in cname):
             ingest_image_api(__UPLOADS__ + cname)
-        elif ('amr' in cname):
+        elif ('mp3' in cname):
             ingest_audio_api(__UPLOADS__ + cname)
         elif ('json' in cname):
             ingest_json_api(__UPLOADS__ + cname)
