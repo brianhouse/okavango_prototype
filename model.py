@@ -35,7 +35,7 @@ def insert_feature(kind, t, data):
 
 def insert_hydrodrop(t, hydrosensor_id, lat, lon):
     try:
-        db.execute("INSERT INTO hydrodrops (t, id, lat, lon, t_created) VALUES (?, ?, ?, ?, ?)", (t, hydrosensor_id, float(lon), float(lat), util.timestamp()))
+        db.execute("INSERT INTO hydrodrops (t, id, lat, lon, t_created) VALUES (?, ?, ?, ?, ?)", (t, hydrosensor_id, float(lat), float(lon), util.timestamp()))
         hydrodrop_id = db.lastrowid        
     except Exception as e:
         log.error(log.exc(e))
