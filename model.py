@@ -78,7 +78,7 @@ def get_coords_by_time(time):
     return geom;
 
 def get_drop_by_id(hydrosensor_id):
-    db.execute("SELECT lat, lon FROM hydrodrops WHERE id=? ORDER BY t, DESC LIMIT 1", (hydrosensor_id,))
+    db.execute("SELECT lat, lon FROM hydrodrops WHERE id=? ORDER BY t DESC LIMIT 1", (hydrosensor_id,))
     result = db.fetchone()
     if result is not None:
         return result['lat'], result['lon']
