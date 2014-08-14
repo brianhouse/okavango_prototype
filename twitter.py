@@ -75,6 +75,10 @@ def init_twitter():
 				if (t > t_protect):    
 					model.insert_feature('beacon', t, geojson.dumps(feature))
 				#print(feature);
+		elif '!!' in txt:
+			atwt = txt.split('!!')[1];
+			twitter.update_status(status=atwt);
+			print("AUTO TWEET:" + atwt)
 
 	# 2.  Get timeline for all associated feeds
 
