@@ -89,7 +89,18 @@ def init_twitter():
 				#print(feature);
 		elif '!!' in txt:
 			atwt = txt.split('!!')[1];
-			twitter.update_status(status=atwt);
+			#twitter.update_status(status=atwt);
+
+			#Get Time
+			#Mon Aug 04 15:21:31 +0000 2014
+			dt = tweet.get('created_at')
+			date_object = datetime.strptime(dt, '%a %b %d %H:%M:%S +0000 %Y')
+
+			t = (date_object - datetime(1970,1,1)).total_seconds();
+
+
+
+
 			print("AUTO TWEET:" + atwt)
 
 	# 2.  Get timeline for all associated feeds
