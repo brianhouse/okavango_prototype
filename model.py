@@ -74,7 +74,7 @@ def get_coords_by_time(time):
     j = json.loads(closeFeature);
     geom = j['geometry'];
 
-    print("CLOSEST FEATURE TO ? IS ?", (time,geom))
+    #print("CLOSEST FEATURE TO ? IS ?", (time,geom))
     return geom;
 
 def get_drop_by_id(hydrosensor_id):
