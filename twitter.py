@@ -115,7 +115,7 @@ def init_twitter():
 		if (t > t_protect):  
 			model.insert_feature('tweet', t, geojson.dumps(feature))
 		else:
-			print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
+			#print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
 
 	## b. others - #okavango14 tagged 
 	accts = ('blprnt','shahselbe','rustictoad','AdventurScience','rangerdiaries','jameskydd','okavangowild','drsteveboyes')
@@ -142,7 +142,7 @@ def init_twitter():
 				if (t > t_protect):  
 					model.insert_feature('tweet', t, geojson.dumps(feature))
 				else:
-					print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
+					#print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
 
 
 
