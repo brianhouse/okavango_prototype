@@ -114,7 +114,7 @@ def init_twitter():
 		t_protect = model.get_protect('tweet')
 		if (t > t_protect):  
 			model.insert_feature('tweet', t, geojson.dumps(feature))
-		else:
+		#else:
 			#print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
 
 	## b. others - #okavango14 tagged 
@@ -141,7 +141,7 @@ def init_twitter():
 				t_protect = model.get_protect('tweet')
 				if (t > t_protect):  
 					model.insert_feature('tweet', t, geojson.dumps(feature))
-				else:
+				#else:
 					#print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
 
 
