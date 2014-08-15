@@ -176,7 +176,7 @@ def init_twitter():
 		tweet = props['TeamMember'] + ' just spotted: ' + props['Count'] + ' ' + props['Bird Name'] + ' Lat:' + props['Latitude'] + ' Lon:' + props['Longitude'] + ' Activity:' + props['Activity']
 		
 		try:
-			twitter_data.update_status(status=tweet);
+			twitter.update_status(status=tweet);
 		except TwythonError as e:
 			print(e)
 
