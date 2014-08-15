@@ -161,7 +161,11 @@ def init_twitter():
 		j = json.loads(row['data'])
 		props = j['properties']
 		tweet = props['TeamMember'] + ' spotted: ' + props['Count'] + ' ' + props['Bird Name'] + ' Lat:' + props['Latitude'] + ' Lon:' + props['Longitude'] + ' Activity:' + props['Activity']
+		twitter.update_status(status=atwt);
 		print("---- TWEET" + tweet)
+
+	query = "UPDATE features SET tweeted = 1 WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
+	model.db.execute(query)
 
 
 
