@@ -160,7 +160,7 @@ def init_twitter():
 	for row in model.db.fetchall():
 		j = json.loads(row['data'])
 		props = j['properties']
-		tweet = props['TeamMember'] + ' spotted: ' + props['Count'] + ' ' + props['Bird Name'] + ' Lat:' + props['Latitude'] + ' Lon:' + props['Longitude'] 'Activity:' + props['Activity']
+		tweet = props['TeamMember'] + ' spotted: ' + props['Count'] + ' ' + props['Bird Name'] + ' Lat:' + props['Latitude'] + ' Lon:' + props['Longitude'] + ' Activity:' + props['Activity']
 		print("---- TWEET" + tweet)
 
 
