@@ -350,6 +350,8 @@
 	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
 
+
+        //This is the lat/lon point where the map starts by default. In theory this should reset if/when the real data comes in.
         focusLatLon = [-19.2571, 22.6560];
         targetLatLon = [-19.2571, 22.6560];
 
@@ -363,11 +365,10 @@
 		var names = ["Steve","Jer","Shah","Gregg"];
 		map.zoomAnimationThreshold = 20;
 
-		//Day skipping
+		//Day skipping - this is not finished functionality to skip days when in 'playback mode'
 		var daySkip = false;
 
-
-		//Extend to add lables on circle markers
+		//Extend to add labels on circle markers
 		L.CircleMarker.include({
 
 		    bindLabel: function (content, options) {
@@ -427,19 +428,8 @@
 
 	  	
 
-		// add an OpenStreetMap tile layer
-        /*
-        //NEW
-        L.mapbox.accessToken = 'pk.eyJ1IjoiamVydGhvcnAiLCJhIjoiMVNTdlJCNCJ9.0oKND_-hkdHtlewBjcnp1Q';
-
-        // Replace 'examples.map-i87786ca' with your map id.
-        var satLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/jerthorp.j7al73nk/{z}/{x}/{y}.png', {
-            attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>', maxZoom:17
-        }).addTo(map);
-        //*/
-
         //*
-        //OLD
+        //Satellite Layer
 		var satLayer = L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 17
         }).addTo(map);
@@ -457,6 +447,9 @@
 		var geoLayer = new L.layerGroup().addTo(map);
 		var commentaryLayer = new L.layerGroup().addTo(map);
 
+        //NEEDED: tweetLayer, hydroLayer
+
+        //Are the various data feeds loaded?
 		var sightingsLoaded = false;
 		var pathsLoaded = false;
 		var beaconsLoaded = false;
@@ -478,16 +471,21 @@
 			"On this site, you can examine the data footprint of the expedition, and access all of the data they collect, including wildlife sightings, water quality data, photos, audio, and position and heart rate data for individual expedition members.",
 			"Data from the expedition will be available starting August 17th.",
             "In the meantime, click on 'ABOUT' to read more about the team, or click 'TWEETS' to read live updates from expedition members."
+            //CHANGE THIS ON AUGUST 17th!!!!
 			//"Click, drag, and zoom the map to see data points (currently animal sightings, comments from the expedition team, and position reports). For help, information about the expedition, and access to the full API, click on the buttons at the top of the page."
 		]
 
 		loadBeacons();
 
 		//DATA LOAD FUNCTIONS
+
+        //1. Beacons
+        //2. Sightings
+        //3. Paths
+
+
+        //1. Beacons - This one loads beacon data, which are GPS points
 		function loadBeacons() {
-
-
-
 			var starIcon = L.icon({
 			    iconUrl: '../static/img/star2.png',
 			    shadowUrl: '../static/img/starShadow2.png',
@@ -609,6 +607,8 @@
 
 		sightingsQueue = [];
 
+
+        //2. - Sightings (wildlife)
 		function loadSightings() {
 
 			var quoteIcon = L.icon({
@@ -719,6 +719,7 @@
 			sightingsLoaded = true;
 		}
 
+        //3. Paths - geo points for each individual team member
 		function loadPaths() {
 			console.log("LOAD PATHS!");
 			pathsLoaded = true;
@@ -850,6 +851,10 @@
 
 		}
 
+        //******************************
+        //START TIME - is set to the beginning of August 17th. I HOPE THIS WORKS!!
+        //******************************
+
 		counters = [];
 		startTime = 1408233600     + (currentDay * 60 * 60 * 24);
 		timeMag = 100;
@@ -860,6 +865,7 @@
 			counters[names[i]] = 1;
 		}
 
+        //Man, this stuff is cool but not really working - it animates the team member icons along their GPS paths
 		function startAnimation() {
 
 			$( "div.timeDisplay" ).click(function() {
@@ -874,27 +880,26 @@
 			targetLatLon[0] = focusLatLon[0];
 			targetLatLon[1] = focusLatLon[1];
 			
-
-
 			//setInterval(posMap,30);
 			setInterval(doAnimation,timeStep * 1000);
 		}
 
-
-		
-
+        //This is tied to the function above, and centers the map on the current target position
 		function posMap() {
 			focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * 0.1;
 			focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * 0.1;
 			map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
 		}
 
+        //Used to show what time is displayed by the animation
 		function displayTime(d) {
 			$('div.timeDisplay').text(d.toString().split("GMT")[0]);
 		}
 
+        //These are the various markers that have been revealed
 		revealedMarkers = [];
 
+        //Logic for the time-based animation
 		function doAnimation() {
 
 
@@ -967,7 +972,7 @@
 				}
 			}
 
-			//Night speed up
+			//Night speed up - so that we don't have to watch the animation standing still for 14 hours
 			startTime += skip;
 
 			/*
@@ -1020,6 +1025,8 @@
 
 		}
 
+        //*********************
+        //This is all of the logic for the opening animation (with the text fields)
 		function zoomIn() {
 			map.panTo(focusMarker.getLatLng());
 			console.log("zoom");
@@ -1061,6 +1068,7 @@
 
 		//loadBeacons();
 
+        //Populates the menu at top right
 		var baseMaps = {
 			"Satellite":satLayer,
 			"Flat":flatLayer
@@ -1073,10 +1081,10 @@
 		    "Quotes & Commentary": commentaryLayer
 		};
 
+        //Fullscreen controls
 		var fullScreen = new L.Control.FullScreen({ position: 'topright' }); 
 		map.addControl(fullScreen);
 
-		// L.control.layers(baseMaps, overlays).addTo(map);
 		new L.Control.Zoom({ position: 'topright' }).addTo(map);
 		setTimeout(zoomIn, 5000);
 
