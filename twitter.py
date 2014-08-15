@@ -24,7 +24,7 @@ def init_twitter():
 	twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
 	twitter.verify_credentials();
 
-	twitter_data = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+	twitter_data = Twython(APP_KEY_DATA, APP_SECRET_DATA, OAUTH_TOKEN_DATA, OAUTH_TOKEN_SECRET_DATA)
 	twitter_data.verify_credentials();
 
 	# 1.  Get timeline for @okavangodata feed
