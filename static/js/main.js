@@ -7,9 +7,11 @@
 
 
 var currentPage = "Map";
-var cursorRange = [0.1,0.66];
+var cursorRange = [0,1];
 var tweets = [];
-var metrics = [];
+var metrics = {};
+var dateRange;
+var timelineRange = [];
 
 
 
@@ -21,12 +23,14 @@ window.onresize = function(){
 
 var initLayout = function(){
 
+	dateRange = Math.ceil((new Date().getTime() - new Date('August 7, 2014').getTime())/(1000*3600*24));
+
 	setHr();
 	setColumns();
 	setVideoHeight();
 	initNav();
 	initVideo();
-	loadMetrics();
+	if(isGraphReady) loadMetrics();
 	loadTweets();
 	d3.select('#fullPanelWrapper')
 		.style('display','none');
@@ -124,12 +128,12 @@ var initVideo = function(){
 var loadMetrics = function(){
 
 	// // var daysRange = Math.ceil((new Date().getTime() - new Date('August 7, 2014').getTime())/(1000*3600*24));
-	// // var url = 'http://intotheokavango.org/api/timeline?date=20140807&types=tweet&days=' + daysRange
+	// // var url = 'http://intotheokavango.org/api/timeline?date=20140807&types=ambit&days=' + dateRange
 	// // d3.json(url, function (json) {
 	// 	if(!json) return;
 	// 	metrics = json.features;
-	// 	initTimeline();
-	// 	initGraphs();
+		initTimeline();
+		initGraphs(json);
 	// // }
 
 }
@@ -137,10 +141,15 @@ var loadMetrics = function(){
 
 var initTimeline = function(){
 
+
 	var w = d3.select('svg.timeline').style('width');
 	w = +w.substring(0,w.length-2)-4;
 	var h = d3.select('svg.timeline').style('height');
 	h = +h.substring(0,h.length-2)-4;
+
+	var timeScale = d3.scale.linear()
+ 		.range([0, w])
+ 		.domain([new Date().getTime()-(dateRange*1000*60*60*24),new Date().getTime()]);
 
 	var timeline = d3.select('svg.timeline')
 		.attr('width',w)
@@ -188,6 +197,21 @@ var initTimeline = function(){
 
 	        	updateSelection();
 
+	        	var d = new Date(timeScale.invert(x));
+	        	d = [d.getMonth()+'',d.getDate()+'',d.getHours()+'',d.getMinutes()+''];
+	        	d = (d[0].length==1?'0':'')+d[0]+'/'+(d[1].length==1?'0':'')+d[1]+' '+(d[2].length==1?'0':'')+d[2]+':'+(d[3].length==1?'0':'')+d[3];
+	        	d3.select(this).select('text')
+	        		.text(d);
+
+	        	var otherSliderX = d3.selectAll('g.slider').filter(function(d,i1){return i!=i1}).attr('transform');
+	        	otherSliderX = +otherSliderX.substring(10,otherSliderX.length-3);
+	        	var dist = Math.abs(otherSliderX - x);
+	        	if(dist < 210) d3.select('g.slider:first-child text').transition().duration(50).style('opacity',0);
+	        	else d3.select('g.slider:first-child text').transition().duration(50).style('opacity',1);
+
+	        	timelineRange = [timeScale.invert(i==0?x:otherSliderX),timeScale.invert(i==1?x:otherSliderX)];
+	        	updateGraphs();
+
         		return this;
         	})
 
@@ -208,13 +232,6 @@ var initTimeline = function(){
 		return this;
 	}
 
-	// var selectionDrag = d3.behavior.drag()
- //    	.on('drag', function() {
- //    		console.log(d3.event.dx);
- //    		var x = 
- //    		return this;
- //    	})
-
 	timeline.selectAll('g.slider')
 		.data(cursorRange)
         .enter()
@@ -233,7 +250,12 @@ var initTimeline = function(){
 
 	timeline.selectAll('g.slider')
 		.append('text')
-		.text('12:45')
+		.text(function(d,i){
+			var d = new Date(timeScale.invert(i==0?w*cursorRange[0]:w*cursorRange[1]));
+        	d = [d.getMonth()+'',d.getDate()+'',d.getHours()+'',d.getMinutes()+''];
+        	d = (d[0].length==1?'0':'')+d[0]+'/'+(d[1].length==1?'0':'')+d[1]+' '+(d[2].length==1?'0':'')+d[2]+':'+(d[3].length==1?'0':'')+d[3];
+        	return d;
+		})
 		.attr('x',function(d,i){return i==0 ? h+5:-5-h})
 		.attr('y',h*0.66)
 		.attr('text-anchor',function(d,i){return i==0 ? 'start':'end'})
@@ -245,20 +267,6 @@ var initTimeline = function(){
 		.classed('selection',true)
 		.attr('height',h)
 		.attr('fill','rgba(255,182,55,0.5)')
-		// .style('cursor','pointer')
-		// .on('mouseover',function(){
-		// 	d3.select(this)
-		// 		.transition()
-		// 		.duration(150)
-		// 		.attr('fill','rgba(255,182,55,0.66)')
-		// })
-		// .on('mouseout',function(){
-		// 	d3.select(this)
-		// 		.transition()
-		// 		.duration(150)
-		// 		.attr('fill','rgba(255,182,55,0.5)')
-		// })
-		// .call(selectionDrag)
 
 	timeline.selectAll('rect.outside')
 		.data(cursorRange)
@@ -270,15 +278,18 @@ var initTimeline = function(){
 
 	updateSelection();
 
+	timelineRange = [timeScale.invert(0),timeScale.invert(w)];
+
 }
 
-var initGraphs = function(){
+var initGraphs = function(json){
 
 	var w = d3.select('#scale svg.graph').style('width');
 	w = +w.substring(0,w.length-2);
 	var h = d3.select('#scale svg.graph').style('height');
 	h = +h.substring(0,h.length-2);
 
+	// timescale
 	d3.select('#scale svg.labels')
 		.append('text')
 		.text('time')
@@ -291,11 +302,110 @@ var initGraphs = function(){
 		})
 
 	d3.select('#scale svg.graph')
-		.append('line')
-        .attr('x2',w)
-        .attr('y1',h/2)
-        .attr('y2',h/2)
-        .attr('stroke','rgba(255,255,255,0.3')
+		.append('g')
+		.classed('dates',true)
+		.attr('transform','translate(0,'+(-33)+')')
+
+	
+	// data
+	metrics = {
+		// maxHeartrate:0,
+		// maxEnergyConsumption:0,
+		// maxSpeed:0,
+		persons:[]
+	};
+
+	json = json.features;
+	var len = json.length;
+	for(var i=0; i<len; i++){
+		var ambit = json[i].properties;
+		if(!metrics[ambit.Person]){
+			metrics[ambit.Person] = {
+				heartrate:[],
+				energyConsumption:[],
+				speed:[]
+			}
+			metrics.persons.push(ambit.Person);
+		}
+		var d = ambit.t_utc*1000;
+		metrics[ambit.Person].heartrate.push([d,ambit.HR])
+		metrics[ambit.Person].energyConsumption.push([d,ambit.EnergyConsumption])
+		metrics[ambit.Person].speed.push([d,ambit.Speed])
+		// if(ambit.HR > metrics.maxHeartrate) metrics.maxHeartrate = ambit.HR;
+		// if(ambit.EnergyConsumption > metrics.maxEnergyConsumption) metrics.maxEnergyConsumption = ambit.EnergyConsumption;
+		// if(ambit.Speed > metrics.maxSpeed) metrics.maxSpeed = ambit.Speed;
+	}
+
+	// heartrate
+	d3.select('#heartRate svg.labels')
+		.append('text')
+		.text('time')
+		.attr('text-anchor','end')
+		.attr('y',h*0.58)
+		.attr('fill','white')
+		.attr('x',function(){
+			var w = d3.select('#scale svg.labels').style('width');
+			return +w.substring(0,w.length-2)-10;
+		})
+	len = metrics.persons.length;
+	for(var i=0; i<len; i++){
+		var p = metrics.persons[i]
+		d3.select('#heartrate svg.graph')
+	        .append('path')
+	        .classed(p,true)
+	        .attr('stroke','red');
+	        // .datum(metrics[p].heartrate)
+			// .attr('transform','translate(0,'+(-33)+')')
+	}
+
+	updateGraphs();
+
+}
+
+var updateGraphs = function(){
+
+	var w = d3.select('#scale svg.graph').style('width');
+	w = +w.substring(0,w.length-2);
+	var h = d3.select('#scale svg.graph').style('height');
+	h = +h.substring(0,h.length-2);
+
+	var timeScale = d3.time.scale()
+ 		.range([0, w])
+ 		.domain(timelineRange);
+    var timelineAxis = d3.svg.axis()
+        .scale(timeScale)
+        .orient("bottom")
+        .tickSize(h)
+	  	.ticks(Math.ceil((timelineRange[1]-timelineRange[0])/(1000*3600*24)))
+
+	d3.select('#scale svg.graph g.dates')
+		.call(timelineAxis);
+	d3.select('#scale svg.graph path.domain')
+		.remove()
+	d3.selectAll('#scale svg.graph text')
+		.attr('fill','white');
+
+	var lines = {
+		HeartRate:null,
+		maxEnergyConsumption:null,
+		Speed:null
+	}
+	for(m in lines){
+		var x = d3.scale.linear().range([0, w]);
+	    var y = d3.scale.linear().range([h, 0]);
+	    lines[m] = d3.svg.line()
+	        .x(function(d) { return x(d[0]); })
+	        .y(function(d) { return y(d[1]); });
+	}
+
+	len = metrics.persons.length;
+	for(var i=0; i<len; i++){
+		var p = metrics.persons[i]
+		d3.select('#heartrate svg.graph path.'+p)
+	        .datum(metrics[p].heartrate)
+	        .attr('d',lines.HeartRate)
+	}
+    
 
 }
 
@@ -331,6 +441,9 @@ var togglePanel = function(node, mapClick, i){
 		d3.select('#credits')
 			.transition()
 			.style('opacity',1)
+		d3.select('div.leaflet-control-attribution')
+			.transition()
+			.style('opacity',1)
 		d3.select('#tweetsButton')
 			.transition()
 			.style('opacity',1)
@@ -358,7 +471,9 @@ var togglePanel = function(node, mapClick, i){
 		d3.select('#credits')
 			.transition()
 			.style('opacity',0)
-
+		d3.select('div.leaflet-control-attribution')
+			.transition()
+			.style('opacity',0)
 		d3.select('#tweetsButton')
 			.transition()
 			.style('opacity',0)
@@ -489,8 +604,7 @@ var toggleTwitterPanel = function(){
 }
 
 var loadTweets = function(){
-	var daysRange = Math.ceil((new Date().getTime() - new Date('August 7, 2014').getTime())/(1000*3600*24));
-	var url = 'http://intotheokavango.org/api/timeline?date=20140807&types=tweet&days=' + daysRange
+	var url = 'http://intotheokavango.org/api/timeline?date=20140807&types=tweet&days=' + dateRange
 	d3.json(url, function (json) {
 		if(!json)return;    
 		for(var i =0; i<json.features.length; i++){
@@ -527,8 +641,6 @@ var loadTweets = function(){
 	        		.attr('href','http://www.twitter.com')
 
 	        	var t = new Date(d.date.getTime() * 1000);
-	        	console.log(t.getDate());
-	        	console.log('aga');
 	        	t = ((parseInt(t.getDate())+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
 
 	        	d3.select(this).select('p.meta')
