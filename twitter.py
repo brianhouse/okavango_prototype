@@ -108,7 +108,10 @@ def init_twitter():
 
 			t2 = int(time.time());
 
-			if (t2 - 2 < 10 * 60):
+			print(t);
+			print(t2);
+
+			if (t2 - t < 10 * 60):
 				twitter.update_status(status=atwt);
 
 
