@@ -2,7 +2,7 @@
 # Into the Okavango Twitter Scraper
 # Gets feeds from @okavangodata and pipes into server
 
-import geojson, model, json, random
+import geojson, model, json, random, time
 
 from twython import Twython
 from twython import TwythonError
@@ -104,7 +104,12 @@ def init_twitter():
 			dt = tweet.get('created_at')
 			date_object = datetime.strptime(dt, '%a %b %d %H:%M:%S +0000 %Y')
 
-			t = (date_object - datetime(1970,1,1)).total_seconds();
+			t = int((date_object - datetime(1970,1,1)).total_seconds());
+
+			t2 = int(time.time());
+
+			if (t2 - 2 < 10 * 60):
+				twitter.update_status(status=atwt);
 
 
 
