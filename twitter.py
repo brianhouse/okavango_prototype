@@ -2,7 +2,7 @@
 # Into the Okavango Twitter Scraper
 # Gets feeds from @okavangodata and pipes into server
 
-import geojson, model, json;
+import geojson, model, json, random;
 
 from twython import Twython
 from twython import TwythonError
@@ -178,7 +178,14 @@ def init_twitter():
 		except TwythonError as e:
 			print(e)
 
-		print("---- TWEET" + tweet)
+		#10% of the time, tweet it to the main account.
+		if (randint(0,100) < 10):
+			try:
+				twitter_data.update_status(status=tweet);
+			except TwythonError as e:
+				print(e)
+
+			print("---- TWEET" + tweet)
 
 	print("UPDATING TABLE")
 	query2 = "UPDATE features SET tweeted = 1 WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
