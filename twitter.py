@@ -155,7 +155,7 @@ def init_twitter():
 					#print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
 
 	#4. -  Tweet sightings to okavangodata
-	query = "SELECT * FROM features WHERE kind = 'sighting' AND tweeted = 0 AND t > 1408071520"
+	query = "SELECT * FROM features WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
 	model.db.execute(query)
 	for row in model.db.fetchall():
 		j = json.loads(row['data'])
