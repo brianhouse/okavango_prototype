@@ -180,8 +180,10 @@ def init_twitter():
 
 		print("---- TWEET" + tweet)
 
+	print("UPDATING TABLE")
 	query2 = "UPDATE features SET tweeted = 1 WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
 	model.db.execute(query2)
+	print("TABLE UPDATED.")
 
 
 
