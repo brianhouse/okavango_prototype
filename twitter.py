@@ -2,7 +2,7 @@
 # Into the Okavango Twitter Scraper
 # Gets feeds from @okavangodata and pipes into server
 
-import geojson, model, json
+import geojson, model, json, random
 
 from twython import Twython
 from twython import TwythonError
