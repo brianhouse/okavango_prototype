@@ -145,6 +145,7 @@
                             <p>The Okavango Delta is one of the richest wildlife areas on the planet. Starting August 17th, a team of Ba'yei, scientists, artists and engineers will enter the delta to take its pulse.</p>
 
                                 <p>This site displays data which was uploaded daily, via satellite, by the expedition team in the Okavango delta. Data is also available through a <a href="http://intotheokavango.org/api">public API</a>, allowing anyone to re-mix, analyze, or visualize the collected information.</p>
+                                <p>Questions? <a href="mailto:okavango@o-c-r.org">okavango@o-c-r.org</a></p>
                             <p><a href="https://en.wikipedia.org/wiki/Okavango_Delta">the Okavango delta</a><span></span><a href="http://en.wikipedia.org/wiki/Bushmen">the BaYei bushmen</a></p>
                         </div>
                         <div id="video">
@@ -218,6 +219,7 @@
 
                             <div class="teammate">
                                 <img src="../static/img/gTreinish.png" alt="Gregg Treinish' portrait"/>
+                                <a href="http://www.adventurescience.org/"><div class="website"></div></a>
                                 <a href="http://twitter.com/AdventurScience"><div class="twitter"></div></a>
                                 <h3>Gregg Treinish</h3>
                                 <p class="bio">Gregg Treinish founded the nonprofit Adventurers and Scientists for Conservation in 2011, mobilizing outdoor enthusiasts in collaborative efforts to protect our natural world.<br/><br/>National Geographic named Gregg Adventurer of the Year in 2008, when he and a friend completed a 7,800-mile trek along the spine of the Andes Mountain Range. He was included on the Christian Science Monitor's 30 under 30 list in 2012, and the following year became a National Geographic Emerging Explorer for his work with ASC.</p>
@@ -336,12 +338,16 @@
 	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
 
+        focusLatLon = [-19.2571, 22.6560];
+        targetLatLon = [-19.2571, 22.6560];
+
 		// console.log('a1');
 		initLayout();
 		// console.log('a2');
 
 		// create a map in the "map" div, set the view to a given place and zoom
-		var map = L.map('map', {zoomControl:false}).setView([-19.2571, 22.6560], 5);
+		var map = L.map('map', {zoomControl:false}).setView(focusLatLon
+            , 5);
 		var names = ["Steve","Jer","Shah","Gregg"];
 		map.zoomAnimationThreshold = 20;
 
@@ -410,6 +416,7 @@
 	  	
 
 		// add an OpenStreetMap tile layer
+        //https://a.tiles.mapbox.com/v4/jerthorp.j7al73nk/page.html?access_token=pk.eyJ1IjoiamVydGhvcnAiLCJhIjoiMVNTdlJCNCJ9.0oKND_-hkdHtlewBjcnp1Q#2/-8.9/55.9
 		var satLayer = L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
 		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 17
 		}).addTo(map);
@@ -768,7 +775,11 @@
 				var myIcon = L.divIcon({className: 'person-marker', html: '<p>' + names[i] + '</p>', iconSize: [widths[i], 18]});
 				// you can set .my-div-icon styles in CSS
 
-				personMarkers[n] = L.marker([-19.2571, 22.6560], {icon: myIcon}).addTo(map);
+                var shiftX = (Math.random() *0.002) - 0.001;
+                var shiftY = (Math.random() *0.002) - 0.001;
+				personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
+
+                $('.person-marker').css('width','auto')
 				
 				var paths = [{
 					"type":"Feature",
@@ -841,13 +852,12 @@
 			
 
 
-			setInterval(posMap,30);
+			//setInterval(posMap,30);
 			setInterval(doAnimation,timeStep * 1000);
 		}
 
 
-		focusLatLon = [-19.2571, 22.6560];
-		targetLatLon = [-19.2571, 22.6560];
+		
 
 		function posMap() {
 			focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * 0.1;

@@ -2,12 +2,13 @@
 # Into the Okavango Twitter Scraper
 # Gets feeds from @okavangodata and pipes into server
 
-import geojson, model;
+import geojson, model, json, random, time
 
 from twython import Twython
 from twython import TwythonError
 from datetime import datetime
 from time import mktime
+from housepy import util
 
 def init_twitter():
 	APP_KEY = "PDtNJXpCD1v6oqtelAA7JuGzq";
@@ -15,9 +16,16 @@ def init_twitter():
 	OAUTH_TOKEN = "2690906527-6pdw88pGs2Vrbw4QXb8Y57l4LXfYRb3zUnInrAr";
 	OAUTH_TOKEN_SECRET = "Qus7rdrsA0wD4AzJ46J6byeHKmNrPajhoVJMyaXVMG9CG";
 
-	twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+	APP_KEY_DATA = "oOtzacweNYjeMhbJSX0A0UcZB";
+	APP_SECRET_DATA = "ObxerpjSJ7IA4OtUfXRyxoGRVPSHiCNTuXipUsIjVNiZPqX62d";
+	OAUTH_TOKEN_DATA = "2696222534-TxkCApfwE407fKJaJ1bQYxgyUCBXM6jZLqEqKEo";
+	OAUTH_TOKEN_SECRET_DATA = "6EQKdSUD6IR0WKbD0O2U80k8b8IDfrNiZvroKJJIpXOSF";
 
+	twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
 	twitter.verify_credentials();
+
+	twitter_data = Twython(APP_KEY_DATA, APP_SECRET_DATA, OAUTH_TOKEN_DATA, OAUTH_TOKEN_SECRET_DATA)
+	twitter_data.verify_credentials();
 
 	# 1.  Get timeline for @okavangodata feed
 	try: 
@@ -30,7 +38,18 @@ def init_twitter():
 	for tweet in data_timeline:
 		#Does it contain Lat Lon and Alt?
 		txt = tweet.get('text')
-		if ('Lat' in txt and 'Lon' in txt and 'Alt' in txt):
+
+		if 'dropped!' in txt:
+			data = {}
+			tokens = txt.split(' ')
+			for token in tokens:
+				if ':' in token:
+					key, value = token.split(':')
+					data[key] = value
+			if 'lat' in data and 'lon' in data and 'id' in data:
+				model.insert_hydrodrop(util.timestamp(), data['id'], data['lat'], data['lon'])
+
+		elif ('Lat' in txt and 'Lon' in txt and 'Alt' in txt):
 			lat = 0
 			lon = 0
 			#Get Lat
@@ -76,6 +95,30 @@ def init_twitter():
 					model.insert_feature('beacon', t, geojson.dumps(feature))
 				#print(feature);
 
+		elif '!!' in txt:
+			atwt = txt.split('!!')[1];
+			#twitter.update_status(status=atwt);
+
+			#Get Time
+			#Mon Aug 04 15:21:31 +0000 2014
+			dt = tweet.get('created_at')
+			date_object = datetime.strptime(dt, '%a %b %d %H:%M:%S +0000 %Y')
+
+			t = int((date_object - datetime(1970,1,1)).total_seconds());
+
+			t2 = int(time.time());
+
+			print(t);
+			print(t2);
+
+			if (t2 - t < 10 * 60):
+				twitter.update_status(status=atwt);
+
+
+
+
+			#print("AUTO TWEET:" + atwt)
+
 	# 2.  Get timeline for all associated feeds
 
 	## a. intotheokavango - all tweets
@@ -98,11 +141,11 @@ def init_twitter():
 		t_protect = model.get_protect('tweet')
 		if (t > t_protect):  
 			model.insert_feature('tweet', t, geojson.dumps(feature))
-		else:
-			print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
+		#else:
+			#print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
 
 	## b. others - #okavango14 tagged 
-	accts = ('blprnt','shahselbe','rustictoad','AdventurScience','rangerdiaries','jameskydd','okavangowild')
+	accts = ('blprnt','shahselbe','rustictoad','AdventurScience','rangerdiaries','jameskydd','okavangowild','drsteveboyes')
 	for ac in accts:
 
 		try: 
@@ -125,8 +168,38 @@ def init_twitter():
 				t_protect = model.get_protect('tweet')
 				if (t > t_protect):  
 					model.insert_feature('tweet', t, geojson.dumps(feature))
-				else:
-					print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
+				#else:
+					#print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
+
+	#4. -  Tweet sightings to okavangodata
+	print("LOOKING FOR UNTWEETED SIGHTINGS.")
+
+	query = "SELECT * FROM features WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
+	model.db.execute(query)
+	for row in model.db.fetchall():
+		j = json.loads(row['data'])
+		props = j['properties']
+		tweet = props['TeamMember'] + ' just spotted: ' + props['Count'] + ' ' + props['Bird Name'] + ' Lat:' + props['Latitude'] + ' Lon:' + props['Longitude'] + ' Activity:' + props['Activity']
+		
+		try:
+			twitter_data.update_status(status=tweet);
+		except TwythonError as e:
+			print(e)
+
+		#10% of the time, tweet it to the main account.
+		if (randint(0,100) < 10):
+			try:
+				twitter_data.update_status(status=tweet);
+			except TwythonError as e:
+				print(e)
+
+			print("---- TWEET" + tweet)
+
+	print("UPDATING TABLE")
+	query2 = "UPDATE features SET tweeted = 1 WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
+	model.db.execute(query2)
+	model.connection.commit()
+	print("TABLE UPDATED.")
 
 
 

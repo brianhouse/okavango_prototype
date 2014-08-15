@@ -14,6 +14,8 @@ def init():
         #db.execute("CREATE UNIQUE INDEX IF NOT EXISTS t_kind ON features(t, kind)")
         #db.execute("DROP INDEX t_kind ON features");
        # db.execute("DELETE FROM features WHERE t > 1400000000");
+        db.execute("CREATE TABLE IF NOT EXISTS hydrodrops (t INTEGER, id TEXT, lat REAL, lon REAL, t_created INTEGER)")
+        db.execute("CREATE UNIQUE INDEX IF NOT EXISTS id_lat_lon ON hydrodrops(id, lat, lon)")
     except Exception as e:
         log.error(log.exc(e))
         return
@@ -30,6 +32,17 @@ def insert_feature(kind, t, data):
     connection.commit()
     log.info("Inserted feature (%s) %s" % (entry_id, t))    
     return entry_id
+
+def insert_hydrodrop(t, hydrosensor_id, lat, lon):
+    try:
+        db.execute("INSERT INTO hydrodrops (t, id, lat, lon, t_created) VALUES (?, ?, ?, ?, ?)", (t, hydrosensor_id, float(lat), float(lon), util.timestamp()))
+        hydrodrop_id = db.lastrowid        
+    except Exception as e:
+        log.error(log.exc(e))
+        return
+    connection.commit()
+    log.info("Inserted hydrodrop (%s) %s %s" % (hydrodrop_id, hydrosensor_id, t))  
+    return hydrodrop_id  
 
 def fetch_features(kinds, start_t, stop_t, skip=1):
     kindq = []
@@ -61,6 +74,12 @@ def get_coords_by_time(time):
     j = json.loads(closeFeature);
     geom = j['geometry'];
 
-    print("CLOSEST FEATURE TO ? IS ?", (time,geom))
+    #print("CLOSEST FEATURE TO ? IS ?", (time,geom))
     return geom;
 
+def get_drop_by_id(hydrosensor_id):
+    db.execute("SELECT lat, lon FROM hydrodrops WHERE id=? ORDER BY t DESC LIMIT 1", (hydrosensor_id,))
+    result = db.fetchone()
+    if result is not None:
+        return result['lat'], result['lon']
+    return None, None

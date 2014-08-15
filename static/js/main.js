@@ -99,6 +99,8 @@ var initNav = function(){
 			if(currentPage == 'Twitter') toggleTwitterPanel();
 			else togglePanel(d3.select('#pagesNav li:first-child').node(),false, 0);
 		})
+
+	
 }
 
 var initVideo = function(){
