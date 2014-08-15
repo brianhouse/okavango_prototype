@@ -158,10 +158,10 @@ def init_twitter():
 	query = "SELECT * FROM features WHERE kind = 'sighting' AND tweeted = 0 AND t > 1408071520"
 	db.execute(query)
 	for row in db.fetchall():
-    	j = json.loads(row['data'])
-    	props = j['properties']
-    	tweet = 'Spotted: ' + props['Count'] + ' ' + props['Bird Name']
-    	print("---- TWEET" + tweet)
+		j = json.loads(row['data'])
+		props = j['properties']
+		tweet = 'Spotted: ' + props['Count'] + ' ' + props['Bird Name']
+		print("---- TWEET" + tweet)
 
 
 
