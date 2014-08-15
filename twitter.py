@@ -156,7 +156,7 @@ def init_twitter():
 
 	#4. -  Tweet sightings to okavangodata
 	query = "SELECT * FROM features WHERE kind = 'sighting' AND tweeted = 0 AND t > 1408071520"
-	db.execute(query, (skip, start_t, stop_t))
+	db.execute(query)
     for row in db.fetchall():
     	j = json.loads(row['data'])
     	props = j['properties']
