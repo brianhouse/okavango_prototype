@@ -17,7 +17,6 @@ def init_twitter():
 	OAUTH_TOKEN_SECRET = "Qus7rdrsA0wD4AzJ46J6byeHKmNrPajhoVJMyaXVMG9CG";
 
 	twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
-
 	twitter.verify_credentials();
 
 	# 1.  Get timeline for @okavangodata feed
@@ -154,6 +153,15 @@ def init_twitter():
 					model.insert_feature('tweet', t, geojson.dumps(feature))
 				#else:
 					#print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
+
+	#4. -  Tweet sightings to okavangodata
+	query = "SELECT * FROM features WHERE kind = 'sighting' AND tweeted = 0 AND t > 1408071520"
+	db.execute(query, (skip, start_t, stop_t))
+    for row in db.fetchall():
+    	j = json.loads(row['data'])
+    	props = j['properties']
+    	tweet = 'Spotted: ' + props['Count'] + ' ' + props['Bird Name']
+    	print("---- TWEET" + tweet)
 
 
 
