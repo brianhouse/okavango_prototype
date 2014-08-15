@@ -16,8 +16,16 @@ def init_twitter():
 	OAUTH_TOKEN = "2690906527-6pdw88pGs2Vrbw4QXb8Y57l4LXfYRb3zUnInrAr";
 	OAUTH_TOKEN_SECRET = "Qus7rdrsA0wD4AzJ46J6byeHKmNrPajhoVJMyaXVMG9CG";
 
+	APP_KEY_DATA = "Wsyew6Sx80Xpu5ZKi3FHaQZ9y";
+	APP_SECRET_DATA = "00AzBBQBcIFdc3Iy9q3hx0LiS0v3POyVxu7lRKXWG8nHfV2ium";
+	OAUTH_TOKEN_DATA = "2690906527-s0R9M3uqPNMgLnNapAGD9Itb0PUmM9BYX5AESZk";
+	OAUTH_TOKEN_SECRET_DATA = "H3rzh8fx6zugShxE2tENGCuymkpvFyotYxc46CijWJysH";
+
 	twitter = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
 	twitter.verify_credentials();
+
+	twitter_data = Twython(APP_KEY, APP_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+	twitter_data.verify_credentials();
 
 	# 1.  Get timeline for @okavangodata feed
 	try: 
@@ -165,7 +173,7 @@ def init_twitter():
 		tweet = props['TeamMember'] + ' spotted: ' + props['Count'] + ' ' + props['Bird Name'] + ' Lat:' + props['Latitude'] + ' Lon:' + props['Longitude'] + ' Activity:' + props['Activity']
 		
 		try:
-			twitter.update_status(status=tweet);
+			twitter_data.update_status(status=tweet);
 		except TwythonError as e:
 			print(e)
 
