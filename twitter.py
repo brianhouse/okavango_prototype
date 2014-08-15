@@ -2,7 +2,7 @@
 # Into the Okavango Twitter Scraper
 # Gets feeds from @okavangodata and pipes into server
 
-import geojson, model, sqlite3;
+import geojson, model;
 
 from twython import Twython
 from twython import TwythonError
@@ -156,8 +156,8 @@ def init_twitter():
 
 	#4. -  Tweet sightings to okavangodata
 	query = "SELECT * FROM features WHERE kind = 'sighting' AND tweeted = 0 AND t > 1408071520"
-	db.execute(query)
-	for row in db.fetchall():
+	model.db.execute(query)
+	for row in model.db.fetchall():
 		j = json.loads(row['data'])
 		props = j['properties']
 		tweet = 'Spotted: ' + props['Count'] + ' ' + props['Bird Name']
