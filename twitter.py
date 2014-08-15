@@ -86,6 +86,7 @@ def init_twitter():
 				if (t > t_protect):    
 					model.insert_feature('beacon', t, geojson.dumps(feature))
 				#print(feature);
+
 		elif '!!' in txt:
 			atwt = txt.split('!!')[1];
 			#twitter.update_status(status=atwt);
@@ -100,7 +101,7 @@ def init_twitter():
 
 
 
-			print("AUTO TWEET:" + atwt)
+			#print("AUTO TWEET:" + atwt)
 
 	# 2.  Get timeline for all associated feeds
 
@@ -155,6 +156,7 @@ def init_twitter():
 					#print("TWEET NOT NEWEST. NEWEST IS:" + str(t_protect) + " THIS ONE IS:" + str(t))
 
 	#4. -  Tweet sightings to okavangodata
+	print("LOOKING FOR UNTWEETED SIGHTINGS.")
 	query = "SELECT * FROM features WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
 	model.db.execute(query)
 	for row in model.db.fetchall():
@@ -166,7 +168,7 @@ def init_twitter():
 			twitter.update_status(status=tweet);
 		except TwythonError as e:
 			print(e)
-			
+
 		print("---- TWEET" + tweet)
 
 	query = "UPDATE features SET tweeted = 1 WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
