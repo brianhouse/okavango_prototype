@@ -75,7 +75,7 @@
                 <div id="navWrapper" class="transparent">
                     <ul id="pagesNav" class="transparent">
                         <li class="focused">Map</li>
-                        <li >Data</li>
+                        <li>Data</li>
                         <a href="http://intotheokavango.org/api"><li>API</li></a>
                         <li>About</li>
                     </ul>
@@ -125,7 +125,7 @@
                             <svg class="labels"></svg><svg class="graph"></svg>
                         </div>
                         <h3>heartrate</h3>
-                        <div class="graph" id="heartRate">
+                        <div class="graph" id="heartrate">
                             <svg class="labels"></svg><svg class="graph"></svg>
                         </div>
                         <h3>energy consumption</h3>
@@ -344,8 +344,6 @@
 	</div>
 
 
-
-
 	<script src="../static/js/d3.min.js"></script>
 	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
@@ -356,6 +354,7 @@
         targetLatLon = [-19.2571, 22.6560];
 
 		// console.log('a1');
+        var isGraphReady = true;
 		initLayout();
 		// console.log('a2');
 
