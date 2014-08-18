@@ -211,12 +211,7 @@ var enableDataPage = function(ambitJson,sightingJson){
 					.delay(500)
 					.style('color','rgb(255, 255, 255)')
 					.style('opacity','0.6')
-
-				initTimeline(ambitJson);
-				// initGraphs(ambitJson);
-				// initSighting(sightingJson);
 			})
-
 		})
 
 	d3.select('svg#loader')
@@ -228,6 +223,9 @@ var enableDataPage = function(ambitJson,sightingJson){
 				.style('display','none')
 		})
 
+	initTimeline(ambitJson);
+	// initGraphs(ambitJson);
+	// initSighting(sightingJson);
 }
 
 
@@ -272,11 +270,11 @@ var initSighting = function(json){
 var initTimeline = function(json){
 
 	console.log('aga');
-	var w = d3.select('svg.timeline').style('width');
+	var w = d3.select('#timeline').style('width');
 	console.log(w);
 	w = +w.substring(0,w.length-2)-4;
 	console.log(w);
-	var h = d3.select('svg.timeline').style('height');
+	var h = d3.select('#timeline').style('height');
 	console.log(h);
 	h = +h.substring(0,h.length-2)-4;
 	console.log(h);
