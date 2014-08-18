@@ -190,8 +190,8 @@ var loadMetrics = function(){
 var enableDataPage = function(ambitJson,sightingJson){
 	
 	initTimeline(ambitJson);
-	initGraphs(ambitJson);
-	initSighting(sightingJson);
+	// initGraphs(ambitJson);
+	// initSighting(sightingJson);
 
 	d3.selectAll('#pagesNav li')
 		.filter(function(d,i){return i==3})
