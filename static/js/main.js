@@ -269,10 +269,16 @@ var initSighting = function(json){
 
 var initTimeline = function(json){
 
-	var w = d3.select('#timeline').node().clientWidth;
+	console.log('aga');
+	var w = d3.select('body').node().clientWidth*0.89*0.97;
+	console.log(w);
 	w = +w.substring(0,w.length-2)-4;
+	console.log(w);
 	var h = d3.select('#timeline').style('height');
+	console.log(h);
 	h = +h.substring(0,h.length-2)-4;
+	console.log(h);
+	console.log('aga');
 
 	var timeScale = d3.scale.linear()
  		.range([0, w])
