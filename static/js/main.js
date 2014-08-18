@@ -189,10 +189,6 @@ var loadMetrics = function(){
 
 var enableDataPage = function(ambitJson,sightingJson){
 
-	initTimeline(ambitJson);
-	// initGraphs(ambitJson);
-	// initSighting(sightingJson);
-
 	d3.selectAll('#pagesNav li')
 		.filter(function(d,i){return i==3})
 		.classed('inactive',false)
@@ -215,7 +211,12 @@ var enableDataPage = function(ambitJson,sightingJson){
 					.delay(500)
 					.style('color','rgb(255, 255, 255)')
 					.style('opacity','0.6')
+
+				initTimeline(ambitJson);
+				// initGraphs(ambitJson);
+				// initSighting(sightingJson);
 			})
+
 		})
 
 	d3.select('svg#loader')
@@ -226,6 +227,7 @@ var enableDataPage = function(ambitJson,sightingJson){
 			d3.select(this)
 				.style('display','none')
 		})
+
 }
 
 
