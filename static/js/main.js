@@ -190,8 +190,8 @@ var loadMetrics = function(){
 var enableDataPage = function(ambitJson,sightingJson){
 
 	initTimeline(ambitJson);
-	// initGraphs(ambitJson);
-	// initSighting(sightingJson);
+	initGraphs(ambitJson);
+	initSighting(sightingJson);
 
 	d3.selectAll('#pagesNav li')
 		.filter(function(d,i){return i==3})
@@ -274,14 +274,11 @@ var initTimeline = function(json){
 	w = +w.substring(0,w.length-2)-4;
 	var h = d3.select('svg.timeline').style('height');
 	h = +h.substring(0,h.length-2)-4;
-	console.log(w + ' ' + h);
 
 	var timeScale = d3.scale.linear()
  		.range([0, w])
- 		.domain([new Date(json.features[0].properties.t_utc).getTime(),new Date(json.features[json.features.length-1].properties.t_utc+1).getTime()]);
+ 		.domain([new Date(json.features[0].properties.t_utc*1000).getTime(),new Date(json.features[json.features.length-1].properties.t_utc*1000+1).getTime()]);
  		// .domain([new Date().getTime()-(dateRange*1000*60*60*24),new Date().getTime()]);
-
- 	console.log(new Date(json.features[0].properties.t_utc) + ' ' + new Date(json.features[json.features.length-1].properties.t_utc+1));
 
 	var timeline = d3.select('svg.timeline')
 		.attr('width',w)
@@ -469,7 +466,7 @@ var initGraphs = function(json){
 			}
 			metrics.persons.push(ambit.Person);
 		}
-		var d = ambit.t_utc*1000;
+		var d = ambit.t_utc*1000*1000;
 		if(ambit.HR) metrics[ambit.Person].heartrate.push([d,ambit.HR])
 		if(ambit.EnergyConsumption) metrics[ambit.Person].energyConsumption.push([d,ambit.EnergyConsumption])
 		if(ambit.Speed) metrics[ambit.Person].speed.push([d,ambit.Speed])
@@ -852,7 +849,7 @@ var loadTweets = function(){
 			var t = {
 				username: json.features[i].properties.tweet.user.name,
 				message: json.features[i].properties.tweet.text,
-				date: new Date(Math.round(parseFloat(json.features[i].properties.t_utc))),
+				date: new Date(Math.round(parseFloat(json.features[i].properties.t_utc*1000))),
 				coords: json.features[i].geometry.coordinates,
 				profilePicUrl: json.features[i].properties.tweet.user.profile_image_url,
 			};
