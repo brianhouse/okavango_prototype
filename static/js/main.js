@@ -188,7 +188,7 @@ var loadMetrics = function(){
 
 
 var enableDataPage = function(ambitJson,sightingJson){
-	
+
 	initTimeline(ambitJson);
 	// initGraphs(ambitJson);
 	// initSighting(sightingJson);
@@ -274,11 +274,14 @@ var initTimeline = function(json){
 	w = +w.substring(0,w.length-2)-4;
 	var h = d3.select('svg.timeline').style('height');
 	h = +h.substring(0,h.length-2)-4;
+	console.log(w + ' ' + h);
 
 	var timeScale = d3.scale.linear()
  		.range([0, w])
  		.domain([new Date(json.features[0].properties.t_utc).getTime(),new Date(json.features[json.features.length-1].properties.t_utc+1).getTime()]);
  		// .domain([new Date().getTime()-(dateRange*1000*60*60*24),new Date().getTime()]);
+
+ 	console.log(new Date(json.features[0].properties.t_utc) + ' ' + new Date(json.features[json.features.length-1].properties.t_utc+1));
 
 	var timeline = d3.select('svg.timeline')
 		.attr('width',w)
