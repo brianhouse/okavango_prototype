@@ -1,7 +1,6 @@
 
 
-// IS GRAPH READY
-// subset graph data
+
 
 var currentPage = "Map";
 var cursorRange = [0,1];
@@ -224,8 +223,8 @@ var enableDataPage = function(ambitJson,sightingJson){
 		})
 
 	initTimeline(ambitJson);
-	// initGraphs(ambitJson);
-	// initSighting(sightingJson);
+	initGraphs(ambitJson);
+	initSighting(sightingJson);
 }
 
 
@@ -271,13 +270,11 @@ var initTimeline = function(json){
 
 	var w = d3.select('body').node().clientWidth*0.89*0.97-4;
 	var h = d3.select('#timeline').style('height');
-	console.log(h);
 	h = +h.substring(0,h.length-2)-4;
 
 	var timeScale = d3.scale.linear()
  		.range([0, w])
  		.domain([new Date(json.features[0].properties.t_utc*1000).getTime(),new Date(json.features[json.features.length-1].properties.t_utc*1000+1).getTime()]);
- 		// .domain([new Date().getTime()-(dateRange*1000*60*60*24),new Date().getTime()]);
 
 	var timeline = d3.select('svg.timeline')
 		.attr('width',w)
@@ -286,11 +283,9 @@ var initTimeline = function(json){
 		.style('margin-left','2px')
 
 	var updateSelection = function(){
-		///////////////////////////////
 		timeline.select('rect.selection')
 			.attr('x',function(d){return w*d[0]+h})
 			.attr('width',function(d){return w*(d[1]-d[0])-h*2})
-		///////////////////////////////
 
 		timeline.selectAll('rect.outside')
 			.data(cursorRange)
@@ -327,8 +322,8 @@ var initTimeline = function(json){
 
 	        	updateSelection();
 
-	        	var d = new Date(timeScale.invert(x)*1000);
-	        	d = [d.getMonth()+'',d.getDate()+'',d.getHours()+'',d.getMinutes()+''];
+	        	var d = new Date(timeScale.invert(x));
+	        	d = [(d.getMonth()+1)+'',d.getDate()+'',d.getHours()+'',d.getMinutes()+''];
 	        	d = (d[0].length==1?'0':'')+d[0]+'/'+(d[1].length==1?'0':'')+d[1]+' '+(d[2].length==1?'0':'')+d[2]+':'+(d[3].length==1?'0':'')+d[3];
 	        	d3.select(this).select('text')
 	        		.text(d);
@@ -381,8 +376,8 @@ var initTimeline = function(json){
 	timeline.selectAll('g.slider')
 		.append('text')
 		.text(function(d,i){
-			var d = new Date(timeScale.invert(i==0?w*cursorRange[0]:w*cursorRange[1])*1000);
-        	d = [d.getMonth()+'',d.getDate()+'',d.getHours()+'',d.getMinutes()+''];
+			var d = new Date(timeScale.invert(i==0?w*cursorRange[0]:w*cursorRange[1]));
+        	d = [(d.getMonth()+1)+'',d.getDate()+'',d.getHours()+'',d.getMinutes()+''];
         	d = (d[0].length==1?'0':'')+d[0]+'/'+(d[1].length==1?'0':'')+d[1]+' '+(d[2].length==1?'0':'')+d[2]+':'+(d[3].length==1?'0':'')+d[3];
         	return d;
 		})
@@ -467,7 +462,7 @@ var initGraphs = function(json){
 			}
 			metrics.persons.push(ambit.Person);
 		}
-		var d = ambit.t_utc*1000*1000;
+		var d = ambit.t_utc*1000;
 		if(ambit.HR) metrics[ambit.Person].heartrate.push([d,ambit.HR])
 		if(ambit.EnergyConsumption) metrics[ambit.Person].energyConsumption.push([d,ambit.EnergyConsumption])
 		if(ambit.Speed) metrics[ambit.Person].speed.push([d,ambit.Speed])
@@ -543,7 +538,7 @@ var updateGraphs = function(){
 
 	var timeScale = d3.time.scale()
  		.range([0, w])
- 		.domain([timelineRange[0]*1000,timelineRange[1]*1000]);
+ 		.domain([timelineRange[0],timelineRange[1]]);
     var timelineAxis = d3.svg.axis()
         .scale(timeScale)
         .orient("bottom")
@@ -554,7 +549,7 @@ var updateGraphs = function(){
 		.call(timelineAxis);
 	
 
-	var x = d3.scale.linear().range([0, w]).domain([timelineRange[0],timelineRange[1]]);
+	var x = d3.scale.linear().range([0, w]).domain([timelineRange[0]/1000,timelineRange[1]/1000]);
 	var yHeartrate = d3.scale.linear().range([hGraph, 0]).domain([metrics.minHeartRate,metrics.maxHeartRate]);
 	var yEnergyConsumption = d3.scale.linear().range([hGraph, 0]).domain([0,metrics.maxEnergyConsumption]);
 	var ySpeed = d3.scale.linear().range([hGraph, 0]).domain([0,metrics.maxSpeed]);
@@ -573,21 +568,21 @@ var updateGraphs = function(){
 	        	var len = metrics[p].heartrate.length;
 	        	var d;
 	        	for(var j=0; j<len; j++){
-	        		if((metrics[p].heartrate[j][0]/1000)>=timelineRange[0]) break;
+	        		if((metrics[p].heartrate[j][0])>=timelineRange[0]) break;
 	        	}
 	        	subsetRange[0] = j;
 	        	for(var j=len-1; j>=0; j--){
-	        		if((metrics[p].heartrate[j][0]/1000)<=timelineRange[1]) break;
+	        		if((metrics[p].heartrate[j][0])<=timelineRange[1]) break;
 	        	}
 	        	subsetRange[1] = j;
 	        	var datum = metrics[p].heartrate.slice(subsetRange[0],subsetRange[1]);
-	        	// if(datum.length>0){
-	        	// 	var temp;
-	        	// 	len = datum.length;
-	        	// 	for(var j=0; j<len; j++){
-	        	// 		// if(j%(1/))
-	        	// 	}
-	        	// }
+		        	// if(datum.length>0){
+		        	// 	var temp;
+		        	// 	len = datum.length;
+		        	// 	for(var j=0; j<len; j++){
+		        	// 		// if(j%(1/))
+		        	// 	}
+		        	// }
 	        	return datum;
 	        })
 	        .attr('d',lines.HeartRate)
@@ -597,11 +592,11 @@ var updateGraphs = function(){
 	        	var len = metrics[p].energyConsumption.length;
 	        	var d;
 	        	for(var j=0; j<len; j++){
-	        		if((metrics[p].energyConsumption[j][0]/1000)>=timelineRange[0]) break;
+	        		if((metrics[p].energyConsumption[j][0])>=timelineRange[0]) break;
 	        	}
 	        	subsetRange[0] = j;
 	        	for(var j=len-1; j>=0; j--){
-	        		if((metrics[p].energyConsumption[j][0]/1000)<=timelineRange[1]) break;
+	        		if((metrics[p].energyConsumption[j][0])<=timelineRange[1]) break;
 	        	}
 	        	subsetRange[1] = j;
 	        	return metrics[p].energyConsumption.slice(subsetRange[0],subsetRange[1]);
@@ -613,11 +608,11 @@ var updateGraphs = function(){
 	        	var len = metrics[p].speed.length;
 	        	var d;
 	        	for(var j=0; j<len; j++){
-	        		if((metrics[p].speed[j][0]/1000)>=timelineRange[0]) break;
+	        		if((metrics[p].speed[j][0])>=timelineRange[0]) break;
 	        	}
 	        	subsetRange[0] = j;
 	        	for(var j=len-1; j>=0; j--){
-	        		if((metrics[p].speed[j][0]/1000)<=timelineRange[1]) break;
+	        		if((metrics[p].speed[j][0])<=timelineRange[1]) break;
 	        	}
 	        	subsetRange[1] = j;
 	        	return metrics[p].speed.slice(subsetRange[0],subsetRange[1]);
