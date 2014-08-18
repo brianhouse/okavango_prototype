@@ -163,19 +163,23 @@ var loadMetrics = function(){
 	updateLoader();
 
 	var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=ambit&days=' + dateRange;
+	console.log('d3.json : ' + url);
 	d3.json(url, function (ambitJson) {
 		if(!ambitJson) return;
 		initTimeline(ambitJson);
 		initGraphs(ambitJson);
 		dataReady --;
+		console.log('dataReady: ' + dataReady);
 		if(dataReady == 0) enableDataPage();
 	});
 
-	var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=sighting&days=' + dateRange;
+	url = 'http://intotheokavango.org/api/timeline?date=20140816&types=sighting&days=' + dateRange;
+	console.log('d3.json : ' + url);
 	d3.json(url, function (sightingJson) {
 		if(!sightingJson) return;
 		initSighting(sightingJson);
 		dataReady --;
+		console.log('dataReady: ' + dataReady);
 		if(dataReady == 0) enableDataPage();
 	});
 }
@@ -569,14 +573,13 @@ var updateGraphs = function(){
 	        	}
 	        	subsetRange[1] = j;
 	        	var datum = metrics[p].heartrate.slice(subsetRange[0],subsetRange[1]);
-	        	if(datum.length>0){
-	        		var temp;
-	        		console.log(w);
-	        		len = datum.length;
-	        		for(var j=0; j<len; j++){
-	        			// if(j%(1/))
-	        		}
-	        	}
+	        	// if(datum.length>0){
+	        	// 	var temp;
+	        	// 	len = datum.length;
+	        	// 	for(var j=0; j<len; j++){
+	        	// 		// if(j%(1/))
+	        	// 	}
+	        	// }
 	        	return datum;
 	        })
 	        .attr('d',lines.HeartRate)
