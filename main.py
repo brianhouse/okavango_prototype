@@ -128,7 +128,7 @@ class Home(server.Handler):
     def get(self, page=None):
         if len(page):
             return self.not_found()
-        return self.render("map4.html")
+        return self.render("map5.html")
 
 class Beta(server.Handler):
 
