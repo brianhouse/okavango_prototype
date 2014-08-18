@@ -335,6 +335,7 @@ var initTimeline = function(json){
 	        	else d3.select('g.slider:first-child text').transition().duration(50).style('opacity',1);
 
 	        	timelineRange = [timeScale.invert(i==0?x:otherSliderX),timeScale.invert(i==1?x:otherSliderX)];
+	        	
 	        	updateGraphs();
 
         		return this;
@@ -505,7 +506,7 @@ var initGraphs = function(json){
 	    		.style('background-color',personalColors[i]);
 	}
 
-	updateGraphs();
+	requestAnimationFrame(updateGraphs);
 
 	var totalDistance = Math.round(parseInt(json[json.length-1].properties.Distance)/100)/10;
 	d3.select('#data p.counter span')
