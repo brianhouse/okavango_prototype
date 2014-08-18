@@ -131,6 +131,9 @@ var initVideo = function(){
 
 var loadMetrics = function(){
 
+	var ambitJson;
+	var sightingJson;
+
 	var updateLoader = function(){
 		loaderOffset += 0.03;
 		var arc1 = d3.svg.arc()
@@ -164,28 +167,32 @@ var loadMetrics = function(){
 
 	var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=ambit&days=' + dateRange;
 	console.log('d3.json : ' + url);
-	d3.json(url, function (ambitJson) {
+	d3.json(url, function (json) {
+		ambitJson = json;
 		if(!ambitJson) return;
-		initTimeline(ambitJson);
-		initGraphs(ambitJson);
 		dataReady --;
-		console.log('dataReady: ' + dataReady);
-		if(dataReady == 0) enableDataPage();
+		console.log('ambit loaded');
+		if(dataReady == 0) enableDataPage(ambitJson,sightingJson);
 	});
 
 	url = 'http://intotheokavango.org/api/timeline?date=20140816&types=sighting&days=' + dateRange;
 	console.log('d3.json : ' + url);
-	d3.json(url, function (sightingJson) {
+	d3.json(url, function (json) {
+		sightingJson = json;
 		if(!sightingJson) return;
-		initSighting(sightingJson);
 		dataReady --;
-		console.log('dataReady: ' + dataReady);
-		if(dataReady == 0) enableDataPage();
+		console.log('sightings loaded');
+		if(dataReady == 0) enableDataPage(ambitJson,sightingJson);
 	});
 }
 
 
-var enableDataPage = function(){
+var enableDataPage = function(ambitJson,sightingJson){
+	
+	initTimeline(ambitJson);
+	initGraphs(ambitJson);
+	initSighting(sightingJson);
+
 	d3.selectAll('#pagesNav li')
 		.filter(function(d,i){return i==3})
 		.classed('inactive',false)
