@@ -190,8 +190,8 @@ var loadMetrics = function(){
 var enableDataPage = function(ambitJson,sightingJson){
 
 	initTimeline(ambitJson);
-	initGraphs(ambitJson);
-	initSighting(sightingJson);
+	// initGraphs(ambitJson);
+	// initSighting(sightingJson);
 
 	d3.selectAll('#pagesNav li')
 		.filter(function(d,i){return i==3})
@@ -279,6 +279,9 @@ var initTimeline = function(json){
  		.range([0, w])
  		.domain([new Date(json.features[0].properties.t_utc*1000).getTime(),new Date(json.features[json.features.length-1].properties.t_utc*1000+1).getTime()]);
  		// .domain([new Date().getTime()-(dateRange*1000*60*60*24),new Date().getTime()]);
+
+ 	console.log(json.features[0].properties.t_utc, json.features[json.features.length-1].properties.t_utc);
+ 	console.log(new Date(json.features[0].properties.t_utc*1000), new Date(json.features[json.features.length-1].properties.t_utc*1000+1));
 
 	var timeline = d3.select('svg.timeline')
 		.attr('width',w)
