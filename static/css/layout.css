@@ -148,6 +148,14 @@ ul {
 				text-align: center;
 				width:25%;
 			}
+
+				div#navWrapper ul#pagesNav svg{
+					width:12px;
+					height:12px;
+					position: absolute;
+					margin-top: 6px;
+					margin-left: 6px;
+				}
 			
 				div#navWrapper ul li.focused, div#navWrapper ul li:hover:not(.inactive){
 					opacity: 1;
@@ -244,6 +252,10 @@ ul {
 				padding:55px 2.5% 2.5%;
 				border-right: 1px solid rgba(255,255,255,0.2);
 			} 
+
+				div#data div#sightings p span{
+					color:#FFB637;
+				} 
 			
 			div#data div.column:first-child{
 				height: auto;
@@ -273,13 +285,13 @@ ul {
 					margin-bottom: 20px;
 				}
 
-					div#data p:last-child span:first-child, div#data p:nth-child(2) span:last-child{
+					div#data p.counter:last-child span:first-child, div#data p.counter:nth-child(2) span:last-child{
 						vertical-align: top;
 						display: inline-block;
 						border-bottom: 1px solid rgba(255,255,255,0.2);
 					} 
 
-					div#data p:last-child span:last-child, div#data p:nth-child(2) span:first-child{
+					div#data p.counter:last-child span:last-child, div#data p.counter:nth-child(2) span:first-child{
 						font-family: Palatino, Georgia, serif;
 						font-style: italic;
 						font-weight: lighter;
@@ -294,11 +306,14 @@ ul {
 			height:auto;
 		} 
 
+			div#graphWrapper h3{
+				margin-top:40px;
+			}
+
 			div#graphWrapper div.graph{
 				height:115px;
 				padding-left: 3.25%;
 				width:96.75%;
-				border-bottom: 1px solid rgba(255,255,255,0.2);
 			}
 
 			div#graphWrapper div.graph:first-child{
@@ -311,13 +326,38 @@ ul {
 					vertical-align: top;
 				}
 
+				div.graph svg.labels{
+					width:6.5%;
+					height:115px;
+				}
 
-					div#scale svg.labels{
-						width:6.5%;
-					}
+				div.graph svg.graph{
+					width:93.5%;
+					height:115px;
+					border-bottom: 1px solid rgba(255,255,255,0.2);
+				}
 
-					div#scale svg.graph{
-						width:93.5%;
+				#scale svg.graph{
+					border-bottom:none;
+				}
+
+			div#graphWrapper div#persons{
+				float:right;
+				color:white;
+				margin-top:22px;
+			}
+
+				div#graphWrapper div#persons span{
+					margin-left:15px;
+					text-transform: uppercase;
+				}
+
+					div#graphWrapper div#persons span span{
+						width:10px;
+						height:10px;
+						background-color: #f00;
+						display: inline-block;
+						margin-right: 5px;
 					}
 
 		div#timelineWrapper{

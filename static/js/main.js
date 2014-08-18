@@ -29,10 +29,10 @@ var initLayout = function(){
 	setVideoHeight();
 	initNav();
 	initVideo();
-	if(isGraphReady) {
+	// if(isGraphReady) {
 		setColumns();
 		loadMetrics();
-	}
+	// }
 	loadTweets();
 	d3.select('#fullPanelWrapper')
 		.style('display','none');
@@ -162,22 +162,22 @@ var loadMetrics = function(){
 		.attr('fill','white')
 	updateLoader();
 
-	// // var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=ambit&days=' + dateRange
-	// // d3.json(url, function (json) {
-	// 	if(!ambitJson) return;
+	var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=ambit&days=' + dateRange;
+	d3.json(url, function (ambitJson) {
+		if(!ambitJson) return;
 		initTimeline(ambitJson);
 		initGraphs(ambitJson);
 		dataReady --;
 		if(dataReady == 0) enableDataPage();
-	// // }
+	});
 
-	// // var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=sighting&days=' + dateRange
-	// // d3.json(url, function (sightingJson) {
-	// 	if(!sightingJson) return;
+	var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=sighting&days=' + dateRange;
+	d3.json(url, function (sightingJson) {
+		if(!sightingJson) return;
 		initSighting(sightingJson);
 		dataReady --;
 		if(dataReady == 0) enableDataPage();
-	// // }
+	});
 }
 
 
