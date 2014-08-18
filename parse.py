@@ -226,13 +226,13 @@ def ingest_hydrosensor(hydrosensor_id, content, dt):
                 continue
             try:
                 if "Temp" in line:
-                    temperature = strings.as_numeric(line.replace("Temp (deg C) = (", "").replace("):", "").strip())
+                    temperature = strings.as_numeric(line.replace("Temp (deg C) = (", "").replace(")", "").strip())
                     properties['temperature'] = temperature
                 if "pH" in line:
                     ph = strings.as_numeric(line.replace("pH = (", "").replace(")", "").strip())
                     properties['ph'] = ph
                 if "Conductivity" in line:
-                    conductivity = line.replace("Conductivity (Cond,TDS,Sal,SG) = (", ")").replace(")", "").strip()
+                    conductivity = line.replace("Conductivity (Cond,TDS,Sal,SG) = (", "").replace(")", "").strip()
                     conductivity = [strings.as_numeric(element) for element in conductivity.split(",")]
                     properties['conductivity'] = conductivity                    
             except Exception as e:
@@ -270,7 +270,7 @@ def main():
                 break
         if kind is None and config['satellite'].lower() in subject:
             kind = 'beacon'
-        if kind is None and "sms from" in subject:
+        if kind is None and "message sent from mobile number" in subject:
             kind = 'hydrosensor'
         if kind is None:
             log.error("subject not recognized")
@@ -279,7 +279,7 @@ def main():
         if kind == 'beacon':
             ingest_beacon(message['body'])
         elif kind == 'hydrosensor':
-            hydrosensor_id = subject.split('-')[-1]
+            hydrosensor_id = subject.strip()[-4:]
             ingest_hydrosensor(hydrosensor_id, message['body'], message['date'])
         else:
             log.info("--> %s attachments" % len(message['attachments']))
