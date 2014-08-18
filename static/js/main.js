@@ -1,10 +1,7 @@
 
 
-/*
-	set back map (display:none)
-	rétablir color body
-*/
-
+// IS GRAPH READY
+// subset graph data
 
 var currentPage = "Map";
 var cursorRange = [0,1];
@@ -12,6 +9,9 @@ var tweets = [];
 var metrics = {};
 var dateRange;
 var timelineRange = [];
+var personalColors = ['#EB624C','#9263FF','#69D6AF','#FFC96B','#FF0000','#FF0000','#FF0000','#FF0000'];
+var dataReady = 2;
+var loaderOffset = 0;
 
 
 
@@ -23,14 +23,16 @@ window.onresize = function(){
 
 var initLayout = function(){
 
-	dateRange = Math.ceil((new Date().getTime() - new Date('August 7, 2014').getTime())/(1000*3600*24));
+	dateRange = Math.ceil((new Date().getTime() - new Date('August 16, 2014').getTime())/(1000*3600*24))+1;
 
 	setHr();
-	setColumns();
 	setVideoHeight();
 	initNav();
 	initVideo();
-	if(isGraphReady) loadMetrics();
+	if(isGraphReady) {
+		setColumns();
+		loadMetrics();
+	}
 	loadTweets();
 	d3.select('#fullPanelWrapper')
 		.style('display','none');
@@ -52,7 +54,6 @@ var setVideoHeight = function(){
 		.attr('height',d3.select('#video svg.playButton').node().clientWidth)
 	d3.select('#video')
 		.on('mouseover',function(){
-			console.log(d3.select(this).select('svg.playButton g#ABOUT'))
 			d3.select(this).select('svg.playButton g#ABOUT')
 				.transition()
 				.duration(100)
@@ -91,6 +92,7 @@ var setColumns = function(){
 var initNav = function(){
 
 	d3.selectAll('#pagesNav li')
+		.filter(function(d,i){return i<3})
 		.on('click',function(d,i){
 			if(i!=2) togglePanel(this,false,i);
 		})
@@ -129,19 +131,132 @@ var initVideo = function(){
 
 var loadMetrics = function(){
 
-	// // var daysRange = Math.ceil((new Date().getTime() - new Date('August 7, 2014').getTime())/(1000*3600*24));
-	// // var url = 'http://intotheokavango.org/api/timeline?date=20140807&types=ambit&days=' + dateRange
+	var updateLoader = function(){
+		loaderOffset += 0.03;
+		var arc1 = d3.svg.arc()
+		    .innerRadius(2)
+		    .outerRadius(6)
+		    .startAngle(loaderOffset)
+		    .endAngle(Math.PI+loaderOffset)
+		var arc2 = d3.svg.arc()
+		    .innerRadius(2)
+		    .outerRadius(6)
+		    .startAngle(Math.PI+loaderOffset)
+		    .endAngle(Math.PI*2+loaderOffset)
+
+		d3.select('svg#loader path:first-child')
+			.attr('d', arc1)
+			
+		d3.select('svg#loader path:last-child')
+			.attr('d', arc2)
+		if(dataReady > 0) requestAnimationFrame(updateLoader);
+	}
+
+	d3.select('svg#loader')
+		.append('path')
+		.attr('transform','translate(6,6)')
+		.attr('fill','rgba(255,255,255,0.6)')
+	d3.select('svg#loader')
+		.append('path')
+		.attr('transform','translate(6,6)')
+		.attr('fill','white')
+	updateLoader();
+
+	// // var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=ambit&days=' + dateRange
 	// // d3.json(url, function (json) {
-	// 	if(!json) return;
-	// 	metrics = json.features;
-		initTimeline();
-		initGraphs(json);
+	// 	if(!ambitJson) return;
+		initTimeline(ambitJson);
+		initGraphs(ambitJson);
+		dataReady --;
+		if(dataReady == 0) enableDataPage();
 	// // }
+
+	// // var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=sighting&days=' + dateRange
+	// // d3.json(url, function (sightingJson) {
+	// 	if(!sightingJson) return;
+		initSighting(sightingJson);
+		dataReady --;
+		if(dataReady == 0) enableDataPage();
+	// // }
+}
+
+
+var enableDataPage = function(){
+	d3.selectAll('#pagesNav li')
+		.filter(function(d,i){return i==3})
+		.classed('inactive',false)
+		.on('click',function(d,i){
+			togglePanel(this,false,3);
+		})
+		.style('color','rgb(255, 182, 55)')
+		.style('opacity','1')
+		.each(function(){
+			var _this = this;
+			requestAnimationFrame(function(){
+				d3.select(_this)
+					.on('mouseover',function(){
+						d3.select(_this).style('opacity',1)
+					})
+					.on('mouseout',function(){
+						d3.select(_this).style('opacity',0.6)
+					})
+					.transition()
+					.delay(500)
+					.style('color','rgb(255, 255, 255)')
+					.style('opacity','0.6')
+			})
+		})
+
+	d3.select('svg#loader')
+		.transition()
+		.delay(1000)
+		.style('opacity',0)
+		.each('end',function(){
+			d3.select(this)
+				.style('display','none')
+		})
+}
+
+
+var initSighting = function(json){
+
+	var sightings = [];
+
+	json = json.features;
+	var len = json.length;
+	for(var i = 0; i<len; i++){
+		var flag = false;
+		for(var j=0; j<sightings.length; j++){
+			if(json[i].properties['Bird Name'] == sightings[j].id) {
+				sightings[j].count ++;
+				flag = true;
+				break;
+			}
+		}
+		if(!flag) sightings.push({id:json[i].properties['Bird Name'],count:1});
+	}
+
+	sightings.sort(function(a, b){ return d3.descending(a.count, b.count); })
+
+	len = sightings.length;
+	var flag = false;
+	for(var i=0; i<len && !flag; i++){
+		d3.select('#data #sightings p')
+			.html(function(){return d3.select(this).html() + sightings[i].id + ' (<span>' + sightings[i].count +'</span>) • '})
+			.each(function(){
+				if(d3.select(this).node().clientHeight>105){
+					flag = true;
+					var last = sightings[i].id + ' (' + sightings[i].count +') • ';
+					var s = d3.select(this).html();
+					d3.select(this).html(s.substring(0,s.length-last.length-3)+'...');
+				}
+			})
+	}
 
 }
 
 
-var initTimeline = function(){
+var initTimeline = function(json){
 
 
 	var w = d3.select('svg.timeline').style('width');
@@ -151,7 +266,8 @@ var initTimeline = function(){
 
 	var timeScale = d3.scale.linear()
  		.range([0, w])
- 		.domain([new Date().getTime()-(dateRange*1000*60*60*24),new Date().getTime()]);
+ 		.domain([new Date(json.features[0].properties.t_utc).getTime(),new Date(json.features[json.features.length-1].properties.t_utc+1).getTime()]);
+ 		// .domain([new Date().getTime()-(dateRange*1000*60*60*24),new Date().getTime()]);
 
 	var timeline = d3.select('svg.timeline')
 		.attr('width',w)
@@ -199,7 +315,7 @@ var initTimeline = function(){
 
 	        	updateSelection();
 
-	        	var d = new Date(timeScale.invert(x));
+	        	var d = new Date(timeScale.invert(x)*1000);
 	        	d = [d.getMonth()+'',d.getDate()+'',d.getHours()+'',d.getMinutes()+''];
 	        	d = (d[0].length==1?'0':'')+d[0]+'/'+(d[1].length==1?'0':'')+d[1]+' '+(d[2].length==1?'0':'')+d[2]+':'+(d[3].length==1?'0':'')+d[3];
 	        	d3.select(this).select('text')
@@ -253,7 +369,7 @@ var initTimeline = function(){
 	timeline.selectAll('g.slider')
 		.append('text')
 		.text(function(d,i){
-			var d = new Date(timeScale.invert(i==0?w*cursorRange[0]:w*cursorRange[1]));
+			var d = new Date(timeScale.invert(i==0?w*cursorRange[0]:w*cursorRange[1])*1000);
         	d = [d.getMonth()+'',d.getDate()+'',d.getHours()+'',d.getMinutes()+''];
         	d = (d[0].length==1?'0':'')+d[0]+'/'+(d[1].length==1?'0':'')+d[1]+' '+(d[2].length==1?'0':'')+d[2]+':'+(d[3].length==1?'0':'')+d[3];
         	return d;
@@ -286,6 +402,7 @@ var initTimeline = function(){
 
 var initGraphs = function(json){
 
+
 	var w = d3.select('#scale svg.graph').style('width');
 	w = +w.substring(0,w.length-2);
 	var h = d3.select('#scale svg.graph').style('height');
@@ -308,12 +425,21 @@ var initGraphs = function(json){
 		.classed('dates',true)
 		.attr('transform','translate(0,'+(-33)+')')
 
+	d3.select('#scale svg.graph')
+		.append('line')
+		.attr('stroke','rgba(255,255,255,0.2)')
+		.attr('x1',0)
+		.attr('y1',h/2+0.5)
+		.attr('x2',w)
+		.attr('y2',h/2+0.5)
+
 	
 	// data
 	metrics = {
-		// maxHeartrate:0,
-		// maxEnergyConsumption:0,
-		// maxSpeed:0,
+		minHeartRate:10000,
+		maxHeartRate:0,
+		maxEnergyConsumption:0,
+		maxSpeed:2.25,
 		persons:[]
 	};
 
@@ -330,37 +456,65 @@ var initGraphs = function(json){
 			metrics.persons.push(ambit.Person);
 		}
 		var d = ambit.t_utc*1000;
-		metrics[ambit.Person].heartrate.push([d,ambit.HR])
-		metrics[ambit.Person].energyConsumption.push([d,ambit.EnergyConsumption])
-		metrics[ambit.Person].speed.push([d,ambit.Speed])
-		// if(ambit.HR > metrics.maxHeartrate) metrics.maxHeartrate = ambit.HR;
-		// if(ambit.EnergyConsumption > metrics.maxEnergyConsumption) metrics.maxEnergyConsumption = ambit.EnergyConsumption;
-		// if(ambit.Speed > metrics.maxSpeed) metrics.maxSpeed = ambit.Speed;
+		if(ambit.HR) metrics[ambit.Person].heartrate.push([d,ambit.HR])
+		if(ambit.EnergyConsumption) metrics[ambit.Person].energyConsumption.push([d,ambit.EnergyConsumption])
+		if(ambit.Speed) metrics[ambit.Person].speed.push([d,ambit.Speed])
+
+		if(ambit.HR > metrics.maxHeartRate) metrics.maxHeartRate = ambit.HR;
+		if(ambit.HR < metrics.minHeartRate) metrics.minHeartRate = ambit.HR;
+		if(ambit.EnergyConsumption > metrics.maxEnergyConsumption) metrics.maxEnergyConsumption = ambit.EnergyConsumption;
+
 	}
 
-	// heartrate
-	d3.select('#heartRate svg.labels')
-		.append('text')
-		.text('time')
-		.attr('text-anchor','end')
-		.attr('y',h*0.58)
-		.attr('fill','white')
-		.attr('x',function(){
-			var w = d3.select('#scale svg.labels').style('width');
-			return +w.substring(0,w.length-2)-10;
-		})
+	d3.selectAll('div.graph svg.labels')
+		.filter(function(d,i){return i>0})
+		.append('g')
+		.classed('axis',true)
+		.attr('width',w)
+
 	len = metrics.persons.length;
 	for(var i=0; i<len; i++){
 		var p = metrics.persons[i]
 		d3.select('#heartrate svg.graph')
 	        .append('path')
 	        .classed(p,true)
-	        .attr('stroke','red');
-	        // .datum(metrics[p].heartrate)
-			// .attr('transform','translate(0,'+(-33)+')')
+	        .attr('stroke',personalColors[i])
+	        .attr('fill','none');
+	    d3.select('#energyConsumption svg.graph')
+	        .append('path')
+	        .classed(p,true)
+	        .attr('stroke',personalColors[i])
+	        .attr('fill','none');
+	    d3.select('#speed svg.graph')
+	        .append('path')
+	        .classed(p,true)
+	        .attr('stroke',personalColors[i])
+	        .attr('fill','none');
+
+	    d3.select('#persons')
+	    	.append('span')
+	    	.html('<span></span>'+metrics.persons[i])
+	    	.select('span')
+	    		.style('background-color',personalColors[i]);
 	}
 
 	updateGraphs();
+
+	var totalDistance = Math.round(parseInt(json[json.length-1].properties.Distance)/100)/10;
+	d3.select('#data p.counter span')
+		.html(totalDistance + 'km ')
+
+	var averageSpeed = 0;
+	var len = json.length;
+	var offset = 0;
+	for(var i=0; i<len; i++){
+		if(json[i].properties.Speed) averageSpeed += parseFloat(json[i].properties.Speed);
+		else offset --;
+	}
+	averageSpeed /= (len+offset);
+	averageSpeed = Math.round(averageSpeed*10)/10;
+	d3.select('#data p.counter:last-child span:last-child')
+		.html(' ' + averageSpeed + 'km/h')
 
 }
 
@@ -370,43 +524,115 @@ var updateGraphs = function(){
 	w = +w.substring(0,w.length-2);
 	var h = d3.select('#scale svg.graph').style('height');
 	h = +h.substring(0,h.length-2);
+	var hGraph = d3.select('#heartrate svg.graph').style('height');
+	hGraph = +hGraph.substring(0,hGraph.length-2);
+	var wGraph = d3.select('#scale svg.labels').style('width');
+	wGraph = +wGraph.substring(0,wGraph.length-2);
 
 	var timeScale = d3.time.scale()
  		.range([0, w])
- 		.domain(timelineRange);
+ 		.domain([timelineRange[0]*1000,timelineRange[1]*1000]);
     var timelineAxis = d3.svg.axis()
         .scale(timeScale)
         .orient("bottom")
         .tickSize(h)
-	  	.ticks(Math.ceil((timelineRange[1]-timelineRange[0])/(1000*3600*24)))
+	  	.ticks(Math.max(5,Math.ceil((timelineRange[1]-timelineRange[0])/(1000*3600*24))))
 
 	d3.select('#scale svg.graph g.dates')
 		.call(timelineAxis);
-	d3.select('#scale svg.graph path.domain')
-		.remove()
-	d3.selectAll('#scale svg.graph text')
-		.attr('fill','white');
+	
 
+	var x = d3.scale.linear().range([0, w]).domain([timelineRange[0],timelineRange[1]]);
+	var yHeartrate = d3.scale.linear().range([hGraph, 0]).domain([metrics.minHeartRate,metrics.maxHeartRate]);
+	var yEnergyConsumption = d3.scale.linear().range([hGraph, 0]).domain([0,metrics.maxEnergyConsumption]);
+	var ySpeed = d3.scale.linear().range([hGraph, 0]).domain([0,metrics.maxSpeed]);
 	var lines = {
-		HeartRate:null,
-		maxEnergyConsumption:null,
-		Speed:null
-	}
-	for(m in lines){
-		var x = d3.scale.linear().range([0, w]);
-	    var y = d3.scale.linear().range([h, 0]);
-	    lines[m] = d3.svg.line()
-	        .x(function(d) { return x(d[0]); })
-	        .y(function(d) { return y(d[1]); });
+		HeartRate : d3.svg.line().x(function(d) { return x(d[0]/1000); }).y(function(d) { return yHeartrate(d[1]); }),
+		EnergyConsumption : d3.svg.line().x(function(d) { return x(d[0]/1000); }).y(function(d) { return yEnergyConsumption(d[1]); }),
+		Speed : d3.svg.line().x(function(d) { return x(d[0]/1000); }).y(function(d) { return ySpeed(d[1]); })
 	}
 
 	len = metrics.persons.length;
 	for(var i=0; i<len; i++){
 		var p = metrics.persons[i]
 		d3.select('#heartrate svg.graph path.'+p)
-	        .datum(metrics[p].heartrate)
+	        .datum(function(){
+	        	var subsetRange = [];
+	        	var len = metrics[p].heartrate.length;
+	        	var d;
+	        	for(var j=0; j<len; j++){
+	        		if((metrics[p].heartrate[j][0]/1000)>=timelineRange[0]) break;
+	        	}
+	        	subsetRange[0] = j;
+	        	for(var j=len-1; j>=0; j--){
+	        		if((metrics[p].heartrate[j][0]/1000)<=timelineRange[1]) break;
+	        	}
+	        	subsetRange[1] = j;
+	        	var datum = metrics[p].heartrate.slice(subsetRange[0],subsetRange[1]);
+	        	if(datum.length>0){
+	        		var temp;
+	        		console.log(w);
+	        		len = datum.length;
+	        		for(var j=0; j<len; j++){
+	        			// if(j%(1/))
+	        		}
+	        	}
+	        	return datum;
+	        })
 	        .attr('d',lines.HeartRate)
+	    d3.select('#energyConsumption svg.graph path.'+p)
+	        .datum(function(){
+	        	var subsetRange = [];
+	        	var len = metrics[p].energyConsumption.length;
+	        	var d;
+	        	for(var j=0; j<len; j++){
+	        		if((metrics[p].energyConsumption[j][0]/1000)>=timelineRange[0]) break;
+	        	}
+	        	subsetRange[0] = j;
+	        	for(var j=len-1; j>=0; j--){
+	        		if((metrics[p].energyConsumption[j][0]/1000)<=timelineRange[1]) break;
+	        	}
+	        	subsetRange[1] = j;
+	        	return metrics[p].energyConsumption.slice(subsetRange[0],subsetRange[1]);
+	        })
+	        .attr('d',lines.EnergyConsumption)
+	    d3.select('#speed svg.graph path.'+p)
+	        .datum(function(){
+	        	var subsetRange = [];
+	        	var len = metrics[p].speed.length;
+	        	var d;
+	        	for(var j=0; j<len; j++){
+	        		if((metrics[p].speed[j][0]/1000)>=timelineRange[0]) break;
+	        	}
+	        	subsetRange[0] = j;
+	        	for(var j=len-1; j>=0; j--){
+	        		if((metrics[p].speed[j][0]/1000)<=timelineRange[1]) break;
+	        	}
+	        	subsetRange[1] = j;
+	        	return metrics[p].speed.slice(subsetRange[0],subsetRange[1]);
+	        })
+	        .attr('d',lines.Speed)
 	}
+
+	d3.select('#heartrate svg.labels g.axis')
+		.attr('transform','translate('+wGraph+',-5)')
+		.attr('text-align','end')
+		.call(d3.svg.axis().scale(yHeartrate).orient("left").ticks(5));
+
+	d3.select('#energyConsumption svg.labels g.axis')
+		.attr('transform','translate('+wGraph+',-5)')
+		.attr('text-align','end')
+		.call(d3.svg.axis().scale(yEnergyConsumption).orient("left").ticks(5));
+
+	d3.select('#speed svg.labels g.axis')
+		.attr('transform','translate('+wGraph+',-5)')
+		.attr('text-align','end')
+		.call(d3.svg.axis().scale(ySpeed).orient("left").ticks(5));
+
+	d3.selectAll('svg.graph text, svg.labels text')
+		.attr('fill','white');
+	d3.selectAll('svg.graph path.domain,svg.labels path.domain')
+		.remove()
     
 
 }
