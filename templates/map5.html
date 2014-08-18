@@ -75,9 +75,9 @@
                 <div id="navWrapper" class="transparent">
                     <ul id="pagesNav" class="transparent">
                         <li class="focused">Map</li>
-                        <li>Data</li>
-                        <a href="http://intotheokavango.org/api"><li>API</li></a>
                         <li>About</li>
+                        <a href="http://intotheokavango.org/api"><li>API</li></a>
+                        <li class="inactive">Data<svg id="loader"></svg></li>
                     </ul>
                     <ul id="mapControls" class="transparent">
                         <!-- <li>See 2013 Expedition</li> -->
@@ -95,57 +95,7 @@
 
             </div>
             <div id="fullPanelWrapper">
-                <div class="page">
-                    <div id="dataWrapper">
-                        <div id="data">
-                            <div class="column">
-                               <div><h2>Data</h2><hr class="subline"/></div>
-                                <p>Coming on August 17...</p>
-                            </div>
-                            <!-- <div class="column">
-                                <h3>distance</h3>
-                                <p class="counter"><span>27,7km </span><span>total distance</span></p>
-                                <p class="counter"><span>average speed</span><span> 3.9km/h</span></p>
-                            </div>
-                            <div class="column">
-                                <h3>sightings</h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in ante porta, faucibus justo non, blandit orci. Phasellus ut leo sem. Maecenas tortor nisl, facilisis nec varius eget, malesuada placerat enim. Sed suscipit erat vitae urna elementum ullamcorper.</p>
-                            </div> -->
-                        </div>
-                    </div>
-
-                   <!--  <div id="timelineWrapper">
-                        <div id="timeline">
-                            <svg class="timeline"></svg>
-                        </div>
-                    </div>
-
-                    <div id="graphWrapper">
-                        <div class="graph" id="scale">
-                            <svg class="labels"></svg><svg class="graph"></svg>
-                        </div>
-                        <h3>heartrate</h3>
-                        <div class="graph" id="heartrate">
-                            <svg class="labels"></svg><svg class="graph"></svg>
-                        </div>
-                        <h3>energy consumption</h3>
-                        <div class="graph" id="energyConsumption">
-                            <svg class="labels"></svg><svg class="graph"></svg>
-                        </div>
-                        <h3>speed</h3>
-                        <div class="graph" id="speed">
-                            <svg class="labels"></svg><svg class="graph"></svg>
-                        </div>
-                    </div>
-
-                    <div class="footer">
-                        <hr/>
-                        <div class="marker"><img src="../static/img/marker.svg"/></div>
-                        <hr/>
-                    </div> -->
-                </div>
-                <div class="page">
-                </div>
+                
                 <div class="page">
                     <div id="aboutWrapper">
                         <div id="about">
@@ -311,6 +261,62 @@
                     </div>
                 </div>
 
+
+                <div class="page">
+                </div>
+
+                <div class="page">
+                    <div id="dataWrapper">
+                        <div id="data">
+                            <div class="column">
+                               <div><h2>Data</h2><hr class="subline"/></div>
+                                <p></p>
+                            </div>
+                            <div class="column">
+                                <h3>distance</h3>
+                                <p class="counter"><span>27,7km </span><span>total distance</span></p>
+                                <p class="counter"><span>average speed</span><span> 3.9km/h</span></p>
+                            </div>
+                            <div class="column" id="sightings">
+                                <h3>sightings</h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="timelineWrapper">
+                        <div id="timeline">
+                            <svg class="timeline"></svg>
+                        </div>
+                    </div>
+
+                    <div id="graphWrapper">
+                        <div class="graph" id="scale">
+                            <svg class="labels"></svg><svg class="graph"></svg>
+                        </div>
+                        <div id="persons"></div>
+                        <h3>heartrate</h3>
+                        <div class="graph" id="heartrate">
+                            <svg class="labels"></svg><svg class="graph"></svg>
+                        </div>
+                        <h3>energy consumption</h3>
+                        <div class="graph" id="energyConsumption">
+                            <svg class="labels"></svg><svg class="graph"></svg>
+                        </div>
+                        <h3>speed</h3>
+                        <div class="graph" id="speed">
+                            <svg class="labels"></svg><svg class="graph"></svg>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <hr/>
+                        <div class="marker"><img src="../static/img/marker.svg"/></div>
+                        <hr/>
+                    </div>
+                </div>
+
+                
                 <div class="page">
                     <div id="twitterWrapper"></div>
                 </div>
@@ -345,6 +351,7 @@
 
 
 	<script src="../static/js/d3.min.js"></script>
+    <script src="../static/js/ambit.js"></script>
 	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
 
