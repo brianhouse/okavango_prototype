@@ -280,24 +280,29 @@ var initTimeline = function(json){
  		.domain([new Date(json.features[0].properties.t_utc*1000).getTime(),new Date(json.features[json.features.length-1].properties.t_utc*1000+1).getTime()]);
  		// .domain([new Date().getTime()-(dateRange*1000*60*60*24),new Date().getTime()]);
 
- 	console.log(json.features[0].properties.t_utc, json.features[json.features.length-1].properties.t_utc);
- 	console.log(new Date(json.features[0].properties.t_utc*1000), new Date(json.features[json.features.length-1].properties.t_utc*1000+1));
+ 	console.log(w + ' ' + h);
 
+ 	console.log('1');
 	var timeline = d3.select('svg.timeline')
 		.attr('width',w)
 		.attr('height',h)
 		.style('margin-top','2px')
 		.style('margin-left','2px')
+	console.log('1');
 
 	var updateSelection = function(){
+		console.log('2');
 		timeline.select('rect.selection')
 			.attr('x',function(d){return w*d[0]+h})
 			.attr('width',function(d){return w*(d[1]-d[0])-h*2})
+		console.log('3');
 
+		console.log('4');
 		timeline.selectAll('rect.outside')
 			.data(cursorRange)
 			.attr('x',function(d,i){return i==0?0:w*d})
 			.attr('width',function(d,i){return i==0?w*d:w-w*d})
+		console.log('4');
 
 	}
 
@@ -372,6 +377,7 @@ var initTimeline = function(json){
 		.attr('transform',function(d,i){return 'translate(' + (i==0?w*cursorRange[0]:w*cursorRange[1])+',0)'})
 		.call(sliderBehavior);
 
+	console.log('5');
 	timeline.selectAll('g.slider')
 		.append('rect')
 		.attr('width',h)
@@ -379,6 +385,7 @@ var initTimeline = function(json){
 		.attr('x',function(d,i){return i==0 ? 0:-h})
 		.attr('fill','rgb(255,182,55)')
 		.style('cursor','pointer')
+	console.log('5');
 
 	timeline.selectAll('g.slider')
 		.append('text')
