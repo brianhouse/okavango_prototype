@@ -190,7 +190,6 @@ var enableDataPage = function(ambitJson,sightingJson){
 
 	d3.select('#fullPanelWrapper')
 			.style('display','block')
-			.style('right',(w*0.03+1) + 'px')
 			.style('opacity',0)
 
 	d3.select('#fullPanelWrapper div.page:nth-child(3)')
