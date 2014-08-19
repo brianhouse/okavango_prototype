@@ -23,7 +23,7 @@ def ingest_json_api(path):
     lon = data['Latitude']
 
     coords = [float(lat),float(lon),0]
-    print(data)
+    log.debug(data)
 
     feature = geojson.Feature(geometry={'type': "Point", 'coordinates': coords},properties=data)
 
@@ -36,6 +36,8 @@ def ingest_json_api(path):
     else:
         feature_id = model.insert_feature('sighting', t, geojson.dumps(feature))
         log.info("ingest_json_api SIGHTING")
+
+    d.close()
 
 
 def ingest_image_api(path):
@@ -167,29 +169,33 @@ class HeartRate(server.Handler):
 
 class Userform(server.Handler):
     def get(self):
-        self.render("fileuploadform.html")
+        return self.render("fileuploadform.html")
  
  
 class Upload(server.Handler):
     def post(self):
-        fileinfo = self.request.files['filearg'][0]
-        fname = fileinfo['filename']
-        extn = os.path.splitext(fname)[1]
-        cname = fname #str(uuid.uuid4()) + extn
+        try:
+            fileinfo = self.request.files['filearg'][0]
+            fname = fileinfo['filename']
+            extn = os.path.splitext(fname)[1]
+            cname = fname #str(uuid.uuid4()) + extn
 
-        #body = self.request.data
-        fh = open(__UPLOADS__ + cname, 'wb')
-        fh.write(fileinfo['body'])
-        fh.flush();
-        os.fsync(fh.fileno())
+            #body = self.request.data
+            fh = open(__UPLOADS__ + cname, 'wb')
+            fh.write(fileinfo['body'])
+            fh.flush();
+            os.fsync(fh.fileno())
 
-        self.finish(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
-        if ('jpg' in cname):
-            ingest_image_api(__UPLOADS__ + cname)
-        elif ('mp3' in cname):
-            ingest_audio_api(__UPLOADS__ + cname)
-        elif ('json' in cname):
-            ingest_json_api(__UPLOADS__ + cname)
+            if ('jpg' in cname):
+                ingest_image_api(__UPLOADS__ + cname)
+            elif ('mp3' in cname):
+                ingest_audio_api(__UPLOADS__ + cname)
+            elif ('json' in cname):
+                ingest_json_api(__UPLOADS__ + cname)
+
+            return self.text(cname + " is uploaded!! Check %s folder" %__UPLOADS__)
+        except Exception as e:
+            return self.error(log.exc(e))
 
 class Api2(server.Handler):
     
