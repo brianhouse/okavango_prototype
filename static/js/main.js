@@ -892,7 +892,8 @@ var loadTweets = function(){
 	        		.attr('href','http://www.twitter.com')
 
 	        	//var t = new Date(d.date.getTime() * 1000);
-	        	var t = ((parseInt(d.getDate())+1) + ' ' + m_names[d.getMonth()] + ' - ' + ((d.getHours()+'').length==1?'0':'') + d.getHours() + ':'+ ((d.getMinutes()+'').length==1?'0':'') +d.getMinutes());
+	        	var t = d.date;
+	        	t = ((parseInt(t.getDate())+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
 	        	d3.select(this).select('p.meta')
 	        		.html(t + '<span></span>' + d.username);
 	        	d3.select(this).select('p.message')
