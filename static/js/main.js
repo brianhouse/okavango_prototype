@@ -862,7 +862,7 @@ var loadTweets = function(){
 			var t = {
 				username: json.features[i].properties.tweet.user.name,
 				message: json.features[i].properties.tweet.text,
-				date: new Date(Math.round(parseFloat(json.features[i].properties.t_utc*1000))),
+				date: new Date(json.features[i].properties.DateTime),
 				coords: json.features[i].geometry.coordinates,
 				profilePicUrl: json.features[i].properties.tweet.user.profile_image_url,
 			};
@@ -891,9 +891,8 @@ var loadTweets = function(){
 	        	d3.select(this).select('a')
 	        		.attr('href','http://www.twitter.com')
 
-	        	var t = new Date(d.date.getTime() * 1000);
-	        	t = ((parseInt(t.getDate())+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
-
+	        	//var t = new Date(d.date.getTime() * 1000);
+	        	t = ((parseInt(d.getDate())+1) + ' ' + m_names[d.getMonth()] + ' - ' + ((d.getHours()+'').length==1?'0':'') + d.getHours() + ':'+ ((d.getMinutes()+'').length==1?'0':'') +d.getMinutes());
 	        	d3.select(this).select('p.meta')
 	        		.html(t + '<span></span>' + d.username);
 	        	d3.select(this).select('p.message')
