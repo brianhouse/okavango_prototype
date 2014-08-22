@@ -53,6 +53,7 @@ def ingest_ambit(path, t_protect):
         header = xmltodict.parse(header.encode('utf-8'))
         person = header['header']['Activity'].replace("OWBS ", "") 
         person = "Chris" if person == "Trail running" else person
+        person = "Jer" if person == "John" else person
         content = parts[-1].encode('utf-8')
         samples = xmltodict.parse(content)['Samples']['Sample']
         for s, sample in enumerate(samples):            
