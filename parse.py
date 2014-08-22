@@ -328,7 +328,6 @@ def main():
                                     else:
                                         log.warning("--> unknown file type %s, skipping..." % filename)
                             traverse(p)
-                        break
 
                 except Exception as e:
                     log.error(log.exc(e))
