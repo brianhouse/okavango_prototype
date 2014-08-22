@@ -862,7 +862,7 @@ var loadTweets = function(){
 			var t = {
 				username: json.features[i].properties.tweet.user.name,
 				message: json.features[i].properties.tweet.text,
-				date: new Date(json.features[i].properties.DateTime),
+				date: new Date(Math.round(parseFloat(json.features[i].properties.t_utc*1000))),
 				coords: json.features[i].geometry.coordinates,
 				profilePicUrl: json.features[i].properties.tweet.user.profile_image_url,
 			};
