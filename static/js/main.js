@@ -855,7 +855,7 @@ var toggleTwitterPanel = function(){
 }
 
 var loadTweets = function(){
-	var url = 'http://intotheokavango.org/api/timeline?date=20140807&types=tweet&days=' + dateRange
+	var url = 'http://intotheokavango.org/api/timeline?date=20140817&types=tweet&days=' + dateRange
 	d3.json(url, function (json) {
 		if(!json)return;    
 		for(var i =0; i<json.features.length; i++){
