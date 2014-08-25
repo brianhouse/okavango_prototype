@@ -164,7 +164,7 @@ var loadMetrics = function(){
 		.attr('fill','white')
 	updateLoader();
 
-	var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=ambit&days=' + dateRange;
+	var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=ambit&days=' + dateRange + '&skip=50';
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 		ambitJson = json;
