@@ -254,7 +254,11 @@ var initSighting = function(json){
 		var flag = false;
 		for(var j=0; j<sightings.length; j++){
 			if(json[i].properties['Bird Name'] == sightings[j].id) {
-				sightings[j].count ++;
+				var c = json[i].properties['Count'];
+				if(c){
+					c = parseInt(c);
+					sightings[j].count += c;
+				} else sightings[j].count ++;
 				flag = true;
 				break;
 			}
