@@ -257,7 +257,6 @@ var initSighting = function(json){
 				var c = json[i].properties['Count'];
 				if(c){
 					c = parseInt(c);
-					console.log(c);
 					sightings[j].count += c;
 				} else sightings[j].count ++;
 				flag = true;
