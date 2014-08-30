@@ -164,7 +164,7 @@ var loadMetrics = function(){
 		.attr('fill','white')
 	updateLoader();
 
-	var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=ambit&days=' + dateRange;
+	var url = 'http://intotheokavango.org/api/timeline?date=20140816&types=ambit&days=' + dateRange + '&skip=50';
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 		ambitJson = json;
@@ -855,7 +855,7 @@ var toggleTwitterPanel = function(){
 }
 
 var loadTweets = function(){
-	var url = 'http://intotheokavango.org/api/timeline?date=20140807&types=tweet&days=' + dateRange
+	var url = 'http://intotheokavango.org/api/timeline?date=20140817&types=tweet&days=' + dateRange
 	d3.json(url, function (json) {
 		if(!json)return;    
 		for(var i =0; i<json.features.length; i++){
@@ -891,9 +891,9 @@ var loadTweets = function(){
 	        	d3.select(this).select('a')
 	        		.attr('href','http://www.twitter.com')
 
-	        	var t = new Date(d.date.getTime() * 1000);
+	        	//var t = new Date(d.date.getTime() * 1000);
+	        	var t = d.date;
 	        	t = ((parseInt(t.getDate())+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
-
 	        	d3.select(this).select('p.meta')
 	        		.html(t + '<span></span>' + d.username);
 	        	d3.select(this).select('p.message')

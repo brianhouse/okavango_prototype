@@ -1,1 +1,1 @@
-ssh -i scripts/okavango.pem ubuntu@54.250.153.221
+ssh -i okavango.pem ubuntu@54.250.153.221

@@ -52,6 +52,8 @@ def ingest_ambit(path, t_protect):
         header = parts[0] + "</header>"
         header = xmltodict.parse(header.encode('utf-8'))
         person = header['header']['Activity'].replace("OWBS ", "") 
+        person = "Chris" if person == "Trail running" else person
+        person = "Jer" if person == "John" else person
         content = parts[-1].encode('utf-8')
         samples = xmltodict.parse(content)['Samples']['Sample']
         for s, sample in enumerate(samples):            
@@ -328,7 +330,6 @@ def main():
                                     else:
                                         log.warning("--> unknown file type %s, skipping..." % filename)
                             traverse(p)
-                        break
 
                 except Exception as e:
                     log.error(log.exc(e))

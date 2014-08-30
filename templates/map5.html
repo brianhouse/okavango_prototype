@@ -706,8 +706,8 @@
 			  		
 			  	}
 
-			  	sightingDay ++;
-			  	if (sightingDay < 18) getSightingsDay(sightingDay);
+			  	sightingDay --;
+			  	if (sightingDay >= 0) getSightingsDay(sightingDay);
 				});
 
 			
@@ -771,8 +771,8 @@
 					})
 				  	//if (pc > 0) drawPaths(pathMap);
 
-				  	pathDay ++;
-				  	if (pathDay < 17) {
+				  	pathDay --;
+				  	if (pathDay >= 0) {
 				  		getPathsDay(pathDay);
 				  	} else {
 				  		//drawPaths();
@@ -848,9 +848,8 @@
 
 			var pathDay = currentDay;
 			startAnimation();
-			drawPaths();
 			getPathsDay(pathDay);
-
+            drawPaths();
 		}
 
         //******************************
