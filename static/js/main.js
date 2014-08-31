@@ -327,8 +327,8 @@ var initTimeline = function(json){
         			x = +x.substring(10,x.length-3);
         			coords.push(x);
         		}
-        		var min = i==0?0:(coords[0]+h*2+90);
-        		var max = i==1?w:(coords[1]-h*2-90);
+        		var min = i==0?0:(coords[0]+h*2+10);
+        		var max = i==1?w:(coords[1]-h*2-10);
 
         		var x = d3.select(this).attr('transform');
         		x = +x.substring(10,x.length-3);
@@ -351,8 +351,12 @@ var initTimeline = function(json){
 	        	var otherSliderX = d3.selectAll('g.slider').filter(function(d,i1){return i!=i1}).attr('transform');
 	        	otherSliderX = +otherSliderX.substring(10,otherSliderX.length-3);
 	        	var dist = Math.abs(otherSliderX - x);
-	        	if(dist < 210) d3.select('g.slider:first-child text').transition().duration(50).style('opacity',0);
-	        	else d3.select('g.slider:first-child text').transition().duration(50).style('opacity',1);
+
+	        	if(dist > 210) d3.selectAll('g.slider text').transition().duration(50).style('opacity',1);
+	        	else if(dist > 110) {
+	        		d3.select('g.slider:first-child text').transition().duration(50).style('opacity',0);
+	        		d3.select('g.slider:last-child text').transition().duration(50).style('opacity',1);
+	        	} else d3.selectAll('g.slider text').transition().duration(50).style('opacity',0);
 
 	        	timelineRange = [timeScale.invert(i==0?x:otherSliderX),timeScale.invert(i==1?x:otherSliderX)];
 	        	
