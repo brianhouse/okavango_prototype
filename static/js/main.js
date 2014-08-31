@@ -327,8 +327,8 @@ var initTimeline = function(json){
         			x = +x.substring(10,x.length-3);
         			coords.push(x);
         		}
-        		var min = i==0?0:(coords[0]+h*2+10);
-        		var max = i==1?w:(coords[1]-h*2-10);
+        		var min = i==0?0:(coords[0]+h*2+1);
+        		var max = i==1?w:(coords[1]-h*2-1);
 
         		var x = d3.select(this).attr('transform');
         		x = +x.substring(10,x.length-3);
