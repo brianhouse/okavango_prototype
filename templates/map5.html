@@ -1040,7 +1040,7 @@
 			if (map.getZoom() < 17) map.zoomIn(3);
 			if (step < scripts.length) {
 				nextStep();
-				// setTimeout(zoomIn, 8000)
+				setTimeout(function(){zoomIn(focusMarker), 8000)
 			} else {
 				if (!sightingsLoaded) loadSightings();
 				if (!pathsLoaded) loadPaths();
@@ -1052,7 +1052,6 @@
 		}
 
 		function nextStep() {
-            console.log('nextStep');
 			if (step < 100) {
 				map.panTo(focusMarker.getLatLng());
 				focusMarker.bindPopup(scripts[step], {maxWidth:400, autoPan:true})
