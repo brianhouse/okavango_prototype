@@ -924,5 +924,9 @@ var loadTweets = function(){
 	    	.on('click',function(){toggleTwitterPanel();})
 
     })	
+
+	var findTweetLocation = function(coords){
+		console.log(findTweetLocation);
+	}
 }
 
