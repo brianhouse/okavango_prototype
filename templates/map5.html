@@ -601,20 +601,19 @@
 		if (currentDay > 18) currentDay == 18;
 
 		function makeDate(d) {
-			var mm = 0;
-            d += 17;
-			dd = (d < 10) ? ("0" + d):(d);
+			var mm;
+            var dd = d+17;
             if(dd > 31){
-                m = Math.floor(dd/31);
-                dd = dd%31;
+                mm = 7 + Math.floor(dd/31);
+                dd = d%31;
             }
-            mm = (d < 10) ? ("0" + m):(d);
+		    dd = (d < 10) ? ("0" + d):(d);
+            mm = (mm < 10) ? ("0" + mm):(mm);
             console.log("makeDate() 2014" + mm + dd);
             return "2014" + mm + dd;
 		}
 
 		sightingsQueue = [];
-
 
         //2. - Sightings (wildlife)
 		function loadSightings() {
