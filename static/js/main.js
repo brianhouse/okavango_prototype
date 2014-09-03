@@ -873,7 +873,7 @@ var toggleTwitterPanel = function(){
 var loadTweets = function(){
 
 	var findTweetLocation = function(coords){
-		console.log(findTweetLocation);
+		console.log(coords);
 	};
 
 	var url = 'http://intotheokavango.org/api/timeline?date=20140817&types=tweet&days=' + dateRange
