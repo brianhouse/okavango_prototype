@@ -602,7 +602,7 @@
 		if (currentDay > 18) currentDay == 18;
 
 		function makeDate(d) {
-			var mm;
+			var mm = 7;
             var dd = d+17;
             if(dd > 31){
                 mm = 7 + Math.floor(dd/31);
