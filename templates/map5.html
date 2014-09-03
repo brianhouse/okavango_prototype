@@ -606,7 +606,7 @@
             var dd = d+17;
             if(dd > 31){
                 mm = 7 + Math.floor(dd/31);
-                dd = d%31;
+                dd = dd%31;
             }
 		    dd = (d < 10) ? ("0" + d):(d);
             mm = (mm < 10) ? ("0" + mm):(mm);
@@ -712,9 +712,9 @@
 			  		
 			  	}
 
+                if (sightingDay >= 0) getSightingsDay(sightingDay);
+                });
 			  	sightingDay ++;
-			  	if (sightingDay >= 0) getSightingsDay(sightingDay);
-				});
 
 			
 			}
@@ -777,12 +777,12 @@
 					})
 				  	//if (pc > 0) drawPaths(pathMap);
 
+                    if (pathDay >= 0) {
+                        getPathsDay(pathDay);
+                    } else {
+                        //drawPaths();
+                    }
 				  	pathDay ++;
-				  	if (pathDay >= 0) {
-				  		getPathsDay(pathDay);
-				  	} else {
-				  		//drawPaths();
-				  	}
 				});
 
 				
