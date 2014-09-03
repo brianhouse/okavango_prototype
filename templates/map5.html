@@ -1040,7 +1040,7 @@
 			if (map.getZoom() < 17) map.zoomIn(3);
 			if (step < scripts.length) {
 				nextStep();
-				setTimeout(function(){zoomIn(focusMarker), 8000)
+				setTimeout(function(){zoomIn(focusMarker)}, 8000)
 			} else {
 				if (!sightingsLoaded) loadSightings();
 				if (!pathsLoaded) loadPaths();
