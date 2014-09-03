@@ -871,6 +871,11 @@ var toggleTwitterPanel = function(){
 }
 
 var loadTweets = function(){
+
+	var findTweetLocation = function(coords){
+		console.log(findTweetLocation);
+	};
+
 	var url = 'http://intotheokavango.org/api/timeline?date=20140817&types=tweet&days=' + dateRange
 	d3.json(url, function (json) {
 		if(!json)return;    
@@ -924,9 +929,5 @@ var loadTweets = function(){
 	    	.on('click',function(){toggleTwitterPanel();})
 
     })	
-
-	var findTweetLocation = function(coords){
-		console.log(findTweetLocation);
-	}
 }
 
