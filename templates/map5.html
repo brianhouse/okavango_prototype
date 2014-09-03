@@ -344,7 +344,7 @@
 
 
 	<div id="credits">
-        a<a href="http://www.o-c-r.org/"><img src="../static/img/ocr.png" alt="The Office for Creative Research logo"/></a>
+        <a href="http://www.o-c-r.org/"><img src="../static/img/ocr.png" alt="The Office for Creative Research logo"/></a>
 		<a href="http://www.wildbirdtrust.com/"><img src="../static/img/wbtlogo.png" alt="Wild Bird Trust logo"/></a>
 		
 	</div>
@@ -601,9 +601,16 @@
 		if (currentDay > 18) currentDay == 18;
 
 		function makeDate(d) {
-			d += 17;
+			var mm = 0;
+            d += 17;
 			dd = (d < 10) ? ("0" + d):(d);
-			return("201408" + dd);
+            if(dd > 31){
+                m = Math.floor(dd/31);
+                dd = dd%31;
+            }
+            mm = (d < 10) ? ("0" + m):(d);
+            console.log("makeDate() 2014" + mm + dd);
+            return "2014" + mm + dd;
 		}
 
 		sightingsQueue = [];
