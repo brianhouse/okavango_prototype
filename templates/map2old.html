@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Into the Okavango</title>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    
+    <link rel="stylesheet" href="/static/css/leaflet.css" />
+    <link rel="stylesheet" href="/static/js/MarkerCluster.css" />
+    <link rel="stylesheet" href="/static/js/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="/static/js/Control.FullScreen.css" />
+
+    <script src="/static/js/leaflet.js"></script>
+    <script src="/static/js/leaflet.markercluster.js"></script>
+    <script src="/static/js/rcolor.js"></script>
+    <script src="/static/js/simplify.js"></script>
+ 	<script src="/static/js/Control.FullScreen.js"></script>
+	
+	<script language="Javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+	<style type="text/css">
+
+
+	 	/*Reset CSS*/
+	 	html, body, div, span, applet, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		a, abbr, acronym, address, big, cite, code,
+		del, dfn, em, img, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, center,
+		dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend,
+		table, caption, tbody, tfoot, thead, tr, th, td,
+		article, aside, canvas, details, embed, 
+		figure, figcaption, footer, header, hgroup, 
+		menu, nav, output, ruby, section, summary,
+		time, mark, audio, video {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			font-size: 100%;
+			font: inherit;
+			vertical-align: baseline;
+		}
+		article, aside, details, figcaption, figure, 
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+		body {
+			line-height: 1;
+			background-color:#DDDDDD;
+		}
+		ol, ul {
+			list-style: none;
+		}
+		blockquote, q {
+			quotes: none;
+		}
+		blockquote:before, blockquote:after,
+		q:before, q:after {
+			content: '';
+			content: none;
+		}
+		table {
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+		/*Reset CSS*/
+
+		body{
+			font: 1.2em Georgia, serif;
+			color:#443D33;
+			overflow: -moz-scrollbars-vertical; 
+			overflow-y: scroll;
+		}
+
+		p{
+			font-style: italic;
+			line-height: 1.6em;
+		}
+
+		a{
+			color:black;
+			text-decoration: none;
+			-webkit-transition: color 0.08s linear;
+		    -moz-transition: color 0.08s linear;
+		    -o-transition: color 0.08s linear;
+		    -ms-transition: color 0.08s linear;
+		    transition: color 0.08s linear;
+		}
+		a:hover{
+			color:white;
+		}
+		
+		#map_holder{
+			position: fixed;
+			top: 0px;
+			left: 0px;
+			width:100%; 
+			height:100%;
+			z-index: 0;
+		}
+		
+		#map{
+			width:100%;
+			height:100%; 
+			position: "absolute"; 
+			top: 0px; 
+			left: 0px; 
+			overflow: "hidden";
+		}
+		
+		#ui_holder{
+			width: 37.9%;
+			min-width:480px;
+			height:auto;
+			min-height: 100%;
+			z-index: 1000;
+			position: absolute;
+			margin:0;
+			background-color: rgba(250,174,52,0.8);
+		}
+		#ui-holder.bkgtransition{
+			-webkit-transition: background-color 0.25s linear;
+		    -moz-transition: background-color 0.25s linear;
+		    -o-transition: background-color 0.25s linear;
+		    -ms-transition: background-color 0.25s linear;
+		    transition: background-color 0.25s linear;
+		}
+
+			.shadow{
+				position:absolute;
+				left:100%;
+				top:-3%;
+				width:4px;
+				height:103%;
+				background-color: rgba(0,0,0,0.15);
+			}
+
+
+			#header{
+				z-index: 10000;
+			}
+
+
+				#nav{
+					height:auto;
+					margin:0;
+					width:80%;
+					padding:1.5% 10% 2% 10%;
+				}
+
+				#nav a{
+					display:inline-block;
+					font-size: 70%;
+					color:white;
+				}
+				#nav a:hover{
+					color:#EEEEEE;
+				}
+				#nav img{
+					float:right;
+				}
+
+				#title{
+					width:60%;
+					height:auto;
+					padding:8% 20% 8% 20%;
+					border-top:1px solid rgba(0,0,0,0.05);
+					border-bottom:1px solid rgba(0,0,0,0.05);
+					-webkit-transition: border 0.1s linear;
+				    -moz-transition: border 0.1s linear;
+				    -o-transition: border 0.1s linear;
+				    -ms-transition: border 0.1s linear;
+				    transition: border 0.1s linear;
+				    -webkit-transition: padding 0.25s linear;
+				    -moz-transition: padding 0.25s linear;
+				    -o-transition: padding 0.25s linear;
+				    -ms-transition: padding 0.25s linear;
+				    transition: padding 0.25s linear;
+				}
+					h1{
+						height:auto;
+					}
+
+					h1 p{
+						width:60%;
+						position: absolute;
+						padding:0;
+						margin:0;
+						visibility: hidden;
+					}
+
+					.logotransition{
+						-webkit-transition: fill 0.25s linear;
+					    -moz-transition: fill 0.25s linear;
+					    -o-transition: fill 0.25s linear;
+					    -ms-transition: fill 0.25s linear;
+					    transition: fill 0.25s linear;
+					}
+
+					h2{
+						font-size: 0.8em;
+						letter-spacing: 0.15em;
+						text-align: center;
+						margin-top:5px;
+						color:#443D33;
+						-webkit-transition: color 0.25s linear;
+					    -moz-transition: color 0.25s linear;
+					    -o-transition: color 0.25s linear;
+					    -ms-transition: color 0.25s linear;
+					    transition: color 0.25s linear;
+					}
+
+			#about, #helppanel{
+				height:auto;
+				padding-bottom: 100px;
+			}
+
+			#about p{
+				padding:5% 10% 5% 10%;
+			}
+
+
+			#about .videolabel{
+				background-color: #1B1C1E;
+				color:#F4B04E;
+				font-size: 0.8em;
+				font-style: normal;
+				letter-spacing: 0.12em;
+				text-align: center;
+				width:80%;
+				padding:3% 10% 3% 10%;
+			}
+
+			#about .links{
+				width:80%;
+				text-align: center;
+				font-size: 0.8em;
+				padding:2% 10% 2% 10%;
+			}
+
+			#helppanel p{
+				padding:5% 10% 5% 10%;
+			}
+
+			#helppanel h2{
+				margin-top:5%;
+			}
+
+			#skip {
+				font: 14px Verdana, Helvetica, sans-serif; 
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				margin-top: 8px;
+				margin-left: -15px;
+			}
+			#skip a{
+				color:white;
+			}
+
+
+			#credits{
+				position:fixed;
+				bottom:40px;
+				right:50px;
+			}
+			#credits a{
+				margin-left: 20px;
+			}
+ 
+		
+    </style>
+  	
+	
+
+  </head>
+  <body>
+
+	
+	<!--Google Maps APIv3 Background-->
+	<div id="map_holder">
+		<div id="map"></div>
+	</div><!-- End Google Maps Background -->
+
+	<div id="ui_holder">
+		<div class="shadow"></div>
+		<div id="header">
+			<div id="nav">
+				<a href="#" id="expedition" style="width:45%">ABOUT THE EXPEDITION</a>
+				<a href="#" id="api" style="width:28%">PUBLIC API</a>
+				<a href="#" id="help" style="width:20%">HELP</a>
+				<a href="#" id="closeabout" style="width:3%"><img src="/static/img/exit.svg" alt="exit button"/></a>
+			</div>
+			<div id="title">
+				<h1>
+					<p>Into The Okavango</p>
+					<div id="logo"></div>
+				</h1>
+				<h2>A Live-data Expedition into the Okavango Delta</h2>
+			</div>
+		</div>	
+
+		<div id="about">
+			<p>This site displays data which is uploaded daily, via satellite, by the expedition team in the Okavango delta. Data is also available through a <a href="/api">public API</a>, allowing anyone to re-mix, analyze, or visualize the collected information.</p>
+			<p class="videolabel">Expedition leader Dr. Steve Boyes, talking about his work in the Okavango:</p>
+			<iframe style="width:100%;" width="100%" src="//www.youtube.com/embed/vAiP1iOv23M" frameborder="0" allowfullscreen></iframe>
+			<p class="links">
+				<a href="https://en.wikipedia.org/wiki/Okavango_Delta">About the Okavango Delta</a>
+				|
+				<a href="http://en.wikipedia.org/wiki/Bushmen">About the BaYei Bushmen</a>
+			</p>
+			<div class="bottomspace"></div>
+		</div>	
+
+		<div id="helppanel">
+			<p>This site was built by <a href="http://brianhouse.net/">Brian House</a>, <a href="http://blprnt.com">Jer Thorp</a>, with design by <a href="http://twitter.com/iaaaan">Ian Ardouin-Fumat</a>.</p>
+			<p>It's a work in progress. Real expedition data didn't become available until the team in the Delta arrived and started transmitting. As a result we are adding functionality on a daily basis, based on the character of the data we receive. So check back to watch the expedition progress, and to see and explore new features and new data.</p>
+			<p>New data is uploaded once per day, at around 12pm, EST. This data will immediately be available through the <a href="/api">public API</a>, and will be visible on the map at the same time.</p>
+			<h2>Need Help?</h2>
+			<p>For specific questions, please get in touch - <br><a href="mailto:okavango@o-c-r.org>">okavango@o-c-r.org</a></p>
+			<h2>Thank you, Thank you</h2>
+			<p>We're using a lot of open source tools to make this thing work, including <a href="leafletjs.com">Leaflet.js</a>, <a href="http://www.python.org/">Python</a> and <a href="http://www.tornadoweb.org/en/stable/">Tornado.</a> Huge thanks to all of the clever people involved in making these invaluable tools.</p>
+			<div class="bottomspace"></div>
+
+		</div>	
+
+		<div id="skip">
+			<a href="#">Skip</a>
+		</div>
+	</div>
+
+	<div id="credits">
+		<a href="http://www.wildbirdtrust.com/"><img src="/static/img/wbtlogo.png" alt="Wild Bird Trust logo"/></a>
+		<a href="http://www.o-c-r.org/"><img src="/static/img/ocr.png" alt="The Office for Creative Research logo"/></a>
+	</div>
+
+	<script type="text/javascript">
+
+	  	// create a map in the "map" div, set the view to a given place and zoom
+		var map = L.map('map', {zoomControl:false}).setView([-19.2571, 22.6560], 5);
+		map.zoomAnimationThreshold = 20;
+
+		// add an OpenStreetMap tile layer
+		var satLayer = L.tileLayer('http://a.tiles.mapbox.com/v3/brianhouse.map-oxn5wd2a/{z}/{x}/{y}.png', {
+		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 17
+		}).addTo(map);
+
+
+		// add an OpenStreetMap tile layer
+		var flatLayer = L.tileLayer('http://a.tiles.mapbox.com/v3/blprnt.map-vsat7sho/{z}/{x}/{y}.png', {
+		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors', maxZoom: 17
+		})
+
+		//Build some layers
+		var beaconLayer = new L.layerGroup().addTo(map);
+		var sightingsLayer = new L.layerGroup().addTo(map);
+		var geoLayer = new L.layerGroup().addTo(map);
+		var commentaryLayer = new L.layerGroup().addTo(map);
+
+
+		var lastPoint;
+		var markers = [];
+		var beaconMarkers = [];
+		var beaconCoords = [];
+
+		var d = new Date();
+		var focusMarker;
+
+		var step = 0;
+
+		var scripts = [
+			"This is the Okavango Delta.",
+			"Located in Botswana, it is one of the richest wildlife areas on the planet.",
+			"On September 7th, a group of BaYei bushmen, scientists and journalists entered the area for an 18-day expedition. The group, led by Dr. Steve Boyes, seeks to explore and survey new parts of the central delta. <br> <img src='/static/img/team.jpg' width='400' height='225'>",
+			"On this site, you can follow along in real-time with the expedition, and access all of the data they are collecting, including wildlife sightings, colour samples, and position and heart rate data for individual expedition members.",
+			"This is the last reported GPS position of the expedition.",
+			"Click, drag, and zoom the map to see data points (currently animal sightings, comments from the expedition team, and position reports). For help, information about the expedition, and access to the full API, click on the buttons at the top of the page."
+		]
+
+		loadBeacons();
+
+		//DATA LOAD FUNCTIONS
+		function loadBeacons() {
+
+			var starIcon = L.icon({
+			    iconUrl: '/static/img/star2.png',
+			    shadowUrl: '/static/img/starShadow2.png',
+
+			    iconSize:     [20,20], // size of the icon
+			    shadowSize:   [20,20], // size of the shadow
+			    iconAnchor:   [10,10], // point of the icon which will correspond to marker's location
+			    shadowAnchor: [10,10],  // the same for the shadow
+			    popupAnchor:  [0, -10] // point from which the popup should open relative to the iconAnchor
+			});
+
+			var beaconOptions = {
+				icon:starIcon,
+				iconSize:[20,20]
+				/*
+			    radius: 6,
+			    fillColor: "#fff",
+			    color: "#333",
+			    weight: 5,
+			    opacity: 1,
+			    fillOpacity: 1,
+			    */
+			};
+			
+
+			function onEachBeacon(feature, layer) {
+			    // does this feature have a property named popupContent?
+			    if (feature.properties && feature.properties.t_utc) {
+			    	var d = new Date(feature.properties.t_utc * 1000);
+			        layer.bindPopup("Position beacon from " + d.toString());
+			    }
+			}
+
+
+			$.getJSON('/api/timeline?date=20130907&types=beacon&days=100', function(data) {
+
+				//Create the beacon objects
+			  L.geoJson(data.features, {
+			    filter: function(feature, layer) {
+			    	//Filter out 0,0 points
+			        return (feature.geometry.coordinates[0] != 0);
+			    },
+			    pointToLayer: function (feature, latlng) {
+			        var marker = L.marker(latlng, beaconOptions);
+			        beaconMarkers.push(marker);
+			        markers.push(marker);
+			        beaconCoords.push([latlng.lng, latlng.lat]);
+			        return marker;
+			    },
+			    onEachFeature:onEachBeacon,
+			    style: function(feature) {
+			    	//Here we can apply styling to markers depending on properties. Cool.
+
+
+			    }
+				});
+			    
+			    var lm = beaconMarkers[beaconMarkers.length - 1];
+				focusMarker = L.marker(lm.getLatLng()).addTo(map);
+
+				//Create the polygon
+				
+				var paths = [{
+					"type":"Feature",
+					"properties":{
+						"test":"yes"
+					},
+					"geometry":{
+						"type":"LineString",
+						"coordinates":beaconCoords
+					}
+				}]
+
+
+				var pathStyle = {
+				    fillColor: "#fff",
+				    color: "#60C4D7",
+				    weight: 3,
+				    opacity: 0.2,
+				    fillOpacity: 0,
+				};
+				
+				//Add the polygon to the map
+				
+				var beaconPath = L.geoJson(paths, {
+					style:pathStyle
+				});
+
+				beaconLayer.addLayer(beaconPath)
+				
+				
+				nextStep();
+			});
+		}
+
+		function showBeacons() {
+			for(var i = 0; i < beaconMarkers.length; i++) {
+				//beaconMarkers[i].addTo(map);
+				beaconLayer.addLayer(beaconMarkers[i])
+			}
+		}
+
+		function loadSightings() {
+
+			var quoteIcon = L.icon({
+			    iconUrl: '/static/img/quote.png',
+			    shadowUrl: '/static/img/quoteShadow.png',
+
+			    iconSize:     [40,40], // size of the icon
+			    shadowSize:   [40,40], // size of the shadow
+			    iconAnchor:   [15,35], // point of the icon which will correspond to marker's location
+			    shadowAnchor: [15,35],  // the same for the shadow
+			    popupAnchor:  [10,-40] // point from which the popup should open relative to the iconAnchor
+			});
+
+			var sightingOptions = {
+			    radius: 2,
+			    fillColor: "#78BD52",
+			    color: "#FFF",
+			    weight: 0,
+			    opacity: 0.3,
+			    fillOpacity: 0.7,
+			};
+
+			function onEachSighting(feature, layer) {
+			    // does this feature have a property named popupContent?
+			    if (feature.properties && feature.properties.Count) {
+			    	var d = new Date(feature.properties.t_utc * 1000);
+			    	if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
+			    		layer.bindPopup("<h1>\"" + feature.properties["Bird Name"].split("quote. ")[1] + "\"</h1>" + "<br><br>" + d.toString());
+			    	} else {
+			    		layer.bindPopup(feature.properties.Count + " " + feature.properties["Bird Name"] + "<br><br>" + d.toString());
+			    	}
+			        
+			    }
+			}
+
+			var sightingsCluster = new L.MarkerClusterGroup({ disableClusteringAtZoom: 13 });
+			var sightingsMarkers = [];
+			var quoteMarkers = [];
+			var colorMap = [];
+			var colorGen = new RColor;
+
+
+			$.getJSON('/api/timeline?date=20130907&types=sightings&days=100', function(data) {
+			  L.geoJson(data.features, {
+			    filter: function(feature, layer) {
+			    	//Filter out 0,0 points
+			        return (feature.geometry.coordinates[0] != 0);
+			    },
+			    pointToLayer: function (feature, latlng) {
+			        var marker = L.circleMarker(latlng, sightingOptions);
+			        markers.push(marker);
+			        if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
+			        	marker = L.marker(latlng, {icon:quoteIcon})
+			        	quoteMarkers.push(marker);
+			        } else {
+			        	sightingsMarkers.push(marker);
+			        }
+			        
+			        return marker;
+			    },
+			    onEachFeature: onEachSighting,
+			    style: function(feature) {
+			    	//Here we can apply styling to markers depending on properties. Cool.
+			    	var c = Math.sqrt(feature.properties["Count"]);
+			    	var so = {radius: 2 + (c * 2)};
+			    	if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
+			 
+			    	} else {
+			    		var bn = feature.properties["Bird Name"];
+			    		if (colorMap[bn] == undefined) {
+			    			var c = colorGen.get(true);
+			    			so.fillColor = c;
+			    			colorMap[bn] = c;
+			    		} else {
+			    			so.fillColor = colorMap[bn];
+			    		}
+			    	}
+			        return so;
+			    }
+				})
+
+			  	for (var i = 0; i < quoteMarkers.length; i++) {
+			  		commentaryLayer.addLayer(quoteMarkers[i]);
+			  	}
+
+			  	for (var i = 0; i < sightingsMarkers.length; i++) {
+			  		sightingsCluster.addLayer(sightingsMarkers[i]);
+			  	}
+			});
+
+			sightingsLayer.addLayer(sightingsCluster);
+		}
+
+		function loadPaths() {
+			console.log("LOAD PATHS!");
+			var pathMap = [];
+			var pathCoors = [];
+			var pathLats = [];
+
+			$.getJSON('/api/timeline?date=20130907&types=ambit_geo&days=100', function(data) {
+			  L.geoJson(data.features, {
+			    filter: function(feature, layer) {
+			    	//Filter out 0,0 points
+			        return (feature.geometry.coordinates[0] != 0);
+			    },
+			    pointToLayer: function (feature, latlng) {
+			    	var name = feature.properties.Person;
+			    	if (pathMap[name] == undefined) {
+			    		console.log("new path for " + name);
+			    		pathMap[name] = [];
+			    	}
+			        var marker = L.circleMarker(latlng);
+			        pathMap[name].push([latlng.lng, latlng.lat]);
+			        
+			        return marker;
+			    },
+				})
+			  	drawPaths();
+			});
+
+			function drawPaths() {
+
+			var names = ["Steve","John","GB"];
+			var dashes = ["15,3", "5,5,2", "3,3"];
+			var colors = ["#FF3300", "#FF9900", "#FFFF00"]
+			
+			for (var i = 0; i < names.length; i++) {
+				var n = names[i];
+				console.log("**" + n);
+				console.log(pathMap[n]);
+				//Create the path polygons
+				//simplify(pathMap[n], 0.8, false);
+
+				//pathMap[n] = smoothIt(pathMap[n]);
+				
+				var paths = [{
+					"type":"Feature",
+					"properties":{
+						"test":"yes"
+					},
+					"geometry":{
+						"type":"LineString",
+						"coordinates":pathMap[n]
+					}
+				}]
+
+
+				var pathStyle = {
+				    fillColor: "#fff",
+				    color: colors[i],
+				    weight: 2,
+				    opacity: 0.4,
+				    fillOpacity: 0,
+				    smoothFactor:2,
+				    dashArray: dashes[i]
+				}
+				
+				//Add the polygon to the map
+				var path = L.geoJson(paths, {
+					style:pathStyle
+				})
+
+				geoLayer.addLayer(path);
+
+				}
+			}
+
+		}
+
+		function smoothIt(pointList) {
+			//pointList is a flat list of points [[x,y],[x,y]]
+			//Turn it into x,y vectors
+			var vectorList = [];
+			for(var i = 0; i < pointList.length; i++) {
+				vectorList[i] = {x:pointList[i][0], y:pointList[i][1]};
+			}
+			//Smooth it
+			
+			console.log("Unsimplified");
+			console.log(vectorList);
+			vectorList = simplify(vectorList, 0.0008, false);
+			console.log("Simplified.");
+			console.log(vectorList);
+			//Now turn it back into a flat list
+			var flatList = [];
+			for(var i = 0; i < vectorList.length; i++) {
+				flatList[i] = [vectorList[i].x, vectorList[i].y];
+			}
+			//Spit it out
+			return flatList;
+
+		}
+
+		function zoomIn() {
+			map.panTo(focusMarker.getLatLng());
+			console.log("zoom");
+			if (map.getZoom() < 17) map.zoomIn(3);
+			if (step < scripts.length) {
+				nextStep();
+				setTimeout(zoomIn, 8000)
+			} else {
+				loadSightings();
+				loadPaths();
+				showBeacons();
+				//focusMarker.bindPopup("Last reported position.");
+				$("#skip").hide();
+			}
+			
+		}
+
+		function nextStep() {
+			if (step < 100) {
+				map.panTo(focusMarker.getLatLng());
+				focusMarker.bindPopup(scripts[step], {maxWidth:400, autoPan:true})
+				focusMarker.openPopup();
+				step ++;
+			}
+		}
+
+		function doSkip() {
+			step = 100;
+			focusMarker.closePopup();
+			map.setZoom(17);
+			map.panTo(focusMarker.getLatLng());
+			focusMarker.bindPopup("Last reported position.");
+			$("#skip").hide();
+			loadSightings();
+			showBeacons();
+			clearTimeout(zoomIn);
+		}
+
+		//loadBeacons();
+
+		var baseMaps = {
+			"Satellite":satLayer,
+			"Flat":flatLayer
+		};
+
+		var overlays = {
+		    "Position Beacons": beaconLayer,
+		    "Wildlife Sightings": sightingsLayer,
+		    "GPS Positions": geoLayer,
+		    "Quotes & Commentary": commentaryLayer
+		};
+
+		var fullScreen = new L.Control.FullScreen({ position: 'topright' }); 
+		map.addControl(fullScreen);
+
+		L.control.layers(baseMaps, overlays).addTo(map);
+		new L.Control.Zoom({ position: 'topright' }).addTo(map);
+		setTimeout(zoomIn, 5000);
+
+		//Buttons
+		/*
+		onLoad
+		*/
+		$(function(){
+
+			$("#logo").load("/static/img/logo.svg", function(){
+				$("#logo svg").width("100%"); 
+				$("#logo svg").height("30px"); 
+				$("#logo svg path").addClass("logotransition"); 
+ 			});
+
+ 			init();
+			fadePanel(false);
+ 
+			$("#expedition").click(function(event){
+				event.preventDefault(); 
+				fadePanel(true);
+				$("#about").fadeIn();
+				$("#about").css("position","relative");
+				$("#helppanel").fadeOut();
+				$("#helppanel").css("position","absolute");
+				resizeYoutubeFrame();
+				console.log("expedition");
+			});
+ 
+			$("#api").click(function(event){
+				event.preventDefault(); 
+				window.location = "/api";
+			});
+ 
+			$("#help").click(function(event){
+				event.preventDefault(); 
+				fadePanel(true);
+				$("#about").fadeOut();
+				$("#about").css("position","absolute");
+				$("#helppanel").fadeIn();
+				$("#helppanel").css("position","relative");
+				console.log("help");
+			});
+
+			$("#closehelp").click(function(event){
+				event.preventDefault(); 
+				$("#about").fadeOut();
+				$("#helppanel").fadeOut();
+				console.log("help");
+			});
+
+			$("#closeabout").click(function(event){
+				event.preventDefault(); 
+				fadePanel(false);
+				console.log("help");
+			});
+
+			$("#skip").click(function(event){
+				event.preventDefault(); 
+				doSkip();
+				$("#skip").hide();
+				console.log("help");
+			});
+
+			$(window).resize(function() {
+			 	resizeYoutubeFrame();
+			});
+ 
+		});
+
+		function init(){
+			$("#about, #helppanel, .shadow").css("display","none");
+			$("#title").css("border","none");
+			$("#ui_holder").css("background-color","rgba(250,174,52,0)");
+			$("#ui_holder").addClass("bkgtransition");
+			$("#ui_holder h2").css("color","white");
+			$("#ui_holder #title").css("padding","2% 20% 2% 20%");
+			$("#ui_holder").height("150px");
+			$("#ui_holder").css("min-height","150px");
+		}
+
+		function resizeYoutubeFrame(){
+			$("#helppanel").fadeOut(100);
+			var youtube = $("#about iframe");
+			console.log(youtube.width() + youtube.css("display"));
+			youtube.height(youtube.width()*0.5625+"px");
+		}
+
+		function fadePanel(intro){
+			if(intro){
+				$("#ui_holder").css("background-color","rgba(250,174,52,0.8)");
+				$("#title").css("border-top","solid 1px");
+				$("#title").css("border-bottom","solid 1px");
+				$("#ui_holder #title").css("border-color","rgba(0,0,0,0.05)");
+				$("#ui_holder h2").css("color","rgba(68,61,51,1)");
+				$("#ui_holder #logo svg path, #ui_holder #logo svg circle").css("fill","#1B1C1E");
+				$("#ui_holder .shadow").fadeIn();
+				$("#ui_holder #header a:last-child").css("opacity","1");
+				$("#ui_holder #header a:last-child").css("pointer-events","auto");
+				$("#ui_holder #title").css("padding","8% 20% 8% 20%");
+				$("#ui_holder").height("auto");
+				$("#ui_holder").css("min-height","100%");
+			} else {
+				$("#ui_holder").css("background-color","rgba(250,174,52,0)");
+				$("#ui_holder #title").css("border-color","rgba(0,0,0,0)");
+				$("#ui_holder h2").css("color","white");
+				$("#ui_holder #logo svg path, #ui_holder #logo svg circle").css("fill","white");
+				$("#ui_holder .shadow").fadeOut(100);
+				$("#about").fadeOut(100);
+				$("#helppanel").fadeOut(100);
+				$("#ui_holder #header a:last-child").css("opacity","0.5");
+				$("#ui_holder #header a:last-child").css("pointer-events","none");
+				$("#ui_holder #title").css("padding","2% 20% 2% 20%");
+				$("#ui_holder").height("150px");
+				$("#ui_holder").css("min-height","150px");
+			}
+		}
+
+simplifyPath = function( points, tolerance ) {
+ 
+	// helper classes 
+	var Vector = function( x, y ) {
+		this.x = x;
+		this.y = y;
+		
+	};
+	var Line = function( p1, p2 ) {
+		this.p1 = p1;
+		this.p2 = p2;
+		
+		this.distanceToPoint = function( point ) {
+			// slope
+			var m = ( this.p2.y - this.p1.y ) / ( this.p2.x - this.p1.x ),
+				// y offset
+				b = this.p1.y - ( m * this.p1.x ),
+				d = [];
+			// distance to the linear equation
+			d.push( Math.abs( point.y - ( m * point.x ) - b ) / Math.sqrt( Math.pow( m, 2 ) + 1 ) );
+			// distance to p1
+			d.push( Math.sqrt( Math.pow( ( point.x - this.p1.x ), 2 ) + Math.pow( ( point.y - this.p1.y ), 2 ) ) );
+			// distance to p2
+			d.push( Math.sqrt( Math.pow( ( point.x - this.p2.x ), 2 ) + Math.pow( ( point.y - this.p2.y ), 2 ) ) );
+			// return the smallest distance
+			return d.sort( function( a, b ) {
+				return ( a - b ); //causes an array to be sorted numerically and ascending
+			} )[0];
+		};
+	};
+	
+	var douglasPeucker = function( points, tolerance ) {
+		if ( points.length <= 2 ) {
+			return [points[0]];
+		}
+		var returnPoints = [],
+			// make line from start to end 
+			line = new Line( points[0], points[points.length - 1] ),
+			// find the largest distance from intermediate poitns to this line
+			maxDistance = 0,
+			maxDistanceIndex = 0,
+			p;
+		for( var i = 1; i <= points.length - 2; i++ ) {
+			var distance = line.distanceToPoint( points[ i ] );
+			if( distance > maxDistance ) {
+				maxDistance = distance;
+				maxDistanceIndex = i;
+			}
+		}
+		// check if the max distance is greater than our tollerance allows 
+		if ( maxDistance >= tolerance ) {
+			p = points[maxDistanceIndex];
+			line.distanceToPoint( p, true );
+			// include this point in the output 
+			returnPoints = returnPoints.concat( douglasPeucker( points.slice( 0, maxDistanceIndex + 1 ), tolerance ) );
+			// returnPoints.push( points[maxDistanceIndex] );
+			returnPoints = returnPoints.concat( douglasPeucker( points.slice( maxDistanceIndex, points.length ), tolerance ) );
+		} else {
+			// ditching this point
+			p = points[maxDistanceIndex];
+			line.distanceToPoint( p, true );
+			returnPoints = [points[0]];
+		}
+		return returnPoints;
+	};
+	var arr = douglasPeucker( points, tolerance );
+	// always have to push the very last point on so it doesn't get left off
+	arr.push( points[points.length - 1 ] );
+	return arr;
+};
+
+
+					
+	</script>
+	
+</body>
+</html>

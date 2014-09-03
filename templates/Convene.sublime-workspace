@@ -1,0 +1,492 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"back",
+				"background-repeat"
+			],
+			[
+				"ab",
+				"absoluteCoord"
+			],
+			[
+				"view",
+				"ViewModeSwitch"
+			],
+			[
+				"upd",
+				"updateShader"
+			],
+			[
+				"getH",
+				"getHexString"
+			],
+			[
+				"publi",
+				"publisherRanking"
+			],
+			[
+				"text",
+				"textures"
+			],
+			[
+				"time",
+				"timestamp"
+			],
+			[
+				"placement",
+				"placement_id"
+			],
+			[
+				"opt",
+				"optIn"
+			],
+			[
+				"loadin",
+				"loadingPool"
+			],
+			[
+				"custo",
+				"customUniforms"
+			],
+			[
+				"web",
+				"WebGLRenderer"
+			],
+			[
+				"a",
+				"actualcolors"
+			],
+			[
+				"load",
+				"loadedPool"
+			],
+			[
+				"impress",
+				"impressions"
+			],
+			[
+				"col",
+				"colYs"
+			],
+			[
+				"imp",
+				"impressions"
+			],
+			[
+				"timeS",
+				"timeStamp"
+			],
+			[
+				"im",
+				"impressionsIn"
+			],
+			[
+				"init",
+				"initSelection"
+			],
+			[
+				"filter",
+				"filterRange"
+			],
+			[
+				"publ",
+				"publisherRanking"
+			],
+			[
+				"publish",
+				"publisherFilter"
+			],
+			[
+				"of",
+				"ofading"
+			],
+			[
+				"hi",
+				"historyResponse"
+			],
+			[
+				"curs",
+				"cursorWidth"
+			],
+			[
+				"wind",
+				"windowValues"
+			],
+			[
+				"font",
+				"font-weight"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 71.0,
+		"selected_items":
+		[
+			[
+				"save as",
+				"Project: Save As"
+			],
+			[
+				"word",
+				"Word Wrap: Toggle"
+			],
+			[
+				"save",
+				"Project: Save As"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"bro",
+				"Preferences: Browse Packages"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 561.0
+	},
+	"console":
+	{
+		"height": 139.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/ian/Documents/GitHub/Convene/ActualDataSketches/Convene06Demo5/Loader.pde",
+		"/Users/ian/Documents/GitHub/Convene/ActualDataSketches/Convene06Demo5/Convene06Demo5.pde",
+		"/Users/ian/Documents/GitHub/okavango/static/css/layout.css",
+		"/Users/ian/Documents/GitHub/okavango/static/js/main.js",
+		"/Users/ian/Documents/GitHub/okavango/templates/map4.html",
+		"/Users/ian/Documents/GitHub/okavangoback/www/index.html",
+		"/Users/ian/Documents/GitHub/okavangoback/www/js/main.js",
+		"/Users/ian/Documents/GitHub/okavangoback/www/css/style.css",
+		"/Users/ian/Documents/GitHub/okavango/templates/map3.html",
+		"/Users/ian/Documents/GitHub/okavango/www/index.html",
+		"/Users/ian/Documents/GitHub/okavango/www/css/style.css",
+		"/Users/ian/Documents/GitHub/FruitsAndVegetables/Interactive/www/iframe/map_timeline.js",
+		"/Users/ian/Documents/OCR/Okavango/Team Bios.txt",
+		"/Users/ian/Documents/Ian/O1/portfolio/portfolio.txt",
+		"/Users/ian/Desktop/ReflexionsDesign.txt",
+		"/Users/ian/Desktop/TODO.txt",
+		"/Users/ian/Documents/Ian/O1/letters.txt",
+		"/Users/ian/Desktop/GER.txt",
+		"/Users/ian/Documents/OCR/Okavango/:* Fonts *:",
+		"/Users/ian/Desktop/Sayjel/Sayjel.pde",
+		"/Users/ian/Documents/GitHub/Ziqitsa/Data/CAD Report/108 OEMAS Daily Call Detail Report Govt Mont of  May 2014.csv",
+		"/Users/ian/Documents/GitHub/Ziqitsa/DataProcessing/DataProcessing.pde",
+		"/Users/ian/Desktop/Bohemian.Coding.Sketch.v2.4.1.MacOSX.Incl.Keyfilemaker-NOY/noy.nfo",
+		"/Users/ian/Documents/GitHub/Ziqitsa/Data/CAD Report/108 OEMAS Daily Call Detail Report Govt Mont of  May 2014.xlsx",
+		"/Users/ian/Desktop/carlo.txt",
+		"/Users/ian/Documents/GitHub/floodwatch/floodwatch_build/css/history.css",
+		"/Users/ian/Documents/GitHub/floodwatch/floodwatch_build/js/background.js",
+		"/Users/ian/Documents/GitHub/floodwatch/floodwatch_build/history.html",
+		"/Users/ian/Documents/GitHub/floodwatch/floodwatch_build/js/history.js",
+		"/Users/ian/Documents/GitHub/floodwatch/floodwatch_build/js/adwords.js",
+		"/Users/ian/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/ian/Documents/GitHub/floodwatch-web/website-nodownload-ian/index.html",
+		"/Users/ian/Library/Application Support/Sublime Text 2/Packages/Theme - Default/Default.sublime-theme",
+		"/Users/ian/Library/Application Support/Sublime Text 2/Packages/User/Monokai Soda.tmTheme",
+		"/Users/ian/Library/Application Support/Sublime Text 2/Packages/Theme - Soda/Soda Dark.sublime-theme",
+		"/Users/ian/Library/Application Support/Sublime Text 2/Settings/Auto Save Session.sublime_session",
+		"/Users/ian/Library/Application Support/Sublime Text 2/Packages/Theme - Default/Widgets.stTheme",
+		"/Users/ian/Documents/GitHub/floodwatch-web/website-nodownload-ian/privacy.html"
+	],
+	"find":
+	{
+		"height": 37.0
+	},
+	"find_in_files":
+	{
+		"height": 95.0,
+		"where_history":
+		[
+			"/Users/ian/Documents/GitHub/Convene/ActualDataSketches/Convene06Demo5",
+			"/Users/ian/Documents/GitHub/FruitsAndVegetables/Interactive",
+			"/Users/ian/Documents/GitHub/FruitsAndVegetables/static",
+			"/Users/ian/Library/Application Support/Sublime Text 2",
+			"/Applications/Sublime Text 2.app/Contents",
+			"/Users/ian/Library/Application Support/Sublime Text 2"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"dataPath",
+			"Renderer",
+			"P3D",
+			"size",
+			"h4",
+			"logo",
+			"tag",
+			"$(",
+			"ready",
+			"load",
+			"onload",
+			"px",
+			"video",
+			"poster",
+			"id=\"video",
+			"about",
+			"setup",
+			"init",
+			"');\n",
+			"map",
+			"id=\"map",
+			"id='map",
+			"setHr",
+			"hr",
+			"footer",
+			"credits",
+			"twitter",
+			"key",
+			"keypressed",
+			"click",
+			"pagesnav",
+			"div",
+			"2013",
+			"mapWrapper",
+			"map",
+			"footer",
+			"src=\"img/",
+			"img",
+			"src=\"img/",
+			"map",
+			"mapwra",
+			"/static/",
+			"/st",
+			"style.css",
+			"margin",
+			"\n			",
+			".call(fadeIn)",
+			".call(fadeOut)",
+			"call",
+			"fadeOut",
+			".call(fadeOut)",
+			".call(fadeOut)\n	d3.selectAll(",
+			".call(fadeOut)",
+			".call(fadeOut)\n		d3.select(",
+			".call(fadeIn)\n			.style('display','block')\n		d3.select(",
+			"call(fadein",
+			".call(fadeIn)",
+			"fadeIn",
+			"call",
+			"')\n",
+			"call",
+			"fadeOut",
+			"call",
+			"250",
+			".classed('active',true)",
+			"active",
+			".classed('active',false)",
+			"classed",
+			"call(",
+			"\")\n",
+			"transition",
+			"- Assurance\n",
+			"case",
+			"Nobile",
+			"NobileRegular",
+			"nobile",
+			"Arial",
+			"Nobile",
+			"nobile",
+			"NobileRegular",
+			"nobile",
+			"jer",
+			"output",
+			"data",
+			",",
+			"\"",
+			"SLNO",
+			"\"",
+			"\" \"",
+			"\"\"",
+			"\"",
+			"[^\"]+",
+			"\"[^\"]+\"",
+			"\",\"",
+			"\"(([^\"]+),)+\"",
+			"\"[^\"]+\"",
+			"[^\"]+",
+			"[^,\"]+",
+			"\"[^,\"]+\"",
+			",",
+			"\"",
+			",",
+			"8",
+			"switch",
+			"updateShader",
+			"ImpressionManager",
+			"inithi",
+			"focus",
+			"timeline",
+			"ImpressionManager",
+			"initMesh",
+			"lol?",
+			"updateShader",
+			"var len = impressions.loadedPool.length;\n            for(var i = 0; i<len; i++){\n                var a = impressions.loadedPool[i];\n                geometry.vertices.push(\n                    new THREE.Vector3(),\n                    new THREE.Vector3(),\n                    new THREE.Vector3(),\n                    new THREE.Vector3()\n                );\n                geometry.faces.push(\n                    new THREE.Face3(i*4+0, i*4+1, i*4+3),\n                    new THREE.Face3(i*4+1, i*4+2, i*4+3)\n                );\n                geometry.faceVertexUvs[0].push(\n                    [new THREE.Vector2( a.uv.x, 1-(a.uv.y) ),\n                    new THREE.Vector2( a.uv.x, 1-(a.uv.y+a.height/atlas.width) ),\n                    new THREE.Vector2( a.uv.x+a.width/atlas.width, 1-(a.uv.y) )]\n                );\n                geometry.faceVertexUvs[0].push(\n                    [\n                    new THREE.Vector2( a.uv.x, 1-(a.uv.y+a.height/atlas.width) ),\n                    new THREE.Vector2( a.uv.x+a.width/atlas.width, 1-(a.uv.y+a.height/atlas.width) ),\n                    new THREE.Vector2( a.uv.x+a.width/atlas.width, 1-(a.uv.y) ),\n                    ]\n                );\n            }",
+			"var l = this.meshes.length;\n        for(var id = 0; id<l; id++){\n            var mesh = this.meshes[id];\n            var geometry = new THREE.Geometry();\n\n            var len = impressions.loadedPool.length;\n            for(var i = 0; i<len; i++){\n                var a = impressions.loadedPool[i];\n                geometry.vertices.push(\n                    new THREE.Vector3(),\n                    new THREE.Vector3(),\n                    new THREE.Vector3(),\n                    new THREE.Vector3()\n                );\n                geometry.faces.push(\n                    new THREE.Face3(i*4+0, i*4+1, i*4+3),\n                    new THREE.Face3(i*4+1, i*4+2, i*4+3)\n                );\n                geometry.faceVertexUvs[0].push(\n                    [new THREE.Vector2( a.uv.x, 1-(a.uv.y) ),\n                    new THREE.Vector2( a.uv.x, 1-(a.uv.y+a.height/atlas.width) ),\n                    new THREE.Vector2( a.uv.x+a.width/atlas.width, 1-(a.uv.y) )]\n                );\n                geometry.faceVertexUvs[0].push(\n                    [\n                    new THREE.Vector2( a.uv.x, 1-(a.uv.y+a.height/atlas.width) ),\n                    new THREE.Vector2( a.uv.x+a.width/atlas.width, 1-(a.uv.y+a.height/atlas.width) ),\n                    new THREE.Vector2( a.uv.x+a.width/atlas.width, 1-(a.uv.y) ),\n                    ]\n                );\n            }",
+			"'lol",
+			"initMesh",
+			"updateMesh",
+			"geometry",
+			"mesh",
+			"this.mesh",
+			"mesh",
+			"Mesh",
+			"mesh",
+			"this.mesh",
+			"mesh",
+			"updateMeshes",
+			".mesh"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 123.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"loader",
+				"Loader.pde"
+			],
+			[
+				"main",
+				"static/js/main.js"
+			],
+			[
+				"inde",
+				"www/index.html"
+			],
+			[
+				"layou",
+				"static/css/layout.css"
+			],
+			[
+				"",
+				"www/index.html"
+			],
+			[
+				"styl",
+				"www/css/style.css"
+			],
+			[
+				"hist",
+				"floodwatch_build/js/history.js"
+			],
+			[
+				"back",
+				"js/background.js"
+			],
+			[
+				"hi",
+				"js/history.js"
+			],
+			[
+				"his",
+				"history.html"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/Users/ian/Desktop/okavango.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": false,
+	"side_bar_visible": true,
+	"side_bar_width": 141.0,
+	"status_bar_visible": true
+}

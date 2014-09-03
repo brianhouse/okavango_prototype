@@ -356,8 +356,8 @@
 
 
         //This is the lat/lon point where the map starts by default. In theory this should reset if/when the real data comes in.
-        focusLatLon = [-19.2571, 22.6560];
-        targetLatLon = [-19.2571, 22.6560];
+        focusLatLon = [-19.08398, 22.37332];
+        targetLatLon = [-19.08398, 22.37332];
 
         var isGraphReady = false;
 		initLayout();
@@ -549,7 +549,7 @@
                     map.removeLayer(focusMarker);
                     focusMarker = L.marker(lm.getLatLng()).addTo(map);
                     console.log('origin: ' + lm.getLatLng());
-                    
+
     				//Create the polygon
     				
     				var paths = [{
