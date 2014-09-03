@@ -546,8 +546,10 @@
 			    
                 if (beaconMarkers.length > 0) {
     			    var lm = beaconMarkers[0];
-    				focusMarker = L.marker(lm.getLatLng()).addTo(map);
-
+                    map.removeLayer(focusMarker);
+                    focusMarker = L.marker(lm.getLatLng()).addTo(map);
+                    console.log('origin: ' + lm.getLatLng());
+                    
     				//Create the polygon
     				
     				var paths = [{
