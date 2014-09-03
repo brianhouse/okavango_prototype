@@ -602,13 +602,13 @@
 		if (currentDay > 18) currentDay == 18;
 
 		function makeDate(d) {
-			var mm = 8;
-            var dd = d+17;
+            var dd = d;
+            var mm = 8;
             if(dd > 31){
-                mm = 7 + Math.floor(dd/31);
+                mm = 8 + Math.floor(dd/31);
                 dd = dd%31;
             }
-		    dd = (dd < 10) ? ("0" + dd):(dd);
+            dd = (dd < 10) ? ("0" + dd):(dd);
             mm = (mm < 10) ? ("0" + mm):(mm);
             console.log("makeDate() 2014" + mm + dd + ' , d: ' + d);
             return "2014" + mm + dd;
