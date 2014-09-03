@@ -581,7 +581,8 @@
                     // No focus marker because we haven't started the expedition yet?
                     focusMarker = L.marker(map.getCenter()).addTo(map)
                 }
-				
+
+                zoomIn(focusMarker);
 				
 				nextStep();
 			});
@@ -1039,7 +1040,7 @@
 			if (map.getZoom() < 17) map.zoomIn(3);
 			if (step < scripts.length) {
 				nextStep();
-				setTimeout(zoomIn, 8000)
+				// setTimeout(zoomIn, 8000)
 			} else {
 				if (!sightingsLoaded) loadSightings();
 				if (!pathsLoaded) loadPaths();
@@ -1069,7 +1070,8 @@
 			if (!pathsLoaded) loadSightings();
 			if (!pathsLoaded) loadPaths();
 			showBeacons();
-			clearTimeout(zoomIn);
+			// clearTimeout(zoomIn);
+            zoomIn(focusMarker);
 		}
 
 		//loadBeacons();
@@ -1092,7 +1094,7 @@
 		map.addControl(fullScreen);
 
 		new L.Control.Zoom({ position: 'topright' }).addTo(map);
-		setTimeout(zoomIn, 5000);
+		// setTimeout(zoomIn, 5000);
 
 
 		var visibleSightings = [];
