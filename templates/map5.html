@@ -608,9 +608,9 @@
                 mm = 7 + Math.floor(dd/31);
                 dd = dd%31;
             }
-		    dd = (d < 10) ? ("0" + d):(d);
+		    dd = (dd < 10) ? ("0" + dd):(dd);
             mm = (mm < 10) ? ("0" + mm):(mm);
-            console.log("makeDate() 2014" + mm + dd);
+            console.log("makeDate() 2014" + mm + dd + ' , d: ' + d);
             return "2014" + mm + dd;
 		}
 
