@@ -924,7 +924,7 @@
 			displayTime(d);
 
 			//Sightings
-            console.log("SIGHTING QUEUE --------------- " + sightingCounter].time + ":" +  startTime);
+            console.log("SIGHTING QUEUE --------------- " + sightingsQueue[sightingCounter].time + ":" +  startTime);
 			if (sightingsQueue[sightingCounter].time < startTime || sightingsQueue[sightingCounter].tries > 10) {
 				sightingsQueue[sightingCounter].marker.showLabel();
 				if (!daySkip) revealedMarkers.push(sightingsQueue[sightingCounter]);
