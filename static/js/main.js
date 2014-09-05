@@ -19,7 +19,7 @@ var metrics = {};
 var dateRange;
 var timelineRange = [];
 var personalColors = ['#EB624C','#9263FF','#69D6AF','#FFC96B','#FF0000','#FF0000','#FF0000','#FF0000'];
-var dataReady = 2;
+var dataReady = false;
 var loaderOffset = 0;
 var ambitJson;
 var sightingJson;
@@ -185,9 +185,8 @@ var queryAmbit = function(date){
 	d3.json(url, function (json) {
 		console.log('ambit loaded: ' + dateString);
 		ambitJson = json;
-		if(!ambitJson) return;
 		dataReady --;
-		if(dataReady == 0) enableDataPage(ambitJson,sightingJson);
+		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
 		// queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
@@ -201,15 +200,15 @@ var querySightings = function(date){
 	d3.json(url, function (json) {
 		console.log('sightings loaded: ' + dateString);
 		sightingJson = json;
-		if(!sightingJson) return;
-		dataReady --;
-		if(dataReady == 0) enableDataPage(ambitJson,sightingJson);
+		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
 		// querySightings(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
 
 var enableDataPage = function(ambitJson,sightingJson){
+
+	dataReady = true;
 
 	d3.select('#fullPanelWrapper')
 			.style('display','block')
