@@ -344,7 +344,7 @@
 
 
 	<div id="credits">
-        b<a href="http://www.o-c-r.org/"><img src="../static/img/ocr.png" alt="The Office for Creative Research logo"/></a>
+        <a href="http://www.o-c-r.org/"><img src="../static/img/ocr.png" alt="The Office for Creative Research logo"/></a>
 		<a href="http://www.wildbirdtrust.com/"><img src="../static/img/wbtlogo.png" alt="Wild Bird Trust logo"/></a>
 		
 	</div>
@@ -356,8 +356,8 @@
 
 
         //This is the lat/lon point where the map starts by default. In theory this should reset if/when the real data comes in.
-        focusLatLon = [-19.2571, 22.6560];
-        targetLatLon = [-19.2571, 22.6560];
+        focusLatLon = [-19.08398, 22.37332];
+        targetLatLon = [-19.08398, 22.37332];
 
         var isGraphReady = false;
 		initLayout();
@@ -546,7 +546,9 @@
 			    
                 if (beaconMarkers.length > 0) {
     			    var lm = beaconMarkers[0];
-    				focusMarker = L.marker(lm.getLatLng()).addTo(map);
+                    map.removeLayer(focusMarker);
+                    focusMarker = L.marker(lm.getLatLng()).addTo(map);
+                    console.log('origin: ' + lm.getLatLng());
 
     				//Create the polygon
     				
@@ -582,7 +584,6 @@
                     focusMarker = L.marker(map.getCenter()).addTo(map)
                 }
 				
-				
 				nextStep();
 			});
 			beaconsLoaded = true;
@@ -600,16 +601,20 @@
 		currentDay = (today.getMonth() == 7 && today.getDate() > 16) ? (today.getDate() - 17):(18);
 		if (currentDay > 18) currentDay == 18;
 
-        console.log("CURRENT DAY ------------- " + currentDay);
-
 		function makeDate(d) {
-			d += 17;
-			dd = (d < 10) ? ("0" + d):(d);
-			return("201408" + dd);
+            var dd = d;
+            var mm = 8;
+            if(dd > 31){
+                mm = 8 + Math.floor(dd/31);
+                dd = dd%31;
+            }
+            dd = (dd < 10) ? ("0" + dd):(dd);
+            mm = (mm < 10) ? ("0" + mm):(mm);
+            console.log("makeDate() 2014" + mm + dd + ' , d: ' + d);
+            return "2014" + mm + dd;
 		}
 
 		sightingsQueue = [];
-
 
         //2. - Sightings (wildlife)
 		function loadSightings() {
@@ -707,9 +712,9 @@
 			  		
 			  	}
 
-			  	sightingDay --;
-			  	if (sightingDay >= 0) getSightingsDay(sightingDay);
-				});
+                if (sightingDay >= 0) getSightingsDay(sightingDay);
+                });
+			  	sightingDay ++;
 
 			
 			}
@@ -772,12 +777,12 @@
 					})
 				  	//if (pc > 0) drawPaths(pathMap);
 
-				  	pathDay --;
-				  	if (pathDay >= 0) {
-				  		getPathsDay(pathDay);
-				  	} else {
-				  		//drawPaths();
-				  	}
+                    if (pathDay >= 0) {
+                        getPathsDay(pathDay);
+                    } else {
+                        //drawPaths();
+                    }
+				  	pathDay ++;
 				});
 
 				
@@ -858,8 +863,7 @@
         //******************************
 
 		counters = [];
-		startTime = 1408233600  + (currentDay * 60 * 60 * 24);
-        console.log("START TIME ----------------- " + startTime)
+		startTime = 1408233600     + (currentDay * 60 * 60 * 24);
 		timeMag = 100;
 		timeStep = 0.400;
 		sightingCounter = 0;
@@ -914,7 +918,6 @@
 			displayTime(d);
 
 			//Sightings
-            console.log(sightingsQueue[sightingCounter].time + " : " +  startTime);
 			if (sightingsQueue[sightingCounter].time < startTime || sightingsQueue[sightingCounter].tries > 10) {
 				sightingsQueue[sightingCounter].marker.showLabel();
 				if (!daySkip) revealedMarkers.push(sightingsQueue[sightingCounter]);
@@ -1037,7 +1040,7 @@
 			if (map.getZoom() < 17) map.zoomIn(3);
 			if (step < scripts.length) {
 				nextStep();
-				setTimeout(zoomIn, 8000)
+				setTimeout(function(){zoomIn(focusMarker)}, 8000)
 			} else {
 				if (!sightingsLoaded) loadSightings();
 				if (!pathsLoaded) loadPaths();
@@ -1067,7 +1070,8 @@
 			if (!pathsLoaded) loadSightings();
 			if (!pathsLoaded) loadPaths();
 			showBeacons();
-			clearTimeout(zoomIn);
+			clearTimeout(function(){zoomIn(focusMarker)});
+            // zoomIn(focusMarker);
 		}
 
 		//loadBeacons();
@@ -1090,8 +1094,8 @@
 		map.addControl(fullScreen);
 
 		new L.Control.Zoom({ position: 'topright' }).addTo(map);
-		setTimeout(zoomIn, 5000);
-
+        focusMarker = L.marker(map.getCenter()).addTo(map);
+		setTimeout(function(){zoomIn(focusMarker)}, 5000);
 
 		var visibleSightings = [];
 		var visibleGeos = [];
