@@ -178,7 +178,7 @@ var initMetrics = function(){
 
 var queryAmbit = function(date){
 	var dateString = date.getFullYear() + (date.getMonth()+1) + date.getDate();
-	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit';
+	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1';
 	// Temporary
 	if(dataReady == 2) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
 	console.log('d3.json : ' + url);
@@ -188,13 +188,13 @@ var queryAmbit = function(date){
 		if(!ambitJson) return;
 		dataReady --;
 		if(dataReady == 0) enableDataPage(ambitJson,sightingJson);
-		queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
+		// queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
 var querySightings = function(date){
 	var dateString = date.getFullYear() + (date.getMonth()+1) + date.getDate();
-	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=sighting';
+	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=sighting&days=1';
 	// Temporary
 	if(dataReady == 2) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
 	console.log('d3.json : ' + url);
@@ -204,7 +204,7 @@ var querySightings = function(date){
 		if(!sightingJson) return;
 		dataReady --;
 		if(dataReady == 0) enableDataPage(ambitJson,sightingJson);
-		querySightings(new Date(+date.getTime() + (24*60*60*1000)));
+		// querySightings(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
