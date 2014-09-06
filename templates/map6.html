@@ -920,6 +920,8 @@
         //Logic for the time-based animation
 		function doAnimation() {
 
+            if (sightingsQueue.length > 0) {
+
 
 			startTime += timeStep * timeMag;
 
@@ -1016,6 +1018,7 @@
 			map.setView([permGeos[0][c][1], permGeos[0][c][0]], map.getZoom());
 			c++;
 			*/
+            }
 		}
 
 		function smoothIt(pointList) {
