@@ -867,7 +867,7 @@
         //******************************
 
 		counters = [];
-		startTime = 1408233600//     + (currentDay * 60 * 60 * 24);
+		startTime = 1408259319//     + (currentDay * 60 * 60 * 24);
 
         console.log("START TIME ---------------- " + startTime);
         console.log("START TIME ---------------- " + new Date(startTime));
@@ -930,7 +930,7 @@
 
 			//Sightings
 
-			if (sightingsQueue[sightingCounter].time < startTime || sightingsQueue[sightingCounter].tries > 10) {
+			if (sightingsQueue[sightingCounter].time < startTime || sightingsQueue[sightingCounter].tries > 100000) {
 				sightingsQueue[sightingCounter].marker.showLabel();
 				if (!daySkip) revealedMarkers.push(sightingsQueue[sightingCounter]);
 				sightingCounter ++;
