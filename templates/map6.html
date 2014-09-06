@@ -898,7 +898,7 @@
 			targetLatLon[0] = focusLatLon[0];
 			targetLatLon[1] = focusLatLon[1];
 			
-			//setInterval(posMap,30);
+			setInterval(posMap,30);
 			setInterval(doAnimation,timeStep * 1000);
 		}
 
@@ -980,7 +980,7 @@
 						
 						permPaths[q.name].addData(point);
 						personMarkers[q.name].setLatLng(q.latLon);
-						if (i == 1) {
+						if (i == 2) {
 							targetLatLon[0] = q.latLon[0];
 							targetLatLon[1] = q.latLon[1];
 						}
