@@ -78,12 +78,13 @@
                         <li>About</li>
                         <a href="http://intotheokavango.org/api"><li>API</li></a>
                         <li class="inactive">Data<svg id="loader"></svg></li>
+                        <li class="timeDisplay">THIS IS THE TIME</li>
                     </ul>
                     <ul id="mapControls" class="transparent">
                         <!-- <li>See 2013 Expedition</li> -->
                        <!--  <li>+</li>
                         <li>-</li> -->
-                        <li class="timeDisplay"></li>
+                        
                     </ul>
                 </div>
                 <div id="logoWrapper" class="transparent">
@@ -928,11 +929,8 @@
 
 			//Sightings
 
-
-
 			if (sightingsQueue[sightingCounter].time < startTime || sightingsQueue[sightingCounter].tries > 10) {
 				sightingsQueue[sightingCounter].marker.showLabel();
-                console.log("SHOW LABEL" + sightingsQueue[sightingCounter].marker);
 				if (!daySkip) revealedMarkers.push(sightingsQueue[sightingCounter]);
 				sightingCounter ++;
 			} else {
@@ -982,7 +980,7 @@
 						if (i == 1) {
 							targetLatLon[0] = q.latLon[0];
 							targetLatLon[1] = q.latLon[1];
-						}//map.setView(q.latLon, map.getZoom());
+						}
 						counters[n]++;
 					} else {
 						if (q.time - lq.time > 60 * 30 || daySkip) skip += 60 * 30;
