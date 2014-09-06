@@ -601,6 +601,8 @@
 		currentDay = (today.getMonth() == 7 && today.getDate() > 16) ? (today.getDate() - 17):(18);
 		if (currentDay > 18) currentDay == 18;
 
+        console.log("CURRENT DAY ---------- " + currentDay);
+
 		function makeDate(d) {
             var dd = d;
             var mm = 8;
@@ -864,6 +866,10 @@
 
 		counters = [];
 		startTime = 1408233600     + (currentDay * 60 * 60 * 24);
+
+        console.log("START TIME ---------- " + currentDay); 
+        console.log("START TIME ---------- " + new Date(startTime)); 
+
 		timeMag = 100;
 		timeStep = 0.400;
 		sightingCounter = 0;
@@ -918,6 +924,10 @@
 			displayTime(d);
 
 			//Sightings
+
+            console.log("START TIME ---------- " + sightingsQueue[sightingCounter].time + ":" + startTime); 
+
+
 			if (sightingsQueue[sightingCounter].time < startTime || sightingsQueue[sightingCounter].tries > 10) {
 				sightingsQueue[sightingCounter].marker.showLabel();
 				if (!daySkip) revealedMarkers.push(sightingsQueue[sightingCounter]);
