@@ -96,7 +96,7 @@ def ingest_ambit(path, t_protect):
                     sample['t_utc'] = t
                     sample['ContentType'] = 'ambit_geo'
                     sample['Person'] = person         
-                    if((person == 'Chris' && c % 6 == 0) || person != 'Chris') feature = geojson.Feature(geometry={'type': "Point", 'coordinates': [lon, lat, alt]}, properties=sample)            
+                    if((person == 'Chris' && c % 6 == 0) or person != 'Chris') feature = geojson.Feature(geometry={'type': "Point", 'coordinates': [lon, lat, alt]}, properties=sample)            
                     model.insert_feature('ambit_geo', t, geojson.dumps(feature))
                     c++;
 
@@ -119,7 +119,7 @@ def ingest_ambit(path, t_protect):
                     sample['t_utc'] = t
                     sample['ContentType'] = 'ambit'
                     sample['Person'] = person
-                    if((person == 'Chris' && c % 6 == 0) || person != 'Chris') feature = geojson.Feature(properties=sample)
+                    if((person == 'Chris' && c % 6 == 0) or person != 'Chris') feature = geojson.Feature(properties=sample)
                     model.insert_feature('ambit', t, geojson.dumps(feature))
                     c++;
 
