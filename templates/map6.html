@@ -611,6 +611,7 @@
 
         //2. Tweets
         function loadTweets() {
+
             var starIcon = L.icon({
                 iconUrl: '../static/img/star2.png',
                 shadowUrl: '../static/img/starShadow2.png',
@@ -642,7 +643,7 @@
                 }
             }
 
-
+            console.log("GETTING TWEETS!!!")
             $.getJSON('/api/timeline?date=20140817&types=tweet&days=100', function(data) {
 
                 //Create the beacon objects
@@ -665,6 +666,7 @@
 
                 }
                 });
+              console.log("GOT TWEETS!!!")
                 
             });
             tweetsLoaded = true;
