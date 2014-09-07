@@ -614,18 +614,7 @@
         //2. Tweets
         function loadTweets() {
 
-            var starIcon = L.icon({
-                iconUrl: '../static/img/star2.png',
-                shadowUrl: '../static/img/starShadow2.png',
-
-                iconSize:     [20,20], // size of the icon
-                shadowSize:   [20,20], // size of the shadow
-                iconAnchor:   [10,10], // point of the icon which will correspond to marker's location
-                shadowAnchor: [10,10],  // the same for the shadow
-                popupAnchor:  [0, -10] // point from which the popup should open relative to the iconAnchor
-            });
-
-            var tweetOptions = {
+            var tweetIcon = L.icon({
                 iconUrl: '../static/img/quote.png',
                 shadowUrl: '../static/img/quoteShadow.png',
 
@@ -634,6 +623,19 @@
                 iconAnchor:   [15,35], // point of the icon which will correspond to marker's location
                 shadowAnchor: [15,35],  // the same for the shadow
                 popupAnchor:  [10,-40] // point from which the popup should open relative to the iconAnchor
+            });
+
+            var tweetOptions = {
+                icon:tweetIcon,
+                iconSize:[20,20]
+                /*
+                radius: 6,
+                fillColor: "#fff",
+                color: "#333",
+                weight: 5,
+                opacity: 1,
+                fillOpacity: 1,
+                */
             };
             
 
