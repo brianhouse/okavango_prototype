@@ -203,12 +203,12 @@ ul {
 			}
 
 	div#timeWrapper {
-		position:relative;
+		padding-top:10px;
+		position:absolute;
 		height:120px;
 	}
 
 		div#time {
-
 			width: 25%;
 			padding-left:5.5%;
 			padding-right:5.5%;
