@@ -942,7 +942,7 @@
 				sightingsQueue[sightingCounter].marker.showLabel();
 				if (!daySkip) {
                     revealedMarkers.push(sightingsQueue[sightingCounter])
-                    revealedMarkerTimes.push(new Date());
+                    revealedMarkerTimes.push(new Date().getTime());
                 }
 				sightingCounter ++;
 			} else {
@@ -955,7 +955,7 @@
 			for (var i = 0; i < revealedMarkers.length; i++) {
                 var now = new Date();
                 var nms = now.getTime();
-				if (now - revealedMarkerTimes[i].getTime() > 3000) {
+				if (now - revealedMarkerTimes[i] > 3000) {
 					revealedMarkers[i].marker.hideLabel();
 				} else {
 					temp.push(revealedMarkers[i]);
