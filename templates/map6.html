@@ -911,7 +911,11 @@
 
         //Used to show what time is displayed by the animation
 		function displayTime(d) {
-            var sd = new Date(sightingsQueue[sightingCounter].time * 1000);
+
+            var dd = new Date();
+            var offset = dd.getTimezoneOffset();
+
+            var sd = new Date((sightingsQueue[sightingCounter].time * 1000) + (offset * 60 * 1000) );
 			$('div.timeDisplay').text(d.toString().split("GMT")[0] + " : " + sd.toString().split("GMT")[0]);
 		}
 
