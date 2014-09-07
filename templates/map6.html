@@ -453,6 +453,7 @@
 
 		//Build some layers
 		var beaconLayer = new L.layerGroup().addTo(map);
+        var tweetLayer = new L.layerGroup().addTo(map);
 		var sightingsLayer = new L.layerGroup().addTo(map);
 		var geoLayer = new L.layerGroup().addTo(map);
 		var commentaryLayer = new L.layerGroup().addTo(map);
@@ -463,11 +464,14 @@
 		var sightingsLoaded = false;
 		var pathsLoaded = false;
 		var beaconsLoaded = false;
+        var tweetsLoaded = false;
 
 		var lastPoint;
 		var markers = [];
 		var beaconMarkers = [];
 		var beaconCoords = [];
+        var tweetMarkers = [];
+        var tweetCoords = [];
 
 		var d = new Date();
 		var focusMarker;
@@ -484,10 +488,12 @@
 		]
 
 		loadBeacons();
+        loadTweets();
 
 		//DATA LOAD FUNCTIONS
 
         //1. Beacons
+        //1a. Tweets
         //2. Sightings
         //3. Paths
 
@@ -602,6 +608,74 @@
 				beaconLayer.addLayer(beaconMarkers[i])
 			}
 		}
+
+        //2. Tweets
+        function loadTweets() {
+            var starIcon = L.icon({
+                iconUrl: '../static/img/star2.png',
+                shadowUrl: '../static/img/starShadow2.png',
+
+                iconSize:     [20,20], // size of the icon
+                shadowSize:   [20,20], // size of the shadow
+                iconAnchor:   [10,10], // point of the icon which will correspond to marker's location
+                shadowAnchor: [10,10],  // the same for the shadow
+                popupAnchor:  [0, -10] // point from which the popup should open relative to the iconAnchor
+            });
+
+            var tweetOptions = {
+                iconUrl: '../static/img/quote.png',
+                shadowUrl: '../static/img/quoteShadow.png',
+
+                iconSize:     [40,40], // size of the icon
+                shadowSize:   [40,40], // size of the shadow
+                iconAnchor:   [15,35], // point of the icon which will correspond to marker's location
+                shadowAnchor: [15,35],  // the same for the shadow
+                popupAnchor:  [10,-40] // point from which the popup should open relative to the iconAnchor
+            };
+            
+
+            function onEachTweet(feature, layer) {
+                // does this feature have a property named popupContent?
+                if (feature.properties && feature.properties.t_utc) {
+                    var d = new Date(feature.properties.t_utc * 1000);
+                    layer.bindPopup(feature.properties.tweet.text);
+                }
+            }
+
+
+            $.getJSON('/api/timeline?date=20140817&types=tweet&days=100', function(data) {
+
+                //Create the beacon objects
+              L.geoJson(data.features, {
+                filter: function(feature, layer) {
+                    //Filter out 0,0 points
+                    return (feature.geometry.coordinates[0] != 0);
+                },
+                pointToLayer: function (feature, latlng) {
+                    var marker = L.marker(latlng, tweetOptions);
+                    tweetMarkers.push(marker);
+                    markers.push(marker);
+                    tweetCoords.push([latlng.lng, latlng.lat]);
+                    return marker;
+                },
+                onEachFeature:onEachTweet,
+                style: function(feature) {
+                    //Here we can apply styling to markers depending on properties. Cool.
+
+
+                }
+                });
+                
+            });
+            tweetsLoaded = true;
+        }
+
+        function showBeacons() {
+            for(var i = 0; i < beaconMarkers.length; i++) {
+                //beaconMarkers[i].addTo(map);
+                beaconLayer.addLayer(beaconMarkers[i])
+            }
+        }
 
 		//Set current date (number of days into the expedition)
 		var today = new Date();
@@ -895,7 +969,7 @@
 		function startAnimation() {
 
 			$( "div.skipDay" ).click(function() {
-			  startTime += (24 * 60 * 60 * 1000)
+			  //startTime += (24 * 60 * 60 * 1000)
               alert("SKIP DAY!!!")
 			});
 
