@@ -955,6 +955,7 @@
 			//Paths
 
             var skip = 0;
+            var skipCount = 0;
 
             for (var i = 0; i < names.length; i++) {
                 var n = names[i];
@@ -996,10 +997,12 @@
                      var c = counters[n];
                      var q = pathQueues[n][c];
                      var lq = pathQueues[n][c - 1];
-                     //if (q.time - lq.time > 60 * 30 || daySkip) skip = 180 * 30;
+                     if (q.time - lq.time > 60 * 30 || daySkip) skipCount ++;
                 }
 
             }
+
+            if (skipCount == names.length) skip = 180 * 30
 
 			//Night speed up - so that we don't have to watch the animation standing still for 14 hours
 			startTime += skip;
