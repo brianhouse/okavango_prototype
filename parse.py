@@ -99,7 +99,7 @@ def ingest_ambit(path, t_protect):
                     if((person == 'Chris' and c % 6 == 0) or person != 'Chris'):
                         feature = geojson.Feature(geometry={'type': "Point", 'coordinates': [lon, lat, alt]}, properties=sample)            
                         model.insert_feature('ambit_geo', t, geojson.dumps(feature))
-                    c++
+                    c = c + 1
 
                 else:
                     # energy data sample
@@ -123,7 +123,7 @@ def ingest_ambit(path, t_protect):
                     if((person == 'Chris' and c % 6 == 0) or person != 'Chris'):
                         feature = geojson.Feature(properties=sample)
                         model.insert_feature('ambit', t, geojson.dumps(feature))
-                    c++
+                    c = c + 1
 
             except Exception as e:
                 log.error(log.exc(e))
