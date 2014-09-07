@@ -674,8 +674,8 @@
 				    pointToLayer: function (feature, latlng) {
                         var scatterX = ((Math.random() * 2) - 1) * 0.01;
                         var scatterY = ((Math.random() * 2) - 1) * 0.01;
-                        console.log(latlng);
-				        var marker = L.circleMarker(latlng, sightingOptions);
+                        latlng2 = L.latlng(latlng.lat + scatterY, latlng.lon + scatterX);
+				        var marker = L.circleMarker(latlng2, sightingOptions);
 
 				        markers.push(marker);
 				        if (feature.properties["Bird Name"].indexOf("quote.") != -1) {
