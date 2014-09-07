@@ -600,6 +600,7 @@
 				nextStep();
 			});
 			beaconsLoaded = true;
+            showBeacons();
 		}
 
 		function showBeacons() {
@@ -1171,7 +1172,7 @@
 			} else {
 				if (!sightingsLoaded) loadSightings();
 				if (!pathsLoaded) loadPaths();
-				if (!beaconsLoaded) showBeacons();
+				//if (!beaconsLoaded) showBeacons();
 				//focusMarker.bindPopup("Last reported position.");
 				$("#skip").hide();
 			}
@@ -1194,9 +1195,8 @@
 			map.panTo(focusMarker.getLatLng());
 			focusMarker.bindPopup("Last reported position.");
 			$("#skip").hide();
-			if (!pathsLoaded) loadSightings();
+			if (!sightingsLoaded) loadSightings();
 			if (!pathsLoaded) loadPaths();
-			showBeacons();
 
 			clearTimeout(function(){zoomIn(focusMarker)});
             // zoomIn(focusMarker);
