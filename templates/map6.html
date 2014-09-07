@@ -951,6 +951,7 @@
 
 
 			var temp = [];	
+            var tempt = []''
 
 			for (var i = 0; i < revealedMarkers.length; i++) {
                 var now = new Date();
@@ -959,9 +960,11 @@
 					revealedMarkers[i].marker.hideLabel();
 				} else {
 					temp.push(revealedMarkers[i]);
+                    tempt.push(revealedMarkerTimes[i]);
 				}
 			}	
 			revealedMarkers = temp;
+            revealedMarkerTimes = tempt;
 
 			//Paths
 
