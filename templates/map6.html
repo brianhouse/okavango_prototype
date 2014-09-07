@@ -670,12 +670,13 @@
                 
             });
             tweetsLoaded = true;
+            showTweets();
         }
 
-        function showBeacons() {
-            for(var i = 0; i < beaconMarkers.length; i++) {
+        function showTweets() {
+            for(var i = 0; i < tweetMarkers.length; i++) {
                 //beaconMarkers[i].addTo(map);
-                beaconLayer.addLayer(beaconMarkers[i])
+                tweetLayer.addLayer(tweetMarkers[i])
             }
         }
 
@@ -1196,6 +1197,7 @@
 			if (!pathsLoaded) loadSightings();
 			if (!pathsLoaded) loadPaths();
 			showBeacons();
+
 			clearTimeout(function(){zoomIn(focusMarker)});
             // zoomIn(focusMarker);
 		}
