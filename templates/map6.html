@@ -95,7 +95,7 @@
                 </div>
                 <div id="timeWrapper" class="transparent">
                     <div id="time" class="transparent">
-                        <div class="timeDisplay">A Live-data Expedition into the Okavango Delta</div>
+                        <div class="timeDisplay"></div>
                     </div>
                 </div>
 
@@ -942,7 +942,7 @@
 			startTime += timeStep * timeMag;
 
 			var d = new Date();
-			var offset = d.getTimezoneOffset();
+			var offset = 2;//d.getTimezoneOffset();
 			d.setTime(startTime * 1000 + (offset * 60 * 1000));
 			displayTime(d);
 
