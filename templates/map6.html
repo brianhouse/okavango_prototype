@@ -597,10 +597,11 @@
                     focusMarker = L.marker(map.getCenter()).addTo(map)
                 }
 				
-				nextStep();
+                beaconsLoaded = true;
+                showBeacons();
+				//nextStep();
 			});
-			beaconsLoaded = true;
-            showBeacons();
+			
 		}
 
 		function showBeacons() {
@@ -668,10 +669,11 @@
                 }
                 });
               console.log("GOT TWEETS!!!" + tweetMarkers.length)
+              tweetsLoaded = true;
+              showTweets();
                 
             });
-            tweetsLoaded = true;
-            showTweets();
+            
         }
 
         function showTweets() {
