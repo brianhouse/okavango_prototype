@@ -921,6 +921,7 @@
 
         //These are the various markers that have been revealed
 		revealedMarkers = [];
+        revealedMarkerTimes = [];
 
         //Logic for the time-based animation
 		function doAnimation() {
@@ -939,7 +940,10 @@
 
 			if (sightingsQueue[sightingCounter].time < startTime || sightingsQueue[sightingCounter].tries > 100000) {
 				sightingsQueue[sightingCounter].marker.showLabel();
-				if (!daySkip) revealedMarkers.push(sightingsQueue[sightingCounter]);
+				if (!daySkip) {
+                    revealedMarkers.push(sightingsQueue[sightingCounter])
+                    revealedMarkerTimess.push(new Date());
+                }
 				sightingCounter ++;
 			} else {
 				sightingsQueue[sightingCounter].tries ++;
@@ -949,7 +953,9 @@
 			var temp = [];	
 
 			for (var i = 0; i < revealedMarkers.length; i++) {
-				if (revealedMarkers[i].time < startTime - (60 * 5)) {
+                var now = new Date();
+                var nms = now.getTime();
+				if (now - revealedMarkerTimes[i].getTime() > 3000) {
 					revealedMarkers[i].marker.hideLabel();
 				} else {
 					temp.push(revealedMarkers[i]);
