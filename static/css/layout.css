@@ -215,7 +215,7 @@ ul {
 			position:absolute;
 		}
 
-		div#time .timeDisplay {
+		div.timeDisplay {
 			font-family: "Montserrat";
 			font-size: 1.3em;
 			text-transform: uppercase;
