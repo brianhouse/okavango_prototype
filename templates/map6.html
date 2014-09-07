@@ -760,8 +760,8 @@
 				        return (feature.geometry.coordinates[0] != 0);
 				    },
 				    pointToLayer: function (feature, latlng) {
-                        var scatterX = ((Math.random() * 2) - 1) * 0.0003;
-                        var scatterY = ((Math.random() * 2) - 1) * 0.0003;
+                        var scatterX = ((Math.random() * 2) - 1) * 0.0005;
+                        var scatterY = ((Math.random() * 2) - 1) * 0.0005;
                         latlng2 = L.latLng(latlng.lat + scatterY, latlng.lng + scatterX);
 				        var marker = L.circleMarker(latlng2, sightingOptions);
 
