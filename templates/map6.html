@@ -911,7 +911,8 @@
 
         //Used to show what time is displayed by the animation
 		function displayTime(d) {
-			$('div.timeDisplay').text(d.toString().split("GMT")[0]);
+            var sd = new Date(sightingsQueue[sightingCounter].time * 1000);
+			$('div.timeDisplay').text(d.toString().split("GMT")[0] + " : " + sd.toString().split("GMT")[0]);
 		}
 
         //These are the various markers that have been revealed
