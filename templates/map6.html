@@ -674,7 +674,7 @@
 				    pointToLayer: function (feature, latlng) {
                         var scatterX = ((Math.random() * 2) - 1) * 0.01;
                         var scatterY = ((Math.random() * 2) - 1) * 0.01;
-                        console.log("latLng");
+                        console.log(latLng);
 				        var marker = L.circleMarker(latlng, sightingOptions);
 
 				        markers.push(marker);
