@@ -96,6 +96,7 @@
                 <div id="timeWrapper" class="transparent">
                     <div id="time" class="transparent">
                         <div class="timeDisplay"></div>
+                        <div class="skipDay">NEXT DAY</div>
                     </div>
                 </div>
 
@@ -893,8 +894,8 @@
         //Man, this stuff is cool but not really working - it animates the team member icons along their GPS paths
 		function startAnimation() {
 
-			$( "div.timeDisplay" ).click(function() {
-			  daySkip = !daySkip;
+			$( "div.skipDay" ).click(function() {
+			  alert("SKIP DAY")
 			});
 
 			console.log(map.getCenter());

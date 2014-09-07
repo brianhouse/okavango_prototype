@@ -222,6 +222,13 @@ ul {
 			letter-spacing: 0.2em;
 		}
 
+		div.skipDay {
+			font-family: "Montserrat";
+			font-size: 0.7em;
+			text-transform: uppercase;
+			letter-spacing: 0.2em;
+		}
+
 
 
 #fullPanelWrapper{
@@ -813,7 +820,7 @@ div.leaflet-control-attribution.leaflet-control a{
 
 .person-marker {
 	border-left: 2px solid #FFB637;
-	background-color:rgba(255,255,255,0.5);
+	background-color:rgba(255,255,255,0.7);
 	border-radius:2px;
 	font-family: "Montserrat";
 	color:rgba(4,0,26,0.9);;
