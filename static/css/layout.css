@@ -204,7 +204,7 @@ ul {
 
 	div#timeWrapper {
 		padding-top:10px;
-		position:absolute;
+		position:relative;
 		height:120px;
 	}
 
