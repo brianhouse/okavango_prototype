@@ -955,8 +955,8 @@
 			for (var i = 0; i < revealedMarkers.length; i++) {
                 var now = new Date();
                 var nms = now.getTime();
-				if (now - revealedMarkerTimes[i].getTime() > 3000) {
-					//revealedMarkers[i].marker.hideLabel();
+				if (now - revealedMarkerTimes[i].getTime() > 30000) {
+					revealedMarkers[i].marker.hideLabel();
 				} else {
 					temp.push(revealedMarkers[i]);
 				}
