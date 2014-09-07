@@ -60,7 +60,8 @@ def ingest_ambit(path, t_protect):
 
         for s, sample in enumerate(samples):            
             try:
-                if 'VerticalSpeed' not in sample:
+                #if 'VerticalSpeed' not in sample:
+                if 'Satellites' in sample:
                     # satellite data sample          
                     lon, lat, alt = None, None, None      
                     t, dt = None, None
@@ -100,7 +101,7 @@ def ingest_ambit(path, t_protect):
                     model.insert_feature('ambit_geo', t, geojson.dumps(feature))
                    
 
-                else:
+                elif 'VerticalSpeed' in sample:
                     # energy data sample
                     for key, value in sample.items():
                         if key == "UTC":
@@ -123,6 +124,9 @@ def ingest_ambit(path, t_protect):
                         feature = geojson.Feature(properties=sample)
                         model.insert_feature('ambit', t, geojson.dumps(feature))
                     c = c + 1
+
+                else: 
+                    log.info("extra ambit field")
 
             except Exception as e:
                 log.error(log.exc(e))
