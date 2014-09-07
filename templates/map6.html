@@ -895,7 +895,8 @@
 		function startAnimation() {
 
 			$( "div.skipDay" ).click(function() {
-			  alert("SKIP DAY")
+			  startTime += (24 * 60 * 60 * 1000)
+              alert("SKIP DAY!!!")
 			});
 
 			console.log(map.getCenter());
