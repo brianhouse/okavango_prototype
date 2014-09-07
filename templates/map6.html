@@ -937,16 +937,14 @@
 
 			//Sightings
 
-			if (sightingsQueue[sightingCounter].time < startTime || sightingsQueue[sightingCounter].tries > 100000) {
+			while (sightingsQueue[sightingCounter].time < startTime) {
 				sightingsQueue[sightingCounter].marker.showLabel();
 				if (!daySkip) {
                     revealedMarkers.push(sightingsQueue[sightingCounter])
                     revealedMarkerTimes.push(new Date().getTime());
                 }
 				sightingCounter ++;
-			} else {
-				sightingsQueue[sightingCounter].tries ++;
-			}
+			} 
 
 
 			var temp = [];	
