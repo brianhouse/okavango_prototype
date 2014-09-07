@@ -56,6 +56,8 @@ def ingest_ambit(path, t_protect):
         person = "Jer" if person == "John" else person
         content = parts[-1].encode('utf-8')
         samples = xmltodict.parse(content)['Samples']['Sample']
+        c = 0;
+
         for s, sample in enumerate(samples):            
             try:
                 if 'VerticalSpeed' not in sample:
@@ -94,8 +96,9 @@ def ingest_ambit(path, t_protect):
                     sample['t_utc'] = t
                     sample['ContentType'] = 'ambit_geo'
                     sample['Person'] = person         
-                    feature = geojson.Feature(geometry={'type': "Point", 'coordinates': [lon, lat, alt]}, properties=sample)            
+                    if((person == 'Chris' && c % 6 == 0) || person != 'Chris') feature = geojson.Feature(geometry={'type': "Point", 'coordinates': [lon, lat, alt]}, properties=sample)            
                     model.insert_feature('ambit_geo', t, geojson.dumps(feature))
+                    c++;
 
                 else:
                     # energy data sample
@@ -116,11 +119,13 @@ def ingest_ambit(path, t_protect):
                     sample['t_utc'] = t
                     sample['ContentType'] = 'ambit'
                     sample['Person'] = person
-                    feature = geojson.Feature(properties=sample)
+                    if((person == 'Chris' && c % 6 == 0) || person != 'Chris') feature = geojson.Feature(properties=sample)
                     model.insert_feature('ambit', t, geojson.dumps(feature))
+                    c++;
 
             except Exception as e:
                 log.error(log.exc(e))
+
 
 
 def ingest_image(path, i, t_protect):
