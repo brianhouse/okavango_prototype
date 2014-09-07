@@ -208,10 +208,18 @@ ul {
 	}
 
 		div#time {
+
 			width: 25%;
 			padding-left:5.5%;
 			padding-right:5.5%;
 			position:absolute;
+		}
+
+		div#time .timeDisplay {
+			font-family: "Montserrat";
+			font-size: 1.3em;
+			text-transform: uppercase;
+			letter-spacing: 0.2em;
 		}
 
 
