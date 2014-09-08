@@ -186,11 +186,12 @@ var queryAmbit = function(date){
 	d3.json(url, function (json) {
 		console.log('ambit loaded: ' + dateString + ' ' + dataReady);
 		
+		if(json.features.length == 0) return;
 		ambitJson.push(json);
 		
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
 		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) updateAmbitData();
-		if(json.features.length>0 && isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
+		if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
@@ -202,11 +203,12 @@ var querySightings = function(date){
 	d3.json(url, function (json) {
 		console.log('sightings loaded: ' + dateString + ' ' + dataReady);
 		
+		if(json.features.length == 0) return;
 		sightingJson.push(json);
 
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
 		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) initSighting(sightingJson);
-		if(json.features.length>0 && isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
+		if(isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
@@ -516,7 +518,7 @@ var initGraphs = function(data){
 		minHeartRate:10000,
 		maxHeartRate:0,
 		maxEnergyConsumption:0,
-		maxSpeed:2.25,
+		maxSpeed:3,
 		persons:[]
 	};
 
