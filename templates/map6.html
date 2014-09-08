@@ -1090,7 +1090,7 @@
                 var h = d3.select('body').node().clientHeight;
                 while (tweetsQueue[tweetCounter].time/1000 < startTime) {
                     var t = tweetsQueue[tweetCounter];
-                    console.log(t.marker);
+                    console.log(t.marker.getLatLng());
                     // var pos = map.unproject(t.marker.getLatLng());
                     // console.log(pos.x + ' ' + pos.y + ' ' + w + ' ' + h);
                     // console.log('aga');
