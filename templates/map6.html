@@ -999,12 +999,15 @@
 			setInterval(doAnimation,timeStep * 1000);
 
             // personmarkers smooth animation
-            requestAnimationFrame(function(){
-                var personLatLon = personMarkers.getLatLng().slice(0);
-                personLatLon[0] += (personMarkersTarget[0] - personLatLon[0]) * 0.1;
-                personLatLon[1] += (personMarkersTarget[1] - personLatLon[1]) * 0.1;
-                personMarkers[q.name].setLatLng(personLatLon);
-            })
+            for (var i = 0; i < names.length; i++) {
+                var n = names[i];
+                requestAnimationFrame(function(){
+                    var personLatLon = personMarkers[n].getLatLng().slice(0);
+                    personLatLon[0] += (personMarkersTarget[0] - personLatLon[0]) * 0.1;
+                    personLatLon[1] += (personMarkersTarget[1] - personLatLon[1]) * 0.1;
+                    personMarkers[n].setLatLng(personLatLon);
+                });
+            }
 
 		}
 
