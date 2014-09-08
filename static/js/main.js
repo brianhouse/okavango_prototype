@@ -22,8 +22,8 @@ var timelineRange = [];
 var personalColors = ['#EB624C','#9263FF','#69D6AF','#FFC96B','#FF0000','#FF0000','#FF0000','#FF0000'];
 var dataReady = false;
 var loaderOffset = 0;
-var ambitJson;
-var sightingJson;
+var ambitJson = [];
+var sightingJson = [];
 
 
 
