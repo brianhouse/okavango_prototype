@@ -284,7 +284,7 @@ var initSighting = function(data){
 			.style('display','none')
 		d3.select('#fullPanelWrapper div.page:nth-child(3)')
 			.style('display','none')
-	}
+	});
 
 	var sightings = [];
 
