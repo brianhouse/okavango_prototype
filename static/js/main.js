@@ -190,7 +190,7 @@ var queryAmbit = function(date){
 		
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
 		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) updateAmbitData();
-		if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
+		if(json.features.length>0 && isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
@@ -206,7 +206,7 @@ var querySightings = function(date){
 
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
 		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) initSighting(sightingJson);
-		if(isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
+		if(json.features.length>0 isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
@@ -274,17 +274,19 @@ var enableDataPage = function(ambitJson,sightingJson){
 
 var initSighting = function(data){
 
-	d3.select('#fullPanelWrapper')
-		.style('display','block')
-	d3.select('#fullPanelWrapper div.page:nth-child(3)')
-		.style('display','block')
-
-	requestAnimationFrame(function(){
+	if(currentPage != 'Data'){
 		d3.select('#fullPanelWrapper')
-			.style('display','none')
+			.style('display','block')
 		d3.select('#fullPanelWrapper div.page:nth-child(3)')
-			.style('display','none')
-	});
+			.style('display','block')
+
+		requestAnimationFrame(function(){
+			d3.select('#fullPanelWrapper')
+				.style('display','none')
+			d3.select('#fullPanelWrapper div.page:nth-child(3)')
+				.style('display','none')
+		});
+	}
 
 	var sightings = [];
 
