@@ -8,6 +8,7 @@ TODO
 - display tweets
 - about broken
 - controls time map
+- disable pan when autoplay
 
 */
 
@@ -171,14 +172,14 @@ var initMetrics = function(){
 		.attr('fill','white')
 	updateLoader();
 
-	var d = new Date('August 17, 2014');
+	var d = new Date('August 16, 2014');
 	queryAmbit(d);
 	querySightings(d);
 
 }
 
 var queryAmbit = function(date){
-	var dateString = ''+ date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + date.getDate();
+	var dateString = ''+ date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>8?'':0) + (date.getDate()+1);
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1';
 	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
 	console.log('d3.json : ' + url);
@@ -187,14 +188,14 @@ var queryAmbit = function(date){
 		
 		ambitJson.push(json);
 		
-		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
-		else if(ambitJson && sightingJson && dataReady) updateAmbitData();
+		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
+		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) updateAmbitData();
 		if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
 var querySightings = function(date){
-	var dateString = ''+ date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + date.getDate();
+	var dateString = ''+ date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>8?'':0) + (date.getDate()+1);
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=sighting&days=1';
 	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
 	console.log('d3.json : ' + url);
@@ -203,8 +204,8 @@ var querySightings = function(date){
 		
 		sightingJson.push(json);
 
-		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
-		else if(ambitJson && sightingJson && dataReady) initSighting(sightingJson);
+		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
+		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) initSighting(sightingJson);
 		if(isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
@@ -317,15 +318,13 @@ var initSighting = function(data){
 
 var initTimeline = function(json){
 
-	json = json[0];
-
 	var w = d3.select('body').node().clientWidth*0.89*0.97-4;
 	var h = d3.select('#timeline').style('height');
 	h = +h.substring(0,h.length-2)-4;
 
 	var timeScale = d3.scale.linear()
  		.range([0, w])
- 		.domain([new Date(json.features[0].properties.t_utc*1000).getTime(),new Date(json.features[json.features.length-1].properties.t_utc*1000+1).getTime()]);
+ 		.domain([new Date(json[0].features[0].properties.t_utc*1000).getTime(),new Date(json[json.length-1].features[json[json.length-1].features.length-1].properties.t_utc*1000+1).getTime()]);
 
 	var timeline = d3.select('svg.timeline')
 		.attr('width',w)
@@ -463,9 +462,7 @@ var initTimeline = function(json){
 
 }
 
-var initGraphs = function(json){
-
-	json = json[0];
+var initGraphs = function(data){
 
 	var w = d3.select('#scale svg.graph').style('width');
 	w = +w.substring(0,w.length-2);
@@ -507,27 +504,28 @@ var initGraphs = function(json){
 		persons:[]
 	};
 
-	json = json.features;
-	var len = json.length;
-	for(var i=0; i<len; i++){
-		var ambit = json[i].properties;
-		if(!metrics[ambit.Person]){
-			metrics[ambit.Person] = {
-				heartrate:[],
-				energyConsumption:[],
-				speed:[]
+	for(var h=0; h<data.length; h++){
+		var json = data[h].features;
+		var len = json.length;
+		for(var i=0; i<len; i++){
+			var ambit = json[i].properties;
+			if(!metrics[ambit.Person]){
+				metrics[ambit.Person] = {
+					heartrate:[],
+					energyConsumption:[],
+					speed:[]
+				}
+				metrics.persons.push(ambit.Person);
 			}
-			metrics.persons.push(ambit.Person);
+			var d = ambit.t_utc*1000;
+			if(ambit.HR) metrics[ambit.Person].heartrate.push([d,ambit.HR])
+			if(ambit.EnergyConsumption) metrics[ambit.Person].energyConsumption.push([d,ambit.EnergyConsumption])
+			if(ambit.Speed) metrics[ambit.Person].speed.push([d,ambit.Speed])
+
+			if(ambit.HR > metrics.maxHeartRate) metrics.maxHeartRate = ambit.HR;
+			if(ambit.HR < metrics.minHeartRate) metrics.minHeartRate = ambit.HR;
+			if(ambit.EnergyConsumption > metrics.maxEnergyConsumption) metrics.maxEnergyConsumption = ambit.EnergyConsumption;
 		}
-		var d = ambit.t_utc*1000;
-		if(ambit.HR) metrics[ambit.Person].heartrate.push([d,ambit.HR])
-		if(ambit.EnergyConsumption) metrics[ambit.Person].energyConsumption.push([d,ambit.EnergyConsumption])
-		if(ambit.Speed) metrics[ambit.Person].speed.push([d,ambit.Speed])
-
-		if(ambit.HR > metrics.maxHeartRate) metrics.maxHeartRate = ambit.HR;
-		if(ambit.HR < metrics.minHeartRate) metrics.minHeartRate = ambit.HR;
-		if(ambit.EnergyConsumption > metrics.maxEnergyConsumption) metrics.maxEnergyConsumption = ambit.EnergyConsumption;
-
 	}
 
 	d3.selectAll('div.graph svg.labels')
@@ -564,22 +562,22 @@ var initGraphs = function(json){
 
 	updateGraphs();
 
-	var totalDistance = Math.round(parseInt(json[json.length-1].properties.Distance)/100)/10;
-	d3.select('#data p.counter span')
-		.html('320km ')
-		// .html(totalDistance + 'km ')
+	// var totalDistance = Math.round(parseInt(json[json.length-1].properties.Distance)/100)/10;
+	// d3.select('#data p.counter span')
+	// 	.html('320km ')
+	// 	// .html(totalDistance + 'km ')
 
-	var averageSpeed = 0;
-	var len = json.length;
-	var offset = 0;
-	for(var i=0; i<len; i++){
-		if(json[i].properties.Speed) averageSpeed += parseFloat(json[i].properties.Speed);
-		else offset --;
-	}
-	averageSpeed /= (len+offset);
-	averageSpeed = Math.round(averageSpeed*10)/10;
-	d3.select('#data p.counter:last-child span:last-child')
-		.html(' ' + averageSpeed + 'km/h')
+	// var averageSpeed = 0;
+	// var len = json.length;
+	// var offset = 0;
+	// for(var i=0; i<len; i++){
+	// 	if(json[i].properties.Speed) averageSpeed += parseFloat(json[i].properties.Speed);
+	// 	else offset --;
+	// }
+	// averageSpeed /= (len+offset);
+	// averageSpeed = Math.round(averageSpeed*10)/10;
+	// d3.select('#data p.counter:last-child span:last-child')
+	// 	.html(' ' + averageSpeed + 'km/h')
 
 }
 
