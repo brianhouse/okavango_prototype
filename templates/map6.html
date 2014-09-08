@@ -1088,9 +1088,7 @@
             if(tweetsQueue.length>0){
                 var w = d3.select('body').node().clientWidth;
                 var h = d3.select('body').node().clientHeight;
-                while (tweetsQueue[tweetCounter].time < startTime) {
-                    
-                    // if(map.project())
+                while (tweetsQueue[tweetCounter].time/1000 < startTime) {
                     var t = tweetsQueue[tweetCounter];
                     var pos = map.project(t.marker.getLatLng());
                     console.log(pos.x + ' ' + pos.y + ' ' + w + ' ' + h);
@@ -1099,7 +1097,6 @@
                         console.log(t);
                         console.log('AGA');
                     }
-
                     tweetCounter ++;
                 } 
             }
