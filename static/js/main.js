@@ -275,9 +275,9 @@ var enableDataPage = function(ambitJson,sightingJson){
 var initSighting = function(data){
 
 	d3.select('#fullPanelWrapper')
-		.style('display','visible')
+		.style('display','block')
 	d3.select('#fullPanelWrapper div.page:nth-child(3)')
-		.style('display','visible')
+		.style('display','block')
 
 	requestAnimationFrame(function(){
 		d3.select('#fullPanelWrapper')
