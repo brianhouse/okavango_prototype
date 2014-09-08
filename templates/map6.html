@@ -708,7 +708,6 @@
             }
             dd = (dd < 10) ? ("0" + dd):(dd);
             mm = (mm < 10) ? ("0" + mm):(mm);
-            console.log("makeDate() 2014" + mm + dd + ' , d: ' + d);
             return "2014" + mm + dd;
 		}
 
@@ -1087,7 +1086,7 @@
 
             //Tweets
             if(tweetsQueue.length>0){
-                while (tweetsQueue[tweetCounter].time < startTime) {
+                while (tweetsQueue[tweetCounter].time/1000 < startTime) {
                     
                     // if(map.project())
                     var t = tweetsQueue[tweetCounter];
