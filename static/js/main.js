@@ -179,7 +179,7 @@ var initMetrics = function(){
 }
 
 var queryAmbit = function(date){
-	var dateString = ''+date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + date.getDate();
+	var dateString = ''+date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + (date.getDate()+(date.getDate()<10?1:0));
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1';
 	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
 	console.log('d3.json : ' + url);
@@ -962,7 +962,16 @@ var initFeed = function(json){
         	d3.select(this).select('p.meta')
         		.html(t + '<span></span>' + d.username);
         	d3.select(this).select('p.message')
-        		.html(d.message);
+        		// .html(d.message);
+        		.html(function(){
+        			var content = d.message;
+        	// 		content.replace('http[^>]*','').
+
+        	// // [^>]*
+        	// // var content = 
+
+        			return content;
+        		});
         	var _this = this;
         	d3.select(this).selectAll('div.body, div.locationFinder')
         		.on('click',function(d){findTweetLocation(d3.select(_this).datum().coords)});
