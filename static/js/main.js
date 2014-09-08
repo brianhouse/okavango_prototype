@@ -714,7 +714,14 @@ var updateGraphs = function(){
 
 var updateAmbitData = function(json){
 
+	d3.selectAll('svg.timeline *').remove();
+	initTimeline(json);
+
+	d3.selectAll('div.graph svg *').remove();
+	initGraphs(json);
+
 }
+
 
 var togglePanel = function(node, mapClick, i){
 
