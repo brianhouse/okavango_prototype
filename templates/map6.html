@@ -1090,15 +1090,15 @@
                 var h = d3.select('body').node().clientHeight;
                 while (tweetsQueue[tweetCounter].time/1000 < startTime) {
                     var t = tweetsQueue[tweetCounter];
-                    var pos = map.unproject(t.marker.getLatLng());
                     console.log(t.marker);
-                    console.log(pos.x + ' ' + pos.y + ' ' + w + ' ' + h);
-                    console.log('aga');
-                    if(pos.x >= 0 && pos.x < w && pos.y >= 0 && pos.y < h){
-                        console.log(t);
-                        console.log('AGA');
-                    }
-                    tweetCounter ++;
+                    // var pos = map.unproject(t.marker.getLatLng());
+                    // console.log(pos.x + ' ' + pos.y + ' ' + w + ' ' + h);
+                    // console.log('aga');
+                    // if(pos.x >= 0 && pos.x < w && pos.y >= 0 && pos.y < h){
+                    //     console.log(t);
+                    //     console.log('AGA');
+                    // }
+                    // tweetCounter ++;
                 } 
             }
             
