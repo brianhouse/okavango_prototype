@@ -213,6 +213,7 @@ var querySightings = function(date){
 
 var enableDataPage = function(ambitJson,sightingJson){
 
+	console.log('ENABLE DATA PAGE');
 	dataReady = true;
 
 	d3.select('#fullPanelWrapper')
