@@ -179,7 +179,7 @@ var initMetrics = function(){
 }
 
 var queryAmbit = function(date){
-	var dateString = ''+ date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>8?'':0) + (date.getDate()+1);
+	var dateString = ''+date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + date.getDate();
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1';
 	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
 	console.log('d3.json : ' + url);
@@ -195,7 +195,7 @@ var queryAmbit = function(date){
 }
 
 var querySightings = function(date){
-	var dateString = ''+ date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>8?'':0) + (date.getDate()+1);
+	var dateString = ''+date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + date.getDate();
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=sighting&days=1';
 	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
 	console.log('d3.json : ' + url);
@@ -718,6 +718,7 @@ var updateAmbitData = function(){
 	initTimeline(ambitJson);
 
 	d3.selectAll('div.graph svg *').remove();
+	d3.selectAll('#graphWrapper #persons').remove();
 	initGraphs(ambitJson);
 
 }
