@@ -712,13 +712,13 @@ var updateGraphs = function(){
     
 }
 
-var updateAmbitData = function(json){
+var updateAmbitData = function(){
 
 	d3.selectAll('svg.timeline *').remove();
-	initTimeline(json);
+	initTimeline(ambitJson);
 
 	d3.selectAll('div.graph svg *').remove();
-	initGraphs(json);
+	initGraphs(ambitJson);
 
 }
 
