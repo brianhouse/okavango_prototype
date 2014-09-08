@@ -317,6 +317,8 @@ var initSighting = function(data){
 
 var initTimeline = function(json){
 
+	json = json[0];
+
 	var w = d3.select('body').node().clientWidth*0.89*0.97-4;
 	var h = d3.select('#timeline').style('height');
 	h = +h.substring(0,h.length-2)-4;
@@ -463,6 +465,7 @@ var initTimeline = function(json){
 
 var initGraphs = function(json){
 
+	json = json[0];
 
 	var w = d3.select('#scale svg.graph').style('width');
 	w = +w.substring(0,w.length-2);
