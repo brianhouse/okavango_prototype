@@ -1012,8 +1012,8 @@
                 var n = names[i];
                 if(personMarkers[n]){
                     var personLatLon = personMarkers[n].getLatLng();
-                    personLatLon.lat += (personMarkersTarget[0] - personLatLon.lat) * 0.1;
-                    personLatLon.lng += (personMarkersTarget[1] - personLatLon.lng) * 0.1;
+                    personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * 0.1;
+                    personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * 0.1;
                     personMarkers[n].setLatLng(personLatLon);
                 }
             }
