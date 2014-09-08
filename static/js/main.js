@@ -187,7 +187,7 @@ var queryAmbit = function(date){
 	d3.json(url, function (json) {
 		console.log('ambit loaded: ' + dateString + ' ' + dataReady);
 		
-		if(!ambitJson) = json;
+		if(!ambitJson) ambitJson = json;
 		else ambitJson.features.concat(json.features);
 		
 		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
@@ -204,7 +204,7 @@ var querySightings = function(date){
 	d3.json(url, function (json) {
 		console.log('sightings loaded: ' + dateString + ' ' + dataReady);
 		
-		if(!sightingJson) = json;
+		if(!sightingJson) sightingJson = json;
 		else sightingJson.features.concat(json.features);
 
 		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
