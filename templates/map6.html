@@ -680,6 +680,8 @@
               console.log("GOT TWEETS!!!" + tweetMarkers.length)
               tweetsLoaded = true;
               showTweets();
+
+              initFeed(data);
                 
             });
             
@@ -1089,16 +1091,7 @@
                 var w = d3.select('body').node().clientWidth;
                 var h = d3.select('body').node().clientHeight;
                 while (tweetsQueue[tweetCounter].time/1000 < startTime) {
-                    var t = tweetsQueue[tweetCounter];
-                    console.log(t.marker.getLatLng());
-                    var pos = map.unproject([t.marker.getLatLng().lat,t.marker.getLatLng().lng]);
-                    if(pos){
-                        console.log(pos.x + ' ' + pos.y + ' ' + w + ' ' + h);
-                        if(pos.x >= 0 && pos.x < w && pos.y >= 0 && pos.y < h){
-                            console.log(t);
-                            console.log('AGA');
-                        }
-                    }
+                    focusTweet(tweetsQueue[tweetCounter]);
                     tweetCounter ++;
                 } 
             }
@@ -1388,6 +1381,13 @@
 			arr.push( points[points.length - 1 ] );
 			return arr;
 		};
+
+
+
+        var focusTweet = function(queue){
+            var id = queue.marker.feature.id;
+
+        }
 					
 	</script>
 	

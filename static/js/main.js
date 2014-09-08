@@ -184,8 +184,7 @@ var queryAmbit = function(date){
 	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
-		console.log('ambit loaded: ' + dateString + ' ' + dataReady);
-		
+
 		if(json.features.length == 0) return;
 		ambitJson.push(json);
 		
@@ -201,7 +200,6 @@ var querySightings = function(date){
 	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
-		console.log('sightings loaded: ' + dateString + ' ' + dataReady);
 		
 		if(json.features.length == 0) return;
 		sightingJson.push(json);
@@ -922,64 +920,57 @@ var toggleTwitterPanel = function(){
 	}
 }
 
-var loadTweets = function(){
+var initFeed = function(json){
 
-	var findTweetLocation = function(coords){
-		map.setView([coords[1],coords[0]], map.getZoom(), {pan:{animate:true}});
-	};
+	if(!json)return;    
+	for(var i =0; i<json.features.length; i++){
+		var t = {
+			username: json.features[i].properties.tweet.user.name,
+			message: json.features[i].properties.tweet.text,
+			date: new Date(Math.round(parseFloat(json.features[i].properties.t_utc*1000))),
+			coords: json.features[i].geometry.coordinates,
+			profilePicUrl: json.features[i].properties.tweet.user.profile_image_url,
+		};
+		try{
+			if(t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].type == 'photo'){
+				t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].media_url;
+			}
+		} catch(e){}
+		tweets.push(t);
+	}
+	tweets.reverse();
 
-	var url = 'http://intotheokavango.org/api/timeline?date=20140817&types=tweet&days=' + dateRange
-	d3.json(url, function (json) {
-		if(!json)return;    
-		for(var i =0; i<json.features.length; i++){
-			var t = {
-				username: json.features[i].properties.tweet.user.name,
-				message: json.features[i].properties.tweet.text,
-				date: new Date(Math.round(parseFloat(json.features[i].properties.t_utc*1000))),
-				coords: json.features[i].geometry.coordinates,
-				profilePicUrl: json.features[i].properties.tweet.user.profile_image_url,
-			};
-			try{
-				if(t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].type == 'photo'){
-					t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].media_url;
-				}
-			} catch(e){}
-			tweets.push(t);
-		}
-		tweets.reverse();
+	var m_names = new Array("Jan", "Feb", "Mar", 
+	"Apr", "May", "Jun", "Jul", "Aug", "Sep", 
+	"Oct", "Nov", "Dec");
 
-		var m_names = new Array("Jan", "Feb", "Mar", 
-		"Apr", "May", "Jun", "Jul", "Aug", "Sep", 
-		"Oct", "Nov", "Dec");
+	d3.select('#twitterWrapper').selectAll('div.tweet')
+        .data(tweets)
+        .enter()
+        .append('div')
+        .classed('tweet',true)
+        .html(function(d,i){
+        	return '<div class="controls"><div class="locationFinder"></div><a><div class="twitter"></div></a></div><p class="meta">        	</p><hr class="innerSeparator"/><div class="body"><img src = "'+d.profilePicUrl+'" width="10%" height="10%" class="profile"/><p class="message"></p>' + (d.photoUrl ? '<img src = "'+d.photoUrl+'" width="100%" class="pic"/>' : '') + '</div><hr class="outerSeparator"/>'
+        })
+        .each(function(d,i){
+        	d3.select(this).select('a')
+        		.attr('href','http://www.twitter.com')
 
-		d3.select('#twitterWrapper').selectAll('div.tweet')
-	        .data(tweets)
-	        .enter()
-	        .append('div')
-	        .classed('tweet',true)
-	        .html(function(d,i){
-	        	return '<div class="controls"><div class="locationFinder"></div><a><div class="twitter"></div></a></div><p class="meta">        	</p><hr class="innerSeparator"/><div class="body"><img src = "'+d.profilePicUrl+'" width="10%" height="10%" class="profile"/><p class="message"></p>' + (d.photoUrl ? '<img src = "'+d.photoUrl+'" width="100%" class="pic"/>' : '') + '</div><hr class="outerSeparator"/>'
-	        })
-	        .each(function(d,i){
-	        	d3.select(this).select('a')
-	        		.attr('href','http://www.twitter.com')
+        	//var t = new Date(d.date.getTime() * 1000);
+        	var t = d.date;
+        	t = ((parseInt(t.getDate())+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
+        	d3.select(this).select('p.meta')
+        		.html(t + '<span></span>' + d.username);
+        	d3.select(this).select('p.message')
+        		.html(d.message);
+        	var _this = this;
+        	d3.select(this).selectAll('div.body, div.locationFinder')
+        		.on('click',function(d){findTweetLocation(d3.select(_this).datum().coords)});
+        })	
 
-	        	//var t = new Date(d.date.getTime() * 1000);
-	        	var t = d.date;
-	        	t = ((parseInt(t.getDate())+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
-	        	d3.select(this).select('p.meta')
-	        		.html(t + '<span></span>' + d.username);
-	        	d3.select(this).select('p.message')
-	        		.html(d.message);
-	        	var _this = this;
-	        	d3.select(this).selectAll('div.body, div.locationFinder')
-	        		.on('click',function(d){findTweetLocation(d3.select(_this).datum().coords)});
-	        })	
+    d3.select('#tweetsButton')
+    	.style('display','block')
+    	.on('click',function(){toggleTwitterPanel();})
 
-	    d3.select('#tweetsButton')
-	    	.style('display','block')
-	    	.on('click',function(){toggleTwitterPanel();})
-
-    })	
 }
 
