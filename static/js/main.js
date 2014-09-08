@@ -172,7 +172,7 @@ var initMetrics = function(){
 		.attr('fill','white')
 	updateLoader();
 
-	var d = new Date('August 16, 2014');
+	var d = new Date('August 17, 2014');
 	queryAmbit(d);
 	querySightings(d);
 
