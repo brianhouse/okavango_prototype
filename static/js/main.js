@@ -3,13 +3,11 @@
 /*
 
 TODO
-- fix distance and speed 
-- load data day by day
-- remove blank ambit
-- display tweets
 
+- fix distance and speed 
+- display tweets
 - about broken
-- timeline map
+- controls time map
 
 */
 
@@ -187,11 +185,10 @@ var queryAmbit = function(date){
 	d3.json(url, function (json) {
 		console.log('ambit loaded: ' + dateString + ' ' + dataReady);
 		
-		if(!ambitJson) ambitJson = json;
-		else ambitJson.features.concat(json.features);
+		ambitJson.push(json);
 		
 		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
-		else if(ambitJson && sightingJson && dataReady) appendAmbitData(json);
+		else if(ambitJson && sightingJson && dataReady) updateAmbitData();
 		if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
@@ -204,11 +201,10 @@ var querySightings = function(date){
 	d3.json(url, function (json) {
 		console.log('sightings loaded: ' + dateString + ' ' + dataReady);
 		
-		if(!sightingJson) sightingJson = json;
-		else sightingJson.features.concat(json.features);
+		sightingJson.push(json);
 
 		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
-		else if(ambitJson && sightingJson && dataReady) appendSightingData(json);
+		else if(ambitJson && sightingJson && dataReady) initSighting(sightingJson);
 		if(isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
@@ -275,26 +271,28 @@ var enableDataPage = function(ambitJson,sightingJson){
 }
 
 
-var initSighting = function(json){
+var initSighting = function(data){
 
 	var sightings = [];
 
-	json = json.features;
-	var len = json.length;
-	for(var i = 0; i<len; i++){
-		var flag = false;
-		for(var j=0; j<sightings.length; j++){
-			if(json[i].properties['Bird Name'] == sightings[j].id) {
-				var c = json[i].properties['Count'];
-				if(c){
-					c = parseInt(c);
-					sightings[j].count += c;
-				} else sightings[j].count ++;
-				flag = true;
-				break;
+	for(var h = 0; h<data.length; h++){
+		var json = data[h].features;
+		var len = json.length;
+		for(var i = 0; i<len; i++){
+			var flag = false;
+			for(var j=0; j<sightings.length; j++){
+				if(json[i].properties['Bird Name'] == sightings[j].id) {
+					var c = json[i].properties['Count'];
+					if(c){
+						c = parseInt(c);
+						sightings[j].count += c;
+					} else sightings[j].count ++;
+					flag = true;
+					break;
+				}
 			}
+			if(!flag) sightings.push({id:json[i].properties['Bird Name'],count:1});
 		}
-		if(!flag) sightings.push({id:json[i].properties['Bird Name'],count:1});
 	}
 
 	sightings.sort(function(a, b){ return d3.descending(a.count, b.count); })
@@ -699,12 +697,8 @@ var updateGraphs = function(){
     
 }
 
-var appendAmbitData = function(json){
-	console.log('APPEND AMBIT');
-}
+var updateAmbitData = function(json){
 
-var appendSightingData = function(json){
-	console.log('APPEND SIGHTING');
 }
 
 var togglePanel = function(node, mapClick, i){
