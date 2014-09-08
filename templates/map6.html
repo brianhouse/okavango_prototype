@@ -474,6 +474,9 @@
         var tweetMarkers = [];
         var tweetCoords = [];
 
+        var sightingsQueue;
+        var tweetsQueue;
+
 		var d = new Date();
 		var focusMarker;
 
@@ -615,6 +618,8 @@
         //2. Tweets
         function loadTweets() {
 
+            tweetsQueue = [];
+
             var tweetIcon = L.icon({
                 iconUrl: '../static/img/quote.png',
                 shadowUrl: '../static/img/quoteShadow.png',
@@ -662,6 +667,7 @@
                     tweetMarkers.push(marker);
                     markers.push(marker);
                     tweetCoords.push([latlng.lng, latlng.lat]);
+                    tweetsQueue.push({marker:marker, time:feature.properties.t_utc * 1000});
                     return marker;
                 },
                 onEachFeature:onEachTweet,
@@ -969,7 +975,8 @@
 
 		timeMag = 100;
 		timeStep = 0.400;
-		sightingCounter = 0;
+        sightingCounter = 0;
+		tweetCounter = 0;
 
 		for (var i = 0; i < names.length; i++) {
 			counters[names[i]] = 1;
@@ -1012,8 +1019,8 @@
                 var n = names[i];
                 if(personMarkers[n]){
                     var personLatLon = personMarkers[n].getLatLng();
-                    personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * 0.1;
-                    personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * 0.1;
+                    personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * 0.2;
+                    personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * 0.2;
                     personMarkers[n].setLatLng(personLatLon);
                 }
             }
@@ -1076,6 +1083,21 @@
 			}	
 			revealedMarkers = temp;
             revealedMarkerTimes = tempt;
+
+
+            //Tweets
+            if(tweetsQueue.length>0){
+                while (tweetsQueue[tweetCounter].time < startTime) {
+                    
+                    // if(map.project())
+                    var t = tweetsQueue[tweetCounter];
+                    console.log(t);
+                    console.log('aga');
+
+                    tweetCounter ++;
+                } 
+            }
+            
 
 			//Paths
 
