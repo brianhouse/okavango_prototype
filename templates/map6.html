@@ -1008,11 +1008,9 @@
                 // animates explorers' markers towards their current position on the map
                 for (var i = 0; i < names.length; i++) {
                     var n = names[i];
-                    console.log(personMarkers[n]);
-                    console.log(personMarkers[n].getLatLng());
-                    var personLatLon = personMarkers[n].getLatLng().slice(0);
-                    personLatLon[0] += (personMarkersTarget[0] - personLatLon[0]) * 0.1;
-                    personLatLon[1] += (personMarkersTarget[1] - personLatLon[1]) * 0.1;
+                    var personLatLon = personMarkers[n].getLatLng();
+                    personLatLon.lat += (personMarkersTarget[0] - personLatLon.lat) * 0.1;
+                    personLatLon.lng += (personMarkersTarget[1] - personLatLon.lng) * 0.1;
                     personMarkers[n].setLatLng(personLatLon);
                 }
             });
