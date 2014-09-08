@@ -274,6 +274,18 @@ var enableDataPage = function(ambitJson,sightingJson){
 
 var initSighting = function(data){
 
+	d3.select('#fullPanelWrapper')
+		.style('display','visible')
+	d3.select('#fullPanelWrapper div.page:nth-child(3)')
+		.style('display','visible')
+
+	requestAnimationFrame(function(){
+		d3.select('#fullPanelWrapper')
+			.style('display','none')
+		d3.select('#fullPanelWrapper div.page:nth-child(3)')
+			.style('display','none')
+	}
+
 	var sightings = [];
 
 	for(var h = 0; h<data.length; h++){
