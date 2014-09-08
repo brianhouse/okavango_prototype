@@ -180,7 +180,7 @@ var initMetrics = function(){
 }
 
 var queryAmbit = function(date){
-	var dateString = date.getFullYear() + '' + (date.getMonth()+1) + '' + date.getDate();
+	var dateString = ''+ date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + date.getDate();
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1';
 	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
 	console.log('d3.json : ' + url);
@@ -197,7 +197,7 @@ var queryAmbit = function(date){
 }
 
 var querySightings = function(date){
-	var dateString = date.getFullYear() + '' + (date.getMonth()+1) + '' + date.getDate();
+	var dateString = ''+ date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + date.getDate();
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=sighting&days=1';
 	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
 	console.log('d3.json : ' + url);
