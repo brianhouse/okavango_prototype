@@ -206,7 +206,7 @@ var querySightings = function(date){
 
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
 		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) initSighting(sightingJson);
-		if(json.features.length>0 isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
+		if(json.features.length>0 && isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
