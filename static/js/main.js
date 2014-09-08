@@ -160,7 +160,7 @@ var initMetrics = function(){
 			
 		d3.select('svg#loader path:last-child')
 			.attr('d', arc2)
-		if(dataReady > 0) requestAnimationFrame(updateLoader);
+		if(!dataReady) requestAnimationFrame(updateLoader);
 	}
 
 	d3.select('svg#loader')
@@ -187,8 +187,10 @@ var queryAmbit = function(date){
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 		console.log('ambit loaded: ' + dateString);
-		ambitJson = json;
-		dataReady --;
+		
+		if(!ambitJson) = json;
+		else ambitJson.features.concat(json.features);
+		
 		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
 		else if(ambitJson && sightingJson && dataReady) appendAmbitData(json);
 		if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
@@ -203,7 +205,10 @@ var querySightings = function(date){
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 		console.log('sightings loaded: ' + dateString);
-		sightingJson = json;
+		
+		if(!sightingJson) = json;
+		else sightingJson.features.concat(json.features);
+
 		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
 		else if(ambitJson && sightingJson && dataReady) appendSightingData(json);
 		if(isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
