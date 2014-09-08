@@ -182,11 +182,10 @@ var initMetrics = function(){
 var queryAmbit = function(date){
 	var dateString = date.getFullYear() + (date.getMonth()+1) + date.getDate();
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1';
-	// Temporary
-	if(!ambitJson && !isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
+	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
-		console.log('ambit loaded: ' + dateString);
+		console.log('ambit loaded: ' + dateString + ' ' + dataReady);
 		
 		if(!ambitJson) = json;
 		else ambitJson.features.concat(json.features);
@@ -200,11 +199,10 @@ var queryAmbit = function(date){
 var querySightings = function(date){
 	var dateString = date.getFullYear() + (date.getMonth()+1) + date.getDate();
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=sighting&days=1';
-	// Temporary
-	if(!sightingJson && !isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
+	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
-		console.log('sightings loaded: ' + dateString);
+		console.log('sightings loaded: ' + dateString + ' ' + dataReady);
 		
 		if(!sightingJson) = json;
 		else sightingJson.features.concat(json.features);
