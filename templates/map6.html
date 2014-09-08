@@ -997,25 +997,26 @@
 			
 			setInterval(doAnimation,timeStep * 1000);
 
-            // personmarkers smooth animation
-            requestAnimationFrame(function(){
-
-                // centers map on the current target position
-                focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * 0.1;
-                focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * 0.1;
-                map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
-
-                // animates explorers' markers towards their current position on the map
-                for (var i = 0; i < names.length; i++) {
-                    var n = names[i];
-                    var personLatLon = personMarkers[n].getLatLng();
-                    personLatLon.lat += (personMarkersTarget[0] - personLatLon.lat) * 0.1;
-                    personLatLon.lng += (personMarkersTarget[1] - personLatLon.lng) * 0.1;
-                    personMarkers[n].setLatLng(personLatLon);
-                }
-            });
+            posMap();
 
 		}
+
+        var posMap = function(){
+            // centers map on the current target position
+            focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * 0.1;
+            focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * 0.1;
+            map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
+
+            // animates explorers' markers towards their current position on the map
+            for (var i = 0; i < names.length; i++) {
+                var n = names[i];
+                var personLatLon = personMarkers[n].getLatLng();
+                personLatLon.lat += (personMarkersTarget[0] - personLatLon.lat) * 0.1;
+                personLatLon.lng += (personMarkersTarget[1] - personLatLon.lng) * 0.1;
+                personMarkers[n].setLatLng(personLatLon);
+            }
+            requestAnimationFrame(posMap);
+        }
 
         //Used to show what time is displayed by the animation
 		function displayTime(d) {
