@@ -97,6 +97,7 @@
                     <div id="time" class="transparent">
                         <div class="timeDisplay"></div>
                         <div class="skipDay">NEXT DAY</div>
+                        <div class="toggleAutoplay">PAUSE</div>
                     </div>
                 </div>
 
@@ -343,7 +344,7 @@
                 <div id="tweetsButton">tweets</div>
 
                 <div id="skip">
-                    <a href="#">Skip</a>
+                    <a href="#">Skip introduction</a>
                 </div>
 
 			</div><!-- End Google Maps Background -->
@@ -829,7 +830,8 @@
 			pathMap = [];
 			permPaths = [];
 			permGeos = [];
-			personMarkers = [];
+            personMarkers = [];
+			personMarkersTarget = [];
 
 			pathQueues = [];
 			for (var i = 0; i < names.length; i++) {
@@ -849,7 +851,6 @@
 
 				$.getJSON('/api/timeline?date=' +  makeDate(d) + '&types=ambit_geo', function(data) {
 					console.log('/api/timeline?date=' +  makeDate(d) + '&types=ambit_geo');
-					console.log(data);
 				  L.geoJson(data.features, {
 				    filter: function(feature, layer) {
 				    	//Filter out 0,0 points
@@ -904,7 +905,8 @@
 
                 var shiftX = (Math.random() *0.002) - 0.001;
                 var shiftY = (Math.random() *0.002) - 0.001;
-				personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
+                personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
+				personMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
 
                 $('.person-marker').css('width','auto')
 				
@@ -981,6 +983,10 @@
               alert("SKIP DAY!!!")
 			});
 
+            $( "div.toggleAutoplay" ).click(function() {
+              alert("TOGGLE AUTOPLAY!!!")
+            });
+
 			console.log(map.getCenter());
 			
 			focusLatLon[0] = map.getCenter().lat;
@@ -991,6 +997,15 @@
 			
 			setInterval(posMap,30);
 			setInterval(doAnimation,timeStep * 1000);
+
+            // personmarkers smooth animation
+            requestAnimationFrame(function(){
+                var personLatLon = personMarkers.getLatLng().slice(0);
+                personLatLon[0] += (personMarkersTarget[0] - personLatLon[0]) * 0.1;
+                personLatLon[1] += (personMarkersTarget[1] - personLatLon[1]) * 0.1;
+                personMarkers[q.name].setLatLng(personLatLon);
+            })
+
 		}
 
         //This is tied to the function above, and centers the map on the current target position
@@ -1041,7 +1056,6 @@
 				sightingCounter ++;
 			} 
 
-
 			var temp = [];	
             var tempt = [];
 
@@ -1065,7 +1079,6 @@
 
             for (var i = 0; i < names.length; i++) {
                 var n = names[i];
-                
 
                 while(startTime > pathQueues[n][counters[n]].time) {
                     var c = counters[n];
@@ -1088,7 +1101,8 @@
                             }]
                             
                             permPaths[q.name].addData(point);
-                            personMarkers[q.name].setLatLng(q.latLon);
+                            // personMarkers[q.name].setLatLng(q.latLon);
+                            personMarkersTarget[q.name] = q.latLon;
                             if (i == 1) {
                                 targetLatLon[0] = q.latLon[0];
                                 targetLatLon[1] = q.latLon[1];
@@ -1203,7 +1217,6 @@
 			if (!pathsLoaded) loadPaths();
 
 			clearTimeout(function(){zoomIn(focusMarker)});
-            // zoomIn(focusMarker);
 		}
 
 		//loadBeacons();
