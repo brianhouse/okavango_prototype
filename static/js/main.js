@@ -8,6 +8,9 @@ TODO
 - remove blank ambit
 - display tweets
 
+- about broken
+- timeline map
+
 */
 
 
@@ -180,14 +183,15 @@ var queryAmbit = function(date){
 	var dateString = date.getFullYear() + (date.getMonth()+1) + date.getDate();
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1';
 	// Temporary
-	if(!ambitJson) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
+	if(!ambitJson && !isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 		console.log('ambit loaded: ' + dateString);
 		ambitJson = json;
 		dataReady --;
 		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
-		// queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
+		else if(ambitJson && sightingJson && dataReady) appendAmbitData(json);
+		if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
@@ -195,13 +199,14 @@ var querySightings = function(date){
 	var dateString = date.getFullYear() + (date.getMonth()+1) + date.getDate();
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=sighting&days=1';
 	// Temporary
-	if(!sightingJson) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
+	if(!sightingJson && !isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 		console.log('sightings loaded: ' + dateString);
 		sightingJson = json;
 		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
-		// querySightings(new Date(+date.getTime() + (24*60*60*1000)));
+		else if(ambitJson && sightingJson && dataReady) appendSightingData(json);
+		if(isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
@@ -688,7 +693,14 @@ var updateGraphs = function(){
 	d3.selectAll('svg.graph path.domain,svg.labels path.domain')
 		.remove()
     
+}
 
+var appendAmbitData = function(json){
+	console.log('APPEND AMBIT');
+}
+
+var appendSightingData = function(json){
+	console.log('APPEND SIGHTING');
 }
 
 var togglePanel = function(node, mapClick, i){
