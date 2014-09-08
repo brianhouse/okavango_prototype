@@ -302,6 +302,7 @@ var initSighting = function(data){
 	var flag = false;
 	for(var i=0; i<len && !flag; i++){
 		d3.select('#data #sightings p')
+			.html('')
 			.html(function(){return d3.select(this).html() + sightings[i].id + ' (<span>' + sightings[i].count +'</span>) • '})
 			.each(function(){
 				if(d3.select(this).node().clientHeight>105){
