@@ -1086,11 +1086,11 @@
 
             //Tweets
             if(tweetsQueue.length>0){
-                while (tweetsQueue[tweetCounter].time/1000 < startTime) {
+                while (tweetsQueue[tweetCounter].time < startTime) {
                     
                     // if(map.project())
                     var t = tweetsQueue[tweetCounter];
-                    console.log(t);
+                    console.log(map.project(t.marker.getLatLng()));
                     console.log('aga');
 
                     tweetCounter ++;
