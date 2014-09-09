@@ -46,7 +46,7 @@ var initLayout = function(){
 	initVideo();
 	setColumns();
 	initMetrics();
-	loadTweets();
+	if(!isGraphReady) initFeed();
 	d3.select('#fullPanelWrapper')
 		.style('display','none');
 	d3.selectAll('div.page')
@@ -897,6 +897,8 @@ var toggleTwitterPanel = function(){
 			.style('right',(w*0.645) + 'px')
 			.style('opacity',1)
 
+		d3.select('#headerWrapper').style('position','fixed');
+
 		currentPage = 'Twitter';
 	} else {
 		var w = d3.select('#fullPanelWrapper').style('width');
@@ -912,6 +914,8 @@ var toggleTwitterPanel = function(){
 			.each('end',function(){
 				d3.select(this).style('display','none');
 			});
+
+		d3.select('#headerWrapper').style('position','fixed');
 
 	    d3.select('#map_holder')
 	    	.style('cursor','auto')
