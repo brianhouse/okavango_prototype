@@ -969,7 +969,7 @@
 		startTime = 1408269019//     + (currentDay * 60 * 60 * 24);
 
         console.log("START TIME ---------------- " + startTime);
-        console.log("START TIME ---------------- " + new Date(startTime));
+        console.log("START TIME ---------------- " + new Date(startTime * 1000));
 
 
 
@@ -987,7 +987,10 @@
 		function startAnimation() {
 
 			$( "div.skipDay" ).click(function() {
-			  //startTime += (24 * 60 * 60 * 1000)
+			  startTime = startTime + (24 * 60 * 60)
+              console.log("START TIME ---------------- " + startTime);
+              console.log("START TIME ---------------- " + new Date(startTime * 1000));
+              daySkip = true;
               alert("SKIP DAY!!!")
 			});
 
@@ -1048,7 +1051,7 @@
         //Logic for the time-based animation
 		function doAnimation() {
 
-            if (sightingsQueue.length > 0) {
+            if (sightingsQueue.length > 0 && pathQueues[names[0]].length > 0) {
 
 
 			startTime += timeStep * timeMag;
@@ -1061,8 +1064,9 @@
 			//Sightings
 
 			while (sightingsQueue[sightingCounter].time < startTime) {
-				sightingsQueue[sightingCounter].marker.showLabel();
+				
 				if (!daySkip) {
+                    sightingsQueue[sightingCounter].marker.showLabel();
                     revealedMarkers.push(sightingsQueue[sightingCounter])
                     revealedMarkerTimes.push(new Date().getTime());
                 }
@@ -1142,7 +1146,7 @@
                      var c = counters[n];
                      var q = pathQueues[n][c];
                      var lq = pathQueues[n][c - 1];
-                     if (q.time - lq.time > 60 * 30 || daySkip) skipCount ++;
+                     if (q.time - lq.time > 60 * 30 ) skipCount ++;
                 }
 
             }
@@ -1151,6 +1155,7 @@
 
 			//Night speed up - so that we don't have to watch the animation standing still for 14 hours
 			startTime += skip;
+            daySkip = false;
 
 			/*
 			for (var i = 0; i < permPaths.length; i++) {
