@@ -12,6 +12,7 @@ TODO
 
 - closing tweet panel
 - twitter feed max scroll
+- twitter feed closes after ambit loaded
 
 */
 
@@ -991,6 +992,9 @@ var initFeed = function(json){
     	.style('display','block')
     	.on('click',function(){toggleTwitterPanel();})
 
+    d3.select('#twitterFeed')
+    	.style('height',(d3.select('body').node().clientHeight-192)+'px')
+
     d3.select('#twitterWrapper')
     	.on('mousewheel',function(){
     		d3.select(this)
@@ -1002,6 +1006,7 @@ var initFeed = function(json){
     				return h + 'px';
     			})
     	})
+
 
 }
 

@@ -266,9 +266,9 @@ ul {
 
 		#twitterFeed{
 			overflow: hidden;
-			height:100%;
+			height:100% !important;
 			padding-top: 192px;
-			position:fixed;
+			position:fixed !important;
 		}
 
 		div#dataWrapper div#data{
