@@ -10,6 +10,8 @@ TODO
 - controls time map
 - disable pan when autoplay
 
+- closing tweet panel
+
 */
 
 
@@ -190,7 +192,7 @@ var queryAmbit = function(date){
 		
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
 		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) updateAmbitData();
-		if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
+		// if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
@@ -281,8 +283,10 @@ var initSighting = function(data){
 			.style('display','block')
 
 		requestAnimationFrame(function(){
-			d3.select('#fullPanelWrapper')
-				.style('display','none')
+			if(currentPage == 'Map'){
+				d3.select('#fullPanelWrapper')
+					.style('display','none')
+			}
 			d3.select('#fullPanelWrapper div.page:nth-child(3)')
 				.style('display','none')
 		});
@@ -930,6 +934,7 @@ var initFeed = function(json){
 			date: new Date(Math.round(parseFloat(json.features[i].properties.t_utc*1000))),
 			coords: json.features[i].geometry.coordinates,
 			profilePicUrl: json.features[i].properties.tweet.user.profile_image_url,
+			id: json.features[i].id
 		};
 		try{
 			if(t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].type == 'photo'){
