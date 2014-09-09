@@ -11,6 +11,7 @@ TODO
 - disable pan when autoplay
 
 - closing tweet panel
+- twitter feed max scroll
 
 */
 
@@ -989,6 +990,18 @@ var initFeed = function(json){
     d3.select('#tweetsButton')
     	.style('display','block')
     	.on('click',function(){toggleTwitterPanel();})
+
+    d3.select('#twitterWrapper')
+    	.on('mousewheel',function(){
+    		d3.select(this)
+    			.style('margin-top',function(){
+    				var h = d3.select(this).style('margin-top')
+    				h = parseFloat(h.substring(0,h.length-2));
+    				h = h + d3.event.wheelDeltaY/2;
+    				h = Math.max(0,h);	// fix max scroll
+    				return h + 'px';
+    			})
+    	})
 
 }
 

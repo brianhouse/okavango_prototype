@@ -267,6 +267,7 @@ ul {
 		#fullPanelWrapper div.page:last-child{
 			overflow: hidden;
 			height:100%;
+			padding-top: 192px;
 		}
 
 		div#dataWrapper div#data{
@@ -558,7 +559,7 @@ ul {
 		width:27.5%;
 		padding: 45px 5.5% 45px 5.5%;
 		height:auto;
-		margin:192px 0 0 61.5%;
+		margin:0 0 0 61.5%;
 	}
 
 		div#twitterWrapper div.tweet{
