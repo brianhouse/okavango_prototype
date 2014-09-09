@@ -263,6 +263,12 @@ ul {
 		opacity: 1;
 	}
 
+
+		#fullPanelWrapper div.page:last-child{
+			overflow: hidden;
+			height:100%;
+		}
+
 		div#dataWrapper div#data{
 			width: 90%;
 			padding:190px 6.5% 0 6%;
