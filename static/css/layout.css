@@ -264,10 +264,11 @@ ul {
 	}
 
 
-		#fullPanelWrapper div.page:last-child{
+		#fullPanelWrapper:nth-child(4){
 			overflow: hidden;
 			height:100%;
 			padding-top: 192px;
+			position:fixed;
 		}
 
 		div#dataWrapper div#data{

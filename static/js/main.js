@@ -997,8 +997,8 @@ var initFeed = function(json){
     			.style('margin-top',function(){
     				var h = d3.select(this).style('margin-top')
     				h = parseFloat(h.substring(0,h.length-2));
-    				h = h + d3.event.wheelDeltaY/2;
-    				h = Math.max(0,h);	// fix max scroll
+    				h = h + d3.event.wheelDeltaY/2.5;
+    				h = Math.min(0,h);	// fix max scroll
     				return h + 'px';
     			})
     	})
