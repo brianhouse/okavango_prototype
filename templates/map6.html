@@ -96,7 +96,9 @@
                 <div id="timeWrapper" class="transparent">
                     <div id="time" class="transparent">
                         <div class="timeDisplay"></div>
+                        <div class="prevDay">PREVIOUS DAY</div>
                         <div class="skipDay">NEXT DAY</div>
+
                         <div class="toggleAutoplay">PAUSE</div>
                     </div>
                 </div>
@@ -997,7 +999,7 @@
             console.log("START TIME ---------------- " + startTime);
             console.log("START TIME ---------------- " + new Date(startTime * 1000));
             daySkip = true;
-            alert("SKIP DAY!!!")
+            
         }
 
         function skipForward() {
@@ -1007,11 +1009,14 @@
             console.log("START TIME ---------------- " + startTime);
             console.log("START TIME ---------------- " + new Date(startTime * 1000));
             daySkip = true;
-            alert("SKIP DAY!!!")
         }
 
         //Man, this stuff is cool but not really working - it animates the team member icons along their GPS paths
 		function startAnimation() {
+
+            $( "div.prevDay" ).click(function() {
+                skipForward();
+            });
 
 			$( "div.skipDay" ).click(function() {
                 skipForward();
