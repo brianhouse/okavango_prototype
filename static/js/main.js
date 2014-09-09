@@ -46,7 +46,7 @@ var initLayout = function(){
 	initVideo();
 	setColumns();
 	initMetrics();
-	if(!graphReady) initFeed();
+	if(!isGraphReady) initFeed();
 	d3.select('#fullPanelWrapper')
 		.style('display','none');
 	d3.selectAll('div.page')
