@@ -264,7 +264,7 @@ ul {
 	}
 
 
-		#fullPanelWrapper:nth-child(4){
+		#twitterFeed{
 			overflow: hidden;
 			height:100%;
 			padding-top: 192px;
