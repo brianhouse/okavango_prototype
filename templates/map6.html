@@ -987,7 +987,9 @@
 		function startAnimation() {
 
 			$( "div.skipDay" ).click(function() {
-			  startTime += (24 * 60 * 60 * 1000)
+			  startTime = startTime + (24 * 60 * 60 * 1000)
+              console.log("START TIME ---------------- " + startTime);
+              console.log("START TIME ---------------- " + new Date(startTime));
               daySkip = true;
               alert("SKIP DAY!!!")
 			});
