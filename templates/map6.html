@@ -97,6 +97,7 @@
                     <div id="time" class="transparent">
                         <div class="timeDisplay"></div>
                         <div class="skipDay">NEXT DAY</div>
+                        <div class="toggleAutoplay">PAUSE</div>
                     </div>
                 </div>
 
@@ -343,7 +344,7 @@
                 <div id="tweetsButton">tweets</div>
 
                 <div id="skip">
-                    <a href="#">Skip</a>
+                    <a href="#">Skip intro</a>
                 </div>
 
 			</div><!-- End Google Maps Background -->
@@ -366,7 +367,7 @@
         focusLatLon = [-19.08398, 22.37332];
         targetLatLon = [-19.08398, 22.37332];
 
-        var isGraphReady = false;
+        var isGraphReady = true;
 		initLayout();
 
 		// create a map in the "map" div, set the view to a given place and zoom
@@ -472,6 +473,9 @@
 		var beaconCoords = [];
         var tweetMarkers = [];
         var tweetCoords = [];
+
+        var sightingsQueue;
+        var tweetsQueue;
 
 		var d = new Date();
 		var focusMarker;
@@ -614,6 +618,8 @@
         //2. Tweets
         function loadTweets() {
 
+            tweetsQueue = [];
+
             var tweetIcon = L.icon({
                 iconUrl: '../static/img/quote.png',
                 shadowUrl: '../static/img/quoteShadow.png',
@@ -661,6 +667,7 @@
                     tweetMarkers.push(marker);
                     markers.push(marker);
                     tweetCoords.push([latlng.lng, latlng.lat]);
+                    tweetsQueue.push({marker:marker, time:feature.properties.t_utc * 1000});
                     return marker;
                 },
                 onEachFeature:onEachTweet,
@@ -673,6 +680,8 @@
               console.log("GOT TWEETS!!!" + tweetMarkers.length)
               tweetsLoaded = true;
               showTweets();
+
+              initFeed(data);
                 
             });
             
@@ -701,7 +710,6 @@
             }
             dd = (dd < 10) ? ("0" + dd):(dd);
             mm = (mm < 10) ? ("0" + mm):(mm);
-            console.log("makeDate() 2014" + mm + dd + ' , d: ' + d);
             return "2014" + mm + dd;
 		}
 
@@ -829,7 +837,8 @@
 			pathMap = [];
 			permPaths = [];
 			permGeos = [];
-			personMarkers = [];
+            personMarkers = [];
+			personMarkersTarget = [];
 
 			pathQueues = [];
 			for (var i = 0; i < names.length; i++) {
@@ -849,7 +858,6 @@
 
 				$.getJSON('/api/timeline?date=' +  makeDate(d) + '&types=ambit_geo', function(data) {
 					console.log('/api/timeline?date=' +  makeDate(d) + '&types=ambit_geo');
-					console.log(data);
 				  L.geoJson(data.features, {
 				    filter: function(feature, layer) {
 				    	//Filter out 0,0 points
@@ -904,7 +912,8 @@
 
                 var shiftX = (Math.random() *0.002) - 0.001;
                 var shiftY = (Math.random() *0.002) - 0.001;
-				personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
+                personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
+				personMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
 
                 $('.person-marker').css('width','auto')
 				
@@ -967,7 +976,8 @@
 
 		timeMag = 100;
 		timeStep = 0.400;
-		sightingCounter = 0;
+        sightingCounter = 0;
+		tweetCounter = 0;
 
 		for (var i = 0; i < names.length; i++) {
 			counters[names[i]] = 1;
@@ -982,6 +992,10 @@
               alert("SKIP DAY!!!")
 			});
 
+            $( "div.toggleAutoplay" ).click(function() {
+              alert("TOGGLE AUTOPLAY!!!")
+            });
+
 			console.log(map.getCenter());
 			
 			focusLatLon[0] = map.getCenter().lat;
@@ -990,16 +1004,30 @@
 			targetLatLon[0] = focusLatLon[0];
 			targetLatLon[1] = focusLatLon[1];
 			
-			setInterval(posMap,30);
 			setInterval(doAnimation,timeStep * 1000);
+
+            posMap();
+
 		}
 
-        //This is tied to the function above, and centers the map on the current target position
-		function posMap() {
-			focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * 0.1;
-			focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * 0.1;
-			map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
-		}
+        var posMap = function(){
+            // centers map on the current target position
+            focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * 0.1;
+            focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * 0.1;
+            map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
+
+            // animates explorers' markers towards their current position on the map
+            for (var i = 0; i < names.length; i++) {
+                var n = names[i];
+                if(personMarkers[n]){
+                    var personLatLon = personMarkers[n].getLatLng();
+                    personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * 0.2;
+                    personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * 0.2;
+                    personMarkers[n].setLatLng(personLatLon);
+                }
+            }
+            requestAnimationFrame(posMap);
+        }
 
         //Used to show what time is displayed by the animation
 		function displayTime(d) {
@@ -1043,7 +1071,6 @@
 				sightingCounter ++;
 			} 
 
-
 			var temp = [];	
             var tempt = [];
 
@@ -1060,6 +1087,18 @@
 			revealedMarkers = temp;
             revealedMarkerTimes = tempt;
 
+
+            //Tweets
+            if(tweetsQueue.length>0){
+                var w = d3.select('body').node().clientWidth;
+                var h = d3.select('body').node().clientHeight;
+                while (tweetsQueue[tweetCounter].time/1000 < startTime) {
+                    focusTweet(tweetsQueue[tweetCounter]);
+                    tweetCounter ++;
+                } 
+            }
+            
+
 			//Paths
 
             var skip = 0;
@@ -1067,7 +1106,6 @@
 
             for (var i = 0; i < names.length; i++) {
                 var n = names[i];
-                
 
                 while(startTime > pathQueues[n][counters[n]].time) {
                     var c = counters[n];
@@ -1090,7 +1128,8 @@
                             }]
                             
                             permPaths[q.name].addData(point);
-                            personMarkers[q.name].setLatLng(q.latLon);
+                            // personMarkers[q.name].setLatLng(q.latLon);
+                            personMarkersTarget[q.name] = q.latLon;
                             if (i == 1) {
                                 targetLatLon[0] = q.latLon[0];
                                 targetLatLon[1] = q.latLon[1];
@@ -1206,7 +1245,6 @@
 			if (!pathsLoaded) loadPaths();
 
 			clearTimeout(function(){zoomIn(focusMarker)});
-            // zoomIn(focusMarker);
 		}
 
 		//loadBeacons();
@@ -1346,6 +1384,16 @@
 			arr.push( points[points.length - 1 ] );
 			return arr;
 		};
+
+
+        var focusTweet = function(queue){
+            // var id = queue.marker.feature.id;
+            // var h = -d3.select('#twitterWrapper').select('div.tweet').node().;
+            // d3.select('#twitterWrapper').selectAll('div.tweet')
+            //     .filter(function(d){return id == d.id})
+            //     .each(function(){h += this.offsetTop})
+            // d3.select('#twitterWrapper').selectAll('div.tweet').each(function(d){console.log(this.offsetTop)})
+        }
 					
 	</script>
 	

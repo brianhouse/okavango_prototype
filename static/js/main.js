@@ -3,10 +3,14 @@
 /*
 
 TODO
+
 - fix distance and speed 
-- load data day by day
-- remove blank ambit
 - display tweets
+- about broken
+- controls time map
+- disable pan when autoplay
+
+- closing tweet panel
 
 */
 
@@ -21,8 +25,8 @@ var timelineRange = [];
 var personalColors = ['#EB624C','#9263FF','#69D6AF','#FFC96B','#FF0000','#FF0000','#FF0000','#FF0000'];
 var dataReady = false;
 var loaderOffset = 0;
-var ambitJson;
-var sightingJson;
+var ambitJson = [];
+var sightingJson = [];
 
 
 
@@ -157,7 +161,7 @@ var initMetrics = function(){
 			
 		d3.select('svg#loader path:last-child')
 			.attr('d', arc2)
-		if(dataReady > 0) requestAnimationFrame(updateLoader);
+		if(!dataReady) requestAnimationFrame(updateLoader);
 	}
 
 	d3.select('svg#loader')
@@ -177,37 +181,41 @@ var initMetrics = function(){
 }
 
 var queryAmbit = function(date){
-	var dateString = date.getFullYear() + (date.getMonth()+1) + date.getDate();
+	var dateString = ''+date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + (date.getDate()+(date.getDate()<10?1:0));
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1';
-	// Temporary
-	if(!ambitJson) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
+	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
-		console.log('ambit loaded: ' + dateString);
-		ambitJson = json;
-		dataReady --;
-		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
-		// queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
+
+		if(json.features.length == 0) return;
+		ambitJson.push(json);
+		
+		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
+		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) updateAmbitData();
+		// if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
 var querySightings = function(date){
-	var dateString = date.getFullYear() + (date.getMonth()+1) + date.getDate();
+	var dateString = ''+date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + date.getDate();
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=sighting&days=1';
-	// Temporary
-	if(!sightingJson) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
+	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
-		console.log('sightings loaded: ' + dateString);
-		sightingJson = json;
-		if(ambitJson && sightingJson && !dataReady) enableDataPage(ambitJson,sightingJson);
-		// querySightings(new Date(+date.getTime() + (24*60*60*1000)));
+		
+		if(json.features.length == 0) return;
+		sightingJson.push(json);
+
+		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
+		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) initSighting(sightingJson);
+		if(isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
 
 var enableDataPage = function(ambitJson,sightingJson){
 
+	console.log('ENABLE DATA PAGE');
 	dataReady = true;
 
 	d3.select('#fullPanelWrapper')
@@ -266,29 +274,49 @@ var enableDataPage = function(ambitJson,sightingJson){
 }
 
 
-var initSighting = function(json){
+var initSighting = function(data){
+
+	if(currentPage != 'Data'){
+		d3.select('#fullPanelWrapper')
+			.style('display','block')
+		d3.select('#fullPanelWrapper div.page:nth-child(3)')
+			.style('display','block')
+
+		requestAnimationFrame(function(){
+			if(currentPage == 'Map'){
+				d3.select('#fullPanelWrapper')
+					.style('display','none')
+			}
+			d3.select('#fullPanelWrapper div.page:nth-child(3)')
+				.style('display','none')
+		});
+	}
 
 	var sightings = [];
 
-	json = json.features;
-	var len = json.length;
-	for(var i = 0; i<len; i++){
-		var flag = false;
-		for(var j=0; j<sightings.length; j++){
-			if(json[i].properties['Bird Name'] == sightings[j].id) {
-				var c = json[i].properties['Count'];
-				if(c){
-					c = parseInt(c);
-					sightings[j].count += c;
-				} else sightings[j].count ++;
-				flag = true;
-				break;
+	for(var h = 0; h<data.length; h++){
+		var json = data[h].features;
+		var len = json.length;
+		for(var i = 0; i<len; i++){
+			var flag = false;
+			for(var j=0; j<sightings.length; j++){
+				if(json[i].properties['Bird Name'] == sightings[j].id) {
+					var c = json[i].properties['Count'];
+					if(c){
+						c = parseInt(c);
+						sightings[j].count += c;
+					} else sightings[j].count ++;
+					flag = true;
+					break;
+				}
 			}
+			if(!flag) sightings.push({id:json[i].properties['Bird Name'],count:1});
 		}
-		if(!flag) sightings.push({id:json[i].properties['Bird Name'],count:1});
 	}
 
 	sightings.sort(function(a, b){ return d3.descending(a.count, b.count); })
+
+	d3.select('#data #sightings p').html('')
 
 	len = sightings.length;
 	var flag = false;
@@ -316,7 +344,7 @@ var initTimeline = function(json){
 
 	var timeScale = d3.scale.linear()
  		.range([0, w])
- 		.domain([new Date(json.features[0].properties.t_utc*1000).getTime(),new Date(json.features[json.features.length-1].properties.t_utc*1000+1).getTime()]);
+ 		.domain([new Date(json[0].features[0].properties.t_utc*1000).getTime(),new Date(json[json.length-1].features[json[json.length-1].features.length-1].properties.t_utc*1000+1).getTime()]);
 
 	var timeline = d3.select('svg.timeline')
 		.attr('width',w)
@@ -454,8 +482,7 @@ var initTimeline = function(json){
 
 }
 
-var initGraphs = function(json){
-
+var initGraphs = function(data){
 
 	var w = d3.select('#scale svg.graph').style('width');
 	w = +w.substring(0,w.length-2);
@@ -493,31 +520,32 @@ var initGraphs = function(json){
 		minHeartRate:10000,
 		maxHeartRate:0,
 		maxEnergyConsumption:0,
-		maxSpeed:2.25,
+		maxSpeed:3,
 		persons:[]
 	};
 
-	json = json.features;
-	var len = json.length;
-	for(var i=0; i<len; i++){
-		var ambit = json[i].properties;
-		if(!metrics[ambit.Person]){
-			metrics[ambit.Person] = {
-				heartrate:[],
-				energyConsumption:[],
-				speed:[]
+	for(var h=0; h<data.length; h++){
+		var json = data[h].features;
+		var len = json.length;
+		for(var i=0; i<len; i++){
+			var ambit = json[i].properties;
+			if(!metrics[ambit.Person]){
+				metrics[ambit.Person] = {
+					heartrate:[],
+					energyConsumption:[],
+					speed:[]
+				}
+				metrics.persons.push(ambit.Person);
 			}
-			metrics.persons.push(ambit.Person);
+			var d = ambit.t_utc*1000;
+			if(ambit.HR) metrics[ambit.Person].heartrate.push([d,ambit.HR])
+			if(ambit.EnergyConsumption) metrics[ambit.Person].energyConsumption.push([d,ambit.EnergyConsumption])
+			if(ambit.Speed) metrics[ambit.Person].speed.push([d,ambit.Speed])
+
+			if(ambit.HR > metrics.maxHeartRate) metrics.maxHeartRate = ambit.HR;
+			if(ambit.HR < metrics.minHeartRate) metrics.minHeartRate = ambit.HR;
+			if(ambit.EnergyConsumption > metrics.maxEnergyConsumption) metrics.maxEnergyConsumption = ambit.EnergyConsumption;
 		}
-		var d = ambit.t_utc*1000;
-		if(ambit.HR) metrics[ambit.Person].heartrate.push([d,ambit.HR])
-		if(ambit.EnergyConsumption) metrics[ambit.Person].energyConsumption.push([d,ambit.EnergyConsumption])
-		if(ambit.Speed) metrics[ambit.Person].speed.push([d,ambit.Speed])
-
-		if(ambit.HR > metrics.maxHeartRate) metrics.maxHeartRate = ambit.HR;
-		if(ambit.HR < metrics.minHeartRate) metrics.minHeartRate = ambit.HR;
-		if(ambit.EnergyConsumption > metrics.maxEnergyConsumption) metrics.maxEnergyConsumption = ambit.EnergyConsumption;
-
 	}
 
 	d3.selectAll('div.graph svg.labels')
@@ -554,22 +582,22 @@ var initGraphs = function(json){
 
 	updateGraphs();
 
-	var totalDistance = Math.round(parseInt(json[json.length-1].properties.Distance)/100)/10;
-	d3.select('#data p.counter span')
-		.html('320km ')
-		// .html(totalDistance + 'km ')
+	// var totalDistance = Math.round(parseInt(json[json.length-1].properties.Distance)/100)/10;
+	// d3.select('#data p.counter span')
+	// 	.html('320km ')
+	// 	// .html(totalDistance + 'km ')
 
-	var averageSpeed = 0;
-	var len = json.length;
-	var offset = 0;
-	for(var i=0; i<len; i++){
-		if(json[i].properties.Speed) averageSpeed += parseFloat(json[i].properties.Speed);
-		else offset --;
-	}
-	averageSpeed /= (len+offset);
-	averageSpeed = Math.round(averageSpeed*10)/10;
-	d3.select('#data p.counter:last-child span:last-child')
-		.html(' ' + averageSpeed + 'km/h')
+	// var averageSpeed = 0;
+	// var len = json.length;
+	// var offset = 0;
+	// for(var i=0; i<len; i++){
+	// 	if(json[i].properties.Speed) averageSpeed += parseFloat(json[i].properties.Speed);
+	// 	else offset --;
+	// }
+	// averageSpeed /= (len+offset);
+	// averageSpeed = Math.round(averageSpeed*10)/10;
+	// d3.select('#data p.counter:last-child span:last-child')
+	// 	.html(' ' + averageSpeed + 'km/h')
 
 }
 
@@ -688,8 +716,19 @@ var updateGraphs = function(){
 	d3.selectAll('svg.graph path.domain,svg.labels path.domain')
 		.remove()
     
+}
+
+var updateAmbitData = function(){
+
+	d3.selectAll('svg.timeline *').remove();
+	initTimeline(ambitJson);
+
+	d3.selectAll('div.graph svg *').remove();
+	d3.selectAll('#graphWrapper #persons').remove();
+	initGraphs(ambitJson);
 
 }
+
 
 var togglePanel = function(node, mapClick, i){
 
@@ -885,64 +924,67 @@ var toggleTwitterPanel = function(){
 	}
 }
 
-var loadTweets = function(){
+var initFeed = function(json){
 
-	var findTweetLocation = function(coords){
-		map.setView([coords[1],coords[0]], map.getZoom(), {pan:{animate:true}});
-	};
+	if(!json)return;    
+	for(var i =0; i<json.features.length; i++){
+		var t = {
+			username: json.features[i].properties.tweet.user.name,
+			message: json.features[i].properties.tweet.text,
+			date: new Date(Math.round(parseFloat(json.features[i].properties.t_utc*1000))),
+			coords: json.features[i].geometry.coordinates,
+			profilePicUrl: json.features[i].properties.tweet.user.profile_image_url,
+			id: json.features[i].id
+		};
+		try{
+			if(t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].type == 'photo'){
+				t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].media_url;
+			}
+		} catch(e){}
+		tweets.push(t);
+	}
+	tweets.reverse();
 
-	var url = 'http://intotheokavango.org/api/timeline?date=20140817&types=tweet&days=' + dateRange
-	d3.json(url, function (json) {
-		if(!json)return;    
-		for(var i =0; i<json.features.length; i++){
-			var t = {
-				username: json.features[i].properties.tweet.user.name,
-				message: json.features[i].properties.tweet.text,
-				date: new Date(Math.round(parseFloat(json.features[i].properties.t_utc*1000))),
-				coords: json.features[i].geometry.coordinates,
-				profilePicUrl: json.features[i].properties.tweet.user.profile_image_url,
-			};
-			try{
-				if(t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].type == 'photo'){
-					t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].media_url;
-				}
-			} catch(e){}
-			tweets.push(t);
-		}
-		tweets.reverse();
+	var m_names = new Array("Jan", "Feb", "Mar", 
+	"Apr", "May", "Jun", "Jul", "Aug", "Sep", 
+	"Oct", "Nov", "Dec");
 
-		var m_names = new Array("Jan", "Feb", "Mar", 
-		"Apr", "May", "Jun", "Jul", "Aug", "Sep", 
-		"Oct", "Nov", "Dec");
+	d3.select('#twitterWrapper').selectAll('div.tweet')
+        .data(tweets)
+        .enter()
+        .append('div')
+        .classed('tweet',true)
+        .html(function(d,i){
+        	return '<div class="controls"><div class="locationFinder"></div><a><div class="twitter"></div></a></div><p class="meta">        	</p><hr class="innerSeparator"/><div class="body"><img src = "'+d.profilePicUrl+'" width="10%" height="10%" class="profile"/><p class="message"></p>' + (d.photoUrl ? '<img src = "'+d.photoUrl+'" width="100%" class="pic"/>' : '') + '</div><hr class="outerSeparator"/>'
+        })
+        .each(function(d,i){
+        	d3.select(this).select('a')
+        		.attr('href','http://www.twitter.com')
 
-		d3.select('#twitterWrapper').selectAll('div.tweet')
-	        .data(tweets)
-	        .enter()
-	        .append('div')
-	        .classed('tweet',true)
-	        .html(function(d,i){
-	        	return '<div class="controls"><div class="locationFinder"></div><a><div class="twitter"></div></a></div><p class="meta">        	</p><hr class="innerSeparator"/><div class="body"><img src = "'+d.profilePicUrl+'" width="10%" height="10%" class="profile"/><p class="message"></p>' + (d.photoUrl ? '<img src = "'+d.photoUrl+'" width="100%" class="pic"/>' : '') + '</div><hr class="outerSeparator"/>'
-	        })
-	        .each(function(d,i){
-	        	d3.select(this).select('a')
-	        		.attr('href','http://www.twitter.com')
+        	//var t = new Date(d.date.getTime() * 1000);
+        	var t = d.date;
+        	t = ((parseInt(t.getDate())+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
+        	d3.select(this).select('p.meta')
+        		.html(t + '<span></span>' + d.username);
+        	d3.select(this).select('p.message')
+        		// .html(d.message);
+        		.html(function(){
+        			var content = d.message;
+        	// 		content.replace('http[^>]*','').
 
-	        	//var t = new Date(d.date.getTime() * 1000);
-	        	var t = d.date;
-	        	t = ((parseInt(t.getDate())+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
-	        	d3.select(this).select('p.meta')
-	        		.html(t + '<span></span>' + d.username);
-	        	d3.select(this).select('p.message')
-	        		.html(d.message);
-	        	var _this = this;
-	        	d3.select(this).selectAll('div.body, div.locationFinder')
-	        		.on('click',function(d){findTweetLocation(d3.select(_this).datum().coords)});
-	        })	
+        	// // [^>]*
+        	// // var content = 
 
-	    d3.select('#tweetsButton')
-	    	.style('display','block')
-	    	.on('click',function(){toggleTwitterPanel();})
+        			return content;
+        		});
+        	var _this = this;
+        	d3.select(this).selectAll('div.body, div.locationFinder')
+        		.on('click',function(d){findTweetLocation(d3.select(_this).datum().coords)});
+        })	
 
-    })	
+    d3.select('#tweetsButton')
+    	.style('display','block')
+    	.on('click',function(){toggleTwitterPanel();})
+
 }
 
