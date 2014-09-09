@@ -901,6 +901,9 @@ var toggleTwitterPanel = function(){
 
 		d3.select('#headerWrapper').style('position','fixed');
 
+		d3.select('#twitterWrapper')
+			.style('margin-top',0)
+
 		currentPage = 'Twitter';
 	} else {
 		var w = d3.select('#fullPanelWrapper').style('width');
