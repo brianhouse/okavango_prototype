@@ -977,7 +977,8 @@
 		function startAnimation() {
 
 			$( "div.skipDay" ).click(function() {
-			  //startTime += (24 * 60 * 60 * 1000)
+			  startTime += (24 * 60 * 60 * 1000)
+              daySkip = true;
               alert("SKIP DAY!!!")
 			});
 
@@ -1033,8 +1034,9 @@
 			//Sightings
 
 			while (sightingsQueue[sightingCounter].time < startTime) {
-				sightingsQueue[sightingCounter].marker.showLabel();
+				
 				if (!daySkip) {
+                    sightingsQueue[sightingCounter].marker.showLabel();
                     revealedMarkers.push(sightingsQueue[sightingCounter])
                     revealedMarkerTimes.push(new Date().getTime());
                 }
@@ -1103,7 +1105,7 @@
                      var c = counters[n];
                      var q = pathQueues[n][c];
                      var lq = pathQueues[n][c - 1];
-                     if (q.time - lq.time > 60 * 30 || daySkip) skipCount ++;
+                     if (q.time - lq.time > 60 * 30 ) skipCount ++;
                 }
 
             }
@@ -1112,6 +1114,7 @@
 
 			//Night speed up - so that we don't have to watch the animation standing still for 14 hours
 			startTime += skip;
+            daySkip = false;
 
 			/*
 			for (var i = 0; i < permPaths.length; i++) {
