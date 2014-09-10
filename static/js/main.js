@@ -31,6 +31,7 @@ var dataReady = false;
 var loaderOffset = 0;
 var ambitJson = [];
 var sightingJson = [];
+var closeFeedTimer;
 
 
 
@@ -935,7 +936,7 @@ var toggleTwitterPanel = function(){
 			.style('opacity',1)
 	}
 
-	clearTimeout(toggleTwitterPanel);
+	clearTimeout(closeFeedTimer);
 }
 
 var initFeed = function(json){
@@ -1030,13 +1031,13 @@ var focusTweet = function(queue){
 
     if(tweetFound){
     	console.log('focusing tweet: ' + queue.marker.feature.properties.tweet.text);
-    	setTimeout(toggleTwitterPanel,10000);
+    	clearTimeout(closeFeedTimer);
     	if(currentPage != 'Twitter') toggleTwitterPanel();
 	    d3.select('#twitterWrapper')
 	    	.transition()
 	    	.ease("cubic-in-out")
 	    	.style('margin-top',(20-h)+'px');
-    	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) setTimeout(toggleTwitterPanel,10000);
+    	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) closeFeedTimer = setTimeout(toggleTwitterPanel,10000);
     }
 
 
