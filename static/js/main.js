@@ -1034,6 +1034,7 @@ var focusTweet = function(queue){
     	if(currentPage != 'Twitter') toggleTwitterPanel();
 	    d3.select('#twitterWrapper')
 	    	.transition()
+	    	.ease("cubic-in-out")
 	    	.style('margin-top',(20-h)+'px');
     	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) setTimeout(toggleTwitterPanel,10000);
     }

@@ -659,31 +659,31 @@
             $.getJSON('/api/timeline?date=20140817&types=tweet&days=100', function(data) {
 
                 //Create the beacon objects
-              L.geoJson(data.features, {
-                filter: function(feature, layer) {
-                    //Filter out 0,0 points
-                    return (feature.geometry.coordinates[0] != 0);
-                },
-                pointToLayer: function (feature, latlng) {
-                    var marker = L.marker(latlng, tweetOptions);
-                    tweetMarkers.push(marker);
-                    markers.push(marker);
-                    tweetCoords.push([latlng.lng, latlng.lat]);
-                    tweetsQueue.push({marker:marker, time:feature.properties.t_utc * 1000});
-                    return marker;
-                },
-                onEachFeature:onEachTweet,
-                style: function(feature) {
-                    //Here we can apply styling to markers depending on properties. Cool.
+                L.geoJson(data.features, {
+                    filter: function(feature, layer) {
+                        //Filter out 0,0 points
+                        return (feature.geometry.coordinates[0] != 0 && feature.properties.tweet.text.substring(0,2).toLowerCase() != 'rt');
+                    },
+                    pointToLayer: function (feature, latlng) {
+                        var marker = L.marker(latlng, tweetOptions);
+                        tweetMarkers.push(marker);
+                        markers.push(marker);
+                        tweetCoords.push([latlng.lng, latlng.lat]);
+                        tweetsQueue.push({marker:marker, time:feature.properties.t_utc * 1000});
+                        return marker;
+                    },
+                    onEachFeature:onEachTweet,
+                    style: function(feature) {
+                        //Here we can apply styling to markers depending on properties. Cool.
 
 
-                }
+                    }
                 });
-              console.log("GOT TWEETS!!!" + tweetMarkers.length)
-              tweetsLoaded = true;
-              showTweets();
+                console.log("GOT TWEETS!!!" + tweetMarkers.length)
+                tweetsLoaded = true;
+                showTweets();
 
-              initFeed(data);
+                initFeed(data);
                 
             });
             
