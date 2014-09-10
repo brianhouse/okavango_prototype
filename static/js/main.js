@@ -14,6 +14,8 @@ TODO
 - twitter feed max scroll
 - twitter feed closes after ambit loaded
 
+- bad request ambit, ambit geo and sighting
+
 */
 
 
@@ -1018,6 +1020,7 @@ var focusTweet = function(queue){
 	var tweetFound = false;
 
     var id = queue.marker.feature.id;
+    console.log('focus id: ' + id);
     var h = +d3.select('#twitterWrapper').select('div.tweet').node().offsetTop;
     d3.select('#twitterWrapper').selectAll('div.tweet')
         .filter(function(d){return id == d.id})
@@ -1026,6 +1029,8 @@ var focusTweet = function(queue){
         	tweetFound = true;
         })
 
+        console.log('found: ' + tweetFound);
+        console.log('page: ' + currentPage);
     if(tweetFound){
     	if(currentPage != 'Twitter') toggleTwitterPanel();
 	    d3.select('#twitterWrapper')
