@@ -255,7 +255,7 @@ var enableDataPage = function(ambitJson,sightingJson){
 					.style('color','rgb(255, 255, 255)')
 					.style('opacity','0.6')
 
-				d3.select('#fullPanelWrapper')
+				if(currentPage == 'Map') d3.select('#fullPanelWrapper')
 					.style('display','none')
 
 				d3.select('#fullPanelWrapper div.page:nth-child(3)')
@@ -1022,7 +1022,7 @@ var focusTweet = function(queue){
     var id = queue.marker.feature.id;
     console.log('focus id: ' + id);
     var h = d3.select('#twitterWrapper').style('margin-top');
-    h = parseFloat(h.substring(0,h.length-2));
+    h = -parseFloat(h.substring(0,h.length-2));
         console.log('h: ' + h);
 
     d3.select('#twitterWrapper').selectAll('div.tweet')
