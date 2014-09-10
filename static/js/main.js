@@ -950,7 +950,7 @@ var initFeed = function(json){
 				t.photoUrl = json.features[i].properties.tweet.extended_entities.media[0].media_url;
 			}
 		} catch(e){}
-		tweets.push(t);
+		if(t.message.substring(0,2).toLowerCase() != 'rt') tweets.push(t);
 	}
 	tweets.reverse();
 
@@ -1009,6 +1009,29 @@ var initFeed = function(json){
     				return h + 'px';
     			})
     	})
+
+
+}
+
+var focusTweet = function(queue){
+
+	boolean tweetFound = false;
+
+    var id = queue.marker.feature.id;
+    var h = +d3.select('#twitterWrapper').select('div.tweet').node().offsetTop;
+    d3.select('#twitterWrapper').selectAll('div.tweet')
+        .filter(function(d){return id == d.id})
+        .each(function(){
+        	h += this.offsetTop;
+        	tweetFound = true;
+        })
+
+    if(tweetFound){
+    	if(currentPage != 'Twitter') toggleTwitterPanel();
+	    d3.select('#twitterWrapper')
+	    	.transition()
+	    	.style('margin-top',-h)
+    }
 
 
 }
