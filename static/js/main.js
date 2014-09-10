@@ -1031,11 +1031,12 @@ var focusTweet = function(queue){
 
         console.log('found: ' + tweetFound);
         console.log('page: ' + currentPage);
+        console.log('h: ' + h);
     if(tweetFound){
     	if(currentPage != 'Twitter') toggleTwitterPanel();
 	    d3.select('#twitterWrapper')
 	    	.transition()
-	    	.style('margin-top',-h)
+	    	.style('margin-top',(-h)+'px');
     }
 
 
