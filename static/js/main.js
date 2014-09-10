@@ -1015,7 +1015,7 @@ var initFeed = function(json){
 
 var focusTweet = function(queue){
 
-	boolean tweetFound = false;
+	var tweetFound = false;
 
     var id = queue.marker.feature.id;
     var h = +d3.select('#twitterWrapper').select('div.tweet').node().offsetTop;
