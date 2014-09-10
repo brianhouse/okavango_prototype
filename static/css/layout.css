@@ -94,7 +94,7 @@ ul {
 #headerWrapper{
 	width:100%;
 	height:100.1%;
-	position:fixed;
+	position:absolute;
     z-index:2;
     pointer-events:none;
 }
@@ -661,6 +661,7 @@ ul {
 		padding: 1px 10px;
 		border-radius:2px;
 		background-color: rgb(255,255,255);
+		opacity: 0;
 
 	}
 

@@ -922,7 +922,7 @@ var toggleTwitterPanel = function(){
 			.style('opacity',0)
 			.each('end',function(){
 				d3.select(this).style('display','none');
-				d3.select('#headerWrapper').style('position','relative');
+				d3.select('#headerWrapper').style('position','absolute');
 				d3.select('#map_holder')
 			    	.style('cursor','auto')
 					.on('click',null);
@@ -994,6 +994,8 @@ var initFeed = function(json){
     d3.select('#tweetsButton')
     	.style('display','block')
     	.on('click',function(){toggleTwitterPanel();})
+    	.transition()
+    	.style('opacity',1);
 
     d3.select('#twitterFeed')
     	.style('height',(d3.select('body').node().clientHeight-192)+'px')
@@ -1031,9 +1033,6 @@ var focusTweet = function(queue){
     	console.log('focusing tweet: ' + queue.marker.feature.properties.tweet.text);
     	clearTimeout(closeFeedTimer);
     	if(currentPage != 'Twitter') toggleTwitterPanel();
-    	console.log('aga');
-    	console.log(d3.select('#twitterWrapper').node());
-    	console.log('aga');
 	    d3.select('#twitterWrapper')
 	    	.transition()
 	    	.duration(500)
