@@ -858,6 +858,8 @@ var togglePanel = function(node, mapClick, i){
 	d3.selectAll('#pagesNav li')
 		.classed('focused',function(){return d3.select(this).text() == currentPage || (d3.select(this).text() == 'Map' && mapClick)});
 
+	clearTimeout(toggleTwitterPanel);
+
 }
 
 var toggleTwitterPanel = function(){
@@ -903,9 +905,6 @@ var toggleTwitterPanel = function(){
 
 		d3.select('#headerWrapper').style('position','fixed');
 
-		d3.select('#twitterWrapper')
-			.style('margin-top',0)
-
 		currentPage = 'Twitter';
 	} else {
 		var w = d3.select('#fullPanelWrapper').style('width');
@@ -933,6 +932,8 @@ var toggleTwitterPanel = function(){
 			.transition()
 			.style('opacity',1)
 	}
+
+	clearTimeout(toggleTwitterPanel);
 }
 
 var initFeed = function(json){
@@ -1018,12 +1019,9 @@ var initFeed = function(json){
 var focusTweet = function(queue){
 
 	var tweetFound = false;
-	console.log('AGA');
     var id = queue.marker.feature.id;
-    console.log('focus id: ' + id);
     var h = d3.select('#twitterWrapper').style('margin-top');
     h = -parseFloat(h.substring(0,h.length-2));
-        console.log('h: ' + h);
 
     d3.select('#twitterWrapper').selectAll('div.tweet')
         .filter(function(d){return id == d.id})
@@ -1032,14 +1030,14 @@ var focusTweet = function(queue){
         	tweetFound = true;
         })
 
-        console.log('message: ' + queue.marker.feature.properties.tweet.text);
-        console.log('h: ' + h);
     if(tweetFound){
     	if(currentPage != 'Twitter') toggleTwitterPanel();
 	    d3.select('#twitterWrapper')
 	    	.transition()
-	    	.style('margin-top',(-h)+'px');
+	    	.style('margin-top',(20-h)+'px');
+    	setTimeout(toggleTwitterPanel,10000);
     }
+
 
 
 }

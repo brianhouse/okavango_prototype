@@ -1041,7 +1041,7 @@
 		}
 
         var posMap = function(){
-            
+
             // centers map on the current target position
 
             var sp = daySkip ? 0.4:0.1;
@@ -1126,7 +1126,7 @@
             if(tweetsQueue.length>0){
                 var w = d3.select('body').node().clientWidth;
                 var h = d3.select('body').node().clientHeight;
-                while (tweetsQueue[tweetCounter].time/1000 < startTime) {
+                while (tweetsQueue[tweetCounter].time/1000 - 300 < startTime) {
                     focusTweet(tweetsQueue[tweetCounter]);
                     tweetCounter ++;
                 } 
