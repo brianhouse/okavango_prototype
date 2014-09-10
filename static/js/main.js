@@ -189,15 +189,15 @@ var queryAmbit = function(date){
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1';
 	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=ambit&days=18';
 	console.log('d3.json : ' + url);
-	d3.json(url, function (json) {
+	// d3.json(url, function (json) {
 
-		if(json.features.length == 0) return;
-		ambitJson.push(json);
+		// if(json.features.length == 0) return;
+		// ambitJson.push(json);
 		
-		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
-		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) updateAmbitData();
+		// if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
+		// else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) updateAmbitData();
 		// if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
-	});
+	// });
 }
 
 var querySightings = function(date){
@@ -205,15 +205,15 @@ var querySightings = function(date){
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=sighting&days=1';
 	if(!isGraphReady) url = 'http://intotheokavango.org/api/timeline?date=20140817&types=sighting&days=18';
 	console.log('d3.json : ' + url);
-	d3.json(url, function (json) {
+	// d3.json(url, function (json) {
 		
-		if(json.features.length == 0) return;
-		sightingJson.push(json);
+	// 	if(json.features.length == 0) return;
+	// 	sightingJson.push(json);
 
-		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
-		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) initSighting(sightingJson);
-		if(isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
-	});
+	// 	if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
+	// 	else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) initSighting(sightingJson);
+	// 	if(isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
+	// });
 }
 
 
@@ -255,8 +255,10 @@ var enableDataPage = function(ambitJson,sightingJson){
 					.style('color','rgb(255, 255, 255)')
 					.style('opacity','0.6')
 
-				if(currentPage == 'Map') d3.select('#fullPanelWrapper')
-					.style('display','none')
+				if(currentPage == 'Map') {
+					d3.select('#fullPanelWrapper')
+						.style('display','none')
+				}
 
 				d3.select('#fullPanelWrapper div.page:nth-child(3)')
 					.style('display','none')
@@ -973,20 +975,16 @@ var initFeed = function(json){
         	d3.select(this).select('a')
         		.attr('href','http://www.twitter.com')
 
-        	//var t = new Date(d.date.getTime() * 1000);
         	var t = d.date;
         	t = ((parseInt(t.getDate())+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
         	d3.select(this).select('p.meta')
         		.html(t + '<span></span>' + d.username);
         	d3.select(this).select('p.message')
-        		// .html(d.message);
         		.html(function(){
         			var content = d.message;
         	// 		content.replace('http[^>]*','').
-
         	// // [^>]*
         	// // var content = 
-
         			return content;
         		});
         	var _this = this;
@@ -1031,11 +1029,12 @@ var focusTweet = function(queue){
         })
 
     if(tweetFound){
+    	console.log('focusing tweet: ' + queue.marker.feature.properties.tweet.text);
     	if(currentPage != 'Twitter') toggleTwitterPanel();
 	    d3.select('#twitterWrapper')
 	    	.transition()
 	    	.style('margin-top',(20-h)+'px');
-    	setTimeout(toggleTwitterPanel,10000);
+    	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) setTimeout(toggleTwitterPanel,10000);
     }
 
 
