@@ -1018,10 +1018,13 @@ var initFeed = function(json){
 var focusTweet = function(queue){
 
 	var tweetFound = false;
-
+	console.log('AGA');
     var id = queue.marker.feature.id;
     console.log('focus id: ' + id);
-    var h = 0;
+    var h = d3.select('#twitterWrapper').style('margin-top');
+    h = parseFloat(h.substring(0,h.length-2));
+        console.log('h: ' + h);
+
     d3.select('#twitterWrapper').selectAll('div.tweet')
         .filter(function(d){return id == d.id})
         .each(function(){
@@ -1029,8 +1032,7 @@ var focusTweet = function(queue){
         	tweetFound = true;
         })
 
-        console.log('found: ' + tweetFound);
-        console.log('page: ' + currentPage);
+        console.log('message: ' + queue.marker.feature.properties.tweet.text);
         console.log('h: ' + h);
     if(tweetFound){
     	if(currentPage != 'Twitter') toggleTwitterPanel();
