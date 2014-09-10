@@ -1021,7 +1021,7 @@ var focusTweet = function(queue){
 
     var id = queue.marker.feature.id;
     console.log('focus id: ' + id);
-    var h = +d3.select('#twitterWrapper').select('div.tweet').node().offsetTop;
+    var h = 0;
     d3.select('#twitterWrapper').selectAll('div.tweet')
         .filter(function(d){return id == d.id})
         .each(function(){
