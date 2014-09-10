@@ -1030,6 +1030,7 @@ var focusTweet = function(queue){
 
     if(tweetFound){
     	console.log('focusing tweet: ' + queue.marker.feature.properties.tweet.text);
+    	console.log('currentPage: ' + currentPage);
     	if(currentPage != 'Twitter') toggleTwitterPanel();
 	    d3.select('#twitterWrapper')
 	    	.transition()
