@@ -96,7 +96,9 @@
                 <div id="timeWrapper" class="transparent">
                     <div id="time" class="transparent">
                         <div class="timeDisplay"></div>
+                        <div class="prevDay">PREVIOUS DAY</div>
                         <div class="skipDay">NEXT DAY</div>
+
                         <div class="toggleAutoplay">PAUSE</div>
                     </div>
                 </div>
@@ -997,21 +999,24 @@
             console.log("START TIME ---------------- " + startTime);
             console.log("START TIME ---------------- " + new Date(startTime * 1000));
             daySkip = true;
-            alert("SKIP DAY!!!")
+            
         }
 
         function skipForward() {
             var oneMore = startTime + (24 * 60 * 60);
-            var morning = (oneMore - (oneMore % (24 * 60 * 60))) + (8 * 60 * 60);
+            var morning = (oneMore - (oneMore % (24 * 60 * 60))) + (3 * 60 * 60);
             startTime = morning;
             console.log("START TIME ---------------- " + startTime);
             console.log("START TIME ---------------- " + new Date(startTime * 1000));
             daySkip = true;
-            alert("SKIP DAY!!!")
         }
 
         //Man, this stuff is cool but not really working - it animates the team member icons along their GPS paths
 		function startAnimation() {
+
+            $( "div.prevDay" ).click(function() {
+                skipForward();
+            });
 
 			$( "div.skipDay" ).click(function() {
                 skipForward();
@@ -1036,21 +1041,24 @@
 		}
 
         var posMap = function(){
+            
+            // centers map on the current target position
+
+            var sp = daySkip ? 0.4:0.1;
+            focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * sp;
+            focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * sp;
+            map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
+
             // animates explorers' markers towards their current position on the map
             for (var i = 0; i < names.length; i++) {
                 var n = names[i];
                 if(personMarkers[n]){
                     var personLatLon = personMarkers[n].getLatLng();
-                    personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * 0.2;
-                    personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * 0.2;
+                    personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * sp * 2;
+                    personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * sp * 2;
                     personMarkers[n].setLatLng(personLatLon);
                 }
             }
-
-            // centers map on the current target position
-            focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * 0.1;
-            focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * 0.1;
-            map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
 
             requestAnimationFrame(posMap);
         }
@@ -1179,6 +1187,10 @@
 
 			//Night speed up - so that we don't have to watch the animation standing still for 14 hours
 			startTime += skip;
+
+            if (daySkip) {
+                posMap();
+            }
             daySkip = false;
 
 			/*
