@@ -1008,7 +1008,17 @@
                 while(pathQueues[n][counters[n]].time > startTime && counters[n] > 1) {
                     counters[n] --;
                 }
+
+                //Reposition markers
+
+                var q = pathQueues[n][counters[n]]
+                if (i == 1) {
+                                targetLatLon[0] = q.latLon[0];
+                                targetLatLon[1] = q.latLon[1];
+                            }
             }
+
+
 
             console.log("NEW Q COUNTER:" + sightingCounter)
 
