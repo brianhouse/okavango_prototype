@@ -11,9 +11,6 @@ def init():
     try:
         db.execute("CREATE TABLE IF NOT EXISTS features (t INTEGER, kind TEXT, data TEXT, t_created INTEGER)")
         db.execute("CREATE INDEX IF NOT EXISTS kind_t ON features(kind, t)")
-        #db.execute("CREATE UNIQUE INDEX IF NOT EXISTS t_kind ON features(t, kind)")
-        #db.execute("DROP INDEX t_kind ON features");
-       # db.execute("DELETE FROM features WHERE t > 1400000000");
         db.execute("CREATE TABLE IF NOT EXISTS hydrodrops (t INTEGER, id TEXT, lat REAL, lon REAL, t_created INTEGER)")
         db.execute("CREATE UNIQUE INDEX IF NOT EXISTS id_lat_lon ON hydrodrops(id, lat, lon)")
     except Exception as e:
