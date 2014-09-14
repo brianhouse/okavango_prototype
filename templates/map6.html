@@ -997,7 +997,7 @@
             
 
             //move back sightings queue
-            while(sightingsQueue[sightingCounter].time > startTime) {
+            while(sightingsQueue[sightingCounter].time > startTime && sightingCounter > 1) {
                 sightingCounter --;
             }
 
@@ -1005,7 +1005,7 @@
             for (var i = 0; i < names.length; i++) {
                 var n = names[i];
 
-                while(pathQueues[n][counters[n]].time > startTime ) {
+                while(pathQueues[n][counters[n]].time > startTime && counters[n] > 1) {
                     counters[n] --;
                 }
             }
