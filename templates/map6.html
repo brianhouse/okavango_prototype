@@ -988,7 +988,7 @@
         function skipBack() {
             alert("back")
             var oneBack = startTime - (24 * 60 * 60);
-            var morning = (oneBack - (oneBack % (24 * 60 * 60))) + (3 * 60 * 60);
+            var morning = (oneBack - (oneBack % (24 * 60 * 60))) + (6 * 60 * 60);
             startTime = morning;
 
             console.log("ROLLBACK TIME ---------------- " + startTime);
