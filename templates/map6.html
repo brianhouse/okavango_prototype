@@ -989,18 +989,44 @@
 		}
 
         function skipBack() {
+            alert("back")
             var oneBack = startTime - (24 * 60 * 60);
-            var morning = (oneBack % (24 * 60 * 60)) + (8 * 60 * 60);
+            var morning = (oneBack - (oneBack % (24 * 60 * 60))) + (6 * 60 * 60);
             startTime = morning;
 
-            //reverse sightings queue
+            console.log("ROLLBACK TIME ---------------- " + startTime);
+            console.log("ROLLBACK TIME ---------------- " + new Date(startTime * 1000));
+            console.log("OLD Q COUNTER:" + sightingCounter)
+            
+
+            //move back sightings queue
+            while(sightingsQueue[sightingCounter].time > startTime && sightingCounter > 1) {
+                sightingCounter --;
+            }
+
+            //move back paths queue;
+            for (var i = 0; i < names.length; i++) {
+                var n = names[i];
+
+                while(pathQueues[n][counters[n]].time > startTime && counters[n] > 1) {
+                    counters[n] --;
+                }
+
+                //Reposition markers
+
+                var q = pathQueues[n][counters[n]]
+                if (i == 1) {
+                                targetLatLon[0] = q.latLon[0];
+                                targetLatLon[1] = q.latLon[1];
+                            }
+            }
 
 
-            //reverse paths queues
+
+            console.log("NEW Q COUNTER:" + sightingCounter)
 
 
-            console.log("START TIME ---------------- " + startTime);
-            console.log("START TIME ---------------- " + new Date(startTime * 1000));
+
             daySkip = true;
             
         }
@@ -1018,7 +1044,7 @@
 		function startAnimation() {
 
             $( "div.prevDay" ).click(function() {
-                skipForward();
+                skipBack();
             });
 
 			$( "div.skipDay" ).click(function() {
