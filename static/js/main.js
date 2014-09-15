@@ -990,7 +990,7 @@ var initFeed = function(json){
         })	
 
     d3.select('#tweetsButton')
-    	.style('display','block')
+    	.style('display','inline-block')
     	.on('click',function(){toggleTwitterPanel();})
     	.transition()
     	.style('opacity',1);
