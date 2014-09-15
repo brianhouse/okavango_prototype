@@ -5,16 +5,10 @@
 TODO
 
 - fix distance and speed 
-- display tweets
-- about broken
 - controls time map
 - disable pan when autoplay
-
-- closing tweet panel
 - twitter feed max scroll
-- twitter feed closes after ambit loaded
-
-- bad request ambit, ambit geo and sighting
+- bad request ambit and sighting
 
 */
 
@@ -32,6 +26,7 @@ var loaderOffset = 0;
 var ambitJson = [];
 var sightingJson = [];
 var closeFeedTimer;
+var mapTimeline;
 
 
 
@@ -51,7 +46,10 @@ var initLayout = function(){
 	initVideo();
 	setColumns();
 	initMetrics();
-	if(!isGraphReady) initFeed();
+		initMapTimeline();
+	if(!isGraphReady){
+		initFeed();
+	}
 	d3.select('#fullPanelWrapper')
 		.style('display','none');
 	d3.selectAll('div.page')
@@ -1041,7 +1039,78 @@ var focusTweet = function(queue){
     	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) closeFeedTimer = setTimeout(toggleTwitterPanel,10000);
     }
 
+}
 
+
+var initMapTimeline = function(){
+
+	var h = 27;
+
+	var w = window.innerWidth - (d3.select('#tweetsButton').node().clientWidth + window.innerWidth*0.463 + 100);
+	d3.select('#mapTimeline')
+		.style('width',w+'px');
+
+	w = d3.select('#mapTimeline').node().clientWidth - h - d3.select('#mapTimeline div.counter').node().clientWidth - 38;
+	d3.select('#mapTimeline div.bar')
+		.style('width',w+'px');
+	d3.select('#mapTimeline div.bar')
+		.append('svg')
+
+		d3.select('#mapTimeline div.bar svg').selectAll('circle')
+			.data([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17])
+			.enter()
+			.append('g')
+			.attr('transform',function(d,i){ console.log(i);return 'translate(' + (5+(i/16)*(w-10)) + ',' + h/2 +')';})
+			.each(function(d,i){
+				d3.select(this)
+					.append('rect')
+					.attr('x',-w/16/2)
+					.attr('y',-h/2)
+					.attr('width',w/16)
+					.attr('height',h)
+					.attr('fill','rgba(0,0,0,0)')
+				d3.select(this)
+					.append('circle')
+					.attr('r',2.5)
+					.attr('fill','rgba(255,255,255,0.6)');
+			})
+			.style('cursor','pointer')
+			.on('mouseover',function(){
+				d3.select(this).select('circle')
+					.transition()
+					.duration(150)
+					.attr('r',5)
+			})
+			.on('mouseout',function(){
+				d3.select(this).select('circle')
+					.transition()
+					.duration(150)
+					.attr('r',2.5)
+			})
+			.on('click',function(){alert("still broken, I'm working on it.")})
+
+		d3.select('#mapTimeline div.bar svg')
+			.append('line')
+			.attr('x1',5)
+			.attr('y1',h/2)
+			.attr('x2',w-5)
+			.attr('y2',h/2)
+			.attr('stroke','rgba(255,255,255,0.5)')
+			
+}
+
+var updateMapTimeline = function(d){
+
+	var dd = new Date();
+    var offset = dd.getTimezoneOffset();
+    var sd = new Date((sightingsQueue[sightingCounter].time * 1000) + (offset * 60 * 1000) );
+    var dom = d.getDate();
+    var dispd = (d.getMonth() == 7 ? dom - 16:15 + dom)
+	d3.select('#mapTimeline div.counter')
+		.text("DAY " + dispd + " - " + (d.getHours()<10?'0':'') +d.getHours() + ':' + (d.getMinutes()<10?'0':'') +d.getMinutes());
+
+	// d3.select('#mapTimeline div.bar svg').selectAll('circle')
+	// 	.each(function())
 
 }
 

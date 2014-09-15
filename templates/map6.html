@@ -343,7 +343,10 @@
 			<div id="map_holder">
 				<div id="map">
                 </div>
-                <div id="tweetsButton">tweets</div>
+                <div id="mapNav">
+                    <div id="mapTimeline"><div class="counter">DAY 1 - 00:00</div><div class="bar"></div><div class="pauseButton">II</div></div>
+                    <div id="tweetsButton">tweets</div>
+                </div>
 
                 <div id="skip">
                     <a href="#">Skip intro</a>
@@ -710,7 +713,7 @@
                 mm = 8 + Math.floor(dd/31);
                 dd = dd%31;
             }
-            dd = (dd < 10) ? ("0" + dd):(dd);
+            dd = (dd < 10) ? ("0" + dd+1):(dd);
             mm = (mm < 10) ? ("0" + mm):(mm);
             return "2014" + mm + dd;
 		}
@@ -1092,6 +1095,7 @@
 			var offset = d.getTimezoneOffset() + 2;
 			d.setTime(startTime * 1000 + (offset * 60 * 1000));
 			displayTime(d);
+            updateMapTimeline(d);
 
 			//Sightings
 
