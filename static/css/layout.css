@@ -670,6 +670,7 @@ ul {
 					letter-spacing: 0.1em;
 					color:white;
 					text-transform: uppercase;
+					width:120px;
 				}
 
 				#mapNav #mapTimeline div.bar{
