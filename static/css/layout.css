@@ -671,6 +671,7 @@ ul {
 					color:white;
 					text-transform: uppercase;
 					width:120px;
+					overflow: visible;
 				}
 
 				#mapNav #mapTimeline div.bar{
