@@ -177,8 +177,8 @@ def init_twitter():
 	print("LOOKING FOR UNTWEETED SIGHTINGS.")
 
 	query = "SELECT * FROM features WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
-	model.get_db().execute(query)
-	for row in model.get_db().fetchall():
+	results = model.db_query(query)
+	for row in results:
 		j = json.loads(row['data'])
 		props = j['properties']
 		tweet = props['TeamMember'] + ' just spotted: ' + props['Count'] + ' ' + props['Bird Name'] + ' Lat:' + props['Latitude'] + ' Lon:' + props['Longitude'] + ' Activity:' + props['Activity']
@@ -199,7 +199,7 @@ def init_twitter():
 
 	print("UPDATING TABLE")
 	query2 = "UPDATE features SET tweeted = 1 WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
-	model.get_db().execute(query2)
+	model.db_query(query)
 	print("TABLE UPDATED.")
 
 
