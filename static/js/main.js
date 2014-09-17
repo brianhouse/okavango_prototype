@@ -1043,7 +1043,7 @@ var focusTweet = function(queue){
 
 
 var initMapTimeline = function(){
-
+	if(isGraphReady){
 	var h = 27;
 
 	var w = window.innerWidth - (d3.select('#tweetsButton').node().clientWidth + window.innerWidth*0.463 + 100);
@@ -1114,23 +1114,23 @@ var initMapTimeline = function(){
 			.attr('x2',w-5)
 			.attr('y2',h/2)
 			.attr('stroke','rgba(255,255,255,0.5)')
+	}
 			
 }
 
 var updateMapTimeline = function(d){
+	if(isGraphReady){
+		var dd = new Date();
+	    var offset = dd.getTimezoneOffset();
+	    var sd = new Date((sightingsQueue[sightingCounter].time * 1000) + (offset * 60 * 1000) );
+	    var dom = d.getDate();
+	    var dispd = (d.getMonth() == 7 ? dom - 16:15 + dom)
+		d3.select('#mapTimeline div.counter')
+			.text("DAY " + dispd + " - " + (d.getHours()<10?'0':'') +d.getHours() + ':' + (d.getMinutes()<10?'0':'') +d.getMinutes());
 
-	var dd = new Date();
-    var offset = dd.getTimezoneOffset();
-    var sd = new Date((sightingsQueue[sightingCounter].time * 1000) + (offset * 60 * 1000) );
-    var dom = d.getDate();
-    var dispd = (d.getMonth() == 7 ? dom - 16:15 + dom)
-	d3.select('#mapTimeline div.counter')
-		.text("DAY " + dispd + " - " + (d.getHours()<10?'0':'') +d.getHours() + ':' + (d.getMinutes()<10?'0':'') +d.getMinutes());
-
-	var d1 = new Date('August 17, 2014');
-	var d1 = new Date('September 4, 2014');
-
-
+		var d1 = new Date('August 17, 2014');
+		var d1 = new Date('September 4, 2014');
+	}
 
 }
 
