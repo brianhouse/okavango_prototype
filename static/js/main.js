@@ -1137,6 +1137,9 @@ var updateMapTimeline = function(d){
 		var d2 = new Date('September 4, 2014');
 		var r = map(d.getTime(),d1.getTime(),d2.getTime(),0,1);
 
+		console.log(d + ' ' + d1 + ' ' + d2);
+		console.log(r)
+
 		d3.select('#mapTimeline div.bar svg line.covered')
 			.attr('x1',5)
 			.attr('y1',h/2)
