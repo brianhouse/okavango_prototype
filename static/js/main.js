@@ -46,8 +46,8 @@ var initLayout = function(){
 	initVideo();
 	setColumns();
 	initMetrics();
-		initMapTimeline();
 	if(!isGraphReady){
+		initMapTimeline();
 		initFeed();
 	}
 	d3.select('#fullPanelWrapper')
@@ -1057,10 +1057,18 @@ var initMapTimeline = function(){
 		.append('svg')
 
 		d3.select('#mapTimeline div.bar svg').selectAll('circle')
-			.data([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17])
+			.data(function(){
+				var dates = [];
+				var d = new Date('August 17, 2014');
+				for(var i = 0; i<19; i++){
+					dates.push(d);
+					d = new Date(d.getTime() + (24*60*60*1000));
+				}
+				return dates;
+			})
 			.enter()
 			.append('g')
-			.attr('transform',function(d,i){ console.log(i);return 'translate(' + (5+(i/16)*(w-10)) + ',' + h/2 +')';})
+			.attr('transform',function(d,i){ return 'translate(' + (5+(i/16)*(w-10)) + ',' + h/2 +')';})
 			.each(function(d,i){
 				d3.select(this)
 					.append('rect')
@@ -1091,6 +1099,16 @@ var initMapTimeline = function(){
 
 		d3.select('#mapTimeline div.bar svg')
 			.append('line')
+			.classed('covered',true)
+			.attr('x1',5)
+			.attr('y1',h/2)
+			.attr('x2',5)
+			.attr('y2',h/2)
+			.attr('stroke','rgba(255,255,255,1)')
+
+		d3.select('#mapTimeline div.bar svg')
+			.append('line')
+			.classed('uncovered',true)
 			.attr('x1',5)
 			.attr('y1',h/2)
 			.attr('x2',w-5)
@@ -1109,8 +1127,10 @@ var updateMapTimeline = function(d){
 	d3.select('#mapTimeline div.counter')
 		.text("DAY " + dispd + " - " + (d.getHours()<10?'0':'') +d.getHours() + ':' + (d.getMinutes()<10?'0':'') +d.getMinutes());
 
-	// d3.select('#mapTimeline div.bar svg').selectAll('circle')
-	// 	.each(function())
+	var d1 = new Date('August 17, 2014');
+	var d1 = new Date('September 4, 2014');
+
+
 
 }
 
