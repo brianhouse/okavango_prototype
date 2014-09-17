@@ -1120,6 +1120,11 @@ var initMapTimeline = function(){
 
 var updateMapTimeline = function(d){
 	if(isGraphReady){
+
+		function map(value, start1, stop1, start2, stop2) {
+		    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
+		}
+
 		var dd = new Date();
 	    var offset = dd.getTimezoneOffset();
 	    var sd = new Date((sightingsQueue[sightingCounter].time * 1000) + (offset * 60 * 1000) );
@@ -1129,7 +1134,22 @@ var updateMapTimeline = function(d){
 			.text("DAY " + dispd + " - " + (d.getHours()<10?'0':'') +d.getHours() + ':' + (d.getMinutes()<10?'0':'') +d.getMinutes());
 
 		var d1 = new Date('August 17, 2014');
-		var d1 = new Date('September 4, 2014');
+		var d2 = new Date('September 4, 2014');
+		var r = map(d.getTime(),d1.getTime(),d2.getTime(),0,1);
+
+		d3.select('#mapTimeline div.bar svg line.covered')
+			.attr('x1',5)
+			.attr('y1',h/2)
+			.attr('x2',5+(w-10)*r)
+			.attr('y2',h/2)
+
+		d3.select('#mapTimeline div.bar svg line.uncovered')
+			.attr('x1',5+(w-10)*r)
+			.attr('y1',h/2)
+			.attr('x2',w-5)
+			.attr('y2',h/2)
+
+		
 	}
 
 }
