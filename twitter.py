@@ -181,7 +181,7 @@ def init_twitter():
 	for row in results:
 		j = json.loads(row['data'])
 		props = j['properties']
-		tweet = props['TeamMember'] + ' just spotted: ' + props['Count'] + ' ' + props['Bird Name'] + ' Lat:' + props['Latitude'] + ' Lon:' + props['Longitude'] + ' Activity:' + props['Activity']
+		tweet = str(props['TeamMember']) + ' just spotted: ' + str(props['Count']) + ' ' + str(props['Bird Name']) + ' Lat:' + str(props['Latitude']) + ' Lon:' + str(props['Longitude']) + ' Activity:' + str(props['Activity'])
 		
 		try:
 			twitter_data.update_status(status=tweet);
