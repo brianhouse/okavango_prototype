@@ -1121,6 +1121,8 @@ var initMapTimeline = function(){
 var updateMapTimeline = function(d){
 	if(isGraphReady){
 
+		var h = 27;
+
 		function map(value, start1, stop1, start2, stop2) {
 		    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
 		}
@@ -1137,9 +1139,6 @@ var updateMapTimeline = function(d){
 		var d2 = new Date('September 4, 2014');
 		var r = map(d.getTime(),d1.getTime(),d2.getTime(),0,1);
 
-		console.log(d + ' ' + d1 + ' ' + d2);
-		console.log(r)
-
 		d3.select('#mapTimeline div.bar svg line.covered')
 			.attr('x1',5)
 			.attr('y1',h/2)
@@ -1152,7 +1151,14 @@ var updateMapTimeline = function(d){
 			.attr('x2',w-5)
 			.attr('y2',h/2)
 
-		
+		d3.select('#mapTimeline div.bar svg').selectAll('circle')
+			.filter(function(d1){ return d1.getTime()<=d.getTime()})
+			.attr('fill','rgba(255,255,255,1)');
+
+		d3.select('#mapTimeline div.bar svg').selectAll('circle')
+			.filter(function(d1){ return d1.getTime()>d.getTime()})
+			.attr('fill','rgba(255,255,255,0.6)');
+
 	}
 
 }
