@@ -46,8 +46,8 @@ var initLayout = function(){
 	initVideo();
 	setColumns();
 	initMetrics();
+	initMapTimeline();
 	if(!isGraphReady){
-		initMapTimeline();
 		initFeed();
 	}
 	d3.select('#fullPanelWrapper')

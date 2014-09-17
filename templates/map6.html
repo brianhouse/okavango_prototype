@@ -344,7 +344,7 @@
 				<div id="map">
                 </div>
                 <div id="mapNav">
-                    <div id="mapTimeline"><div class="counter">DAY 1 - 00:00</div><div class="bar"></div><div class="pauseButton">II</div></div>
+                    <div id="mapTimeline"><div class="counter">DAY 1</div><div class="bar"></div><div class="pauseButton">II</div></div>
                     <div id="tweetsButton">tweets</div>
                 </div>
 
@@ -1092,19 +1092,6 @@
             requestAnimationFrame(posMap);
         }
 
-        //Used to show what time is displayed by the animation
-		function displayTime(d) {
-
-            var dd = new Date();
-            var offset = dd.getTimezoneOffset();
-
-            var sd = new Date((sightingsQueue[sightingCounter].time * 1000) + (offset * 60 * 1000) );
-
-            var dom = d.getDate();
-            var dispd = (d.getMonth() == 7 ? dom - 16:15 + dom)
-			$('div.timeDisplay').text("DAY " + dispd + " : " + d.toString().split("GMT")[0].split("2014")[1]);
-		}
-
         //These are the various markers that have been revealed
 		revealedMarkers = [];
         revealedMarkerTimes = [];
@@ -1120,7 +1107,6 @@
 			var d = new Date();
 			var offset = d.getTimezoneOffset() + 2;
 			d.setTime(startTime * 1000 + (offset * 60 * 1000));
-			displayTime(d);
             updateMapTimeline(d);
 
 			//Sightings
