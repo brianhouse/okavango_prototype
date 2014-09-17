@@ -91,6 +91,9 @@ def get_drop_by_id(db, hydrosensor_id):
         return result['lat'], result['lon']
     return None, None
 
+@db_call
+def get_db(db):
+    return db
 
 # http://stackoverflow.com/questions/14511337/efficiency-of-reopening-sqlite-database-after-each-query
 # unless youre doing a ton of statements each time, opening it each time isnt going to be much of a problem
