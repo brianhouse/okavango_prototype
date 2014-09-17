@@ -189,9 +189,10 @@ def init_twitter():
 			print(e)
 
 		#10% of the time, tweet it to the main account.
-		if (randint(0,100) < 10):
+		if (random.randint(0,100) < 10):
 			try:
-				twitter_data.update_status(status=tweet);
+				# disabling this for now
+				#twitter_data.update_status(status=tweet);
 			except TwythonError as e:
 				print(e)
 
