@@ -2,13 +2,15 @@
 # Into the Okavango Twitter Scraper
 # Gets feeds from @okavangodata and pipes into server
 
-import geojson, model, json, random, time
+import geojson, model, json, random, time, os
 
 from twython import Twython
 from twython import TwythonError
 from datetime import datetime
 from time import mktime
-from housepy import util
+from housepy import util, process
+
+process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
 
 def init_twitter():
 	APP_KEY = "PDtNJXpCD1v6oqtelAA7JuGzq";
@@ -175,11 +177,11 @@ def init_twitter():
 	print("LOOKING FOR UNTWEETED SIGHTINGS.")
 
 	query = "SELECT * FROM features WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
-	model.db.execute(query)
-	for row in model.db.fetchall():
+	results = model.db_query(query)
+	for row in results:
 		j = json.loads(row['data'])
 		props = j['properties']
-		tweet = props['TeamMember'] + ' just spotted: ' + props['Count'] + ' ' + props['Bird Name'] + ' Lat:' + props['Latitude'] + ' Lon:' + props['Longitude'] + ' Activity:' + props['Activity']
+		tweet = str(props['TeamMember']) + ' just spotted: ' + str(props['Count']) + ' ' + str(props['Bird Name']) + ' Lat:' + str(props['Latitude']) + ' Lon:' + str(props['Longitude']) + ' Activity:' + str(props['Activity'])
 		
 		try:
 			twitter_data.update_status(status=tweet);
@@ -187,9 +189,11 @@ def init_twitter():
 			print(e)
 
 		#10% of the time, tweet it to the main account.
-		if (randint(0,100) < 10):
+		if (random.randint(0,100) < 10):
 			try:
-				twitter_data.update_status(status=tweet);
+				# disabling this for now
+				#twitter_data.update_status(status=tweet);
+				pass
 			except TwythonError as e:
 				print(e)
 
@@ -197,8 +201,7 @@ def init_twitter():
 
 	print("UPDATING TABLE")
 	query2 = "UPDATE features SET tweeted = 1 WHERE kind = 'sighting' AND tweeted = 0 AND t > 1407890717"
-	model.db.execute(query2)
-	model.connection.commit()
+	model.db_query(query)
 	print("TABLE UPDATED.")
 
 

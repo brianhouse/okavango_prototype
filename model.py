@@ -3,11 +3,19 @@
 import sqlite3, json, time, sys, os, geojson
 from housepy import config, log, util
 
-connection = sqlite3.connect(os.path.abspath(os.path.join(os.path.dirname(__file__), "data.db")))
-connection.row_factory = sqlite3.Row
-db = connection.cursor()
+def db_call(f):
+    def wrapper(*args):
+        connection = sqlite3.connect(os.path.abspath(os.path.join(os.path.dirname(__file__), "data.db")))
+        connection.row_factory = sqlite3.Row
+        db = connection.cursor()
+        results = f(db, *args)
+        connection.commit()
+        connection.close()
+        return results
+    return wrapper
 
-def init():
+@db_call
+def init(db):
     try:
         db.execute("CREATE TABLE IF NOT EXISTS features (t INTEGER, kind TEXT, data TEXT, t_created INTEGER)")
         db.execute("CREATE INDEX IF NOT EXISTS kind_t ON features(kind, t)")
@@ -16,32 +24,32 @@ def init():
     except Exception as e:
         log.error(log.exc(e))
         return
-    connection.commit()
 init()
 
-def insert_feature(kind, t, data):
+@db_call
+def insert_feature(db, kind, t, data):
     try:
         db.execute("INSERT INTO features (kind, t, data, t_created) VALUES (?, ?, ?, ?)", (kind, t, data, util.timestamp()))
         entry_id = db.lastrowid
     except Exception as e:
         log.error(log.exc(e))
         return
-    connection.commit()
     log.info("Inserted feature (%s) %s" % (entry_id, t))    
     return entry_id
 
-def insert_hydrodrop(t, hydrosensor_id, lat, lon):
+@db_call
+def insert_hydrodrop(db, t, hydrosensor_id, lat, lon):
     try:
         db.execute("INSERT INTO hydrodrops (t, id, lat, lon, t_created) VALUES (?, ?, ?, ?, ?)", (t, hydrosensor_id, float(lat), float(lon), util.timestamp()))
         hydrodrop_id = db.lastrowid        
     except Exception as e:
         log.error(log.exc(e))
         return
-    connection.commit()
     log.info("Inserted hydrodrop (%s) %s %s" % (hydrodrop_id, hydrosensor_id, t))  
     return hydrodrop_id  
 
-def fetch_features(kinds, start_t, stop_t, skip=1):
+@db_call
+def fetch_features(db, kinds, start_t, stop_t, skip=1):
     kindq = []
     for kind in kinds:
         kindq.append(" OR kind='%s'" % kind)
@@ -56,27 +64,37 @@ def fetch_features(kinds, start_t, stop_t, skip=1):
         features.append(feature)
     return features
 
-def get_protect(kind):
+@db_call
+def get_protect(db, kind):
     db.execute("SELECT t FROM features WHERE kind=? ORDER BY t DESC LIMIT 1", (kind,))
     result = db.fetchone()
     if result is None:
         return 0
     return result['t']
 
-def get_coords_by_time(time):
+@db_call
+def get_coords_by_time(db, time):
     db.execute("SELECT t,data FROM features WHERE kind='beacon' AND t < ? ORDER BY t DESC LIMIT 1", (time,))
     result = db.fetchone()
     closeFeature = result['data'];
-
     j = json.loads(closeFeature);
     geom = j['geometry'];
 
     #print("CLOSEST FEATURE TO ? IS ?", (time,geom))
     return geom;
 
-def get_drop_by_id(hydrosensor_id):
+@db_call
+def get_drop_by_id(db, hydrosensor_id):
     db.execute("SELECT lat, lon FROM hydrodrops WHERE id=? ORDER BY t DESC LIMIT 1", (hydrosensor_id,))
     result = db.fetchone()
     if result is not None:
         return result['lat'], result['lon']
     return None, None
+
+@db_call
+def db_query(db, query):
+    db.execute(query)
+    return db.fetchall()
+
+# http://stackoverflow.com/questions/14511337/efficiency-of-reopening-sqlite-database-after-each-query
+# unless youre doing a ton of statements each time, opening it each time isnt going to be much of a problem
