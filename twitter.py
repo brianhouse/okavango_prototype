@@ -193,6 +193,7 @@ def init_twitter():
 			try:
 				# disabling this for now
 				#twitter_data.update_status(status=tweet);
+				pass
 			except TwythonError as e:
 				print(e)
 
