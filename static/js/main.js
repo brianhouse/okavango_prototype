@@ -1122,6 +1122,7 @@ var updateMapTimeline = function(d){
 	if(isGraphReady){
 
 		var h = 27;
+		var w = window.innerWidth - (d3.select('#tweetsButton').node().clientWidth + window.innerWidth*0.463 + 100);
 
 		function map(value, start1, stop1, start2, stop2) {
 		    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
