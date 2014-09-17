@@ -2,13 +2,15 @@
 # Into the Okavango Twitter Scraper
 # Gets feeds from @okavangodata and pipes into server
 
-import geojson, model, json, random, time
+import geojson, model, json, random, time, os
 
 from twython import Twython
 from twython import TwythonError
 from datetime import datetime
 from time import mktime
-from housepy import util
+from housepy import util, process
+
+process.secure_pid(os.path.abspath(os.path.join(os.path.dirname(__file__), "run")))
 
 def init_twitter():
 	APP_KEY = "PDtNJXpCD1v6oqtelAA7JuGzq";
