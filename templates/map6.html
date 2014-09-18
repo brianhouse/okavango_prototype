@@ -477,6 +477,7 @@
 		var focusMarker;
 
 		var step = 0;
+        var frameCount = 0;
 
 		var scripts = [
 			"This is the Okavango Delta.",
@@ -1028,6 +1029,15 @@
         //Logic for the time-based animation
 		function doAnimation() {
 
+            // frameCount ++;
+            // if(frameCount%30==0){
+            //     d3.select('img.leaflet-marker-icon')
+            //         .each(function(){
+            //             d3.select(this)
+            //         })
+            // }
+
+
             if(isAnimationPaused) return;
             if (sightingsQueue.length > 0 && pathQueues[names[0]].length > 0) {
 
@@ -1107,7 +1117,7 @@
                                 }
                             }]
                             
-                            // permPaths[q.name].addData(point);
+                            permPaths[q.name].addData(point);
                             personMarkersTarget[q.name] = q.latLon;
                             if (i == 1) {
                                 targetLatLon[0] = q.latLon[0];
@@ -1162,211 +1172,206 @@
 			map.setView([permGeos[0][c][1], permGeos[0][c][0]], map.getZoom());
 			c++;
 			*/
-            }
+        }
+	}
+
+	function smoothIt(pointList) {
+		//pointList is a flat list of points [[x,y],[x,y]]
+		//Turn it into x,y vectors
+		var vectorList = [];
+		for(var i = 0; i < pointList.length; i++) {
+			vectorList[i] = {x:pointList[i][0], y:pointList[i][1]};
 		}
-
-		function smoothIt(pointList) {
-			//pointList is a flat list of points [[x,y],[x,y]]
-			//Turn it into x,y vectors
-			var vectorList = [];
-			for(var i = 0; i < pointList.length; i++) {
-				vectorList[i] = {x:pointList[i][0], y:pointList[i][1]};
-			}
-			//Smooth it
-			
-			console.log("Unsimplified");
-			console.log(vectorList);
-			vectorList = simplify(vectorList, 0.0008, false);
-			console.log("Simplified.");
-			console.log(vectorList);
-			//Now turn it back into a flat list
-			var flatList = [];
-			for(var i = 0; i < vectorList.length; i++) {
-				flatList[i] = [vectorList[i].x, vectorList[i].y];
-			}
-			//Spit it out
-			return flatList;
-
+		//Smooth it
+		
+		console.log("Unsimplified");
+		console.log(vectorList);
+		vectorList = simplify(vectorList, 0.0008, false);
+		console.log("Simplified.");
+		console.log(vectorList);
+		//Now turn it back into a flat list
+		var flatList = [];
+		for(var i = 0; i < vectorList.length; i++) {
+			flatList[i] = [vectorList[i].x, vectorList[i].y];
 		}
+		//Spit it out
+		return flatList;
 
-        //*********************
-        //This is all of the logic for the opening animation (with the text fields)
-		function zoomIn() {
-			map.panTo(focusMarker.getLatLng());
-			console.log("zoom");
-			if (map.getZoom() < 17) map.zoomIn(3);
-			if (step < scripts.length) {
-				nextStep();
-				setTimeout(function(){zoomIn(focusMarker)}, 8000)
-			} else {
-				if (!sightingsLoaded) loadSightings();
-				if (!pathsLoaded) loadPaths();
-				//if (!beaconsLoaded) showBeacons();
-				//focusMarker.bindPopup("Last reported position.");
-				$("#skip").hide();
-			}
-			
-		}
+	}
 
-		function nextStep() {
-			if (step < 100) {
-				map.panTo(focusMarker.getLatLng());
-				focusMarker.bindPopup(scripts[step], {maxWidth:400, autoPan:true})
-				focusMarker.openPopup();
-				step ++;
-			}
-		}
-
-		function doSkip() {
-			step = 100;
-			focusMarker.closePopup();
-			map.setZoom(17);
-			map.panTo(focusMarker.getLatLng());
-			focusMarker.bindPopup("Last reported position.");
-			$("#skip").hide();
+    //*********************
+    //This is all of the logic for the opening animation (with the text fields)
+	function zoomIn() {
+		map.panTo(focusMarker.getLatLng());
+		console.log("zoom");
+		if (map.getZoom() < 17) map.zoomIn(3);
+		if (step < scripts.length) {
+			nextStep();
+			setTimeout(function(){zoomIn(focusMarker)}, 8000)
+		} else {
 			if (!sightingsLoaded) loadSightings();
 			if (!pathsLoaded) loadPaths();
-
-			clearTimeout(function(){zoomIn(focusMarker)});
+			//if (!beaconsLoaded) showBeacons();
+			//focusMarker.bindPopup("Last reported position.");
+			$("#skip").hide();
 		}
+		
+	}
 
-		//loadBeacons();
+	function nextStep() {
+		if (step < 100) {
+			map.panTo(focusMarker.getLatLng());
+			focusMarker.bindPopup(scripts[step], {maxWidth:400, autoPan:true})
+			focusMarker.openPopup();
+			step ++;
+		}
+	}
 
-        //Populates the menu at top right
-		var baseMaps = {
-			"Satellite":satLayer,
-			"Flat":flatLayer
-		};
+	function doSkip() {
+		step = 100;
+		focusMarker.closePopup();
+		map.setZoom(17);
+		map.panTo(focusMarker.getLatLng());
+		focusMarker.bindPopup("Last reported position.");
+		$("#skip").hide();
+		if (!sightingsLoaded) loadSightings();
+		if (!pathsLoaded) loadPaths();
 
-		var overlays = {
-		    "Position Beacons": beaconLayer,
-		    "Wildlife Sightings": sightingsLayer,
-		    "GPS Positions": geoLayer,
-		    "Quotes & Commentary": commentaryLayer
-		};
+		clearTimeout(function(){zoomIn(focusMarker)});
+	}
 
-        //Fullscreen controls
-		var fullScreen = new L.Control.FullScreen({ position: 'topright' }); 
-		map.addControl(fullScreen);
+	//loadBeacons();
 
-		new L.Control.Zoom({ position: 'topright' }).addTo(map);
-        focusMarker = L.marker(map.getCenter()).addTo(map);
-		setTimeout(function(){zoomIn(focusMarker)}, 5000);
+    //Populates the menu at top right
+	var baseMaps = {
+		"Satellite":satLayer,
+		"Flat":flatLayer
+	};
 
-		var visibleSightings = [];
-		var visibleGeos = [];
+	var overlays = {
+	    "Position Beacons": beaconLayer,
+	    "Wildlife Sightings": sightingsLayer,
+	    "GPS Positions": geoLayer,
+	    "Quotes & Commentary": commentaryLayer
+	};
 
-		//Node selection on change of focus
-		map.on('move', function() {
-			//console.log("MOVE" + map.getZoom());
-		    // construct an empty list to fill with onscreen markers
-		    visibleSightings = [];
-		    visibleGeos = [];
+    //Fullscreen controls
+	var fullScreen = new L.Control.FullScreen({ position: 'topright' }); 
+	map.addControl(fullScreen);
 
-		    // get the map bounds - the top-left and bottom-right locations
-		        bounds = map.getBounds();
-		        //console.log(bounds);
+	new L.Control.Zoom({ position: 'topright' }).addTo(map);
+    focusMarker = L.marker(map.getCenter()).addTo(map);
+	setTimeout(function(){zoomIn(focusMarker)}, 5000);
 
-		    // for each marker, consider whether it is currently visible by comparing
-		    // with the current map bounds
-		    /*
-		    sightingsLayer.eachLayer(function(marker) {
-		        if (bounds.contains(marker.getLatLng())) {
-		            visibleSightings.push(marker);
-		        }
-		    });
-			*/
+	var visibleSightings = [];
+	var visibleGeos = [];
 
-		    /*
-		    geoLayer.eachLayer(function(marker) {
-		        if (bounds.contains(marker.getLatLng())) {
-		            visibleGeos.push(marker);
-		        }
-		    });
-*/
+	//Node selection on change of focus
+	map.on('move', function() {
+		//console.log("MOVE" + map.getZoom());
+	    // construct an empty list to fill with onscreen markers
+	    visibleSightings = [];
+	    visibleGeos = [];
 
-		    //console.log("VISIBLE SIGHTINGS" + visibleSightings.length);
-			
-		    // display a list of markers.
-		    //document.getElementById('onscreen').innerHTML = inBounds.join('\n');
-		});
+	    // get the map bounds - the top-left and bottom-right locations
+	        bounds = map.getBounds();
+	        //console.log(bounds);
 
-		//Buttons
-		/*
-		onLoad
+	    // for each marker, consider whether it is currently visible by comparing
+	    // with the current map bounds
+	    /*
+	    sightingsLayer.eachLayer(function(marker) {
+	        if (bounds.contains(marker.getLatLng())) {
+	            visibleSightings.push(marker);
+	        }
+	    });
 		*/
 
+	    /*
+	    geoLayer.eachLayer(function(marker) {
+	        if (bounds.contains(marker.getLatLng())) {
+	            visibleGeos.push(marker);
+	        }
+	    });
+*/
 
-		simplifyPath = function( points, tolerance ) {
-		 
-			// helper classes 
-			var Vector = function( x, y ) {
-				this.x = x;
-				this.y = y;
-				
-			};
-			var Line = function( p1, p2 ) {
-				this.p1 = p1;
-				this.p2 = p2;
-				
-				this.distanceToPoint = function( point ) {
-					// slope
-					var m = ( this.p2.y - this.p1.y ) / ( this.p2.x - this.p1.x ),
-						// y offset
-						b = this.p1.y - ( m * this.p1.x ),
-						d = [];
-					// distance to the linear equation
-					d.push( Math.abs( point.y - ( m * point.x ) - b ) / Math.sqrt( Math.pow( m, 2 ) + 1 ) );
-					// distance to p1
-					d.push( Math.sqrt( Math.pow( ( point.x - this.p1.x ), 2 ) + Math.pow( ( point.y - this.p1.y ), 2 ) ) );
-					// distance to p2
-					d.push( Math.sqrt( Math.pow( ( point.x - this.p2.x ), 2 ) + Math.pow( ( point.y - this.p2.y ), 2 ) ) );
-					// return the smallest distance
-					return d.sort( function( a, b ) {
-						return ( a - b ); //causes an array to be sorted numerically and ascending
-					} )[0];
-				};
-			};
+	    //console.log("VISIBLE SIGHTINGS" + visibleSightings.length);
+		
+	    // display a list of markers.
+	    //document.getElementById('onscreen').innerHTML = inBounds.join('\n');
+	});
+
+
+	simplifyPath = function( points, tolerance ) {
+	 
+		// helper classes 
+		var Vector = function( x, y ) {
+			this.x = x;
+			this.y = y;
 			
-			var douglasPeucker = function( points, tolerance ) {
-				if ( points.length <= 2 ) {
-					return [points[0]];
-				}
-				var returnPoints = [],
-					// make line from start to end 
-					line = new Line( points[0], points[points.length - 1] ),
-					// find the largest distance from intermediate poitns to this line
-					maxDistance = 0,
-					maxDistanceIndex = 0,
-					p;
-				for( var i = 1; i <= points.length - 2; i++ ) {
-					var distance = line.distanceToPoint( points[ i ] );
-					if( distance > maxDistance ) {
-						maxDistance = distance;
-						maxDistanceIndex = i;
-					}
-				}
-				// check if the max distance is greater than our tollerance allows 
-				if ( maxDistance >= tolerance ) {
-					p = points[maxDistanceIndex];
-					line.distanceToPoint( p, true );
-					// include this point in the output 
-					returnPoints = returnPoints.concat( douglasPeucker( points.slice( 0, maxDistanceIndex + 1 ), tolerance ) );
-					// returnPoints.push( points[maxDistanceIndex] );
-					returnPoints = returnPoints.concat( douglasPeucker( points.slice( maxDistanceIndex, points.length ), tolerance ) );
-				} else {
-					// ditching this point
-					p = points[maxDistanceIndex];
-					line.distanceToPoint( p, true );
-					returnPoints = [points[0]];
-				}
-				return returnPoints;
-			};
-			var arr = douglasPeucker( points, tolerance );
-			// always have to push the very last point on so it doesn't get left off
-			arr.push( points[points.length - 1 ] );
-			return arr;
 		};
+		var Line = function( p1, p2 ) {
+			this.p1 = p1;
+			this.p2 = p2;
+			
+			this.distanceToPoint = function( point ) {
+				// slope
+				var m = ( this.p2.y - this.p1.y ) / ( this.p2.x - this.p1.x ),
+					// y offset
+					b = this.p1.y - ( m * this.p1.x ),
+					d = [];
+				// distance to the linear equation
+				d.push( Math.abs( point.y - ( m * point.x ) - b ) / Math.sqrt( Math.pow( m, 2 ) + 1 ) );
+				// distance to p1
+				d.push( Math.sqrt( Math.pow( ( point.x - this.p1.x ), 2 ) + Math.pow( ( point.y - this.p1.y ), 2 ) ) );
+				// distance to p2
+				d.push( Math.sqrt( Math.pow( ( point.x - this.p2.x ), 2 ) + Math.pow( ( point.y - this.p2.y ), 2 ) ) );
+				// return the smallest distance
+				return d.sort( function( a, b ) {
+					return ( a - b ); //causes an array to be sorted numerically and ascending
+				} )[0];
+			};
+		};
+		
+		var douglasPeucker = function( points, tolerance ) {
+			if ( points.length <= 2 ) {
+				return [points[0]];
+			}
+			var returnPoints = [],
+				// make line from start to end 
+				line = new Line( points[0], points[points.length - 1] ),
+				// find the largest distance from intermediate poitns to this line
+				maxDistance = 0,
+				maxDistanceIndex = 0,
+				p;
+			for( var i = 1; i <= points.length - 2; i++ ) {
+				var distance = line.distanceToPoint( points[ i ] );
+				if( distance > maxDistance ) {
+					maxDistance = distance;
+					maxDistanceIndex = i;
+				}
+			}
+			// check if the max distance is greater than our tollerance allows 
+			if ( maxDistance >= tolerance ) {
+				p = points[maxDistanceIndex];
+				line.distanceToPoint( p, true );
+				// include this point in the output 
+				returnPoints = returnPoints.concat( douglasPeucker( points.slice( 0, maxDistanceIndex + 1 ), tolerance ) );
+				// returnPoints.push( points[maxDistanceIndex] );
+				returnPoints = returnPoints.concat( douglasPeucker( points.slice( maxDistanceIndex, points.length ), tolerance ) );
+			} else {
+				// ditching this point
+				p = points[maxDistanceIndex];
+				line.distanceToPoint( p, true );
+				returnPoints = [points[0]];
+			}
+			return returnPoints;
+		};
+		var arr = douglasPeucker( points, tolerance );
+		// always have to push the very last point on so it doesn't get left off
+		arr.push( points[points.length - 1 ] );
+		return arr;
+	};
 					
 	</script>
 	

@@ -1047,7 +1047,7 @@ var focusTweet = function(queue){
 	    requestAnimationFrame(function(){
 		    d3.select('#twitterWrapper')
 		    	.transition()
-		    	.duration(500)
+		    	.duration(400)
 		    	.ease("cubic-in-out")
 		    	.style('margin-top',(20-h)+'px');
 	    });
