@@ -17,7 +17,7 @@ TODO
 - aggregate tweets
 - preloader
 - image feed
-
+- play button
 
 */
 
@@ -1112,6 +1112,25 @@ var initMapTimeline = function(){
 	    daySkip = true;
 	}
 
+	d3.select('#mapTimeline div.bar svg')
+		.append('line')
+		.classed('covered',true)
+		.attr('x1',5)
+		.attr('y1',h/2)
+		.attr('x2',5)
+		.attr('y2',h/2)
+		.attr('stroke','rgba(255,255,255,1)')
+
+	d3.select('#mapTimeline div.bar svg')
+		.append('line')
+		.classed('uncovered',true)
+		.attr('x1',5)
+		.attr('y1',h/2)
+		.attr('x2',w-5)
+		.attr('y2',h/2)
+		.attr('stroke','rgba(255,255,255,0.5)')
+	}
+
 	var previousCounter;
 
 	d3.select('#mapTimeline div.bar svg').selectAll('circle')
@@ -1163,33 +1182,12 @@ var initMapTimeline = function(){
 			var d = new Date();
 			var offset = d.getTimezoneOffset() + 2;
 			d.setTime(startTime * 1000 + (offset * 60 * 1000));
-			console.log(Math.floor((data.getTime()-d.getTime())/(1000*60*60*24)));
+			console.log(Math.ceil((data.getTime()-d.getTime())/(1000*60*60*24)));
 			// var d1 = new Date('August 17, 2014');
 			// var d2 = new Date('September 4, 2014');
 			// var r = map(d.getTime(),d1.getTime(),d2.getTime(),0,1);
 
-
-
 		})
-
-	d3.select('#mapTimeline div.bar svg')
-		.append('line')
-		.classed('covered',true)
-		.attr('x1',5)
-		.attr('y1',h/2)
-		.attr('x2',5)
-		.attr('y2',h/2)
-		.attr('stroke','rgba(255,255,255,1)')
-
-	d3.select('#mapTimeline div.bar svg')
-		.append('line')
-		.classed('uncovered',true)
-		.attr('x1',5)
-		.attr('y1',h/2)
-		.attr('x2',w-10)
-		.attr('y2',h/2)
-		.attr('stroke','rgba(255,255,255,0.5)')
-	}
 			
 }
 
@@ -1233,7 +1231,7 @@ var updateMapTimeline = function(d){
 		d3.select('#mapTimeline div.bar svg line.uncovered')
 			.attr('x1',5+(w-10)*r)
 			.attr('y1',h/2)
-			.attr('x2',w-10)
+			.attr('x2',w-5)
 			.attr('y2',h/2)
 
 		d3.select('#mapTimeline div.bar svg').selectAll('circle')
