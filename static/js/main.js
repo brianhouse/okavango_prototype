@@ -22,6 +22,7 @@ TODO
 - add links to twitter feed
 - max twitter feed height
 - about close button
+- scroll bar twitter feed
 
 */
 
@@ -876,7 +877,7 @@ var togglePanel = function(node, mapClick, i){
 
 }
 
-var toggleTwitterPanel = function(){
+var toggleTwitterPanel = function(callback){
 
 	d3.selectAll('#fullPanelWrapper div.page')
 		.style('position','absolute')
@@ -919,6 +920,8 @@ var toggleTwitterPanel = function(){
 		d3.select('#headerWrapper').style('position','fixed');
 
 		currentPage = 'Twitter';
+		if(callback) requestAnimationFrame(function(){callback});
+
 	} else {
 		var w = d3.select('#fullPanelWrapper').style('width');
 		w = +w.substring(0,w.length-2);
@@ -1014,7 +1017,7 @@ var initFeed = function(json){
     			.style('margin-top',function(){
     				var h = d3.select(this).style('margin-top')
     				h = parseFloat(h.substring(0,h.length-2));
-    				h = h + d3.event.wheelDeltaY/2.5;
+    				h = h + d3.event.wheelDeltaY/2;
     				h = Math.min(0,h);	// fix max scroll
     				return h + 'px';
     			})
@@ -1040,12 +1043,14 @@ var focusTweet = function(queue){
     if(tweetFound){
     	console.log('focusing tweet: ' + queue.marker.feature.properties.tweet.text);
     	clearTimeout(closeFeedTimer);
-    	if(currentPage != 'Twitter') toggleTwitterPanel();
-	    d3.select('#twitterWrapper')
-	    	.transition()
-	    	.duration(500)
-	    	.ease("cubic-in-out")
-	    	.style('margin-top',(20-h)+'px');
+    	if(currentPage != 'Twitter') toggleTwitterPanel(function(){
+    		d3.select('#twitterWrapper')
+		    	.transition()
+		    	.duration(500)
+		    	.ease("cubic-in-out")
+		    	.style('margin-top',(20-h)+'px');
+    	});
+	    
     	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) closeFeedTimer = setTimeout(toggleTwitterPanel,10000);
     }
 
