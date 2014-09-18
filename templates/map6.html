@@ -1073,7 +1073,7 @@
                 var w = d3.select('body').node().clientWidth;
                 var h = d3.select('body').node().clientHeight;
                 while (tweetsQueue[tweetCounter].time/1000 - 300 < startTime) {
-                    if(!daySkip) focusTweet(tweetsQueue[tweetCounter]);
+                    if(!daySkip && (!tweetsQueue[tweetCounter+1]||tweetsQueue[tweetCounter+1].time-tweetsQueue[tweetCounter].time>100)) focusTweet(tweetsQueue[tweetCounter]);
                     tweetCounter ++;
                 } 
             }
