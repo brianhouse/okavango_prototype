@@ -10,6 +10,14 @@ TODO
 - twitter feed max scroll
 - bad request ambit and sighting
 
+- beacons travel after window unfocus
+- css beacons
+- disable scrollbar
+- style skip intro button
+- aggregate tweets
+
+
+
 */
 
 
@@ -1056,6 +1064,53 @@ var initMapTimeline = function(){
 	d3.select('#mapTimeline div.bar')
 		.append('svg')
 
+	var skipBack = function() {
+	    alert("back")
+	    var oneBack = startTime - (24 * 60 * 60);
+	    var morning = (oneBack - (oneBack % (24 * 60 * 60))) + (6 * 60 * 60);
+	    startTime = morning;
+
+	    console.log("ROLLBACK TIME ---------------- " + startTime);
+	    console.log("ROLLBACK TIME ---------------- " + new Date(startTime * 1000));
+	    console.log("OLD Q COUNTER:" + sightingCounter)
+	    
+
+	    //move back sightings queue
+	    while(sightingsQueue[sightingCounter].time > startTime && sightingCounter > 1) {
+	        sightingCounter --;
+	    }
+
+	    //move back paths queue;
+	    for (var i = 0; i < names.length; i++) {
+	        var n = names[i];
+
+	        while(pathQueues[n][counters[n]].time > startTime && counters[n] > 1) {
+	            counters[n] --;
+	        }
+
+	        //Reposition markers
+
+	        var q = pathQueues[n][counters[n]]
+	        if (i == 1) {
+	                        targetLatLon[0] = q.latLon[0];
+	                        targetLatLon[1] = q.latLon[1];
+	                    }
+	    }
+
+	    console.log("NEW Q COUNTER:" + sightingCounter)
+	    daySkip = true;
+	    
+	}
+
+	var skipForward = function() {
+	    var oneMore = startTime + (24 * 60 * 60);
+	    var morning = (oneMore - (oneMore % (24 * 60 * 60))) + (3 * 60 * 60);
+	    startTime = morning;
+	    console.log("START TIME ---------------- " + startTime);
+	    console.log("START TIME ---------------- " + new Date(startTime * 1000));
+	    daySkip = true;
+	}
+
 	var previousCounter;
 
 	d3.select('#mapTimeline div.bar svg').selectAll('circle')
@@ -1087,6 +1142,7 @@ var initMapTimeline = function(){
 		.style('cursor','pointer')
 		.on('mouseover',function(d,i){
 			d3.select(this).select('circle')
+				.classed('focus',true)
 				.transition()
 				.duration(150)
 				.attr('r',5)
@@ -1095,12 +1151,25 @@ var initMapTimeline = function(){
 		})
 		.on('mouseout',function(){
 			d3.select(this).select('circle')
+				.classed('focus',false)
 				.transition()
 				.duration(150)
 				.attr('r',2.5)
 			d3.select('#mapTimeline div.counter').text(previousCounter);
 		})
-		.on('click',function(){alert("still broken, I'm working on it.")})
+		.on('click',function(data,i){
+
+			var d = new Date();
+			var offset = d.getTimezoneOffset() + 2;
+			d.setTime(startTime * 1000 + (offset * 60 * 1000));
+			console.log(Math.floor((data.getTime()-d.getTime())/(1000*60*60*24)));
+			// var d1 = new Date('August 17, 2014');
+			// var d2 = new Date('September 4, 2014');
+			// var r = map(d.getTime(),d1.getTime(),d2.getTime(),0,1);
+
+
+
+		})
 
 	d3.select('#mapTimeline div.bar svg')
 		.append('line')
@@ -1127,19 +1196,29 @@ var updateMapTimeline = function(d){
 	if(isGraphReady){
 
 		var h = 27;
-		var w = window.innerWidth - (d3.select('#tweetsButton').node().clientWidth + window.innerWidth*0.463 + 100);
+		var w = d3.select('#mapTimeline div.bar svg').node().clientWidth;
 
 		function map(value, start1, stop1, start2, stop2) {
 		    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
 		}
 
-		var dd = new Date();
-	    var offset = dd.getTimezoneOffset();
-	    var sd = new Date((sightingsQueue[sightingCounter].time * 1000) + (offset * 60 * 1000) );
-	    var dom = d.getDate();
-	    var dispd = (d.getMonth() == 7 ? dom - 16:15 + dom)
-		d3.select('#mapTimeline div.counter')
-			.text("DAY " + dispd + " - " + (d.getHours()<10?'0':'') +d.getHours() + ':' + (d.getMinutes()<10?'0':'') +d.getMinutes());
+		var flag = false;
+		d3.select('#mapTimeline div.bar svg').selectAll('circle')
+			.each(function(){
+				if(d3.select(this).classed('focus')){
+					flag = true;
+					break;
+				}
+			})
+		if(!flag){
+			var dd = new Date();
+		    var offset = dd.getTimezoneOffset();
+		    var sd = new Date((sightingsQueue[sightingCounter].time * 1000) + (offset * 60 * 1000) );
+		    var dom = d.getDate();
+		    var dispd = (d.getMonth() == 7 ? dom - 16:15 + dom)
+			d3.select('#mapTimeline div.counter')
+				.text("DAY " + dispd + " - " + (d.getHours()<10?'0':'') +d.getHours() + ':' + (d.getMinutes()<10?'0':'') +d.getMinutes());
+		}
 
 		var d1 = new Date('August 17, 2014');
 		var d2 = new Date('September 4, 2014');
@@ -1166,6 +1245,4 @@ var updateMapTimeline = function(d){
 			.attr('fill','rgba(255,255,255,0.6)');
 
 	}
-
 }
-

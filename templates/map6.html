@@ -93,15 +93,6 @@
                         <h4 class="timeDisplay">A Live-data Expedition into the Okavango Delta</h4>
                     </div>
                 </div>
-                <div id="timeWrapper" class="transparent">
-                    <div id="time" class="transparent">
-                        <div class="timeDisplay"></div>
-                        <!-- <div class="prevDay">PREVIOUS DAY</div> -->
-                        <!-- <div class="skipDay">NEXT DAY</div> -->
-                        <!-- <div class="toggleAutoplay">PAUSE</div> -->
-                    </div>
-                </div>
-
             </div>
             <div id="fullPanelWrapper">
                 
@@ -343,7 +334,7 @@
 				<div id="map">
                 </div>
                 <div id="mapNav">
-                    <div id="mapTimeline"><div class="counter">DAY 1</div><div class="bar"></div><div class="pauseButton">II</div></div>
+                    <div id="mapTimeline"><div class="counter"></div><div class="bar"></div><div class="pauseButton">II</div></div>
                     <div id="tweetsButton">tweets</div>
                 </div>
 
@@ -372,6 +363,7 @@
         targetLatLon = [-19.08398, 22.37332];
 
         var isGraphReady = true;
+        var isAnimationPaused = false;
 		initLayout();
 
 		// create a map in the "map" div, set the view to a given place and zoom
@@ -987,72 +979,12 @@
 			counters[names[i]] = 1;
 		}
 
-        function skipBack() {
-            alert("back")
-            var oneBack = startTime - (24 * 60 * 60);
-            var morning = (oneBack - (oneBack % (24 * 60 * 60))) + (6 * 60 * 60);
-            startTime = morning;
-
-            console.log("ROLLBACK TIME ---------------- " + startTime);
-            console.log("ROLLBACK TIME ---------------- " + new Date(startTime * 1000));
-            console.log("OLD Q COUNTER:" + sightingCounter)
-            
-
-            //move back sightings queue
-            while(sightingsQueue[sightingCounter].time > startTime && sightingCounter > 1) {
-                sightingCounter --;
-            }
-
-            //move back paths queue;
-            for (var i = 0; i < names.length; i++) {
-                var n = names[i];
-
-                while(pathQueues[n][counters[n]].time > startTime && counters[n] > 1) {
-                    counters[n] --;
-                }
-
-                //Reposition markers
-
-                var q = pathQueues[n][counters[n]]
-                if (i == 1) {
-                                targetLatLon[0] = q.latLon[0];
-                                targetLatLon[1] = q.latLon[1];
-                            }
-            }
-
-
-
-            console.log("NEW Q COUNTER:" + sightingCounter)
-
-
-
-            daySkip = true;
-            
-        }
-
-        function skipForward() {
-            var oneMore = startTime + (24 * 60 * 60);
-            var morning = (oneMore - (oneMore % (24 * 60 * 60))) + (3 * 60 * 60);
-            startTime = morning;
-            console.log("START TIME ---------------- " + startTime);
-            console.log("START TIME ---------------- " + new Date(startTime * 1000));
-            daySkip = true;
-        }
-
-        //Man, this stuff is cool but not really working - it animates the team member icons along their GPS paths
 		function startAnimation() {
 
-   //          $( "div.prevDay" ).click(function() {
-   //              skipBack();
-   //          });
-
-			// $( "div.skipDay" ).click(function() {
-   //              skipForward();
-			// });
-
-   //          $( "div.toggleAutoplay" ).click(function() {
-   //            alert("TOGGLE AUTOPLAY!!!")
-   //          });
+            d3.select("#mapTimeline div.pauseButton")
+                .on('click',function(){
+                    isAnimationPaused = !isAnimationPaused;
+                })
 			
 			focusLatLon[0] = map.getCenter().lat;
 			focusLatLon[1] = map.getCenter().lng;
@@ -1096,6 +1028,7 @@
         //Logic for the time-based animation
 		function doAnimation() {
 
+            if(isAnimationPaused) return;
             if (sightingsQueue.length > 0 && pathQueues[names[0]].length > 0) {
 
 
