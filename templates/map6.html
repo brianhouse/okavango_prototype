@@ -1079,55 +1079,54 @@
             }
             
 
-			// //Paths
+			//Paths
 
-   //          var skip = 0;
-   //          var skipCount = 0;
+            var skip = 0;
+            var skipCount = 0;
 
-   //          for (var i = 0; i < names.length; i++) {
-   //              var n = names[i];
+            for (var i = 0; i < names.length; i++) {
+                var n = names[i];
 
-   //              while(startTime > pathQueues[n][counters[n]].time) {
-   //                  var c = counters[n];
-   //                  if (c <= pathQueues[n].length - 1) {
+                while(startTime > pathQueues[n][counters[n]].time) {
+                    var c = counters[n];
+                    if (c <= pathQueues[n].length - 1) {
                         
-   //                      var q = pathQueues[n][c];
-   //                      var lq = pathQueues[n][c - 1];
+                        var q = pathQueues[n][c];
+                        var lq = pathQueues[n][c - 1];
 
-   //                      if (startTime > q.time) {
+                        if (startTime > q.time) {
                             
-   //                          var point = [{
-   //                              "type":"Feature",
-   //                              "properties":{
-   //                                  "test":"yes"
-   //                              },
-   //                              "geometry":{
-   //                                  "type":"LineString",
-   //                                  "coordinates":[[lq.latLon[1], lq.latLon[0]], [q.latLon[1], q.latLon[0]]]
-   //                              }
-   //                          }]
+                            var point = [{
+                                "type":"Feature",
+                                "properties":{
+                                    "test":"yes"
+                                },
+                                "geometry":{
+                                    "type":"LineString",
+                                    "coordinates":[[lq.latLon[1], lq.latLon[0]], [q.latLon[1], q.latLon[0]]]
+                                }
+                            }]
                             
-   //                          permPaths[q.name].addData(point);
-   //                          // personMarkers[q.name].setLatLng(q.latLon);
-   //                          personMarkersTarget[q.name] = q.latLon;
-   //                          if (i == 1) {
-   //                              targetLatLon[0] = q.latLon[0];
-   //                              targetLatLon[1] = q.latLon[1];
-   //                          }//map.setView(q.latLon, map.getZoom());
-   //                          counters[n]++;
-   //                      } 
-   //                  }
-   //              }
+                            // permPaths[q.name].addData(point);
+                            personMarkersTarget[q.name] = q.latLon;
+                            if (i == 1) {
+                                targetLatLon[0] = q.latLon[0];
+                                targetLatLon[1] = q.latLon[1];
+                            }
+                            counters[n]++;
+                        } 
+                    }
+                }
 
-   //              if(startTime < pathQueues[n][counters[n]].time) {
+                if(startTime < pathQueues[n][counters[n]].time) {
 
-   //                   var c = counters[n];
-   //                   var q = pathQueues[n][c];
-   //                   var lq = pathQueues[n][c - 1];
-   //                   if (q.time - lq.time > 60 * 30 ) skipCount ++;
-   //              }
+                     var c = counters[n];
+                     var q = pathQueues[n][c];
+                     var lq = pathQueues[n][c - 1];
+                     if (q.time - lq.time > 60 * 30 ) skipCount ++;
+                }
 
-   //          }
+            }
 
             if (skipCount > names.length -2) skip = 50 * 30
 
