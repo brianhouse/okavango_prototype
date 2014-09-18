@@ -18,6 +18,7 @@ TODO
 - preloader
 - image feed
 - play button
+- timeline still loading
 
 */
 
@@ -906,11 +907,10 @@ var toggleTwitterPanel = function(){
 
 		d3.select('#fullPanelWrapper')
 			.style('display','block')
-			.style('right',(w*0.68) + 'px')
+			.style('right',(w*0.645) + 'px')
 			.transition()
 			.duration(200)
 			.ease("cubic-out")
-			.style('right',(w*0.645) + 'px')
 			.style('opacity',1)
 
 		d3.select('#headerWrapper').style('position','fixed');
@@ -925,7 +925,6 @@ var toggleTwitterPanel = function(){
 			.transition()
 			.duration(200)
 			.ease("cubic-in")
-			.style('right',(w*0.68) + 'px')
 			.style('opacity',0)
 			.each('end',function(){
 				d3.select(this).style('display','none');
