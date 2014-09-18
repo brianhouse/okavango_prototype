@@ -1029,13 +1029,27 @@
         //Logic for the time-based animation
 		function doAnimation() {
 
-            // frameCount ++;
-            // if(frameCount%30==0){
+            frameCount ++;
+            if(frameCount%30==0){
             //     d3.select('img.leaflet-marker-icon')
             //         .each(function(){
             //             d3.select(this)
             //         })
-            // }
+
+                var coord;
+                var l1 = geoLayer.getLayers().length;
+                for(var i = 0; i<5; i++){
+                    var personPath = geoLayer.getLayers()[i];
+                    var l2 = personPath.getLayers().length;
+                    for(var j = 0; j<l2; j++){
+                        coord = map.project(personPath.getLayers()[j].getLatLng());
+                        console.log(coord);
+                    }
+                }
+
+                console.log('     ');
+
+            }
 
 
             if(isAnimationPaused) return;
