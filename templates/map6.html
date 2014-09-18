@@ -96,10 +96,9 @@
                 <div id="timeWrapper" class="transparent">
                     <div id="time" class="transparent">
                         <div class="timeDisplay"></div>
-                        <div class="prevDay">PREVIOUS DAY</div>
-                        <div class="skipDay">NEXT DAY</div>
-
-                        <div class="toggleAutoplay">PAUSE</div>
+                        <!-- <div class="prevDay">PREVIOUS DAY</div> -->
+                        <!-- <div class="skipDay">NEXT DAY</div> -->
+                        <!-- <div class="toggleAutoplay">PAUSE</div> -->
                     </div>
                 </div>
 
@@ -1043,19 +1042,17 @@
         //Man, this stuff is cool but not really working - it animates the team member icons along their GPS paths
 		function startAnimation() {
 
-            $( "div.prevDay" ).click(function() {
-                skipBack();
-            });
+   //          $( "div.prevDay" ).click(function() {
+   //              skipBack();
+   //          });
 
-			$( "div.skipDay" ).click(function() {
-                skipForward();
-			});
+			// $( "div.skipDay" ).click(function() {
+   //              skipForward();
+			// });
 
-            $( "div.toggleAutoplay" ).click(function() {
-              alert("TOGGLE AUTOPLAY!!!")
-            });
-
-			console.log(map.getCenter());
+   //          $( "div.toggleAutoplay" ).click(function() {
+   //            alert("TOGGLE AUTOPLAY!!!")
+   //          });
 			
 			focusLatLon[0] = map.getCenter().lat;
 			focusLatLon[1] = map.getCenter().lng;

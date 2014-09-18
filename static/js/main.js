@@ -1056,64 +1056,69 @@ var initMapTimeline = function(){
 	d3.select('#mapTimeline div.bar')
 		.append('svg')
 
-		d3.select('#mapTimeline div.bar svg').selectAll('circle')
-			.data(function(){
-				var dates = [];
-				var d = new Date('August 17, 2014');
-				for(var i = 0; i<19; i++){
-					dates.push(d);
-					d = new Date(d.getTime() + (24*60*60*1000));
-				}
-				return dates;
-			})
-			.enter()
-			.append('g')
-			.attr('transform',function(d,i){ return 'translate(' + (5+(i/16)*(w-10)) + ',' + h/2 +')';})
-			.each(function(d,i){
-				d3.select(this)
-					.append('rect')
-					.attr('x',-w/16/2)
-					.attr('y',-h/2)
-					.attr('width',w/16)
-					.attr('height',h)
-					.attr('fill','rgba(0,0,0,0)')
-				d3.select(this)
-					.append('circle')
-					.attr('r',2.5)
-					.attr('fill','rgba(255,255,255,0.6)');
-			})
-			.style('cursor','pointer')
-			.on('mouseover',function(){
-				d3.select(this).select('circle')
-					.transition()
-					.duration(150)
-					.attr('r',5)
-			})
-			.on('mouseout',function(){
-				d3.select(this).select('circle')
-					.transition()
-					.duration(150)
-					.attr('r',2.5)
-			})
-			.on('click',function(){alert("still broken, I'm working on it.")})
+	var previousCounter;
 
-		d3.select('#mapTimeline div.bar svg')
-			.append('line')
-			.classed('covered',true)
-			.attr('x1',5)
-			.attr('y1',h/2)
-			.attr('x2',5)
-			.attr('y2',h/2)
-			.attr('stroke','rgba(255,255,255,1)')
+	d3.select('#mapTimeline div.bar svg').selectAll('circle')
+		.data(function(){
+			var dates = [];
+			var d = new Date('August 17, 2014');
+			for(var i = 0; i<18; i++){
+				dates.push(d);
+				d = new Date(d.getTime() + (24*60*60*1000));
+			}
+			return dates;
+		})
+		.enter()
+		.append('g')
+		.attr('transform',function(d,i){ return 'translate(' + (5+(i/16)*(w-10)) + ',' + h/2 +')';})
+		.each(function(d,i){
+			d3.select(this)
+				.append('rect')
+				.attr('x',-w/16/2)
+				.attr('y',-h/2)
+				.attr('width',w/16)
+				.attr('height',h)
+				.attr('fill','rgba(0,0,0,0)')
+			d3.select(this)
+				.append('circle')
+				.attr('r',2.5)
+				.attr('fill','rgba(255,255,255,0.6)');
+		})
+		.style('cursor','pointer')
+		.on('mouseover',function(d,i){
+			d3.select(this).select('circle')
+				.transition()
+				.duration(150)
+				.attr('r',5)
+			previousCounter = d3.select('#mapTimeline div.counter').text();
+			d3.select('#mapTimeline div.counter').text('GO TO DAY ' + (i+1));
+		})
+		.on('mouseout',function(){
+			d3.select(this).select('circle')
+				.transition()
+				.duration(150)
+				.attr('r',2.5)
+			d3.select('#mapTimeline div.counter').text(previousCounter);
+		})
+		.on('click',function(){alert("still broken, I'm working on it.")})
 
-		d3.select('#mapTimeline div.bar svg')
-			.append('line')
-			.classed('uncovered',true)
-			.attr('x1',5)
-			.attr('y1',h/2)
-			.attr('x2',w-5)
-			.attr('y2',h/2)
-			.attr('stroke','rgba(255,255,255,0.5)')
+	d3.select('#mapTimeline div.bar svg')
+		.append('line')
+		.classed('covered',true)
+		.attr('x1',5)
+		.attr('y1',h/2)
+		.attr('x2',5)
+		.attr('y2',h/2)
+		.attr('stroke','rgba(255,255,255,1)')
+
+	d3.select('#mapTimeline div.bar svg')
+		.append('line')
+		.classed('uncovered',true)
+		.attr('x1',5)
+		.attr('y1',h/2)
+		.attr('x2',w-10)
+		.attr('y2',h/2)
+		.attr('stroke','rgba(255,255,255,0.5)')
 	}
 			
 }
@@ -1149,7 +1154,7 @@ var updateMapTimeline = function(d){
 		d3.select('#mapTimeline div.bar svg line.uncovered')
 			.attr('x1',5+(w-10)*r)
 			.attr('y1',h/2)
-			.attr('x2',w-5)
+			.attr('x2',w-10)
 			.attr('y2',h/2)
 
 		d3.select('#mapTimeline div.bar svg').selectAll('circle')
