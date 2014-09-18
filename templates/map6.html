@@ -1031,23 +1031,32 @@
 
             frameCount ++;
             if(frameCount%30==0){
-            //     d3.select('img.leaflet-marker-icon')
-            //         .each(function(){
-            //             d3.select(this)
-            //         })
 
-                var coord;
+                var flag;
+                var boundaries = map.getBounds();
                 var l1 = geoLayer.getLayers().length;
-                for(var i = 0; i<5; i++){
+                for(var i = 0; i<l1; i++){
                     var personPath = geoLayer.getLayers()[i];
-                    var l2 = personPath.getLayers().length;
-                    for(var j = 0; j<l2; j++){
-                        coord = map.project(personPath.getLayers()[j].getLatLng());
-                        console.log(coord);
+                    if(personPath){
+                        var l2 = personPath.getLayers().length;
+                        for(var j = 0; j<l2; j++){
+                            console.log();
+                            var coords = personPath.getLayers()[j].getLatLngs();
+                            flag = false;
+                            for(var k = 0; k<2; k++){
+                                if(coords[k].lat <= boundaries.getNorthWest().lat && coords[k].lat >= boundaries.getSouthEast().lat){
+                                    if(coords[k].lng >= boundaries.getNorthWest().lng && coords[k].lng <= boundaries.getSouthEast().lng){
+                                        flag = true;
+                                        break;
+                                    }
+
+                                }
+                            }
+                            d3.select(personPath.getLayers()[j]._container)
+                                .style('display',flag?'inline','none')
+                        }
                     }
                 }
-
-                console.log('     ');
 
             }
 
