@@ -21,6 +21,7 @@ TODO
 - timeline still loading
 - add links to twitter feed
 - max twitter feed height
+- about close button
 
 */
 
