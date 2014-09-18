@@ -748,7 +748,7 @@ ul {
 
 #credits a img{
 	height:40px;
-	opacity: 0.5;
+	opacity: 0.7;
 }
 
 
@@ -888,5 +888,11 @@ div.leaflet-control-attribution.leaflet-control a{
 	font-size:14px;
 	width:auto;
 	padding:4px;
-	height:20px;
+	height:14px !important;
 }
+
+	.person-marker p{
+		text-transform: uppercase;
+		letter-spacing: 0;
+		font-size: 11px;
+	}
