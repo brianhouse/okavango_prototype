@@ -1065,10 +1065,10 @@ var initMapTimeline = function(){
 	d3.select('#mapTimeline div.bar')
 		.append('svg')
 
-	var skipBack = function() {
-	    alert("back")
+
+	var skipBack = function(sameDay) {
 	    var oneBack = startTime - (24 * 60 * 60);
-	    var morning = (oneBack - (oneBack % (24 * 60 * 60))) + (6 * 60 * 60);
+	    var morning = (oneBack - (oneBack % (24 * 60 * 60))*(sameDay?-1:1)) + (6 * 60 * 60);
 	    startTime = morning;
 
 	    console.log("ROLLBACK TIME ---------------- " + startTime);
@@ -1182,9 +1182,13 @@ var initMapTimeline = function(){
 			var offset = d.getTimezoneOffset() + 2;
 			d.setTime(startTime * 1000 + (offset * 60 * 1000));
 			var len = Math.ceil((data.getTime()-d.getTime())/(1000*60*60*24));
-			for(var i = 0; i<Math.abs(len<1?len-1:len) ; i++){
-				if(len<1) skipBack();
-				else skipForward();
+			if(len == 0){
+				skipBack(true);
+			} else {
+				for(var i=0; i<Math.abs(len); i++){
+					if(len<1) skipBack(false);
+					else skipForward();
+				}
 			}
 		})
 			
