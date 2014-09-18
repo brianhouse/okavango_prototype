@@ -920,7 +920,6 @@ var toggleTwitterPanel = function(callback){
 		d3.select('#headerWrapper').style('position','fixed');
 
 		currentPage = 'Twitter';
-		if(callback) requestAnimationFrame(function(){callback});
 
 	} else {
 		var w = d3.select('#fullPanelWrapper').style('width');
@@ -945,6 +944,7 @@ var toggleTwitterPanel = function(callback){
 			.style('opacity',1)
 	}
 
+	if(callback) requestAnimationFrame(function(){callback});
 	clearTimeout(closeFeedTimer);
 }
 
@@ -1044,6 +1044,7 @@ var focusTweet = function(queue){
     	console.log('focusing tweet: ' + queue.marker.feature.properties.tweet.text);
     	clearTimeout(closeFeedTimer);
     	if(currentPage != 'Twitter') toggleTwitterPanel(function(){
+    		console.log('aga')
     		d3.select('#twitterWrapper')
 		    	.transition()
 		    	.duration(500)
