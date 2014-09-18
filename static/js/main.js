@@ -877,7 +877,7 @@ var togglePanel = function(node, mapClick, i){
 
 }
 
-var toggleTwitterPanel = function(callback){
+var toggleTwitterPanel = function(){
 
 	d3.selectAll('#fullPanelWrapper div.page')
 		.style('position','absolute')
@@ -920,7 +920,6 @@ var toggleTwitterPanel = function(callback){
 		d3.select('#headerWrapper').style('position','fixed');
 
 		currentPage = 'Twitter';
-
 	} else {
 		var w = d3.select('#fullPanelWrapper').style('width');
 		w = +w.substring(0,w.length-2);
@@ -944,7 +943,6 @@ var toggleTwitterPanel = function(callback){
 			.style('opacity',1)
 	}
 
-	if(callback) requestAnimationFrame(function(){callback});
 	clearTimeout(closeFeedTimer);
 }
 
@@ -1043,16 +1041,15 @@ var focusTweet = function(queue){
     if(tweetFound){
     	console.log('focusing tweet: ' + queue.marker.feature.properties.tweet.text);
     	clearTimeout(closeFeedTimer);
-    	if(currentPage != 'Twitter') toggleTwitterPanel(function(){
-    		console.log('aga')
-    		d3.select('#twitterWrapper')
+    	if(currentPage != 'Twitter') toggleTwitterPanel();
+    	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) closeFeedTimer = setTimeout(toggleTwitterPanel,10000);
+	    requestAnimationFrame(function(){
+		    d3.select('#twitterWrapper')
 		    	.transition()
 		    	.duration(500)
 		    	.ease("cubic-in-out")
 		    	.style('margin-top',(20-h)+'px');
-    	});
-	    
-    	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) closeFeedTimer = setTimeout(toggleTwitterPanel,10000);
+	    });
     }
 
 }
