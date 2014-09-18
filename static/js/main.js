@@ -984,6 +984,7 @@ var initFeed = function(json){
         		.attr('href','http://www.twitter.com')
 
         	var t = d.date;
+        	t.setTime(t.getTime() + ((new Date().getTimezoneOffset() + 2) * 60 * 60 * 1000))
         	t = ((parseInt(t.getDate())+1) + ' ' + m_names[t.getMonth()] + ' - ' + ((t.getHours()+'').length==1?'0':'') + t.getHours() + ':'+ ((t.getMinutes()+'').length==1?'0':'') +t.getMinutes());
         	d3.select(this).select('p.meta')
         		.html(t + '<span></span>' + d.username);
