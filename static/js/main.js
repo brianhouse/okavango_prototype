@@ -1178,15 +1178,14 @@ var initMapTimeline = function(){
 			d3.select('#mapTimeline div.counter').text(previousCounter);
 		})
 		.on('click',function(data,i){
-
 			var d = new Date();
 			var offset = d.getTimezoneOffset() + 2;
 			d.setTime(startTime * 1000 + (offset * 60 * 1000));
-			console.log(Math.ceil((data.getTime()-d.getTime())/(1000*60*60*24)));
-			// var d1 = new Date('August 17, 2014');
-			// var d2 = new Date('September 4, 2014');
-			// var r = map(d.getTime(),d1.getTime(),d2.getTime(),0,1);
-
+			var len = Math.ceil((data.getTime()-d.getTime())/(1000*60*60*24));
+			for(var i = 0; i<Math.abs(len<1?len-1:len) ; i++){
+				if(len<1) skipBack();
+				else skipForward();
+			}
 		})
 			
 }
