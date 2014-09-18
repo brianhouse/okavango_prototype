@@ -19,6 +19,8 @@ TODO
 - image feed
 - play button
 - timeline still loading
+- add links to twitter feed
+- max twitter feed height
 
 */
 
@@ -921,7 +923,6 @@ var toggleTwitterPanel = function(){
 		w = +w.substring(0,w.length-2);
 
 		d3.select('#fullPanelWrapper')
-			.style('right',(w*0.645) + 'px')
 			.transition()
 			.duration(200)
 			.ease("cubic-in")
