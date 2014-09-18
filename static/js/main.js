@@ -15,7 +15,8 @@ TODO
 - disable scrollbar
 - style skip intro button
 - aggregate tweets
-
+- preloader
+- image feed
 
 
 */
@@ -1207,7 +1208,6 @@ var updateMapTimeline = function(d){
 			.each(function(){
 				if(d3.select(this).classed('focus')){
 					flag = true;
-					break;
 				}
 			})
 		if(!flag){
