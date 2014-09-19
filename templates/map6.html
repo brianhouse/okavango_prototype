@@ -1029,39 +1029,10 @@
         //Logic for the time-based animation
 		function doAnimation() {
 
-            frameCount ++;
-            if(frameCount%30==0){
-
-                var flag;
-                var boundaries = map.getBounds();
-                var l1 = geoLayer.getLayers().length;
-                for(var i = 0; i<l1; i++){
-                    var personPath = geoLayer.getLayers()[i];
-                    if(personPath){
-                        var l2 = personPath.getLayers().length;
-                        for(var j = 0; j<l2; j++){
-                            console.log();
-                            var coords = personPath.getLayers()[j].getLatLngs();
-                            flag = false;
-                            for(var k = 0; k<2; k++){
-                                if(coords[k].lat <= boundaries.getNorthWest().lat && coords[k].lat >= boundaries.getSouthEast().lat){
-                                    if(coords[k].lng >= boundaries.getNorthWest().lng && coords[k].lng <= boundaries.getSouthEast().lng){
-                                        flag = true;
-                                        break;
-                                    }
-
-                                }
-                            }
-                            d3.select(personPath.getLayers()[j]._container)
-                                .style('display',flag?'inline':'none')
-                        }
-                    }
-                }
-
-            }
-
-
             if(isAnimationPaused) return;
+            frameCount ++;
+            cullMarkers();
+
             if (sightingsQueue.length > 0 && pathQueues[names[0]].length > 0) {
 
 
@@ -1196,6 +1167,73 @@
 			c++;
 			*/
         }
+
+        function cullMarkers(){
+            if(frameCount%30==0){
+                var flag;
+                var boundaries = map.getBounds();
+                var l1 = geoLayer.getLayers().length;
+                for(var i = 0; i<l1; i++){
+                    var personPath = geoLayer.getLayers()[i];
+                    if(personPath){
+                        var l2 = personPath.getLayers().length;
+                        for(var j = 0; j<l2; j++){
+                            console.log();
+                            var coords = personPath.getLayers()[j].getLatLngs();
+                            flag = false;
+                            for(var k = 0; k<2; k++){
+                                if(coords[k]){
+                                    if(coords[k].lat <= boundaries.getNorthWest().lat && coords[k].lat >= boundaries.getSouthEast().lat){
+                                        if(coords[k].lng >= boundaries.getNorthWest().lng && coords[k].lng <= boundaries.getSouthEast().lng){
+                                            flag = true;
+                                            break;
+                                        }
+
+                                    }
+                                }
+                            }
+                            d3.select(personPath.getLayers()[j]._container)
+                                .style('display',flag?'inline':'none')
+                        }
+                    }
+                }
+            } else if(frameCount%30 == 10){
+                var boundaries = map.getBounds();
+                var sightings = sightingsLayer.getLayers()[0]._featureGroup.getLayers();
+                var l1 = sightings.length;
+                var flag;
+                for(var i = 0; i<l1; i++){
+                    flag = false;
+                    var coords = sightings[i].getLatLng();
+                    if(coords.lat <= boundaries.getNorthWest().lat && coords.lat >= boundaries.getSouthEast().lat){
+                        if(coords.lng >= boundaries.getNorthWest().lng && coords.lng <= boundaries.getSouthEast().lng){
+                            flag = true;
+                        }
+                    }
+                    d3.select(sightings[i]._container)
+                        .style('display',flag?'none':'none')
+                }
+            } else if(frameCount%30 == 20){
+                var boundaries = map.getBounds();
+                var l1 = tweetMarkers.length;
+                var flag;
+                for(var i=0; i<l1; i++){
+                    flag = false;
+                    var coords = tweetMarkers[i].getLatLng();
+                    if(coords.lat <= boundaries.getNorthWest().lat && coords.lat >= boundaries.getSouthEast().lat){
+                        if(coords.lng >= boundaries.getNorthWest().lng && coords.lng <= boundaries.getSouthEast().lng){
+                            flag = true;
+                        }
+
+                    }
+                    d3.select(tweetMarkers[i]._icon)
+                        .style('display',flag?'inline':'none')
+                    d3.select(tweetMarkers[i]._shadow)
+                        .style('display',flag?'inline':'none')
+                }
+            }
+        }
+
 	}
 
 	function smoothIt(pointList) {
