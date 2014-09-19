@@ -1169,7 +1169,8 @@
         }
 
         function cullMarkers(){
-            if(frameCount%30==0){
+            if(frameCount%40==0){
+                console.log('cull paths');
                 var flag;
                 var boundaries = map.getBounds();
                 var l1 = geoLayer.getLayers().length;
@@ -1197,7 +1198,8 @@
                         }
                     }
                 }
-            } else if(frameCount%30 == 10){
+            } else if(frameCount%40 == 10){
+                console.log('cull sightings');
                 var boundaries = map.getBounds();
                 var sightings = sightingsLayer.getLayers()[0]._featureGroup.getLayers();
                 var l1 = sightings.length;
@@ -1211,9 +1213,10 @@
                         }
                     }
                     d3.select(sightings[i]._container)
-                        .style('display',flag?'none':'none')
+                        .style('display',flag?'inline':'none')
                 }
-            } else if(frameCount%30 == 20){
+            } else if(frameCount%40 == 20){
+                console.log('cull tweets');
                 var boundaries = map.getBounds();
                 var l1 = tweetMarkers.length;
                 var flag;
@@ -1229,6 +1232,26 @@
                     d3.select(tweetMarkers[i]._icon)
                         .style('display',flag?'inline':'none')
                     d3.select(tweetMarkers[i]._shadow)
+                        .style('display',flag?'inline':'none')
+                }
+            } else if(frameCount%40 == 30){
+                console.log('cull beacons');
+                var boundaries = map.getBounds();
+                var beacons = beaconLayer.getLayers();
+                var l1 = beacons.length;
+                var flag;
+                for(var i=0; i<l1; i++){
+                    flag = false;
+                    var coords = beacons[i].getLatLng();
+                    if(coords.lat <= boundaries.getNorthWest().lat && coords.lat >= boundaries.getSouthEast().lat){
+                        if(coords.lng >= boundaries.getNorthWest().lng && coords.lng <= boundaries.getSouthEast().lng){
+                            flag = true;
+                        }
+
+                    }
+                    d3.select(beacons[i]._icon)
+                        .style('display',flag?'inline':'none')
+                    d3.select(beacons[i]._shadow)
                         .style('display',flag?'inline':'none')
                 }
             }
