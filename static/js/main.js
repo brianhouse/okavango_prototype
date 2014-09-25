@@ -1117,6 +1117,22 @@ var initMapTimeline = function(){
 		    daySkip = true;
 		}
 
+		var moveMap = function() {
+			doAnimation();
+            focusLatLon[0] = targetLatLon[0];
+            focusLatLon[1] = targetLatLon[1];
+            map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
+            for (var i = 0; i < names.length; i++) {
+                var n = names[i];
+                if(personMarkers[n]){
+                    var personLatLon = personMarkers[n].getLatLng();
+                    personLatLon.lat = personMarkersTarget[n][0];
+                    personLatLon.lng = personMarkersTarget[n][1];
+                    personMarkers[n].setLatLng(personLatLon);
+                }
+            }
+		}
+
 		d3.select('#mapTimeline div.bar svg')
 			.append('line')
 			.classed('covered',true)
@@ -1206,6 +1222,7 @@ var initMapTimeline = function(){
 						for(var i=0; i<Math.abs(len); i++){
 							if(len<1) skipBack(false);
 							else skipForward();
+							moveMap();
 						}
 					}
 				}
