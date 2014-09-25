@@ -1246,7 +1246,7 @@ var updateMapTimeline = function(d){
 		}
 
 		var d1 = new Date('August 17, 2014');
-		var d2 = new Date('September 4, 2014');
+		var d2 = new Date('September 3, 2014');
 		var r1 = map(mapTimeline[0].getTime(),d1.getTime(),d2.getTime(),0,1);
 		var r2 = map(mapTimeline[1].getTime(),d1.getTime(),d2.getTime(),0,1);
 
@@ -1259,11 +1259,11 @@ var updateMapTimeline = function(d){
 		d3.select('#mapTimeline div.bar svg line.uncovered')
 			.attr('x1',5+(w-10)*r1)
 			.attr('y1',h/2)
-			.attr('x2',5+(w-10)*(r2+1))
+			.attr('x2',5+(w-10)*r2)
 			.attr('y2',h/2)
 
 		d3.select('#mapTimeline div.bar svg line.loading')
-			.attr('x1',5+(w-10)*(r2+1))
+			.attr('x1',5+(w-10)*r2)
 			.attr('y1',h/2)
 			.attr('x2',w-5)
 			.attr('y2',h/2)
