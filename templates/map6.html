@@ -1075,7 +1075,6 @@
 		}
 
         var cullMarkers = function(){
-
             if(frameCount%40 == 10){
                 console.log('cull sightings');
                 var boundaries = map.getBounds();
@@ -1154,6 +1153,7 @@
 			setInterval(doAnimation,timeStep * 1000);
 
             var nextFrame = function(){
+                frameCount ++;
                 if(!isAnimationPaused)posMap();
                 cullMarkers();
                 requestAnimationFrame(nextFrame);
