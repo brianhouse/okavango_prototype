@@ -659,9 +659,12 @@
                 // does this feature have a property named popupContent?
                 if (feature.properties && feature.properties.t_utc) {
                     var d = new Date(feature.properties.t_utc * 1000);
-                    var aga = layer.bindPopup(feature.properties.tweet.text);                    
+                    layer.bindPopup(feature.properties.tweet.text);
+                    d3.select(layer._popup)
+                        .on('mouseover',function(){
+                            console.log(this);
+                        })
                 }
-                console.log(layer);
             }
 
             console.log("GETTING TWEETS!!!")
@@ -760,7 +763,6 @@
                         var scatterY = ((Math.random() * 2) - 1) * 0.0005;
                         latlng2 = L.latLng(latlng.lat + scatterY, latlng.lng + scatterX);
                         var marker = L.marker(latlng2, photoOptions);
-
 
                         //var marker = L.marker(latlng, photoOptions);
                         photoMarkers.push(marker);
