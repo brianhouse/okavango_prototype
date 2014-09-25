@@ -710,7 +710,7 @@
 
             photosQueue = [];
             revealedPhotos = [];
-            revealedPhotos = [];
+            revealedPhotoTimes = [];
 
             var photoIcon = L.icon({
                 iconUrl: '../static/img/quote.png',
@@ -741,7 +741,7 @@
                 // does this feature have a property named popupContent?
                 if (feature.properties && feature.properties.utc_t) {
                     var d = new Date(feature.properties.t_utc * 1000);
-                    layer.bindPopup('<img src="' + feature.properties.url + '" width=' + feature.properties.size[0] + ' height=' + feature.properties.size[1] + '>');
+                    layer.bindPopup('<img src="' + feature.properties.url + '" width=' + feature.properties.size[0] + ' height=' + feature.properties.size[1] + '>', {maxWidth:1000});
                 }
             }
 
@@ -759,7 +759,7 @@
                         photoMarkers.push(marker);
                         markers.push(marker);
                         photoCoords.push([latlng.lng, latlng.lat]);
-                        photosQueue.push({marker:marker, time:feature.properties.t_utc * 1000});
+                        photosQueue.push({marker:marker, time:feature.properties.utc_t * 1000});
                         return marker;
                     },
                     onEachFeature:onEachPhoto,
@@ -1070,6 +1070,7 @@
 		timeStep = 0.400;
         sightingCounter = 0;
 		tweetCounter = 0;
+        photoCounter = 0;
 
 		for (var i = 0; i < names.length; i++) {
 			counters[names[i]] = 1;
@@ -1273,7 +1274,36 @@
                 }
             }   
             revealedTweets = temp;     
-            revealedTweetTimes = tempt;       
+            revealedTweetTimes = tempt;   
+
+            //Photos
+
+            if(photosQueue.length>0){
+                while (photosQueue[photoCounter].time/1000 - 350 < startTime) {
+                    if(!daySkip && (!photosQueue[photoCounter+1]||photosQueue[photoCounter+1].time-photosQueue[photoCounter].time>100)){ 
+                        // focusTweet(tweetsQueue[tweetCounter]);
+                        photosQueue[photoCounter].marker.openPopup();
+                        revealedPhotos.push(photosQueue[photoCounter])
+                        revealedPhotoTimes.push(new Date().getTime());
+                    }
+                    photoCounter ++;
+                } 
+            }
+
+            temp = [];  
+            tempt = [];  
+            for (var i = 0; i < revealedPhotos.length; i++) {
+                var now = new Date();
+                var nms = now.getTime();
+                if (now - revealedPhotoTimes[i] > 10000) {
+                    revealedPhotos[i].marker.closePopup();
+                } else {
+                    temp.push(revealedPhotos[i]);
+                    tempt.push(revealedPhotoTimes[i]);
+                }
+            }   
+            revealedPhotos = temp;     
+            revealedPhotoTimes = tempt;     
 
 			//Paths
 
