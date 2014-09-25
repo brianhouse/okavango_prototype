@@ -995,7 +995,6 @@
                 var coords;
                 for(var k=0; k<len; k++){
                     coords = pathRevealed[n][k].latLon;
-                    console.log(k)
                     if(coords[k][0] <= b[0] && coords[k][0] >= b[1] && coords[k][1] >= b[2] && coords[k][1] <= b[3]){
                         break;
                     } else {
@@ -1007,7 +1006,6 @@
                         break;
                     }
                 }
-                console.log(pathRevealed[n].length);
             }
 
             if(frameCount%40 == 10){
@@ -1223,11 +1221,11 @@
                             
                             permPaths[q.name].addData(point);
                             personMarkersTarget[q.name] = q.latLon;
+                            pathRevealed[q.name].push(q);
                             if (i == 1) {
                                 targetLatLon[0] = q.latLon[0];
                                 targetLatLon[1] = q.latLon[1];
                             }
-                            pathRevealed[q.name].push(q);
                             counters[n]++;
                         } 
                     }
@@ -1252,30 +1250,6 @@
             }
             daySkip = false;
 
-			/*
-			for (var i = 0; i < permPaths.length; i++) {
-
-				var point = [{
-					"type":"Feature",
-					"properties":{
-						"test":"yes"
-					},
-					"geometry":{
-						"type":"LineString",
-						"coordinates":[permGeos[i][c - 1],permGeos[i][c]]
-					}
-				}]
-
-
-				permPaths[i].addData(point);
-				//console.log(personMarkers[i]);
-				personMarkers[i].setLatLng([permGeos[i][c][1], permGeos[i][c][0]]);
-			}
-			//console.log("**");
-			//console.log([permGeos[0][c][1], permGeos[0][c][0]]);
-			map.setView([permGeos[0][c][1], permGeos[0][c][0]], map.getZoom());
-			c++;
-			*/
         }
 
 	}
