@@ -994,8 +994,8 @@
                 var len = pathRevealed[n].length;
                 var coords;
                 for(var k=0; k<len; k++){
-                    coords = pathRevealed[n][k].latLon;
-                    if(coords[k][0] <= b[0] && coords[k][0] >= b[1] && coords[k][1] >= b[2] && coords[k][1] <= b[3]){
+                    coords = pathRevealed[n][k].getLatLngs();
+                    if(coords[1].lat <= b[0] && coords[1].lat >= b[1] && coords[1].lng >= b[2] && coords[1].lng <= b[3]){
                         break;
                     } else {
                         d3.select(pathRevealed[n][0]._container)
@@ -1221,7 +1221,7 @@
                             
                             permPaths[q.name].addData(point);
                             personMarkersTarget[q.name] = q.latLon;
-                            pathRevealed[q.name].push(q);
+                            pathRevealed[q.name].push(permPaths[q.name]);
                             if (i == 1) {
                                 targetLatLon[0] = q.latLon[0];
                                 targetLatLon[1] = q.latLon[1];
