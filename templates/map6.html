@@ -1222,7 +1222,7 @@
                             
                             permPaths[q.name].addData(point);
                             personMarkersTarget[q.name] = q.latLon;
-                            pathRevealed[q.name].push(permPaths[q.name]);
+                            pathRevealed[q.name].push(permPaths[q.name][permPaths[q.name].length-1]);
                             if (i == 1) {
                                 targetLatLon[0] = q.latLon[0];
                                 targetLatLon[1] = q.latLon[1];
