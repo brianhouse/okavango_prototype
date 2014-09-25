@@ -660,7 +660,10 @@
                 if (feature.properties && feature.properties.t_utc) {
                     var d = new Date(feature.properties.t_utc * 1000);
                     layer.bindPopup(feature.properties.tweet.text);
-                    console.log(layer.getPopup());                    
+                    d3.select(layer._popup)
+                        .on('mouseover',function(){
+                            console.log(this);
+                        })
                 }
             }
 
