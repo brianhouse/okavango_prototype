@@ -994,7 +994,7 @@
                 var len = pathRevealed[n].length;
                 var coords;
                 var flag = false;
-                for(var k=len-1; k>-1; k--){
+                for(var k=0; k<len; k++){
                     coords = pathRevealed[n][k].latLon;
                     flag = false;
                     if(coords[k]){
@@ -1006,10 +1006,13 @@
 
                         }
                     }
-                    if(!flag) {
+                    if(!flag){
                         d3.select(pathRevealed[n][k]._container)
                             .style('display','none')
                         pathRevealed[n].shift();
+                        len --;
+                        k --;
+                    else {
                         break;
                     }
                 }
