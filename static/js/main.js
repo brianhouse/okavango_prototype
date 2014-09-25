@@ -1252,3 +1252,9 @@ var updateMapTimeline = function(d){
 
 	}
 }
+
+var updateMapTimelineLoading = function(){
+	console.log('aga');
+	console.log(data);
+	console.log('aga');
+}
