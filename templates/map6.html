@@ -740,7 +740,7 @@
                 // does this feature have a property named popupContent?
                 if (feature.properties && feature.properties.utc_t) {
                     var d = new Date(feature.properties.t_utc * 1000);
-                    layer.bindPopup(feature.properties.url);
+                    layer.bindPopup('<img src="' + feature.properties.url + '" width=' + feature.properties.size[0] + ' height=' + feature.properties.size[1] + '>');
                 }
             }
 
