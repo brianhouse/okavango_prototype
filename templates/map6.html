@@ -995,17 +995,16 @@
                 var coords;
                 for(var k=0; k<len; k++){
                     coords = pathRevealed[n][k].latLon;
-                    if(coords[k]){
-                        if(coords[k][0] <= b[0] && coords[k][0] >= b[1] && coords[k][1] >= b[2] && coords[k][1] <= b[3]){
-                            break;
-                        } else {
-                            // d3.select(pathRevealed[n][k]._container)
-                            //     .style('display','none')
-                            // pathRevealed[n].shift();
-                            // len --;
-                            // k --;
-                            break;
-                        }
+                    console.log(k)
+                    if(coords[k][0] <= b[0] && coords[k][0] >= b[1] && coords[k][1] >= b[2] && coords[k][1] <= b[3]){
+                        break;
+                    } else {
+                        d3.select(pathRevealed[n][0]._container)
+                            .style('display','none')
+                        pathRevealed[n].shift();
+                        len --;
+                        k --;
+                        break;
                     }
                 }
                 console.log(pathRevealed[n].length);
