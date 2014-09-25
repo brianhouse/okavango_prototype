@@ -994,18 +994,24 @@
                 var len = pathRevealed[n].length;
                 var coords;
                 for(var k=0; k<len; k++){
-                    coords = pathRevealed[n][k].getLatLngs();
-                    if(coords[1].lat <= b[0] && coords[1].lat >= b[1] && coords[1].lng >= b[2] && coords[1].lng <= b[3]){
-                        break;
+                    if(pathRevealed[n][k].getLatLngs){
+                        coords = pathRevealed[n][k].getLatLngs();
+                        if(coords[1].lat <= b[0] && coords[1].lat >= b[1] && coords[1].lng >= b[2] && coords[1].lng <= b[3]){
+                            break;
+                        } else {
+                            d3.select(pathRevealed[n][0]._container)
+                                .style('display','none')
+                            pathRevealed[n].shift();
+                            len --;
+                            k --;
+                        }
                     } else {
-                        d3.select(pathRevealed[n][0]._container)
-                            .style('display','none')
                         pathRevealed[n].shift();
                         len --;
                         k --;
-                        break;
                     }
                 }
+                console.log(pathRevealed[n].length);
             }
 
             if(frameCount%40 == 10){
