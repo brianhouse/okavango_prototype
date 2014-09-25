@@ -659,9 +659,9 @@
                 // does this feature have a property named popupContent?
                 if (feature.properties && feature.properties.t_utc) {
                     var d = new Date(feature.properties.t_utc * 1000);
-                    var aga = layer.bindPopup(feature.properties.tweet.text);                    
+                    layer.bindPopup(feature.properties.tweet.text);
+                    console.log(layer.getPopup());                    
                 }
-                console.log(layer);
             }
 
             console.log("GETTING TWEETS!!!")
