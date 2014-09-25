@@ -1094,13 +1094,15 @@ var initMapTimeline = function(){
 		            counters[n] --;
 		        }
 
+
 		        //Reposition markers
 
 		        var q = pathQueues[n][counters[n]]
-		        if (i == 1) {
-		                        targetLatLon[0] = q.latLon[0];
-		                        targetLatLon[1] = q.latLon[1];
-		                    }
+		        if (i == 0) {
+                    targetLatLon[0] = q.latLon[0];
+                    targetLatLon[1] = q.latLon[1];
+                }
+		        personMarkersTarget[n] = q.latLon;
 		    }
 
 		    console.log("NEW Q COUNTER:" + sightingCounter)
@@ -1118,7 +1120,13 @@ var initMapTimeline = function(){
 		}
 
 		var moveMap = function() {
-			doAnimation();
+			for (var i = 0; i < names.length; i++) {
+                var n = names[i];
+                var personLatLon = personMarkers[n].getLatLng();
+                personLatLon.lat = personMarkersTarget[n][0];
+                personLatLon.lng = personMarkersTarget[n][1];
+                personMarkers[n].setLatLng(personLatLon);
+            }
             focusLatLon[0] = targetLatLon[0];
             focusLatLon[1] = targetLatLon[1];
             map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
