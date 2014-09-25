@@ -1237,7 +1237,7 @@ var initMapTimeline = function(){
 			
 }
 
-var updateMapTimeline = function(d){
+var updateMapTimeline = function(d, loadingTransition){
 	if(isGraphReady){
 
 		mapTimeline[0] = d;
@@ -1329,6 +1329,5 @@ var updateMapTimelineLoading = function(data){
 	var d = new Date();
 	var offset = d.getTimezoneOffset() + 2;
 	d.setTime(startTime * 1000 + (offset * 60 * 1000));
-    updateMapTimeline(d);
-	if(isAnimationPaused) updateMapTimeline();
+    updateMapTimeline(d,true);
 }

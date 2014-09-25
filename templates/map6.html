@@ -1214,8 +1214,10 @@
                                     }
                                 }
                             }
-                            d3.select(personPath.getLayers()[j]._container)
-                                .style('display',flag?'inline':'none')
+                            if(frameCount == 0){
+                                d3.select(personPath.getLayers()[j]._container)
+                                    .style('display',flag?'inline':'none')
+                                }
                         }
                     }
                 }
