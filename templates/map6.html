@@ -758,7 +758,7 @@
                         photoMarkers.push(marker);
                         markers.push(marker);
                         photoCoords.push([latlng.lng, latlng.lat]);
-                        photoQueue.push({marker:marker, time:feature.properties.t_utc * 1000});
+                        photosQueue.push({marker:marker, time:feature.properties.t_utc * 1000});
                         return marker;
                     },
                     onEachFeature:onEachPhoto,
