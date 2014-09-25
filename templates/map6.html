@@ -660,12 +660,16 @@
                 if (feature.properties && feature.properties.t_utc) {
                     var d = new Date(feature.properties.t_utc * 1000);
                     layer.bindPopup(feature.properties.tweet.text);
-                    console.log(layer);
-                    // d3.select(layer._popup)
-                    //     .style('cursor','pointer')
-                    //     .on('mouseover',function(){
-                    //         console.log(this);
-                    //     })
+
+                    var clicked = function(){
+                        console.log(this);
+                    }
+
+                    d3.select(layer._popup._wrapper)
+                        .style('cursor','pointer')
+                        .on('click',clicked)
+                        .select('div')
+                        .on('click',clicked)
                 }
             }
 
