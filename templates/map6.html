@@ -1251,8 +1251,8 @@
                 var len = pathRevealed[n].length;
                 var coords;
                 var flag = false;
-                for(var i=len-1; i>-1; i--){
-                    coords = pathRevealed[n][i].latLon;
+                for(var k=len-1; k>-1; k--){
+                    coords = pathRevealed[n][k].latLon;
                     flag = false;
                     for(var k = 0; k<2; k++){
                         if(coords[k]){
@@ -1266,9 +1266,9 @@
                         }
                     }
                     if(!flag) {
-                        d3.select(pathRevealed[n][i]._container)
+                        d3.select(pathRevealed[n][k]._container)
                             .style('display','none')
-                        // pathRevealed[n].shift();
+                        pathRevealed[n].shift();
                         break;
                     }
                 }
