@@ -755,7 +755,14 @@
                         return (feature.properties.url.indexOf('james') > -1);
                     },
                     pointToLayer: function (feature, latlng) {
-                        var marker = L.marker(latlng, photoOptions);
+
+                        var scatterX = ((Math.random() * 2) - 1) * 0.0005;
+                        var scatterY = ((Math.random() * 2) - 1) * 0.0005;
+                        latlng2 = L.latLng(latlng.lat + scatterY, latlng.lng + scatterX);
+                        var marker = L.circleMarker(latlng2, photoOptions);
+
+
+                        //var marker = L.marker(latlng, photoOptions);
                         photoMarkers.push(marker);
                         markers.push(marker);
                         photoCoords.push([latlng.lng, latlng.lat]);
