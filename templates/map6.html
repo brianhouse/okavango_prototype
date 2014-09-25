@@ -1257,7 +1257,36 @@
                 }
             }   
             revealedTweets = temp;     
-            revealedTweetTimes = tempt;       
+            revealedTweetTimes = tempt;   
+
+            //Photos
+
+            if(photosQueue.length>0){
+                while (photosQueue[photoCounter].time/1000 - 350 < startTime) {
+                    if(!daySkip && (!photosQueue[photoCounter+1]||photosQueue[photoCounter+1].time-photosQueue[photoCounter].time>100)){ 
+                        // focusTweet(tweetsQueue[tweetCounter]);
+                        photosQueue[photoCounter].marker.openPopup();
+                        revealedPhotos.push(photosQueue[photoCounter])
+                        revealedPhotoTimes.push(new Date().getTime());
+                    }
+                    photoCounter ++;
+                } 
+            }
+
+            temp = [];  
+            tempt = [];  
+            for (var i = 0; i < revealedPhotos.length; i++) {
+                var now = new Date();
+                var nms = now.getTime();
+                if (now - revealedPhotoTimes[i] > 3000) {
+                    revealedPhotos[i].marker.closePopup();
+                } else {
+                    temp.push(revealedPhotos[i]);
+                    tempt.push(revealedPhotoTimes[i]);
+                }
+            }   
+            revealedPhotos = temp;     
+            revealedPhotoTimes = tempt;     
 
 			//Paths
 
