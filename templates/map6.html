@@ -994,8 +994,8 @@
                 var len = pathRevealed[n].length;
                 var coords;
                 for(var k=0; k<len; k++){
-                    console.log(pathRevealed[n][0]);
-                    coords = pathRevealed[n][0].getLatLngs();
+                    console.log(pathRevealed[n].getLayers()[0]);
+                    coords = pathRevealed[n].getLayers()[0].getLatLngs();
                     if(coords[1].lat <= b[0] && coords[1].lat >= b[1] && coords[1].lng >= b[2] && coords[1].lng <= b[3]){
                         break;
                     } else {
