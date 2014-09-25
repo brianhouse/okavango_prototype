@@ -1078,8 +1078,6 @@
                     }
                 }
             }
-
-            requestAnimationFrame(cullMarkers);
         }
 
 		function startAnimation() {
@@ -1097,33 +1095,33 @@
 			
 			setInterval(doAnimation,timeStep * 1000);
 
-            posMap();
-            cullMarkers();
+            var nextFrame = function(){
+                if(!isAnimationPaused)posMap();
+                cullMarkers();
+                requestAnimationFrame(nextFrame);
+            }
+            nextFrame();
 
 		}
 
         var posMap = function(){
-            if(!isAnimationPaused){
-                // centers map on the current target position
+            // centers map on the current target position
 
-                var sp = daySkip ? 0.4:0.1;
-                focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * sp;
-                focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * sp;
-                map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
+            var sp = daySkip ? 0.4:0.1;
+            focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * sp;
+            focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * sp;
+            map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
 
-                // animates explorers' markers towards their current position on the map
-                for (var i = 0; i < names.length; i++) {
-                    var n = names[i];
-                    if(personMarkers[n]){
-                        var personLatLon = personMarkers[n].getLatLng();
-                        personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * sp * 2;
-                        personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * sp * 2;
-                        personMarkers[n].setLatLng(personLatLon);
-                    }
+            // animates explorers' markers towards their current position on the map
+            for (var i = 0; i < names.length; i++) {
+                var n = names[i];
+                if(personMarkers[n]){
+                    var personLatLon = personMarkers[n].getLatLng();
+                    personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * sp * 2;
+                    personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * sp * 2;
+                    personMarkers[n].setLatLng(personLatLon);
                 }
             }
-
-            requestAnimationFrame(posMap);
         }
 
         //These are the various markers that have been revealed
