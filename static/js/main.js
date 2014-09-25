@@ -40,7 +40,7 @@ var loaderOffset = 0;
 var ambitJson = [];
 var sightingJson = [];
 var closeFeedTimer;
-var mapTimeline;
+var mapTimeline = [0,0];
 
 
 
@@ -1124,16 +1124,26 @@ var initMapTimeline = function(){
 		.attr('y1',h/2)
 		.attr('x2',5)
 		.attr('y2',h/2)
-		.attr('stroke','rgba(255,255,255,1)')
+		.attr('stroke','#FFB637')
 
 	d3.select('#mapTimeline div.bar svg')
 		.append('line')
 		.classed('uncovered',true)
 		.attr('x1',5)
 		.attr('y1',h/2)
+		.attr('x2',5)
+		.attr('y2',h/2)
+		.attr('stroke','rgba(255,255,255,1)')
+	}
+
+	d3.select('#mapTimeline div.bar svg')
+		.append('line')
+		.classed('loading',true)
+		.attr('x1',5)
+		.attr('y1',h/2)
 		.attr('x2',w-5)
 		.attr('y2',h/2)
-		.attr('stroke','rgba(255,255,255,0.5)')
+		.attr('stroke','rgba(255,255,255,0.45)')
 	}
 
 	var previousCounter;
@@ -1166,41 +1176,51 @@ var initMapTimeline = function(){
 		})
 		.style('cursor','pointer')
 		.on('mouseover',function(d,i){
-			d3.select(this).select('circle')
-				.classed('focus',true)
-				.transition()
-				.duration(150)
-				.attr('r',5)
-			previousCounter = d3.select('#mapTimeline div.counter').text();
-			d3.select('#mapTimeline div.counter').text('GO TO DAY ' + (i+1));
+			if(d3.select(this).classed('uncovered') || d3.select(this).classed('covered')){
+				d3.select(this).select('circle')
+					.classed('focus',true)
+					.transition()
+					.duration(150)
+					.attr('r',5)
+				previousCounter = d3.select('#mapTimeline div.counter').text();
+				d3.select('#mapTimeline div.counter').text('GO TO DAY ' + (i+1));
+			}
 		})
 		.on('mouseout',function(){
-			d3.select(this).select('circle')
-				.classed('focus',false)
-				.transition()
-				.duration(150)
-				.attr('r',2.5)
-			d3.select('#mapTimeline div.counter').text(previousCounter);
+			if(d3.select(this).classed('uncovered') || d3.select(this).classed('covered')){
+				d3.select(this).select('circle')
+					.classed('focus',false)
+					.transition()
+					.duration(150)
+					.attr('r',2.5)
+				d3.select('#mapTimeline div.counter').text(previousCounter);
+			}
 		})
 		.on('click',function(data,i){
-			var d = new Date();
-			var offset = d.getTimezoneOffset() + 2;
-			d.setTime(startTime * 1000 + (offset * 60 * 1000));
-			var len = Math.ceil((data.getTime()-d.getTime())/(1000*60*60*24));
-			if(len == 0){
-				skipBack(true);
-			} else {
-				for(var i=0; i<Math.abs(len); i++){
-					if(len<1) skipBack(false);
-					else skipForward();
+			if(d3.select(this).classed('uncovered') || d3.select(this).classed('covered')){
+				var d = new Date();
+				var offset = d.getTimezoneOffset() + 2;
+				d.setTime(startTime * 1000 + (offset * 60 * 1000));
+				var len = Math.ceil((data.getTime()-d.getTime())/(1000*60*60*24));
+				if(len == 0){
+					skipBack(true);
+				} else {
+					for(var i=0; i<Math.abs(len); i++){
+						if(len<1) skipBack(false);
+						else skipForward();
+					}
 				}
 			}
 		})
+
+		mapTimeline = [new Date('August 17, 2014'),new Date('August 17, 2014')];
 			
 }
 
 var updateMapTimeline = function(d){
 	if(isGraphReady){
+
+		mapTimeline[0] = d;
 
 		var h = 27;
 		var w = d3.select('#mapTimeline div.bar svg').node().clientWidth;
@@ -1220,41 +1240,67 @@ var updateMapTimeline = function(d){
 			var dd = new Date();
 		    var offset = dd.getTimezoneOffset();
 		    var sd = new Date((sightingsQueue[sightingCounter].time * 1000) + (offset * 60 * 1000) );
-		    var dom = d.getDate();
-		    var dispd = (d.getMonth() == 7 ? dom - 16:15 + dom)
+		    var dom = mapTimeline[0].getDate();
+		    var dispd = (mapTimeline[0].getMonth() == 7 ? dom - 16:15 + dom)
 			d3.select('#mapTimeline div.counter')
-				.text("DAY " + dispd + " - " + (d.getHours()<10?'0':'') +d.getHours() + ':' + (d.getMinutes()<10?'0':'') +d.getMinutes());
+				.text("DAY " + dispd + " - " + (mapTimeline[0].getHours()<10?'0':'') +mapTimeline[0].getHours() + ':' + (mapTimeline[0].getMinutes()<10?'0':'') +mapTimeline[0].getMinutes());
 		}
 
 		var d1 = new Date('August 17, 2014');
 		var d2 = new Date('September 4, 2014');
-		var r = map(d.getTime(),d1.getTime(),d2.getTime(),0,1);
+		var r1 = map(mapTimeline[0].getTime(),d1.getTime(),d2.getTime(),0,1);
+		var r2 = map(mapTimeline[1].getTime(),d1.getTime(),d2.getTime(),0,1);
 
 		d3.select('#mapTimeline div.bar svg line.covered')
 			.attr('x1',5)
 			.attr('y1',h/2)
-			.attr('x2',5+(w-10)*r)
+			.attr('x2',5+(w-10)*r1)
 			.attr('y2',h/2)
 
 		d3.select('#mapTimeline div.bar svg line.uncovered')
-			.attr('x1',5+(w-10)*r)
+			.attr('x1',5+(w-10)*r1)
+			.attr('y1',h/2)
+			.attr('x2',5+(w-10)*r2)
+			.attr('y2',h/2)
+
+		d3.select('#mapTimeline div.bar svg line.loading')
+			.attr('x1',5+(w-10)*r2)
 			.attr('y1',h/2)
 			.attr('x2',w-5)
 			.attr('y2',h/2)
 
 		d3.select('#mapTimeline div.bar svg').selectAll('circle')
-			.filter(function(d1){ return d1.getTime()<=d.getTime()})
-			.attr('fill','rgba(255,255,255,1)');
+			.filter(function(d1){ return d1.getTime()<=mapTimeline[0].getTime()})
+			.attr('fill','#FFB637')
+			.classed('covered',true)
+			.classed('uncovered',false)
+			.classed('loading',false)
+			.style('cursor','pointer');
 
 		d3.select('#mapTimeline div.bar svg').selectAll('circle')
-			.filter(function(d1){ return d1.getTime()>d.getTime()})
-			.attr('fill','rgba(255,255,255,0.6)');
+			.filter(function(d1){ return d1.getTime()>mapTimeline[0].getTime() && d1.getTime()<=mapTimeline[1].getTime()})
+			.attr('fill','rgba(255,255,255,1)')
+			.classed('covered',false)
+			.classed('uncovered',true)
+			.classed('loading',false)
+			.style('cursor','pointer');
+
+		d3.select('#mapTimeline div.bar svg').selectAll('circle')
+			.filter(function(d1){ return d1.getTime()>mapTimeline[1].getTime()})
+			.attr('fill','rgba(255,255,255,0.5)')
+			.classed('covered',false)
+			.classed('uncovered',false)
+			.classed('loading',true)
+			.style('cursor','auto');
 
 	}
 }
 
 var updateMapTimelineLoading = function(data){
-	console.log('aga');
-	console.log(data);
-	console.log('aga');
+	mapTimeline[1] = new Date(data.properties.t_utc*1000);
+	var d = new Date();
+	var offset = d.getTimezoneOffset() + 2;
+	d.setTime(startTime * 1000 + (offset * 60 * 1000));
+    updateMapTimeline(d);
+	if(isAnimationPaused) updateMapTimeline();
 }
