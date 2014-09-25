@@ -1252,7 +1252,7 @@
                 var coords;
                 var flag = false;
                 for(var i=len-1; i>-1; i--){
-                    coords = personPath.getLayers()[j].getLatLngs();
+                    coords = pathQueues[n][i].getLayers()[j].getLatLngs();
                     flag = false;
                     for(var k = 0; k<2; k++){
                         if(coords[k]){
