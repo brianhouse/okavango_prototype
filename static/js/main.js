@@ -1094,9 +1094,7 @@ var initMapTimeline = function(){
 		            counters[n] --;
 		        }
 
-
 		        //Reposition markers
-
 		        var q = pathQueues[n][counters[n]]
 		        if (i == 0) {
                     targetLatLon[0] = q.latLon[0];
@@ -1116,6 +1114,30 @@ var initMapTimeline = function(){
 		    startTime = morning;
 		    console.log("START TIME ---------------- " + startTime);
 		    console.log("START TIME ---------------- " + new Date(startTime * 1000));
+		    
+		    //move forward sightings queue
+		    while(sightingsQueue[sightingCounter].time < startTime) {
+		        sightingCounter ++;
+		    }
+
+		    //move forward paths queue;
+		    for (var i = 0; i < names.length; i++) {
+		        var n = names[i];
+
+		        while(pathQueues[n][counters[n]].time < startTime) {
+		            counters[n] ++;
+		        }
+
+		        //Reposition markers
+		        var q = pathQueues[n][counters[n]]
+		        if (i == 0) {
+                    targetLatLon[0] = q.latLon[0];
+                    targetLatLon[1] = q.latLon[1];
+                }
+		        personMarkersTarget[n] = q.latLon;
+		    }
+
+
 		    daySkip = true;
 		}
 
@@ -1184,7 +1206,6 @@ var initMapTimeline = function(){
 				var dates = [];
 				var d = new Date('August 17, 2014');
 				for(var i = 0; i<16; i++){
-					console.log(d);
 					dates.push(d);
 					d = new Date(d.getTime() + (24*60*60*1000));
 				}
@@ -1276,7 +1297,6 @@ var updateMapTimeline = function(d, loadingTransition){
 		if(!flag){
 			var dd = new Date();
 		    var offset = dd.getTimezoneOffset();
-		    var sd = new Date((sightingsQueue[sightingCounter].time * 1000) + (offset * 60 * 1000) );
 		    var dom = mapTimeline[0].getDate();
 		    var dispd = (mapTimeline[0].getMonth() == 7 ? dom - 16:15 + dom)
 			d3.select('#mapTimeline div.counter')

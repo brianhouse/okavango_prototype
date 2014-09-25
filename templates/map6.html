@@ -1075,7 +1075,6 @@
 		}
 
         var cullMarkers = function(){
-
             if(frameCount%40 == 10){
                 console.log('cull sightings');
                 var boundaries = map.getBounds();
@@ -1120,14 +1119,12 @@
                 var flag;
                 for(var i=0; i<l1; i++){
                     flag = false;
-                    if(coords.getLatLng){
-                        var coords = beacons[i].getLatLng();
+                    if(beacons[i].getLatLng){
                         var coords = beacons[i].getLatLng();
                         if(coords.lat <= boundaries.getNorthWest().lat && coords.lat >= boundaries.getSouthEast().lat){
                             if(coords.lng >= boundaries.getNorthWest().lng && coords.lng <= boundaries.getSouthEast().lng){
                                 flag = true;
                             }
-
                         }
                         d3.select(beacons[i]._icon)
                             .style('display',flag?'inline':'none')
@@ -1154,6 +1151,7 @@
 			setInterval(doAnimation,timeStep * 1000);
 
             var nextFrame = function(){
+                frameCount ++;
                 if(!isAnimationPaused)posMap();
                 cullMarkers();
                 requestAnimationFrame(nextFrame);
