@@ -985,28 +985,6 @@
 		}
 
         var cullMarkers = function(){
-            
-            // cull path
-            for (var i = 0; i < names.length; i++) {
-                var n = names[i];
-                var boundaries = map.getBounds();
-                var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
-                var len = pathRevealed[n].length;
-                var coords;
-                for(var k=0; k<len; k++){
-                    coords = pathRevealed[n][0].getLatLngs();
-                    if(coords[1].lat <= b[0] && coords[1].lat >= b[1] && coords[1].lng >= b[2] && coords[1].lng <= b[3]){
-                        break;
-                    } else {
-                        d3.select(pathRevealed[n][0]._container)
-                            .style('display','none')
-                        pathRevealed[n].shift();
-                        len --;
-                        k --;
-                    }
-                }
-                if(frameCount&30 == 0) console.log(pathRevealed[n].length);
-            }
 
             if(frameCount%40 == 10){
                 console.log('cull sightings');
@@ -1237,6 +1215,26 @@
                      var lq = pathQueues[n][c - 1];
                      if (q.time - lq.time > 60 * 30 ) skipCount ++;
                 }
+
+                // cull path
+                for (var i = 0; i < names.length; i++) {
+                var n = names[i];
+                var boundaries = map.getBounds();
+                var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
+                var len = pathRevealed[n].length;
+                var coords;
+                for(var k=0; k<len; k++){
+                    coords = pathRevealed[n][0].getLatLngs();
+                    if(coords[1].lat <= b[0] && coords[1].lat >= b[1] && coords[1].lng >= b[2] && coords[1].lng <= b[3]){
+                        break;
+                    } else {
+                        d3.select(pathRevealed[n][0]._container).remove()
+                        pathRevealed[n].shift();
+                        len --;
+                        k --;
+                    }
+                }
+            }
 
             }
 

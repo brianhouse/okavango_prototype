@@ -1131,6 +1131,15 @@ var initMapTimeline = function(){
                     personMarkers[n].setLatLng(personLatLon);
                 }
             }
+            for (var i = 0; i < names.length; i++) {
+                var n = names[i];
+                var len = pathRevealed[n].length;
+                while(pathRevealed[n].length>0)
+                    d3.select(pathRevealed[n][0]._container).remove()
+                    pathRevealed[n].shift();
+                }
+            }
+
 		}
 
 		d3.select('#mapTimeline div.bar svg')
@@ -1225,8 +1234,8 @@ var initMapTimeline = function(){
 							isAnimationPaused = false;
 							if(len<1) skipBack(false);
 							else skipForward();
-							moveMap();
 						}
+						moveMap();
 					}
 				}
 			})
