@@ -1465,10 +1465,15 @@
 		clearTimeout(function(){zoomIn(focusMarker)});
 	}
 
+
+    var weAreReady = false;
     function siteReady() {
-        loadBeacons();
-        loadTweets();
-        loadPhotos();
+        if (!weAreReady) {
+            loadBeacons();
+            loadTweets();
+            loadPhotos();
+            weAreReady = true;
+        }
     }
 
 	//loadBeacons();
