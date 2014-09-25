@@ -1134,7 +1134,6 @@ var initMapTimeline = function(){
 		.attr('x2',5)
 		.attr('y2',h/2)
 		.attr('stroke','rgba(255,255,255,1)')
-	}
 
 	d3.select('#mapTimeline div.bar svg')
 		.append('line')
@@ -1144,7 +1143,6 @@ var initMapTimeline = function(){
 		.attr('x2',w-5)
 		.attr('y2',h/2)
 		.attr('stroke','rgba(255,255,255,0.45)')
-	}
 
 	var previousCounter;
 
@@ -1213,8 +1211,8 @@ var initMapTimeline = function(){
 			}
 		})
 
-		mapTimeline[0] = new Date('August 17, 2014');
-		mapTimeline[1] = new Date('August 17, 2014');
+	mapTimeline[0] = new Date('August 17, 2014');
+	mapTimeline[1] = new Date('August 17, 2014');
 			
 }
 
