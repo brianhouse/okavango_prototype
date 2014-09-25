@@ -451,29 +451,39 @@
 		//Build some layers
 		var beaconLayer = new L.layerGroup().addTo(map);
         var tweetLayer = new L.layerGroup().addTo(map);
+        var photoLayer = new L.layerGroup().addTo(map);
 		var sightingsLayer = new L.layerGroup().addTo(map);
 		var geoLayer = new L.layerGroup().addTo(map);
 		var commentaryLayer = new L.layerGroup().addTo(map);
 
-        //NEEDED: tweetLayer, hydroLayer
+        //NEEDED: hydroLayer
 
         //Are the various data feeds loaded?
 		var sightingsLoaded = false;
 		var pathsLoaded = false;
 		var beaconsLoaded = false;
         var tweetsLoaded = false;
+        var photosLoaded = false;
 
 		var lastPoint;
 		var markers = [];
 		var beaconMarkers = [];
 		var beaconCoords = [];
+
         var tweetMarkers = [];
         var tweetCoords = [];
+
+        var photoMarkers = [];
+        var photoCoords = [];
 
         var sightingsQueue;
         var tweetsQueue;
         var revealedTweets;
         var revealedTweetTimes;
+
+        var photosQueue;
+        var revealedPhotos;
+        var revealedPhotoTimes;
 
 		var d = new Date();
 		var focusMarker;
@@ -490,8 +500,7 @@
 			"Click, drag, and zoom the map to see data points (currently animal sightings, comments from the expedition team, and position reports). For help, information about the expedition, and access to the full API, click on the buttons at the top of the page."
 		]
 
-		loadBeacons();
-        loadTweets();
+		
 
 		//DATA LOAD FUNCTIONS
 
@@ -614,7 +623,7 @@
 			}
 		}
 
-        //2. Tweets
+        //2a. Tweets
         function loadTweets() {
 
             tweetsQueue = [];
@@ -692,6 +701,87 @@
             for(var i = 0; i < tweetMarkers.length; i++) {
                 //beaconMarkers[i].addTo(map);
                 tweetLayer.addLayer(tweetMarkers[i])
+            }
+        }
+
+        //2b. Photos
+        function loadPhotos() {
+
+            photosQueue = [];
+            revealedPhotos = [];
+            revealedPhotos = [];
+
+            var photoIcon = L.icon({
+                iconUrl: '../static/img/quote.png',
+                shadowUrl: '../static/img/quoteShadow.png',
+
+                iconSize:     [80,80], // size of the icon
+                shadowSize:   [80,80], // size of the shadow
+                iconAnchor:   [15,35], // point of the icon which will correspond to marker's location
+                shadowAnchor: [15,35],  // the same for the shadow
+                popupAnchor:  [10,-40] // point from which the popup should open relative to the iconAnchor
+            });
+
+            var photoOptions = {
+                icon:photoIcon,
+                iconSize:[20,20]
+                /*
+                radius: 6,
+                fillColor: "#fff",
+                color: "#333",
+                weight: 5,
+                opacity: 1,
+                fillOpacity: 1,
+                */
+            };
+            
+
+            function onEachPhoto(feature, layer) {
+                // does this feature have a property named popupContent?
+                if (feature.properties && feature.properties.t_utc) {
+                    var d = new Date(feature.properties.t_utc * 1000);
+                    layer.bindPopup(feature.properties.tweet.url);
+                }
+            }
+
+            console.log("GETTING PHOTOS!!!")
+            $.getJSON('/api/timeline?date=20140817&types=image&days=18', function(data) {
+
+                //Create the photo objects
+                L.geoJson(data.features, {
+                    filter: function(feature, layer) {
+                        //Filter out 0,0 points
+                        return (feature.properties.url.indexOf('james') > -1);
+                    },
+                    pointToLayer: function (feature, latlng) {
+                        var marker = L.marker(latlng, photoOptions);
+                        photoMarkers.push(marker);
+                        markers.push(marker);
+                        photoCoords.push([latlng.lng, latlng.lat]);
+                        photosQueue.push({marker:marker, time:feature.properties.t_utc * 1000});
+                        return marker;
+                    },
+                    onEachFeature:onEachPhoto,
+                    style: function(feature) {
+                        //Here we can apply styling to markers depending on properties. Cool.
+
+
+                    }
+                });
+                console.log("GOT PHOTOS!!!" + photoMarkers.length)
+                photosLoaded = true;
+                showPhotos();
+
+                //initFeed(data);
+                
+            });
+            
+        }
+
+        function showPhotos() {
+            for(var i = 0; i < photoMarkers.length; i++) {
+                //beaconMarkers[i].addTo(map);
+                photoLayer.addLayer(photoMarkers[i])
             }
         }
 
@@ -1293,6 +1383,7 @@
 			//if (!beaconsLoaded) showBeacons();
 			//focusMarker.bindPopup("Last reported position.");
 			$("#skip").hide();
+            siteReady();
 		}
 		
 	}
@@ -1313,11 +1404,18 @@
 		map.panTo(focusMarker.getLatLng());
 		focusMarker.bindPopup("Last reported position.");
 		$("#skip").hide();
+        siteReady();
 		if (!sightingsLoaded) loadSightings();
 		if (!pathsLoaded) loadPaths();
 
 		clearTimeout(function(){zoomIn(focusMarker)});
 	}
+
+    function siteReady() {
+        loadBeacons();
+        loadTweets();
+        loadPhotos();
+    }
 
 	//loadBeacons();
 
