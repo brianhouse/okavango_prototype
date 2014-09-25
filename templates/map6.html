@@ -738,7 +738,7 @@
 
             function onEachPhoto(feature, layer) {
                 // does this feature have a property named popupContent?
-                if (feature.properties && feature.properties.t_utc) {
+                if (feature.properties && feature.properties.utc_t) {
                     var d = new Date(feature.properties.t_utc * 1000);
                     layer.bindPopup(feature.properties.url);
                 }
