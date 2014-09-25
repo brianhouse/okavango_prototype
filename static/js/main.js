@@ -1142,11 +1142,11 @@ var initMapTimeline = function(){
 			.attr('y1',h/2)
 			.attr('x2',w-5)
 			.attr('y2',h/2)
-			.attr('stroke','rgba(255,255,255,0.45)')
+			.attr('stroke','rgba(255,255,255,0.4)')
 
 		var previousCounter;
 
-		d3.select('#mapTimeline div.bar svg').selectAll('circle')
+		d3.select('#mapTimeline div.bar svg').selectAll('g')
 			.data(function(){
 				var dates = [];
 				var d = new Date('August 17, 2014');
@@ -1172,7 +1172,6 @@ var initMapTimeline = function(){
 					.attr('r',2.5)
 					.attr('fill','rgba(255,255,255,0.6)');
 			})
-			.style('cursor','pointer')
 			.on('mouseover',function(d,i){
 				if(d3.select(this).classed('uncovered') || d3.select(this).classed('covered')){
 					d3.select(this).select('circle')
@@ -1269,29 +1268,38 @@ var updateMapTimeline = function(d){
 			.attr('x2',w-5)
 			.attr('y2',h/2)
 
-		d3.select('#mapTimeline div.bar svg').selectAll('circle')
+		d3.select('#mapTimeline div.bar svg').selectAll('g')
 			.filter(function(d1){ return d1.getTime()<=mapTimeline[0].getTime()})
-			.attr('fill','#FFB637')
 			.classed('covered',true)
 			.classed('uncovered',false)
 			.classed('loading',false)
-			.style('cursor','pointer');
+			.style('cursor','pointer')
+			.each(function(){
+				d3.select(this).select('circle')
+					.attr('fill','#FFB637')
+			})
 
-		d3.select('#mapTimeline div.bar svg').selectAll('circle')
+		d3.select('#mapTimeline div.bar svg').selectAll('g')
 			.filter(function(d1){ return d1.getTime()>mapTimeline[0].getTime() && d1.getTime()<=mapTimeline[1].getTime()})
-			.attr('fill','rgba(255,255,255,1)')
 			.classed('covered',false)
 			.classed('uncovered',true)
 			.classed('loading',false)
-			.style('cursor','pointer');
+			.style('cursor','pointer')
+			.each(function(){
+				d3.select(this).select('circle')
+					.attr('fill','white')
+			})
 
-		d3.select('#mapTimeline div.bar svg').selectAll('circle')
+		d3.select('#mapTimeline div.bar svg').selectAll('g')
 			.filter(function(d1){ return d1.getTime()>mapTimeline[1].getTime()})
-			.attr('fill','rgba(255,255,255,0.5)')
 			.classed('covered',false)
 			.classed('uncovered',false)
 			.classed('loading',true)
 			.style('cursor','auto');
+			.each(function(){
+				d3.select(this).select('circle')
+					.attr('fill','rgba(255,255,255,0.4')
+			})
 
 	}
 }
