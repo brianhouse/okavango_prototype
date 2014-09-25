@@ -1217,9 +1217,12 @@ var initMapTimeline = function(){
 					d.setTime(startTime * 1000 + (offset * 60 * 1000));
 					var len = Math.ceil((data.getTime()-d.getTime())/(1000*60*60*24));
 					if(len == 0){
+						isAnimationPaused = false;
 						skipBack(true);
+						moveMap();
 					} else {
 						for(var i=0; i<Math.abs(len); i++){
+							isAnimationPaused = false;
 							if(len<1) skipBack(false);
 							else skipForward();
 							moveMap();
