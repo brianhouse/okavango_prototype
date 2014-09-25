@@ -1225,8 +1225,6 @@
                                     "coordinates":[[lq.latLon[1], lq.latLon[0]], [q.latLon[1], q.latLon[0]]]
                                 }
                             }]
-
-                            console.log(point);
                             
                             permPaths[q.name].addData(point);
                             personMarkersTarget[q.name] = q.latLon;
@@ -1234,7 +1232,7 @@
                                 targetLatLon[0] = q.latLon[0];
                                 targetLatLon[1] = q.latLon[1];
                             }
-                            pathRevealed[n].push(pathQueues[n][counters[n]]);
+                            pathRevealed[n].push(q);
                             counters[n]++;
                         } 
                     }
@@ -1247,30 +1245,33 @@
                      if (q.time - lq.time > 60 * 30 ) skipCount ++;
                 }
 
-                // // cull path
-                // var boundaries = map.getBounds();
-                // var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
-                // var len = pathRevealed[n].length;
-                // var coords;
-                // var flag = false;
-                // for(var i=len-1; i>-1; i--){
-                //     coords = pathQueues[n][i].getLayers()[j].getLatLngs();
-                //     flag = false;
-                //     for(var k = 0; k<2; k++){
-                //         if(coords[k]){
-                //             if(coords[k].lat <= b[0] && coords[k].lat >= b[1]){
-                //                 if(coords[k].lng >= b[2] && coords[k].lng <= b[3]){
-                //                     flag = true;
-                //                     break;
-                //                 }
+                // cull path
+                var boundaries = map.getBounds();
+                var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
+                var len = pathRevealed[n].length;
+                var coords;
+                var flag = false;
+                for(var i=len-1; i>-1; i--){
+                    coords = pathRevealed[n][i].getLatLngs();
+                    flag = false;
+                    for(var k = 0; k<2; k++){
+                        if(coords[k]){
+                            if(coords[k].lat <= b[0] && coords[k].lat >= b[1]){
+                                if(coords[k].lng >= b[2] && coords[k].lng <= b[3]){
+                                    flag = true;
+                                    break;
+                                }
 
-                //             }
-                //         }
-                //     }
-                //     d3.select(personPath.getLayers()[j]._container)
-                //         .style('display',flag?'inline':'none')
-                //     if(!flag) break;
-                // }
+                            }
+                        }
+                    }
+                    if(!flag) {
+                        d3.select(pathRevealed[n][i]._container)
+                            .style('display','none')
+                        pathRevealed[n].shift();
+                        break;
+                    }
+                }
 
             }
 
