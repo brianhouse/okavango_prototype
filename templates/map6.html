@@ -997,15 +997,13 @@
                 for(var k=len-1; k>-1; k--){
                     coords = pathRevealed[n][k].latLon;
                     flag = false;
-                    for(var k = 0; k<2; k++){
-                        if(coords[k]){
-                            if(coords[k][0] <= b[0] && coords[k][0] >= b[1]){
-                                if(coords[k][1] >= b[2] && coords[k][1] <= b[3]){
-                                    flag = true;
-                                    break;
-                                }
-
+                    if(coords[k]){
+                        if(coords[k][0] <= b[0] && coords[k][0] >= b[1]){
+                            if(coords[k][1] >= b[2] && coords[k][1] <= b[3]){
+                                flag = true;
+                                break;
                             }
+
                         }
                     }
                     if(!flag) {
