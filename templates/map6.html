@@ -973,9 +973,6 @@
         console.log("START TIME ---------------- " + startTime);
         console.log("START TIME ---------------- " + new Date(startTime * 1000));
 
-
-
-
 		timeMag = 100;
 		timeStep = 0.400;
         sightingCounter = 0;
@@ -1081,7 +1078,7 @@
             //Tweets
 
             if(tweetsQueue.length>0){
-                while (tweetsQueue[tweetCounter].time/1000 - 300 < startTime) {
+                while (tweetsQueue[tweetCounter].time/1000 - 350 < startTime) {
                     if(!daySkip && (!tweetsQueue[tweetCounter+1]||tweetsQueue[tweetCounter+1].time-tweetsQueue[tweetCounter].time>100)){ 
                         // focusTweet(tweetsQueue[tweetCounter]);
                         tweetsQueue[tweetCounter].marker.openPopup();
@@ -1197,6 +1194,7 @@
                 console.log('cull paths');
                 var flag;
                 var boundaries = map.getBounds();
+                var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
                 var l1 = geoLayer.getLayers().length;
                 for(var i = 0; i<l1; i++){
                     var personPath = geoLayer.getLayers()[i];
@@ -1205,10 +1203,10 @@
                         for(var j = 0; j<l2; j++){
                             var coords = personPath.getLayers()[j].getLatLngs();
                             flag = false;
-                            for(var k = 0; k<2; k++){
+                            for(var k = 0; k<1; k++){
                                 if(coords[k]){
-                                    if(coords[k].lat <= boundaries.getNorthWest().lat && coords[k].lat >= boundaries.getSouthEast().lat){
-                                        if(coords[k].lng >= boundaries.getNorthWest().lng && coords[k].lng <= boundaries.getSouthEast().lng){
+                                    if(coords[k].lat <= b[0] && coords[k].lat >= b[1]){
+                                        if(coords[k].lng >= b[2] && coords[k].lng <= b[3]){
                                             flag = true;
                                             break;
                                         }
