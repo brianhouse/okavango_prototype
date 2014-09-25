@@ -1058,161 +1058,162 @@ var focusTweet = function(queue){
 
 var initMapTimeline = function(){
 	if(isGraphReady){
-	var h = 27;
+		var h = 27;
 
-	var w = window.innerWidth - (d3.select('#tweetsButton').node().clientWidth + window.innerWidth*0.463 + 100);
-	d3.select('#mapTimeline')
-		.style('width',w+'px');
+		var w = window.innerWidth - (d3.select('#tweetsButton').node().clientWidth + window.innerWidth*0.463 + 100);
+		d3.select('#mapTimeline')
+			.style('width',w+'px');
 
-	w = d3.select('#mapTimeline').node().clientWidth - h - d3.select('#mapTimeline div.counter').node().clientWidth - 38;
-	d3.select('#mapTimeline div.bar')
-		.style('width',w+'px');
-	d3.select('#mapTimeline div.bar')
-		.append('svg')
+		w = d3.select('#mapTimeline').node().clientWidth - h - d3.select('#mapTimeline div.counter').node().clientWidth - 38;
+		d3.select('#mapTimeline div.bar')
+			.style('width',w+'px');
+		d3.select('#mapTimeline div.bar')
+			.append('svg')
 
 
-	var skipBack = function(sameDay) {
-	    var oneBack = startTime - (24 * 60 * 60);
-	    var morning = (oneBack - (oneBack % (24 * 60 * 60))*(sameDay?-1:1)) + (6 * 60 * 60);
-	    startTime = morning;
+		var skipBack = function(sameDay) {
+		    var oneBack = startTime - (24 * 60 * 60);
+		    var morning = (oneBack - (oneBack % (24 * 60 * 60))*(sameDay?-1:1)) + (6 * 60 * 60);
+		    startTime = morning;
 
-	    console.log("ROLLBACK TIME ---------------- " + startTime);
-	    console.log("ROLLBACK TIME ---------------- " + new Date(startTime * 1000));
-	    console.log("OLD Q COUNTER:" + sightingCounter)
-	    
+		    console.log("ROLLBACK TIME ---------------- " + startTime);
+		    console.log("ROLLBACK TIME ---------------- " + new Date(startTime * 1000));
+		    console.log("OLD Q COUNTER:" + sightingCounter)
+		    
 
-	    //move back sightings queue
-	    while(sightingsQueue[sightingCounter].time > startTime && sightingCounter > 1) {
-	        sightingCounter --;
-	    }
+		    //move back sightings queue
+		    while(sightingsQueue[sightingCounter].time > startTime && sightingCounter > 1) {
+		        sightingCounter --;
+		    }
 
-	    //move back paths queue;
-	    for (var i = 0; i < names.length; i++) {
-	        var n = names[i];
+		    //move back paths queue;
+		    for (var i = 0; i < names.length; i++) {
+		        var n = names[i];
 
-	        while(pathQueues[n][counters[n]].time > startTime && counters[n] > 1) {
-	            counters[n] --;
-	        }
+		        while(pathQueues[n][counters[n]].time > startTime && counters[n] > 1) {
+		            counters[n] --;
+		        }
 
-	        //Reposition markers
+		        //Reposition markers
 
-	        var q = pathQueues[n][counters[n]]
-	        if (i == 1) {
-	                        targetLatLon[0] = q.latLon[0];
-	                        targetLatLon[1] = q.latLon[1];
-	                    }
-	    }
+		        var q = pathQueues[n][counters[n]]
+		        if (i == 1) {
+		                        targetLatLon[0] = q.latLon[0];
+		                        targetLatLon[1] = q.latLon[1];
+		                    }
+		    }
 
-	    console.log("NEW Q COUNTER:" + sightingCounter)
-	    daySkip = true;
-	    
-	}
+		    console.log("NEW Q COUNTER:" + sightingCounter)
+		    daySkip = true;
+		    
+		}
 
-	var skipForward = function() {
-	    var oneMore = startTime + (24 * 60 * 60);
-	    var morning = (oneMore - (oneMore % (24 * 60 * 60))) + (3 * 60 * 60);
-	    startTime = morning;
-	    console.log("START TIME ---------------- " + startTime);
-	    console.log("START TIME ---------------- " + new Date(startTime * 1000));
-	    daySkip = true;
-	}
+		var skipForward = function() {
+		    var oneMore = startTime + (24 * 60 * 60);
+		    var morning = (oneMore - (oneMore % (24 * 60 * 60))) + (3 * 60 * 60);
+		    startTime = morning;
+		    console.log("START TIME ---------------- " + startTime);
+		    console.log("START TIME ---------------- " + new Date(startTime * 1000));
+		    daySkip = true;
+		}
 
-	d3.select('#mapTimeline div.bar svg')
-		.append('line')
-		.classed('covered',true)
-		.attr('x1',5)
-		.attr('y1',h/2)
-		.attr('x2',5)
-		.attr('y2',h/2)
-		.attr('stroke','#FFB637')
+		d3.select('#mapTimeline div.bar svg')
+			.append('line')
+			.classed('covered',true)
+			.attr('x1',5)
+			.attr('y1',h/2)
+			.attr('x2',5)
+			.attr('y2',h/2)
+			.attr('stroke','#FFB637')
 
-	d3.select('#mapTimeline div.bar svg')
-		.append('line')
-		.classed('uncovered',true)
-		.attr('x1',5)
-		.attr('y1',h/2)
-		.attr('x2',5)
-		.attr('y2',h/2)
-		.attr('stroke','rgba(255,255,255,1)')
+		d3.select('#mapTimeline div.bar svg')
+			.append('line')
+			.classed('uncovered',true)
+			.attr('x1',5)
+			.attr('y1',h/2)
+			.attr('x2',5)
+			.attr('y2',h/2)
+			.attr('stroke','rgba(255,255,255,1)')
 
-	d3.select('#mapTimeline div.bar svg')
-		.append('line')
-		.classed('loading',true)
-		.attr('x1',5)
-		.attr('y1',h/2)
-		.attr('x2',w-5)
-		.attr('y2',h/2)
-		.attr('stroke','rgba(255,255,255,0.45)')
+		d3.select('#mapTimeline div.bar svg')
+			.append('line')
+			.classed('loading',true)
+			.attr('x1',5)
+			.attr('y1',h/2)
+			.attr('x2',w-5)
+			.attr('y2',h/2)
+			.attr('stroke','rgba(255,255,255,0.45)')
 
-	var previousCounter;
+		var previousCounter;
 
-	d3.select('#mapTimeline div.bar svg').selectAll('circle')
-		.data(function(){
-			var dates = [];
-			var d = new Date('August 17, 2014');
-			for(var i = 0; i<18; i++){
-				dates.push(d);
-				d = new Date(d.getTime() + (24*60*60*1000));
-			}
-			return dates;
-		})
-		.enter()
-		.append('g')
-		.attr('transform',function(d,i){ return 'translate(' + (5+(i/16)*(w-10)) + ',' + h/2 +')';})
-		.each(function(d,i){
-			d3.select(this)
-				.append('rect')
-				.attr('x',-w/16/2)
-				.attr('y',-h/2)
-				.attr('width',w/16)
-				.attr('height',h)
-				.attr('fill','rgba(0,0,0,0)')
-			d3.select(this)
-				.append('circle')
-				.attr('r',2.5)
-				.attr('fill','rgba(255,255,255,0.6)');
-		})
-		.style('cursor','pointer')
-		.on('mouseover',function(d,i){
-			if(d3.select(this).classed('uncovered') || d3.select(this).classed('covered')){
-				d3.select(this).select('circle')
-					.classed('focus',true)
-					.transition()
-					.duration(150)
-					.attr('r',5)
-				previousCounter = d3.select('#mapTimeline div.counter').text();
-				d3.select('#mapTimeline div.counter').text('GO TO DAY ' + (i+1));
-			}
-		})
-		.on('mouseout',function(){
-			if(d3.select(this).classed('uncovered') || d3.select(this).classed('covered')){
-				d3.select(this).select('circle')
-					.classed('focus',false)
-					.transition()
-					.duration(150)
+		d3.select('#mapTimeline div.bar svg').selectAll('circle')
+			.data(function(){
+				var dates = [];
+				var d = new Date('August 17, 2014');
+				for(var i = 0; i<18; i++){
+					dates.push(d);
+					d = new Date(d.getTime() + (24*60*60*1000));
+				}
+				return dates;
+			})
+			.enter()
+			.append('g')
+			.attr('transform',function(d,i){ return 'translate(' + (5+(i/16)*(w-10)) + ',' + h/2 +')';})
+			.each(function(d,i){
+				d3.select(this)
+					.append('rect')
+					.attr('x',-w/16/2)
+					.attr('y',-h/2)
+					.attr('width',w/16)
+					.attr('height',h)
+					.attr('fill','rgba(0,0,0,0)')
+				d3.select(this)
+					.append('circle')
 					.attr('r',2.5)
-				d3.select('#mapTimeline div.counter').text(previousCounter);
-			}
-		})
-		.on('click',function(data,i){
-			if(d3.select(this).classed('uncovered') || d3.select(this).classed('covered')){
-				var d = new Date();
-				var offset = d.getTimezoneOffset() + 2;
-				d.setTime(startTime * 1000 + (offset * 60 * 1000));
-				var len = Math.ceil((data.getTime()-d.getTime())/(1000*60*60*24));
-				if(len == 0){
-					skipBack(true);
-				} else {
-					for(var i=0; i<Math.abs(len); i++){
-						if(len<1) skipBack(false);
-						else skipForward();
+					.attr('fill','rgba(255,255,255,0.6)');
+			})
+			.style('cursor','pointer')
+			.on('mouseover',function(d,i){
+				if(d3.select(this).classed('uncovered') || d3.select(this).classed('covered')){
+					d3.select(this).select('circle')
+						.classed('focus',true)
+						.transition()
+						.duration(150)
+						.attr('r',5)
+					previousCounter = d3.select('#mapTimeline div.counter').text();
+					d3.select('#mapTimeline div.counter').text('GO TO DAY ' + (i+1));
+				}
+			})
+			.on('mouseout',function(){
+				if(d3.select(this).classed('uncovered') || d3.select(this).classed('covered')){
+					d3.select(this).select('circle')
+						.classed('focus',false)
+						.transition()
+						.duration(150)
+						.attr('r',2.5)
+					d3.select('#mapTimeline div.counter').text(previousCounter);
+				}
+			})
+			.on('click',function(data,i){
+				if(d3.select(this).classed('uncovered') || d3.select(this).classed('covered')){
+					var d = new Date();
+					var offset = d.getTimezoneOffset() + 2;
+					d.setTime(startTime * 1000 + (offset * 60 * 1000));
+					var len = Math.ceil((data.getTime()-d.getTime())/(1000*60*60*24));
+					if(len == 0){
+						skipBack(true);
+					} else {
+						for(var i=0; i<Math.abs(len); i++){
+							if(len<1) skipBack(false);
+							else skipForward();
+						}
 					}
 				}
-			}
-		})
+			})
 
-	mapTimeline[0] = new Date('August 17, 2014');
-	mapTimeline[1] = new Date('August 17, 2014');
+		mapTimeline[0] = new Date('August 17, 2014');
+		mapTimeline[1] = new Date('August 17, 2014');
+	}
 			
 }
 
