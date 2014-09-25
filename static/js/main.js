@@ -1150,7 +1150,7 @@ var initMapTimeline = function(){
 			.data(function(){
 				var dates = [];
 				var d = new Date('August 17, 2014');
-				for(var i = 0; i<15; i++){
+				for(var i = 0; i<16; i++){
 					console.log(d);
 					dates.push(d);
 					d = new Date(d.getTime() + (24*60*60*1000));
@@ -1159,13 +1159,13 @@ var initMapTimeline = function(){
 			})
 			.enter()
 			.append('g')
-			.attr('transform',function(d,i){ return 'translate(' + (5+(i/14)*(w-10)) + ',' + h/2 +')';})
+			.attr('transform',function(d,i){ return 'translate(' + (5+(i/15)*(w-10)) + ',' + h/2 +')';})
 			.each(function(d,i){
 				d3.select(this)
 					.append('rect')
-					.attr('x',-w/14/2)
+					.attr('x',-w/15/2)
 					.attr('y',-h/2)
-					.attr('width',w/14)
+					.attr('width',w/15)
 					.attr('height',h)
 					.attr('fill','rgba(0,0,0,0)')
 				d3.select(this)
@@ -1247,7 +1247,7 @@ var updateMapTimeline = function(d){
 		}
 
 		var d1 = new Date('August 17, 2014');
-		var d2 = new Date('September 1, 2014');
+		var d2 = new Date('September 3, 2014');
 		var r1 = map(mapTimeline[0].getTime(),d1.getTime(),d2.getTime(),0,1);
 		var r2 = map(mapTimeline[1].getTime(),d1.getTime(),d2.getTime(),0,1);
 

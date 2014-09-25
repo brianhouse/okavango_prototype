@@ -472,6 +472,8 @@
 
         var sightingsQueue;
         var tweetsQueue;
+        var revealedTweets;
+        var revealedTweetTimes;
 
 		var d = new Date();
 		var focusMarker;
@@ -616,6 +618,8 @@
         function loadTweets() {
 
             tweetsQueue = [];
+            revealedTweets = [];
+            revealedTweetTimes = [];
 
             var tweetIcon = L.icon({
                 iconUrl: '../static/img/quote.png',
@@ -1075,15 +1079,33 @@
 
 
             //Tweets
+
             if(tweetsQueue.length>0){
-                var w = d3.select('body').node().clientWidth;
-                var h = d3.select('body').node().clientHeight;
                 while (tweetsQueue[tweetCounter].time/1000 - 300 < startTime) {
-                    if(!daySkip && (!tweetsQueue[tweetCounter+1]||tweetsQueue[tweetCounter+1].time-tweetsQueue[tweetCounter].time>100)) focusTweet(tweetsQueue[tweetCounter]);
+                    if(!daySkip && (!tweetsQueue[tweetCounter+1]||tweetsQueue[tweetCounter+1].time-tweetsQueue[tweetCounter].time>100)){ 
+                        // focusTweet(tweetsQueue[tweetCounter]);
+                        tweetsQueue[tweetCounter].marker.openPopup();
+                        revealedTweets.push(tweetsQueue[tweetCounter])
+                        revealedMarkerTimes.push(new Date().getTime());
+                    }
                     tweetCounter ++;
                 } 
             }
-            
+
+            temp = [];  
+            tempt = [];  
+            for (var i = 0; i < revealedTweets.length; i++) {
+                var now = new Date();
+                var nms = now.getTime();
+                if (now - revealedTweetTimes[i] > 3000) {
+                    revealedTweets[i].marker.closePopup();
+                } else {
+                    temp.push(revealedTweets[i]);
+                    tempt.push(revealedTweetTimes[i]);
+                }
+            }   
+            revealedTweets = temp;     
+            revealedTweetTimes = tempt;       
 
 			//Paths
 
@@ -1181,7 +1203,6 @@
                     if(personPath){
                         var l2 = personPath.getLayers().length;
                         for(var j = 0; j<l2; j++){
-                            console.log();
                             var coords = personPath.getLayers()[j].getLatLngs();
                             flag = false;
                             for(var k = 0; k<2; k++){
