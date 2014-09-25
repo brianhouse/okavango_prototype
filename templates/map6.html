@@ -999,11 +999,12 @@
                         if(coords[k][0] <= b[0] && coords[k][0] >= b[1] && coords[k][1] >= b[2] && coords[k][1] <= b[3]){
                             break;
                         } else {
-                            d3.select(pathRevealed[n][k]._container)
-                                .style('display','none')
-                            pathRevealed[n].shift();
-                            len --;
-                            k --;
+                            // d3.select(pathRevealed[n][k]._container)
+                            //     .style('display','none')
+                            // pathRevealed[n].shift();
+                            // len --;
+                            // k --;
+                            break;
                         }
                     }
                 }
