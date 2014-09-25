@@ -1151,6 +1151,7 @@ var initMapTimeline = function(){
 				var dates = [];
 				var d = new Date('August 17, 2014');
 				for(var i = 0; i<15; i++){
+					console.log(d);
 					dates.push(d);
 					d = new Date(d.getTime() + (24*60*60*1000));
 				}
@@ -1245,8 +1246,11 @@ var updateMapTimeline = function(d){
 				.text("DAY " + dispd + " - " + (mapTimeline[0].getHours()<10?'0':'') +mapTimeline[0].getHours() + ':' + (mapTimeline[0].getMinutes()<10?'0':'') +mapTimeline[0].getMinutes());
 		}
 
+		var offset = d.getTimezoneOffset() + 2;
 		var d1 = new Date('August 17, 2014');
+		d1.setTime(d1.getTime() + (offset * 60 * 1000));
 		var d2 = new Date('September 1, 2014');
+		d2.setTime(d1.getTime() + (offset * 60 * 1000));
 		var r1 = map(mapTimeline[0].getTime(),d1.getTime(),d2.getTime(),0,1);
 		var r2 = map(mapTimeline[1].getTime(),d1.getTime(),d2.getTime(),0,1);
 
