@@ -1247,7 +1247,7 @@ var updateMapTimeline = function(d){
 		}
 
 		var d1 = new Date('August 17, 2014');
-		var d2 = new Date('September 3, 2014');
+		var d2 = new Date('September 1, 2014');
 		var r1 = map(mapTimeline[0].getTime(),d1.getTime(),d2.getTime(),0,1);
 		var r2 = map(mapTimeline[1].getTime(),d1.getTime(),d2.getTime(),0,1);
 
