@@ -1245,33 +1245,33 @@
                      if (q.time - lq.time > 60 * 30 ) skipCount ++;
                 }
 
-                // cull path
-                var boundaries = map.getBounds();
-                var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
-                var len = pathRevealed[n].length;
-                var coords;
-                var flag = false;
-                for(var i=len-1; i>-1; i--){
-                    coords = pathRevealed[n][i].latLon;
-                    flag = false;
-                    for(var k = 0; k<2; k++){
-                        if(coords[k]){
-                            if(coords[k][0] <= b[0] && coords[k][0] >= b[1]){
-                                if(coords[k][1] >= b[2] && coords[k][1] <= b[3]){
-                                    flag = true;
-                                    break;
-                                }
+                // // cull path
+                // var boundaries = map.getBounds();
+                // var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
+                // var len = pathRevealed[n].length;
+                // var coords;
+                // var flag = false;
+                // for(var i=len-1; i>-1; i--){
+                //     coords = pathRevealed[n][i].latLon;
+                //     flag = false;
+                //     for(var k = 0; k<2; k++){
+                //         if(coords[k]){
+                //             if(coords[k][0] <= b[0] && coords[k][0] >= b[1]){
+                //                 if(coords[k][1] >= b[2] && coords[k][1] <= b[3]){
+                //                     flag = true;
+                //                     break;
+                //                 }
 
-                            }
-                        }
-                    }
-                    if(!flag) {
-                        d3.select(pathRevealed[n][i]._container)
-                            .style('display','none')
-                        pathRevealed[n].shift();
-                        break;
-                    }
-                }
+                //             }
+                //         }
+                //     }
+                //     if(!flag) {
+                //         d3.select(pathRevealed[n][i]._container)
+                //             .style('display','none')
+                //         pathRevealed[n].shift();
+                //         break;
+                //     }
+                // }
 
             }
 
