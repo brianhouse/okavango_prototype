@@ -1150,7 +1150,7 @@ var initMapTimeline = function(){
 			.data(function(){
 				var dates = [];
 				var d = new Date('August 17, 2014');
-				for(var i = 0; i<18; i++){
+				for(var i = 0; i<17; i++){
 					dates.push(d);
 					d = new Date(d.getTime() + (24*60*60*1000));
 				}
@@ -1259,11 +1259,11 @@ var updateMapTimeline = function(d){
 		d3.select('#mapTimeline div.bar svg line.uncovered')
 			.attr('x1',5+(w-10)*r1)
 			.attr('y1',h/2)
-			.attr('x2',5+(w-10)*r2)
+			.attr('x2',5+(w-10)*(r2+1))
 			.attr('y2',h/2)
 
 		d3.select('#mapTimeline div.bar svg line.loading')
-			.attr('x1',5+(w-10)*r2)
+			.attr('x1',5+(w-10)*(r2+1))
 			.attr('y1',h/2)
 			.attr('x2',w-5)
 			.attr('y2',h/2)
@@ -1273,7 +1273,6 @@ var updateMapTimeline = function(d){
 			.classed('covered',true)
 			.classed('uncovered',false)
 			.classed('loading',false)
-			.style('cursor','pointer')
 			.each(function(){
 				d3.select(this).select('circle')
 					.attr('fill','#FFB637')
@@ -1295,7 +1294,7 @@ var updateMapTimeline = function(d){
 			.classed('covered',false)
 			.classed('uncovered',false)
 			.classed('loading',true)
-			.style('cursor','auto');
+			.style('cursor','auto')
 			.each(function(){
 				d3.select(this).select('circle')
 					.attr('fill','rgba(255,255,255,0.4')
