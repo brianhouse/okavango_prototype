@@ -740,7 +740,7 @@
                 // does this feature have a property named popupContent?
                 if (feature.properties && feature.properties.utc_t) {
                     var d = new Date(feature.properties.t_utc * 1000);
-                    layer.bindPopup('<img src="' + feature.properties.url + '" width=' + feature.properties.size[0] + ' height=' + feature.properties.size[1] + '>');
+                    layer.bindPopup('<img src="' + feature.properties.url + '" width=' + feature.properties.size[0] + ' height=' + feature.properties.size[1] + '>', {maxWidth:1000});
                 }
             }
 
@@ -1277,7 +1277,7 @@
             for (var i = 0; i < revealedPhotos.length; i++) {
                 var now = new Date();
                 var nms = now.getTime();
-                if (now - revealedPhotoTimes[i] > 3000) {
+                if (now - revealedPhotoTimes[i] > 10000) {
                     revealedPhotos[i].marker.closePopup();
                 } else {
                     temp.push(revealedPhotos[i]);
