@@ -1191,36 +1191,36 @@
 
         function cullMarkers(){
             if(frameCount%40==0){
-                console.log('cull paths');
-                var flag;
-                var boundaries = map.getBounds();
-                var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
-                var l1 = geoLayer.getLayers().length;
-                for(var i = 0; i<l1; i++){
-                    var personPath = geoLayer.getLayers()[i];
-                    if(personPath){
-                        var l2 = personPath.getLayers().length;
-                        for(var j = 0; j<l2; j++){
-                            var coords = personPath.getLayers()[j].getLatLngs();
-                            flag = false;
-                            for(var k = 0; k<1; k++){
-                                if(coords[k]){
-                                    if(coords[k].lat <= b[0] && coords[k].lat >= b[1]){
-                                        if(coords[k].lng >= b[2] && coords[k].lng <= b[3]){
-                                            flag = true;
-                                            break;
-                                        }
+                // console.log('cull paths');
+                // var flag;
+                // var boundaries = map.getBounds();
+                // var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
+                // var l1 = geoLayer.getLayers().length;
+                // for(var i = 0; i<l1; i++){
+                //     var personPath = geoLayer.getLayers()[i];
+                //     if(personPath){
+                //         var l2 = personPath.getLayers().length;
+                //         for(var j = 0; j<l2; j++){
+                //             var coords = personPath.getLayers()[j].getLatLngs();
+                //             flag = false;
+                //             for(var k = 0; k<1; k++){
+                //                 if(coords[k]){
+                //                     if(coords[k].lat <= b[0] && coords[k].lat >= b[1]){
+                //                         if(coords[k].lng >= b[2] && coords[k].lng <= b[3]){
+                //                             flag = true;
+                //                             break;
+                //                         }
 
-                                    }
-                                }
-                            }
-                            if(frameCount == 0){
-                                d3.select(personPath.getLayers()[j]._container)
-                                    .style('display',flag?'inline':'none')
-                                }
-                        }
-                    }
-                }
+                //                     }
+                //                 }
+                //             }
+                //             if(frameCount == 0){
+                //                 d3.select(personPath.getLayers()[j]._container)
+                //                     .style('display',flag?'inline':'none')
+                //                 }
+                //         }
+                //     }
+                // }
             } else if(frameCount%40 == 10){
                 console.log('cull sightings');
                 var boundaries = map.getBounds();
