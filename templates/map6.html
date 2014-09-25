@@ -897,60 +897,60 @@
 			function drawPaths() {
 
 			
-			var dashes = ["15,3", "5,5,2", "3,3","1,1"];
-			var colors = ["#FF3300", "#FF9900", "#FFFF00","#FF6666"]
-			var widths = [30,26,16,12]
-			
-			for (var i = 0; i < names.length; i++) {
-				var n = names[i];
-				//Create the path polygons
-				//simplify(pathMap[n], 0.8, false);
+    			var dashes = ["15,3", "5,5,2", "3,3","1,1"];
+    			var colors = ["#FF3300", "#FF9900", "#FFFF00","#FF6666"]
+    			var widths = [30,26,16,12]
+    			
+    			for (var i = 0; i < names.length; i++) {
+    				var n = names[i];
+    				//Create the path polygons
+    				//simplify(pathMap[n], 0.8, false);
 
-				//pathMap[n] = smoothIt(pathMap[n]);
+    				//pathMap[n] = smoothIt(pathMap[n]);
 
-				//Instantiate markers
-				var myIcon = L.divIcon({className: 'person-marker', html: '<p>' + names[i] + '</p>', iconSize: [widths[i], 18]});
-				// you can set .my-div-icon styles in CSS
+    				//Instantiate markers
+    				var myIcon = L.divIcon({className: 'person-marker', html: '<p>' + names[i] + '</p>', iconSize: [widths[i], 18]});
+    				// you can set .my-div-icon styles in CSS
 
-                var shiftX = (Math.random() *0.002) - 0.001;
-                var shiftY = (Math.random() *0.002) - 0.001;
-                personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
-				personMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
+                    var shiftX = (Math.random() *0.002) - 0.001;
+                    var shiftY = (Math.random() *0.002) - 0.001;
+                    personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
+    				personMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
 
-                $('.person-marker').css('width','auto')
-				
-				var paths = [{
-					"type":"Feature",
-					"properties":{
-						"test":"yes"
-					},
-					"geometry":{
-						"type":"LineString",
-						"coordinates":[]
-					}
-				}]
+                    $('.person-marker').css('width','auto')
+    				
+    				var paths = [{
+    					"type":"Feature",
+    					"properties":{
+    						"test":"yes"
+    					},
+    					"geometry":{
+    						"type":"LineString",
+    						"coordinates":[]
+    					}
+    				}]
 
-				permGeos[i] = pathMap[n];
+    				permGeos[i] = pathMap[n];
 
 
-				var pathStyle = {
-				    fillColor: "#fff",
-				    color: colors[i],
-				    weight: 2,
-				    opacity: 0.4,
-				    fillOpacity: 0,
-				    smoothFactor:2,
-				    // dashArray: dashes[i]
-				}
-				
-				//Add the polygon to the map
-				var path = L.geoJson(paths, {
-					style:pathStyle
-				})
+    				var pathStyle = {
+    				    fillColor: "#fff",
+    				    color: colors[i],
+    				    weight: 2,
+    				    opacity: 0.4,
+    				    fillOpacity: 0,
+    				    smoothFactor:2,
+    				    // dashArray: dashes[i]
+    				}
+    				
+    				//Add the polygon to the map
+    				var path = L.geoJson(paths, {
+    					style:pathStyle
+    				})
 
-				geoLayer.addLayer(path);
+    				geoLayer.addLayer(path);
 
-				permPaths[n] = path;
+    				permPaths[n] = path;
 
 				}
 
@@ -1032,9 +1032,9 @@
         //Logic for the time-based animation
 		function doAnimation() {
 
-            if(isAnimationPaused) return;
             frameCount ++;
             cullMarkers();
+            if(isAnimationPaused) return;
 
             if (sightingsQueue.length > 0 && pathQueues[names[0]].length > 0) {
 
@@ -1191,36 +1191,35 @@
 
         function cullMarkers(){
             if(frameCount%40==0){
-                // console.log('cull paths');
-                // var flag;
-                // var boundaries = map.getBounds();
-                // var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
-                // var l1 = geoLayer.getLayers().length;
-                // for(var i = 0; i<l1; i++){
-                //     var personPath = geoLayer.getLayers()[i];
-                //     if(personPath){
-                //         var l2 = personPath.getLayers().length;
-                //         for(var j = 0; j<l2; j++){
-                //             var coords = personPath.getLayers()[j].getLatLngs();
-                //             flag = false;
-                //             for(var k = 0; k<1; k++){
-                //                 if(coords[k]){
-                //                     if(coords[k].lat <= b[0] && coords[k].lat >= b[1]){
-                //                         if(coords[k].lng >= b[2] && coords[k].lng <= b[3]){
-                //                             flag = true;
-                //                             break;
-                //                         }
+                var flag;
+                var boundaries = map.getBounds();
+                var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
+                var l1 = geoLayer.getLayers().length;
+                for(var i = 0; i<l1; i++){
+                    var personPath = geoLayer.getLayers()[i];
+                    if(personPath){
+                        var l2 = personPath.getLayers().length;
+                        for(var j = 0; j<l2; j++){
+                            var coords = personPath.getLayers()[j].getLatLngs();
+                            flag = false;
+                            for(var k = 0; k<1; k++){
+                                if(coords[k]){
+                                    if(coords[k].lat <= b[0] && coords[k].lat >= b[1]){
+                                        if(coords[k].lng >= b[2] && coords[k].lng <= b[3]){
+                                            flag = true;
+                                            break;
+                                        }
 
-                //                     }
-                //                 }
-                //             }
-                //             if(frameCount == 0){
-                //                 d3.select(personPath.getLayers()[j]._container)
-                //                     .style('display',flag?'inline':'none')
-                //                 }
-                //         }
-                //     }
-                // }
+                                    }
+                                }
+                            }
+                            if(frameCount == 0){
+                                d3.select(personPath.getLayers()[j]._container)
+                                    .style('display',flag?'inline':'none')
+                                }
+                        }
+                    }
+                }
             } else if(frameCount%40 == 10){
                 console.log('cull sightings');
                 var boundaries = map.getBounds();
