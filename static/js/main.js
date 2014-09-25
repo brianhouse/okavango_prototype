@@ -1213,7 +1213,8 @@ var initMapTimeline = function(){
 			}
 		})
 
-		mapTimeline = [new Date('August 17, 2014'),new Date('August 17, 2014')];
+		mapTimeline[0] = new Date('August 17, 2014');
+		mapTimeline[1] = new Date('August 17, 2014');
 			
 }
 
