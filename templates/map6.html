@@ -1196,6 +1196,7 @@
 
         var posMap = function(){
 
+            var sp = daySkip ? 0.4:0.1;
             var mapValues = function(value, start1, stop1, start2, stop2) {
                 return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
             }
