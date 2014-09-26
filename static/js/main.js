@@ -516,13 +516,13 @@ var initGraphs = function(data){
 		var json = data[h].features;
 		var len = json.length;
 
-		for(var i=0; i<names.length; i++){
-			var ambit = json[0].properties;
-			var d = ambit.t_utc*1000-1;
-			metrics[names[i]].heartrate.push([d,0])
-			metrics[names[i]].energyConsumption.push([d,0])
-			metrics[names[i]].speed.push([d,0])
-		}
+		// for(var i=0; i<names.length; i++){
+		// 	var ambit = json[0].properties;
+		// 	var d = ambit.t_utc*1000-1;
+		// 	metrics[names[i]].heartrate.push([d,0])
+		// 	metrics[names[i]].energyConsumption.push([d,0])
+		// 	metrics[names[i]].speed.push([d,0])
+		// }
 
 		for(var i=0; i<len; i++){
 			var ambit = json[i].properties;
