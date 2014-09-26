@@ -733,11 +733,11 @@ ul {
 	left:46.5%;
 	padding: 4px;
 	background-color: rgba(4,0,26,0.75);
-	border-left: 2px solid #FFB637;
 	border-radius:2px;
 	font-family: "Montserrat";
-	font-size:14px;
-	height:14px;
+	font-size:12px;
+	text-transform: uppercase;
+	text-align: center;
 	transition: background-color 0.2s;
 	cursor: pointer;
 }
@@ -749,6 +749,7 @@ ul {
 #skip a{
 	color:white;
 	text-decoration: none;
+	font
 }
 
 
