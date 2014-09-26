@@ -662,19 +662,14 @@
                     var d = new Date(feature.properties.t_utc * 1000);
                     layer.bindPopup(feature.properties.tweet.text);
                     requestAnimationFrame(function(){
-                        console.log(d3.select(layer._icon));
                         d3.select(layer._icon)
                             .on('click',function(){
-                                console.log(layer._popup._container);
-                                requestAnimationFrame(function(){
-                                    console.log(layer._popup._container);
-                                //                     d3.select(tweetsQueue[tweetCounter].marker._popup._container)
-                                // .style('cursor','pointer')
-                                // .on('click',function(){
-                                //     focusTweet(m);
-                                // })
+                                d3.select(layer._popup._container)
+                                    .style('cursor','pointer')
+                                    .on('click',function(){
+                                        focusTweet(layer);
+                                    })
 
-                                })
                             })
                     })
 
@@ -1293,6 +1288,11 @@
                     if(!daySkip && (!tweetsQueue[tweetCounter+1]||tweetsQueue[tweetCounter+1].time-tweetsQueue[tweetCounter].time>100)){ 
                         tweetsQueue[tweetCounter].marker.openPopup();
                         var m = tweetsQueue[tweetCounter].marker;
+                        d3.select(tweetsQueue[tweetCounter].marker._popup._container)
+                            .style('cursor','pointer')
+                            .on('click',function(){
+                                focusTweet(m);
+                            })
                         revealedTweets.push(tweetsQueue[tweetCounter])
                         revealedMarkerTimes.push(new Date().getTime());
                     }
@@ -1320,7 +1320,6 @@
             if(photosQueue.length>0){
                 while (photosQueue[photoCounter].time/1000 - 350 < startTime) {
                     if(!daySkip && (!photosQueue[photoCounter+1]||photosQueue[photoCounter+1].time-photosQueue[photoCounter].time>100)){ 
-                        // focusTweet(tweetsQueue[tweetCounter]);
                         photosQueue[photoCounter].marker.openPopup();
                         revealedPhotos.push(photosQueue[photoCounter])
                         revealedPhotoTimes.push(new Date().getTime());
