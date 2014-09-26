@@ -191,8 +191,7 @@ var queryAmbit = function(date){
 		if(json.features.length == 0) return;
 		ambitJson.push(json);
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
-		// else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) updateAmbitData();
-		// if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
+		queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
@@ -207,8 +206,7 @@ var querySightings = function(date){
 		sightingJson.push(json);
 
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
-		// else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) initSighting(sightingJson);
-		// if(isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
+		querySightings(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
 
@@ -274,22 +272,6 @@ var enableDataPage = function(ambitJson,sightingJson){
 
 
 var initSighting = function(data){
-
-	// if(currentPage != 'Data'){
-	// 	d3.select('#fullPanelWrapper')
-	// 		.style('display','block')
-	// 	d3.select('#fullPanelWrapper div.page:nth-child(3)')
-	// 		.style('display','block')
-
-	// 	requestAnimationFrame(function(){
-	// 		if(currentPage == 'Map'){
-	// 			d3.select('#fullPanelWrapper')
-	// 				.style('display','none')
-	// 		}
-	// 		d3.select('#fullPanelWrapper div.page:nth-child(3)')
-	// 			.style('display','none')
-	// 	});
-	// }
 
 	var sightings = [];
 
