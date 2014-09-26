@@ -1028,7 +1028,6 @@ var focusTweet = function(marker){
     if(tweetFound){
     	console.log('focusing tweet: ' + marker.feature.properties.tweet.text);
     	if(currentPage != 'Twitter') toggleTwitterPanel();
-    	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) closeFeedTimer = setTimeout(toggleTwitterPanel,10000);
 	    requestAnimationFrame(function(){
 		    d3.select('#twitterWrapper')
 		    	.transition()
