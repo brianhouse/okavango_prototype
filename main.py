@@ -128,14 +128,14 @@ class Home(server.Handler):
     def get(self, page=None):
         if len(page):
             return self.not_found()
-        return self.render("map5.html")
+        return self.render("map6.html")
 
 class Beta(server.Handler):
 
     def get(self, page=None):
         if len(page):
             return self.not_found()
-        return self.render("map6.html")
+        return self.render("map7.html")
 
 class Archive(server.Handler):
 
