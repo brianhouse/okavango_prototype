@@ -113,7 +113,7 @@ def update_latlon(db):
         print("NEW" + newData)
 
         #insert
-        #db.execute("UPDATE features SET data=" + newData + " WHERE t=" + t " AND kind=" + k)
+        db.execute("UPDATE features SET data=" + newData + " WHERE t=" + t " AND kind=" + k)
 
         c = c + 1;
 
