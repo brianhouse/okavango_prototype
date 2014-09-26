@@ -1290,7 +1290,7 @@ var initMapTimeline = function(){
 var updateMapTimeline = function(d, loadingTransition){
 	if(isGraphReady){
 
-		var map = function(value, start1, stop1, start2, stop2) {
+		var mapValues = function(value, start1, stop1, start2, stop2) {
 		    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
 		}
 
@@ -1317,8 +1317,8 @@ var updateMapTimeline = function(d, loadingTransition){
 
 		var d1 = new Date('August 17, 2014');
 		var d2 = new Date('September 1, 2014');
-		var r1 = map(mapTimeline[0].getTime(),d1.getTime(),d2.getTime(),0,1);
-		var r2 = map(mapTimeline[1].getTime(),d1.getTime(),d2.getTime(),0,1);
+		var r1 = mapValues(mapTimeline[0].getTime(),d1.getTime(),d2.getTime(),0,1);
+		var r2 = mapValues(mapTimeline[1].getTime(),d1.getTime(),d2.getTime(),0,1);
 
 		d3.select('#mapTimeline div.bar svg line.covered')
 			.attr('x1',5)

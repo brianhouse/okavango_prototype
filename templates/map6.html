@@ -1207,7 +1207,7 @@
             map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
 
             // animates explorers' markers towards their current position on the map
-            var map = function(value, start1, stop1, start2, stop2) {
+            var mapValues = function(value, start1, stop1, start2, stop2) {
                 return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
             }
             for (var i = 0; i < names.length; i++) {
