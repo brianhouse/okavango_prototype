@@ -1030,14 +1030,12 @@ var focusTweet = function(marker){
     	if(currentPage != 'Twitter') toggleTwitterPanel();
     	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) closeFeedTimer = setTimeout(toggleTwitterPanel,10000);
 	    requestAnimationFrame(function(){
-		    requestAnimationFrame(function(){
-		    	console.log(d3.select('#twitterWrapper'));
-			    d3.select('#twitterWrapper')
-			    	.transition()
-			    	.duration(400)
-			    	.ease("cubic-in-out")
-			    	.style('margin-top',(20-h)+'px');
-		    });
+		    d3.select('#twitterWrapper')
+		    	.transition()
+		    	.delay(800)
+		    	.duration(400)
+		    	.ease("cubic-in-out")
+		    	.style('margin-top',(20-h)+'px');
 	    });
     }
 
