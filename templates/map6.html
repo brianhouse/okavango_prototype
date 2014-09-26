@@ -1213,7 +1213,7 @@
                     // if(personLatLon.lat != 0 && personLatLon.lng != 0){
                     personLatLon.lat += (tpos[0] - personLatLon.lat) * sp * 2;
                     personLatLon.lng += (tpos[1] - personLatLon.lng) * sp * 2;
-                    if(tpos.x != 0) personMarkers[n].setLatLng(personLatLon);
+                    if(tpos[0] != 0) personMarkers[n].setLatLng(personLatLon);
                     // } else {
                     //     personLatLon.lat = tpos[0];
                     //     personLatLon.lng = tpos[1];
