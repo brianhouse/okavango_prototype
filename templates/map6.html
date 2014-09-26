@@ -660,16 +660,6 @@
                 if (feature.properties && feature.properties.t_utc) {
                     var d = new Date(feature.properties.t_utc * 1000);
                     layer.bindPopup(feature.properties.tweet.text);
-
-                    var clicked = function(){
-                        console.log(this);
-                    }
-
-                    d3.select(layer._popup._wrapper)
-                        .style('cursor','pointer')
-                        .on('click',function(){
-                            console.log(this);
-                        })
                 }
             }
 
@@ -1174,6 +1164,9 @@
             d3.select("#mapTimeline div.pauseButton")
                 .on('click',function(){
                     isAnimationPaused = !isAnimationPaused;
+                    d3.select(this)
+                        .text(isAnimationPaused?'&#9658;':'II')
+                        .style('font-size',isAnimationPaused?'11px':'18px');
                 })
 			
 			focusLatLon[0] = map.getCenter().lat;
