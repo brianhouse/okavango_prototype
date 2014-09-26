@@ -834,7 +834,7 @@ var togglePanel = function(node, mapClick, i){
 				togglePanel(this, true, 0);
 			});
 
-		d3.select('svg.closeButton').style('right','64.5%');
+		d3.select('svg.closeButton').style('right','5%');
 
 		lastAnimationPaused = isAnimationPaused;
 		isAnimationPaused = true;
@@ -922,7 +922,7 @@ var toggleTwitterPanel = function(focus){
 
 		d3.select('#headerWrapper').style('position','fixed');
 
-		d3.select('svg.closeButton').style('right','5%');
+		d3.select('svg.closeButton').style('right','64.5%');
 
 		currentPage = 'Twitter';
 
