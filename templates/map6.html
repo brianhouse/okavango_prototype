@@ -1082,16 +1082,23 @@
 		}
 
         var cullMarkers = function(){
+
+            var boundaries = map.getBounds();
+            var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
+            b = [   b[0]+(b[0]-b[1])/2,
+                    b[1]+(b[1]-b[0])/2,
+                    b[2]+(b[2]-b[3])/2,
+                    b[3]+(b[3]-b[2])/2  ];
+
             if(frameCount%160 == 0){
-                var boundaries = map.getBounds();
                 var sightings = sightingsLayer.getLayers()[0]._featureGroup.getLayers();
                 var l1 = sightings.length;
                 var flag;
                 for(var i = 0; i<l1; i++){
                     flag = false;
                     var coords = sightings[i].getLatLng();
-                    if(coords.lat <= boundaries.getNorthWest().lat && coords.lat >= boundaries.getSouthEast().lat){
-                        if(coords.lng >= boundaries.getNorthWest().lng && coords.lng <= boundaries.getSouthEast().lng){
+                    if(coords.lat <= b[0] && coords.lat >= b[1]){
+                        if(coords.lng >= b[2] && coords.lng <= b[3]){
                             flag = true;
                         }
                     }
@@ -1099,14 +1106,13 @@
                         .style('display',flag?'inline':'none')
                 }
             } else if(frameCount%160 == 40){
-                var boundaries = map.getBounds();
                 var l1 = tweetMarkers.length;
                 var flag;
                 for(var i=0; i<l1; i++){
                     flag = false;
                     var coords = tweetMarkers[i].getLatLng();
-                    if(coords.lat <= boundaries.getNorthWest().lat && coords.lat >= boundaries.getSouthEast().lat){
-                        if(coords.lng >= boundaries.getNorthWest().lng && coords.lng <= boundaries.getSouthEast().lng){
+                    if(coords.lat <= b[0] && coords.lat >= b[1]){
+                        if(coords.lng >= b[2] && coords.lng <= b[3]){
                             flag = true;
                         }
 
@@ -1117,7 +1123,6 @@
                         .style('display',flag?'inline':'none')
                 }
             } else if(frameCount%160 == 80){
-                var boundaries = map.getBounds();
                 var beacons = beaconLayer.getLayers();
                 var l1 = beacons.length;
                 var flag;
@@ -1125,8 +1130,8 @@
                     flag = false;
                     if(beacons[i].getLatLng){
                         var coords = beacons[i].getLatLng();
-                        if(coords.lat <= boundaries.getNorthWest().lat && coords.lat >= boundaries.getSouthEast().lat){
-                            if(coords.lng >= boundaries.getNorthWest().lng && coords.lng <= boundaries.getSouthEast().lng){
+                        if(coords.lat <= b[0] && coords.lat >= b[1]){
+                            if(coords.lng >= b[2] && coords.lng <= b[3]){
                                 flag = true;
                             }
                         }
@@ -1137,7 +1142,23 @@
                     }
                 }
             } else if(frameCount%160 == 120 && isAnimationPaused){
-
+                // for (var l = 0; l < names.length; l++) {
+                //     var n = names[l];
+                //     var len = pathRevealed[n].length;
+                //     var coords;
+                //     for(var k=len-1; k>=0; k--){
+                //         coords = pathRevealed[n][0].getLatLngs();
+                //         if(coords[1].lat <= b[0] && coords[1].lat >= b[1] && coords[1].lng >= b[2] && coords[1].lng <= b[3]){
+                //             break;
+                //         } else {
+                //             d3.select(pathRevealed[n][0]._container)
+                //                 .style('display','none')
+                //             pathRevealed[n].shift();
+                //             len --;
+                //             k --;
+                //         }
+                //     }
+                // }
             }
         }
 
@@ -1350,10 +1371,10 @@
                     var boundaries = map.getBounds();
                     var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
                     b = [
-                            b[0]-(b[0]-b[1])/3,
-                            b[1]-(b[1]-b[0])/3,
-                            b[2]-(b[2]-b[3])/3,
-                            b[3]-(b[3]-b[2])/3
+                            b[0]+(b[0]-b[1])/2,
+                            b[1]+(b[1]-b[0])/2,
+                            b[2]+(b[2]-b[3])/2,
+                            b[3]+(b[3]-b[2])/2
                         ]
                     var len = pathRevealed[n].length;
                     var coords;
