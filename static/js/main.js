@@ -788,6 +788,8 @@ var togglePanel = function(node, mapClick, i){
 	    	.style('cursor','auto')
 			.on('click',null);
 
+		isAnimationPaused = lastAnimationPaused;
+
 	} else if(d3.select(node).text() != "Map" && (currentPage == "Map" || currentPage =='Twitter')){
 
 		d3.select('div.leaflet-top.leaflet-right')
@@ -823,6 +825,9 @@ var togglePanel = function(node, mapClick, i){
 			.on('click',function(){
 				togglePanel(this, true, 0);
 			});
+
+		lastAnimationPaused = isAnimationPaused;
+		isAnimationPaused = true;
 
 	}
 
