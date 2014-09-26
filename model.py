@@ -76,12 +76,48 @@ def get_protect(db, kind):
 def get_coords_by_time(db, time):
     db.execute("SELECT t,data FROM features WHERE kind='ambit_geo' AND t < ? ORDER BY t DESC LIMIT 1", (time,))
     result = db.fetchone()
+    print(result)
     closeFeature = result['data'];
     j = json.loads(closeFeature);
     geom = j['geometry'];
 
-    #print("CLOSEST FEATURE TO ? IS ?", (time,geom))
+    print("CLOSEST FEATURE TO ? IS ?", (time,geom))
     return geom;
+
+@db_call
+def update_latlon(db):
+    query = "SELECT * FROM features WHERE kind = 'tweet' OR kind = 'image'"
+    db.execute(query)
+
+    c = 0;
+
+    for row in db.fetchall():
+
+        t = row['t']
+        k = row['kind']
+        d = row['data']
+
+        print(t)
+
+        #get new coords
+        coords = get_coords_by_time(t);
+
+        #load json from data column
+        feature = geojson.loads(d)
+
+        #frankenfeature
+        newFeature = geojson.Feature(geometry=coords,properties=feature.properties)
+
+        newData = json.dumps(newFeature)
+        print("OLD" + d)
+        print("NEW" + newData)
+
+        #insert
+        #db.execute("UPDATE features SET data=" + newData + " WHERE t=" + t " AND kind=" + k)
+
+        c = c + 1;
+
+        print(c);
 
 @db_call
 def get_drop_by_id(db, hydrosensor_id):
