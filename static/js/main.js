@@ -184,7 +184,7 @@ var initMetrics = function(){
 var queryAmbit = function(date){
 	var dateString = ''+date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + (date.getDate()+(date.getDate()<10?1:0));
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1&skip=5';
-	console.log('d3.json : ' + url);
+	// console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 
 		if(json.features.length == 0) return;
@@ -197,7 +197,7 @@ var queryAmbit = function(date){
 var querySightings = function(date){
 	var dateString = ''+date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + date.getDate();
 	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=sighting&days=1';
-	console.log('d3.json : ' + url);
+	// console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 		
 		if(json.features.length == 0) return;
@@ -334,7 +334,7 @@ var initTimeline = function(json){
 	var updateSelection = function(){
 		timeline.select('rect.selection')
 			.attr('x',function(d){return w*d[0]+h})
-			.attr('width',function(d){return w*(d[1]-d[0])-h*2})
+			.attr('width',function(d){return Math.max(0,w*(d[1]-d[0])-h*2)})
 
 		timeline.selectAll('rect.outside')
 			.data(cursorRange)
@@ -834,6 +834,8 @@ var togglePanel = function(node, mapClick, i){
 				togglePanel(this, true, 0);
 			});
 
+		d3.select('svg.closeButton').style('right','64.5%');
+
 		lastAnimationPaused = isAnimationPaused;
 		isAnimationPaused = true;
 
@@ -919,6 +921,8 @@ var toggleTwitterPanel = function(focus){
 			.style('opacity',1)
 
 		d3.select('#headerWrapper').style('position','fixed');
+
+		d3.select('svg.closeButton').style('right','5%');
 
 		currentPage = 'Twitter';
 
