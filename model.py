@@ -96,6 +96,8 @@ def update_latlon(db):
         k = row['kind']
         d = row['data']
 
+        print(t)
+
         #get new coords
         coords = get_coords_by_time(t);
 
