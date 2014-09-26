@@ -1214,7 +1214,7 @@
                 var n = names[i];
                 if(personMarkers[n]){
                     var personLatLon = L.latLng(0,0);
-                    if(counters[n] > 0){
+                    if(counters[n] > 1){
                         var r = mapValues(startTime,pathQueues[n][counters[n]-1].time,pathQueues[n][counters[n]].time,0,1);
                         personLatLon.lat = mapValues(r,0,1,previousPersonMarkersTarget[n][0],personMarkersTarget[n][0]);
                         personLatLon.lng = mapValues(r,0,1,previousPersonMarkersTarget[n][1],personMarkersTarget[n][1]);
