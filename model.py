@@ -84,7 +84,7 @@ def get_coords_by_time(db, time):
     return geom;
 
 @db_call
-def update_latlon():
+def update_latlon(db):
     query = "SELECT * FROM features WHERE kind = 'tweet' OR kind = 'image'"
     model.db.execute(query)
 
