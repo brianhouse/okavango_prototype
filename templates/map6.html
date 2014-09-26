@@ -1286,13 +1286,17 @@
             if(tweetsQueue.length>0){
                 while (tweetsQueue[tweetCounter].time/1000 - 350 < startTime) {
                     if(!daySkip && (!tweetsQueue[tweetCounter+1]||tweetsQueue[tweetCounter+1].time-tweetsQueue[tweetCounter].time>100)){ 
-                        tweetsQueue[tweetCounter].marker.openPopup();
                         var m = tweetsQueue[tweetCounter].marker;
-                        d3.select(tweetsQueue[tweetCounter].marker._popup._container)
-                            .style('cursor','pointer')
-                            .on('click',function(){
-                                focusTweet(m);
-                            })
+                        if(currentPage != 'Twitter'){
+                            tweetsQueue[tweetCounter].marker.openPopup();
+                            d3.select(tweetsQueue[tweetCounter].marker._popup._container)
+                                .style('cursor','pointer')
+                                .on('click',function(){
+                                    focusTweet(m);
+                                })
+                        } else {
+                            focusTweet(m);
+                        }
                         revealedTweets.push(tweetsQueue[tweetCounter])
                         revealedMarkerTimes.push(new Date().getTime());
                     }
