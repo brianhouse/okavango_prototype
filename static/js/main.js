@@ -71,7 +71,7 @@ var setVideoHeight = function(){
 			// var w = d3.select('#video svg.playButton').node().clientWidth);
 			// return
 			// console.log('test: ' + d3.select('#video svg.playButton').node().clientWidth);
-			return d3.select('#video svg.playButton').node().clientWidth
+			return '90'
 		})
 			
 	d3.select('#video')
