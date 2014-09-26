@@ -1183,10 +1183,6 @@
 
     		function startAnimation() {
 
-                d3.select('#mapNav')
-                    .transition()
-                    .style('opacity',1);
-
                 d3.select("#mapTimeline div.pauseButton")
                     .on('click',function(){
                         isAnimationPaused = !isAnimationPaused;
@@ -1215,6 +1211,7 @@
 
             var posMap = function(){
 
+                var animationStarted = false;
                 var sp = daySkip ? 0.4:0.1;
                 var mapValues = function(value, start1, stop1, start2, stop2) {
                     return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
@@ -1232,6 +1229,12 @@
                             personLatLon.lng += (tpos[1] - personLatLon.lng) * sp * 2;
                             personMarkers[n].setLatLng(personLatLon);
                             if(i==0 && tpos[0] != 0) map.setView(personLatLon, map.getZoom(), {pan:{animate:false}});
+                            if(tpos[0] && !animationStarted){
+                                animationStarted = true;
+                                d3.select('#mapNav')
+                                    .transition()
+                                    .style('opacity',1);
+                            }
                         }
                     }
                 }
