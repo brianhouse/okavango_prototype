@@ -726,13 +726,26 @@ ul {
 			}
 
 #skip {
-	font: 14px Verdana, Helvetica, sans-serif; 
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	margin-top: 8px;
-	margin-left: -15px;
+	position:fixed;
+	width:7%;
+	min-width: 100px;
+	top:55%;
+	left:46.5%;
+	padding: 4px;
+	background-color: rgba(4,0,26,0.75);
+	border-left: 2px solid #FFB637;
+	border-radius:2px;
+	font-family: "Montserrat";
+	font-size:14px;
+	height:14px;
+	transition: background-color 0.2s;
+	cursor: pointer;
 }
+
+#skip:hover {
+	background-color: rgba(4,0,26,0.95);
+}
+
 #skip a{
 	color:white;
 }
