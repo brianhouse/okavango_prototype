@@ -5,10 +5,10 @@
 
 c = 0;
 
-import datetime, pytz, geojson, model, os, uuid, shutil, subprocess, pipes, json, time
+import geojson, model
 
 query = "SELECT * FROM features WHERE kind = 'tweet' OR kind = 'image'"
-db.execute(query)
+model.db.execute(query)
 
 for row in db.fetchall():
 
