@@ -1084,6 +1084,7 @@ var initMapTimeline = function(){
 
 
 		var skipBack = function(sameDay) {
+			console.log(sameDay + ' AGA');
 		    var oneBack = startTime - (24 * 60 * 60);
 		    var morning = (oneBack - (oneBack % (24 * 60 * 60))*(sameDay?-1:1)) + (6 * 60 * 60);
 		    startTime = morning;
@@ -1117,7 +1118,7 @@ var initMapTimeline = function(){
 
 		    console.log("NEW Q COUNTER:" + sightingCounter)
 		    daySkip = true;
-		    
+
 		}
 
 		var skipForward = function() {
