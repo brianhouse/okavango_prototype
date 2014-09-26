@@ -189,9 +189,9 @@ var queryAmbit = function(date){
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 
+		console.log('received ambit ' + json.features.length);
 		if(json.features.length == 0) return;
 		ambitJson.push(json);
-		
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
 		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) updateAmbitData();
 		// if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
@@ -204,6 +204,7 @@ var querySightings = function(date){
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 		
+		console.log('received sightings ' + json.features.length);
 		if(json.features.length == 0) return;
 		sightingJson.push(json);
 
