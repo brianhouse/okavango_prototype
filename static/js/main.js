@@ -534,6 +534,14 @@ var initGraphs = function(data){
 
 		for(var i=0; i<len; i++){
 			var ambit = json[i].properties;
+			if(!metrics[ambit.Person]){
+				metrics[ambit.Person] = {
+					heartrate:[],
+					energyConsumption:[],
+					speed:[]
+				}
+				metrics.persons.push(ambit.Person);
+			}
 			var d = ambit.t_utc*1000;
 
 			if(ambit.HR) metrics[ambit.Person].heartrate.push([d,ambit.HR])
