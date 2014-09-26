@@ -1010,10 +1010,10 @@ var initFeed = function(json){
 
 }
 
-var focusTweet = function(queue){
+var focusTweet = function(marker){
 
 	var tweetFound = false;
-    var id = queue.marker.feature.id;
+    var id = marker.feature.id;
     var h = d3.select('#twitterWrapper').style('margin-top');
     h = -parseFloat(h.substring(0,h.length-2));
 
@@ -1025,7 +1025,7 @@ var focusTweet = function(queue){
         })
 
     if(tweetFound){
-    	console.log('focusing tweet: ' + queue.marker.feature.properties.tweet.text);
+    	console.log('focusing tweet: ' + marker.feature.properties.tweet.text);
     	clearTimeout(closeFeedTimer);
     	if(currentPage != 'Twitter') toggleTwitterPanel();
     	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) closeFeedTimer = setTimeout(toggleTwitterPanel,10000);
