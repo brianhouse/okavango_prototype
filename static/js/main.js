@@ -1070,7 +1070,6 @@ var focusTweet = function(marker){
 
 var initMapTimeline = function(){
 	if(isGraphReady){
-		console.log('initMapTimeline');
 		var h = 27;
 
 		var w = window.innerWidth - (d3.select('#tweetsButton').node().clientWidth + window.innerWidth*0.463 + 100);
@@ -1311,7 +1310,6 @@ var initMapTimeline = function(){
 
 var updateMapTimeline = function(d, loadingTransition){
 	if(isGraphReady){
-	console.log(d);
 
 		var mapValues = function(value, start1, stop1, start2, stop2) {
 		    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
@@ -1320,7 +1318,7 @@ var updateMapTimeline = function(d, loadingTransition){
 		mapTimeline[0] = d;
 
 		var h = 27;
-		var w = d3.select('#mapTimeline div.bar svg').node().clientWidth;
+		var w = +d3.select('#mapTimeline div.bar svg').node().clientWidth;
 
 		var flag = false;
 		d3.select('#mapTimeline div.bar svg').selectAll('circle')
@@ -1342,6 +1340,8 @@ var updateMapTimeline = function(d, loadingTransition){
 		var d2 = new Date('September 1, 2014');
 		var r1 = mapValues(mapTimeline[0].getTime(),d1.getTime(),d2.getTime(),0,1);
 		var r2 = mapValues(mapTimeline[1].getTime(),d1.getTime(),d2.getTime(),0,1);
+
+		if(frameCount%60 == 0) console.log(r1 + ' ' + r2);
 
 		d3.select('#mapTimeline div.bar svg line.covered')
 			.attr('x1',5)
