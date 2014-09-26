@@ -99,7 +99,7 @@ def update_latlon(db):
         print(t)
 
         #get new coords
-        coords = get_coords_by_time(t);
+        coords = get_coords_by_time(db,t);
 
         #load json from data column
         feature = geojson.loads(d)
