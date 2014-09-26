@@ -84,6 +84,39 @@ def get_coords_by_time(db, time):
     return geom;
 
 @db_call
+def update_latlon():
+    query = "SELECT * FROM features WHERE kind = 'tweet' OR kind = 'image'"
+    model.db.execute(query)
+
+    c = 0;
+
+    for row in db.fetchall():
+
+        t = row['t']
+        k = row['kind']
+        d = row['data']
+
+        #get new coords
+        coords = get_coords_by_time(t);
+
+        #load json from data column
+        feature = geojson.loads(d)
+
+        #frankenfeature
+        newFeature = geojson.Feature(geometry=coords,properties=feature.properties)
+
+        newData = json.dumps(newFeature)
+        print("OLD" + d)
+        print("NEW" + newData)
+
+        #insert
+        #db.execute("UPDATE features SET data=" + newData + " WHERE t=" + t " AND kind=" + k)
+
+        c = c + 1;
+
+        print(c);
+
+@db_call
 def get_drop_by_id(db, hydrosensor_id):
     db.execute("SELECT lat, lon FROM hydrodrops WHERE id=? ORDER BY t DESC LIMIT 1", (hydrosensor_id,))
     result = db.fetchone()
