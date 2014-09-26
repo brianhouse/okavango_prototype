@@ -1016,7 +1016,7 @@ var focusTweet = function(marker){
 	var tweetFound = false;
     var id = marker.feature.id;
     var h = d3.select('#twitterWrapper').style('margin-top');
-    h = -parseFloat(h.substring(0,h.length-2));
+    h = parseFloat(h.substring(0,h.length-2)) * (currentPage == 'Twitter'?-1:1);
 
     d3.select('#twitterWrapper').selectAll('div.tweet')
         .filter(function(d){return id == d.id})
@@ -1029,8 +1029,6 @@ var focusTweet = function(marker){
     	console.log('focusing tweet: ' + marker.feature.properties.tweet.text);
     	if(currentPage != 'Twitter') toggleTwitterPanel();
 	    requestAnimationFrame(function(){
-	    	var h = d3.select('#twitterWrapper').style('margin-top');
-    		h = -parseFloat(h.substring(0,h.length-2));
 		    d3.select('#twitterWrapper')
 		    	.transition()
 		    	.duration(400)
