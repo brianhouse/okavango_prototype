@@ -937,7 +937,8 @@
 			permPaths = [];
 			permGeos = [];
             personMarkers = [];
-			personMarkersTarget = [];
+            personMarkersTarget = [];
+			previousPersonMarkersTarget = [];
 
             pathQueues = [];
 			pathRevealed = [];
@@ -1015,7 +1016,8 @@
                     var shiftX = (Math.random() *0.002) - 0.001;
                     var shiftY = (Math.random() *0.002) - 0.001;
                     personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
-    				personMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
+                    personMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
+    				previousPersonMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
 
                     $('.person-marker').css('width','auto')
     				
@@ -1209,9 +1211,15 @@
             for (var i = 0; i < names.length; i++) {
                 var n = names[i];
                 if(personMarkers[n]){
-                    var personLatLon = personMarkers[n].getLatLng();
-                    personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * sp * 2;
-                    personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * sp * 2;
+                    // var personLatLon = personMarkers[n].getLatLng();
+                    // personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * sp * 2;
+                    // personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * sp * 2;
+
+                    if(counters[n]+1 < pathQueues[n].length){
+                        var r = map(startTime,pathQueues[n][counters[n]].time,pathQueues[n][counters[n]+1].time,0,1);
+                        personLatLon.lat = map(r,0,1,previousPersonMarkersTarget[n][0],personMarkersTarget[n][0]);
+                        personLatLon.lng = map(r,0,1,previousPersonMarkersTarget[n][1],personMarkersTarget[n][1]);
+                    }
                     personMarkers[n].setLatLng(personLatLon);
                 }
             }
@@ -1357,6 +1365,7 @@
                                 }]
                                 
                                 permPaths[q.name].addData(point);
+                                previousPersonMarkersTarget[q.name] = q.latLon;
                                 personMarkersTarget[q.name] = q.latLon;
                                 pathRevealed[q.name].push(permPaths[q.name].getLayers()[permPaths[q.name].getLayers().length-1]);
                                 if (i == 0) {

@@ -25,13 +25,10 @@ TODO
 - scroll bar twitter feed
 
 
-- less cropping
-- cull photos
 - uncull paths on pause
 - scroll limit twitter feed
 - scrollbar twitter feed
 - clickable tweet
-- linear person marker motion
 - data panel
 
 
@@ -1298,10 +1295,6 @@ var updateMapTimeline = function(d, loadingTransition){
 		var h = 27;
 		var w = d3.select('#mapTimeline div.bar svg').node().clientWidth;
 
-		function map(value, start1, stop1, start2, stop2) {
-		    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
-		}
-
 		var flag = false;
 		d3.select('#mapTimeline div.bar svg').selectAll('circle')
 			.each(function(){
@@ -1382,4 +1375,8 @@ var updateMapTimelineLoading = function(data){
 	var offset = d.getTimezoneOffset() + 2;
 	d.setTime(startTime * 1000 + (offset * 60 * 1000));
     updateMapTimeline(d,true);
+}
+
+function map(value, start1, stop1, start2, stop2) {
+    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
 }
