@@ -661,7 +661,7 @@
                 if (feature.properties && feature.properties.t_utc) {
                     var d = new Date(feature.properties.t_utc * 1000);
                     layer.bindPopup(feature.properties.tweet.text);
-                    console.log(layer);
+                    console.log(d3.select(layer._icon));
                     d3.select(layer._icon)
                         .on('click',function(){
                             console.log(layer);
