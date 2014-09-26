@@ -8,6 +8,7 @@ TODO
 - scrollbar twitter feed
 - clickable tweet
 - data panel
+- remove stars
 
 */
 

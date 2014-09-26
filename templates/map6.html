@@ -661,6 +661,17 @@
                 if (feature.properties && feature.properties.t_utc) {
                     var d = new Date(feature.properties.t_utc * 1000);
                     layer.bindPopup(feature.properties.tweet.text);
+                    d3.select(layer._icon)
+                        .on('click'.function(){
+                            console.log(layer);
+                            //                     d3.select(tweetsQueue[tweetCounter].marker._popup._container)
+                            // .style('cursor','pointer')
+                            // .on('click',function(){
+                            //     focusTweet(m);
+                            // })
+
+                        })
+
                 }
             }
 
@@ -1276,11 +1287,6 @@
                     if(!daySkip && (!tweetsQueue[tweetCounter+1]||tweetsQueue[tweetCounter+1].time-tweetsQueue[tweetCounter].time>100)){ 
                         tweetsQueue[tweetCounter].marker.openPopup();
                         var m = tweetsQueue[tweetCounter].marker;
-                        d3.select(tweetsQueue[tweetCounter].marker._popup._container)
-                            .style('cursor','pointer')
-                            .on('click',function(){
-                                focusTweet(m);
-                            })
                         revealedTweets.push(tweetsQueue[tweetCounter])
                         revealedMarkerTimes.push(new Date().getTime());
                     }
