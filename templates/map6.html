@@ -1015,8 +1015,6 @@
                     var shiftX = (Math.random() *0.002) - 0.001;
                     var shiftY = (Math.random() *0.002) - 0.001;
                     personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
-                    personMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
-    				previousPersonMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
 
                     $('.person-marker').css('width','auto')
     				
@@ -1052,6 +1050,10 @@
     				geoLayer.addLayer(path);
 
     				permPaths[n] = path;
+
+                    var ll = permPaths[n].getLayers()[1].getLatLngs();
+                    personMarkersTarget[n] = [ll[1].lat,ll[1].lng];
+                    previousPersonMarkersTarget[n] = [ll[1].lat,ll[1].lng];
 
 				}
 
