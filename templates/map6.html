@@ -1396,6 +1396,7 @@
                      var c = counters[n];
                      var q = pathQueues[n][c];
                      var lq = pathQueues[n][c - 1];
+                     console.log(q.time + ' ' + lq.time);
                      if (q.time - lq.time > 60 * 30 ) skipCount ++;
                 }
 
@@ -1436,8 +1437,6 @@
             if (daySkip) {
                 posMap();
             }
-            console.log('AGA');
-            console.log(daySkip);
             daySkip = false;
 
         }
