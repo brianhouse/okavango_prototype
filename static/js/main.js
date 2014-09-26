@@ -537,12 +537,12 @@ var initGraphs = function(data){
 			if(ambit.EnergyConsumption > metrics.maxEnergyConsumption) metrics.maxEnergyConsumption = ambit.EnergyConsumption;
 		}
 
-		// reset value to 0 at the end of the day
-		for(var i=0; i<names.length; i++){
-			metrics[names[i]].heartrate.push([metrics[names[i]].heartrate[metrics[names[i]].heartrate.length-1].d+1,ambit.HR])
-			metrics[names[i]].energyConsumption.push([metrics[names[i]].energyConsumption[metrics[names[i]].energyConsumption.length-1].d+1,ambit.EnergyConsumption])
-			metrics[names[i]].speed.push([metrics[names[i]].speed[metrics[names[i]].speed.length-1].d+1,ambit.Speed])
-		}
+		// // reset value to 0 at the end of the day
+		// for(var i=0; i<names.length; i++){
+		// 	metrics[names[i]].heartrate.push([metrics[names[i]].heartrate[metrics[names[i]].heartrate.length-1].d+1,ambit.HR])
+		// 	metrics[names[i]].energyConsumption.push([metrics[names[i]].energyConsumption[metrics[names[i]].energyConsumption.length-1].d+1,ambit.EnergyConsumption])
+		// 	metrics[names[i]].speed.push([metrics[names[i]].speed[metrics[names[i]].speed.length-1].d+1,ambit.Speed])
+		// }
 
 	}
 
