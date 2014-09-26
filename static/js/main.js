@@ -70,7 +70,7 @@ var setVideoHeight = function(){
 		.attr('height',function(){
 			// var w = d3.select('#video svg.playButton').node().clientWidth);
 			// return
-			console.log('test: ' + d3.select('#video svg.playButton').node().clientWidth);
+			// console.log('test: ' + d3.select('#video svg.playButton').node().clientWidth);
 			return d3.select('#video svg.playButton').node().clientWidth
 		})
 			
