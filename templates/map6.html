@@ -1212,21 +1212,19 @@
             map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
 
             // animates explorers' markers towards their current position on the map
+            // var map = function(value, start1, stop1, start2, stop2) {
+            //     return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
+            // }
             for (var i = 0; i < names.length; i++) {
                 var n = names[i];
-                if(personMarkers[n]){
-                    // var personLatLon = personMarkers[n].getLatLng();
-                    // personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * sp * 2;
-                    // personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * sp * 2;
-
-                    var personLatLon = personMarkers[n].getLatLng();
-                    if(counters[n]+1 < pathQueues[n].length){
-                        var r = map(startTime,pathQueues[n][counters[n]].time,pathQueues[n][counters[n]+1].time,0,1);
-                        personLatLon.lat = map(r,0,1,previousPersonMarkersTarget[n][0],personMarkersTarget[n][0]);
-                        personLatLon.lng = map(r,0,1,previousPersonMarkersTarget[n][1],personMarkersTarget[n][1]);
-                    }
-                    personMarkers[n].setLatLng(personLatLon);
+                var personLatLon = personMarkers[n].getLatLng();
+                if(counters[n]+1 < pathQueues[n].length){
+                    var r = map(startTime,pathQueues[n][counters[n]].time,pathQueues[n][counters[n]+1].time,0,1);
+                    personLatLon.lat = map(r,0,1,previousPersonMarkersTarget[n][0],personMarkersTarget[n][0]);
+                    personLatLon.lng = map(r,0,1,previousPersonMarkersTarget[n][1],personMarkersTarget[n][1]);
+                    // console.log(r);
                 }
+                personMarkers[n].setLatLng(personLatLon);
             }
         }
 
@@ -1370,7 +1368,7 @@
                                 }]
                                 
                                 permPaths[q.name].addData(point);
-                                previousPersonMarkersTarget[q.name] = q.latLon;
+                                previousPersonMarkersTarget[q.name] = personMarkersTarget[q.name];
                                 personMarkersTarget[q.name] = q.latLon;
                                 pathRevealed[q.name].push(permPaths[q.name].getLayers()[permPaths[q.name].getLayers().length-1]);
                                 if (i == 0) {
