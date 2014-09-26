@@ -1195,20 +1195,7 @@
 		}
 
         var posMap = function(){
-            // centers map on the current target position
 
-            var sp = daySkip ? 0.4:0.1;
-            if(idleFrameCount < 100){
-                focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * sp;
-                focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * sp;
-            } else {
-                focusLatLon[0] = targetLatLon[0];
-                focusLatLon[1] = targetLatLon[1];
-                idleFrameCount = 0;
-            }
-            map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
-
-            // animates explorers' markers towards their current position on the map
             var mapValues = function(value, start1, stop1, start2, stop2) {
                 return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
             }
@@ -1225,9 +1212,8 @@
                     personLatLon.lat += (tpos[0] - personLatLon.lat) * sp * 2;
                     personLatLon.lng += (tpos[1] - personLatLon.lng) * sp * 2;
                     personMarkers[n].setLatLng(personLatLon);
+                    if(i==0) map.setView(personLatLon, map.getZoom(), {pan:{animate:false}});
                 }
-
-                
             }
         }
 
