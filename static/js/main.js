@@ -1290,6 +1290,10 @@ var initMapTimeline = function(){
 var updateMapTimeline = function(d, loadingTransition){
 	if(isGraphReady){
 
+		var map = function(value, start1, stop1, start2, stop2) {
+		    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
+		}
+
 		mapTimeline[0] = d;
 
 		var h = 27;
@@ -1375,8 +1379,4 @@ var updateMapTimelineLoading = function(data){
 	var offset = d.getTimezoneOffset() + 2;
 	d.setTime(startTime * 1000 + (offset * 60 * 1000));
     updateMapTimeline(d,true);
-}
-
-function map(value, start1, stop1, start2, stop2) {
-    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
 }
