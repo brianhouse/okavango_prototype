@@ -7,9 +7,7 @@ TODO
 - scroll limit twitter feed
 - scrollbar twitter feed
 - data panel
-- remove stars
 - restart from 0
-- open twitterpanel at right time
 
 */
 
@@ -193,7 +191,7 @@ var queryAmbit = function(date){
 		if(json.features.length == 0) return;
 		ambitJson.push(json);
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
-		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) updateAmbitData();
+		// else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) updateAmbitData();
 		// if(isGraphReady) queryAmbit(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
@@ -209,7 +207,7 @@ var querySightings = function(date){
 		sightingJson.push(json);
 
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
-		else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) initSighting(sightingJson);
+		// else if(ambitJson.length>0 && sightingJson.length>0 && dataReady) initSighting(sightingJson);
 		// if(isGraphReady) querySightings(new Date(+date.getTime() + (24*60*60*1000)));
 	});
 }
@@ -272,29 +270,26 @@ var enableDataPage = function(ambitJson,sightingJson){
 				.style('display','none')
 		})
 
-	initTimeline(ambitJson);
-	initGraphs(ambitJson);
-	initSighting(sightingJson);
 }
 
 
 var initSighting = function(data){
 
-	if(currentPage != 'Data'){
-		d3.select('#fullPanelWrapper')
-			.style('display','block')
-		d3.select('#fullPanelWrapper div.page:nth-child(3)')
-			.style('display','block')
+	// if(currentPage != 'Data'){
+	// 	d3.select('#fullPanelWrapper')
+	// 		.style('display','block')
+	// 	d3.select('#fullPanelWrapper div.page:nth-child(3)')
+	// 		.style('display','block')
 
-		requestAnimationFrame(function(){
-			if(currentPage == 'Map'){
-				d3.select('#fullPanelWrapper')
-					.style('display','none')
-			}
-			d3.select('#fullPanelWrapper div.page:nth-child(3)')
-				.style('display','none')
-		});
-	}
+	// 	requestAnimationFrame(function(){
+	// 		if(currentPage == 'Map'){
+	// 			d3.select('#fullPanelWrapper')
+	// 				.style('display','none')
+	// 		}
+	// 		d3.select('#fullPanelWrapper div.page:nth-child(3)')
+	// 			.style('display','none')
+	// 	});
+	// }
 
 	var sightings = [];
 
@@ -436,6 +431,8 @@ var initTimeline = function(json){
 		return this;
 	}
 
+	timeline.selectAll('g.slider').remove();
+
 	timeline.selectAll('g.slider')
 		.data(cursorRange)
         .enter()
@@ -464,7 +461,9 @@ var initTimeline = function(json){
 		.attr('y',h*0.66)
 		.attr('text-anchor',function(d,i){return i==0 ? 'start':'end'})
 		.attr('fill','rgb(255,255,255)')
-		
+	
+	d3.selectAll('rect.selection, rect.outside').remove();
+
 	timeline
 		.append('rect')
 		.datum(cursorRange)
@@ -494,6 +493,8 @@ var initGraphs = function(data){
 	h = +h.substring(0,h.length-2);
 
 	// timescale
+	d3.select('#scale svg.labels').selectAll('text').remove();
+
 	d3.select('#scale svg.labels')
 		.append('text')
 		.text('time')
@@ -504,6 +505,9 @@ var initGraphs = function(data){
 			var w = d3.select('#scale svg.labels').style('width');
 			return +w.substring(0,w.length-2)-10;
 		})
+
+	d3.select('#scale svg.graph').selectAll('g.dates').remove();
+	d3.select('#scale svg.graph').selectAll('line').remove();
 
 	d3.select('#scale svg.graph')
 		.append('g')
@@ -552,11 +556,16 @@ var initGraphs = function(data){
 		}
 	}
 
+	d3.selectAll('div.graph svg.labels').selectAll('g.axis').remove();
+
 	d3.selectAll('div.graph svg.labels')
 		.filter(function(d,i){return i>0})
 		.append('g')
 		.classed('axis',true)
 		.attr('width',w)
+
+	d3.selectAll('svg.graph').selectAll('path').remove();
+	d3.selectAll('#persons').selectAll('span').remove();
 
 	len = metrics.persons.length;
 	for(var i=0; i<len; i++){
@@ -722,16 +731,16 @@ var updateGraphs = function(){
     
 }
 
-var updateAmbitData = function(){
+// var updateAmbitData = function(){
 
-	d3.selectAll('svg.timeline *').remove();
-	initTimeline(ambitJson);
+// 	d3.selectAll('svg.timeline *').remove();
+// 	initTimeline(ambitJson);
 
-	d3.selectAll('div.graph svg *').remove();
-	d3.selectAll('#graphWrapper #persons').remove();
-	initGraphs(ambitJson);
+// 	d3.selectAll('div.graph svg *').remove();
+// 	d3.selectAll('#graphWrapper #persons').remove();
+// 	initGraphs(ambitJson);
 
-}
+// }
 
 
 var togglePanel = function(node, mapClick, i){
@@ -862,6 +871,12 @@ var togglePanel = function(node, mapClick, i){
 	currentPage = mapClick ? 'Map' : d3.select(node).text();
 	d3.selectAll('#pagesNav li')
 		.classed('focused',function(){return d3.select(this).text() == currentPage || (d3.select(this).text() == 'Map' && mapClick)});
+
+	if(currentPage == 'Data'){
+		initTimeline(ambitJson);
+		initGraphs(ambitJson);
+		initSighting(sightingJson);
+	}
 
 }
 
