@@ -1374,7 +1374,7 @@
                                     targetLatLon[1] = q.latLon[1];
                                 }
                                 timeInterval[q.name][0] = new Date().getTime();
-                                if(counters[q.name]+1 < pathQueues[q.name].length) timeInterval[q.name][1] = new Date().getTime() + (pathQueues[q.name][counters[q.name]+1].time - pathQueues[q.name][counters[q.name]].time)*1000/(;timeMag*timeStep)
+                                if(counters[q.name]+1 < pathQueues[q.name].length) timeInterval[q.name][1] = new Date().getTime() + (pathQueues[q.name][counters[q.name]+1].time - pathQueues[q.name][counters[q.name]].time)*1000/(timeMag*timeStep)
                             }
                             counters[n]++;
                         } 
