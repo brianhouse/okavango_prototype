@@ -934,7 +934,7 @@ var toggleTwitterPanel = function(focus){
 					    }
 					}
 				}
-			}
+			})
 		}
 
 	} else {
