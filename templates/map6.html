@@ -490,6 +490,8 @@
 
 		var step = 0;
         var frameCount = 0;
+        var lastFrameCount = 0;
+        var idleFrameCount = 0;
 
 		var scripts = [
 			"This is the Okavango Delta.",
@@ -1193,8 +1195,14 @@
             // centers map on the current target position
 
             var sp = daySkip ? 0.4:0.1;
-            focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * sp;
-            focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * sp;
+            if(idleFrameCount < 100){
+                focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * sp;
+                focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * sp;
+            } else {
+                focusLatLon[0] = targetLatLon[0];
+                focusLatLon[1] = targetLatLon[1];
+                idleFrameCount = 0;
+            }
             map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
 
             // animates explorers' markers towards their current position on the map
@@ -1215,6 +1223,10 @@
 
         //Logic for the time-based animation
 		function doAnimation() {
+
+            if(lastFrameCount == frameCount) idleFrameCount ++;
+            else idleFrameCount = 0;
+            lastFrameCount = frameCount;
 
             if(isAnimationPaused) return;
 
