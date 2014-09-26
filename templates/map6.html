@@ -1051,7 +1051,8 @@
 
     				permPaths[n] = path;
 
-                    var ll = permPaths[n].getLayers()[1].getLatLngs();
+                    var ll = permPaths[n].getLayers()[0].getLatLngs();
+                    console.log(permPaths[n].getLayers()[0]);
                     personMarkersTarget[n] = [ll[1].lat,ll[1].lng];
                     previousPersonMarkersTarget[n] = [ll[1].lat,ll[1].lng];
 
