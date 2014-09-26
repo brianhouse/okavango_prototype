@@ -650,6 +650,7 @@ ul {
 		width:auto;
 		top:25px;
 		right:11.4%;
+		opacity: 0;
 	}
 
 		#mapNav #mapTimeline{

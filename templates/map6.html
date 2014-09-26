@@ -1183,6 +1183,10 @@
 
     		function startAnimation() {
 
+                d3.select('#mapNav')
+                    .transition()
+                    .style('opacity',1);
+
                 d3.select("#mapTimeline div.pauseButton")
                     .on('click',function(){
                         isAnimationPaused = !isAnimationPaused;
