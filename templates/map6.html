@@ -29,43 +29,7 @@
  	<script src="../static/js/Control.FullScreen.js"></script>
 
     <!--script src='https://api.tiles.mapbox.com/mapbox.js/v2.0.1/mapbox.js'></script-->
-	<script language="Javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>	
-
-    <script>
-        $(document).ready(function() {
-            console.log("SHUFFLE");
-            var $container = $("#col1");
-            $container.html(shuffle($container.children().get()));
-            var $container = $("#col2");
-            $container.html(shuffle($container.children().get()));
-            var $container = $("#col3");
-            $container.html(shuffle($container.children().get()));
-            var $container = $("#col4");
-            $container.html(shuffle($container.children().get()));
-
-            $("#skip").click(function(event){
-                event.preventDefault(); 
-                doSkip();
-                $("#skip").hide();
-                console.log("SKIP");
-            });
-
-            /*
-            $('.randcol').each(function() {
-                $(this).children().each(function() {
-                    $(this).append("<hr/>")
-                })
-            })
-            */
-
-            
-        })
-
-        function shuffle(o){
-            for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-            return o;
-        };
-    </script>
+	<script language="Javascript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 
   </head>
   <body>
@@ -358,22 +322,88 @@
 	<script type="text/javascript">
 
         var isGraphReady = true;
+        var sightingsLoaded = false;
+            var pathsLoaded = false;
+            var beaconsLoaded = false;
+            var tweetsLoaded = false;
+            var photosLoaded = false;
 
-        function doSkip() {
-            step = 100;
-            focusMarker.closePopup();
-            map.setZoom(17);
-            map.panTo(focusMarker.getLatLng());
-            focusMarker.bindPopup("Last reported position.");
-            $("#skip").hide();
-            siteReady();
-            if (!sightingsLoaded) loadSightings();
-            if (!pathsLoaded) loadPaths();
+            var lastPoint;
+            var markers = [];
+            var beaconMarkers = [];
+            var beaconCoords = [];
 
-            clearTimeout(function(){zoomIn(focusMarker)});
-        }
+            var tweetMarkers = [];
+            var tweetCoords = [];
+
+            var photoMarkers = [];
+            var photoCoords = [];
+
+            var sightingsQueue;
+            var tweetsQueue;
+            var revealedTweets;
+            var revealedTweetTimes;
+
+            var photosQueue;
+            var revealedPhotos;
+            var revealedPhotoTimes;
+
+            var d = new Date();
+            var focusMarker;
+
+            var step = 0;
+            var frameCount = 0;
+            var lastFrameCount = 0;
+            var idleFrameCount = 0;
+
+            var scripts = [
+                "This is the Okavango Delta.",
+                "Located in Botswana, it is one of the richest wildlife areas on the planet.",
+                "On August 17th, a group of BaYei bushmen, artists, scientists, engineers and filmmakers entered the area for an 18-day expedition. The group, led by Dr. Steve Boyes, seeks to explore and survey new parts of the central delta.",
+                "On this site, you can examine the data footprint of the expedition, and access all of the data they collect, including wildlife sightings, water quality data, photos, audio, and position and heart rate data for individual expedition members.",
+                "Data from the expedition is uploaded in near real-time, as well as at the end of every day.",
+                "Click, drag, and zoom the map to see data points (currently animal sightings, comments from the expedition team, and position reports). For help, information about the expedition, and access to the full API, click on the buttons at the top of the page."
+            ]
+
+        
 
         $(document).ready(function() {
+
+            function shuffle(o){
+                for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+                return o;
+            };
+
+            console.log("SHUFFLE");
+            var $container = $("#col1");
+            $container.html(shuffle($container.children().get()));
+            var $container = $("#col2");
+            $container.html(shuffle($container.children().get()));
+            var $container = $("#col3");
+            $container.html(shuffle($container.children().get()));
+            var $container = $("#col4");
+            $container.html(shuffle($container.children().get()));
+
+            function doSkip() {
+                step = 100;
+                focusMarker.closePopup();
+                map.setZoom(17);
+                map.panTo(focusMarker.getLatLng());
+                focusMarker.bindPopup("Last reported position.");
+                $("#skip").hide();
+                siteReady();
+                if (!sightingsLoaded) loadSightings();
+                if (!pathsLoaded) loadPaths();
+                clearTimeout(function(){zoomIn(focusMarker)});
+            }
+
+            $("#skip").click(function(event){
+                event.preventDefault(); 
+                doSkip();
+                $("#skip").hide();
+                console.log("SKIP");
+            });
+
             //This is the lat/lon point where the map starts by default. In theory this should reset if/when the real data comes in.
             focusLatLon = [-19.08398, 22.37332];
             targetLatLon = [-19.08398, 22.37332];
@@ -469,55 +499,7 @@
             var photoLayer = new L.layerGroup().addTo(map);
     		var sightingsLayer = new L.layerGroup().addTo(map);
     		var geoLayer = new L.layerGroup().addTo(map);
-    		var commentaryLayer = new L.layerGroup().addTo(map);
-
-            //NEEDED: hydroLayer
-
-            //Are the various data feeds loaded?
-    		var sightingsLoaded = false;
-    		var pathsLoaded = false;
-    		var beaconsLoaded = false;
-            var tweetsLoaded = false;
-            var photosLoaded = false;
-
-    		var lastPoint;
-    		var markers = [];
-    		var beaconMarkers = [];
-    		var beaconCoords = [];
-
-            var tweetMarkers = [];
-            var tweetCoords = [];
-
-            var photoMarkers = [];
-            var photoCoords = [];
-
-            var sightingsQueue;
-            var tweetsQueue;
-            var revealedTweets;
-            var revealedTweetTimes;
-
-            var photosQueue;
-            var revealedPhotos;
-            var revealedPhotoTimes;
-
-    		var d = new Date();
-    		var focusMarker;
-
-    		var step = 0;
-            var frameCount = 0;
-            var lastFrameCount = 0;
-            var idleFrameCount = 0;
-
-    		var scripts = [
-    			"This is the Okavango Delta.",
-    			"Located in Botswana, it is one of the richest wildlife areas on the planet.",
-    			"On August 17th, a group of BaYei bushmen, artists, scientists, engineers and filmmakers entered the area for an 18-day expedition. The group, led by Dr. Steve Boyes, seeks to explore and survey new parts of the central delta.",
-    			"On this site, you can examine the data footprint of the expedition, and access all of the data they collect, including wildlife sightings, water quality data, photos, audio, and position and heart rate data for individual expedition members.",
-    			"Data from the expedition is uploaded in near real-time, as well as at the end of every day.",
-    			"Click, drag, and zoom the map to see data points (currently animal sightings, comments from the expedition team, and position reports). For help, information about the expedition, and access to the full API, click on the buttons at the top of the page."
-    		]
-
-    		
+    		var commentaryLayer = new L.layerGroup().addTo(map);    		
 
     		//DATA LOAD FUNCTIONS
 
