@@ -6,9 +6,10 @@ TODO
 
 - scroll limit twitter feed
 - scrollbar twitter feed
-- clickable tweet
 - data panel
 - remove stars
+- restart from 0
+- open twitterpanel at right time
 
 */
 

@@ -1284,7 +1284,7 @@
             //Tweets
 
             if(tweetsQueue.length>0){
-                while (tweetsQueue[tweetCounter].time/1000 - 350 < startTime) {
+                while (tweetsQueue[tweetCounter].time/1000 < startTime) {
                     if(!daySkip && (!tweetsQueue[tweetCounter+1]||tweetsQueue[tweetCounter+1].time-tweetsQueue[tweetCounter].time>100)){ 
                         var m = tweetsQueue[tweetCounter].marker;
                         if(currentPage != 'Twitter'){
@@ -1322,7 +1322,7 @@
             //Photos
 
             if(photosQueue.length>0){
-                while (photosQueue[photoCounter].time/1000 - 350 < startTime) {
+                while (photosQueue[photoCounter].time/1000 < startTime) {
                     if(!daySkip && (!photosQueue[photoCounter+1]||photosQueue[photoCounter+1].time-photosQueue[photoCounter].time>100)){ 
                         photosQueue[photoCounter].marker.openPopup();
                         revealedPhotos.push(photosQueue[photoCounter])
