@@ -4,33 +4,10 @@
 
 TODO
 
-- fix distance and speed 
-- controls time map
-- disable pan when autoplay
-- twitter feed max scroll
-- bad request ambit and sighting
-
-- beacons travel after window unfocus
-- css beacons
-- disable scrollbar
-- style skip intro button
-- aggregate tweets
-- preloader
-- image feed
-- play button
-- timeline still loading
-- add links to twitter feed
-- max twitter feed height
-- about close button
-- scroll bar twitter feed
-
-
-- uncull paths on pause
 - scroll limit twitter feed
 - scrollbar twitter feed
 - clickable tweet
 - data panel
-
 
 */
 
