@@ -323,47 +323,49 @@
 
         var isGraphReady = true;
         var sightingsLoaded = false;
-            var pathsLoaded = false;
-            var beaconsLoaded = false;
-            var tweetsLoaded = false;
-            var photosLoaded = false;
+        var pathsLoaded = false;
+        var beaconsLoaded = false;
+        var tweetsLoaded = false;
+        var photosLoaded = false;
 
-            var lastPoint;
-            var markers = [];
-            var beaconMarkers = [];
-            var beaconCoords = [];
+        var lastPoint;
+        var markers = [];
+        var beaconMarkers = [];
+        var beaconCoords = [];
 
-            var tweetMarkers = [];
-            var tweetCoords = [];
+        var tweetMarkers = [];
+        var tweetCoords = [];
 
-            var photoMarkers = [];
-            var photoCoords = [];
+        var photoMarkers = [];
+        var photoCoords = [];
 
-            var sightingsQueue;
-            var tweetsQueue;
-            var revealedTweets;
-            var revealedTweetTimes;
+        var sightingsQueue;
+        var tweetsQueue;
+        var revealedTweets;
+        var revealedTweetTimes;
 
-            var photosQueue;
-            var revealedPhotos;
-            var revealedPhotoTimes;
+        var photosQueue;
+        var revealedPhotos;
+        var revealedPhotoTimes;
 
-            var d = new Date();
-            var focusMarker;
+        var d = new Date();
+        var focusMarker;
 
-            var step = 0;
-            var frameCount = 0;
-            var lastFrameCount = 0;
-            var idleFrameCount = 0;
+        var step = 0;
+        var frameCount = 0;
+        var lastFrameCount = 0;
+        var idleFrameCount = 0;
 
-            var scripts = [
-                "This is the Okavango Delta.",
-                "Located in Botswana, it is one of the richest wildlife areas on the planet.",
-                "On August 17th, a group of BaYei bushmen, artists, scientists, engineers and filmmakers entered the area for an 18-day expedition. The group, led by Dr. Steve Boyes, seeks to explore and survey new parts of the central delta.",
-                "On this site, you can examine the data footprint of the expedition, and access all of the data they collect, including wildlife sightings, water quality data, photos, audio, and position and heart rate data for individual expedition members.",
-                "Data from the expedition is uploaded in near real-time, as well as at the end of every day.",
-                "Click, drag, and zoom the map to see data points (currently animal sightings, comments from the expedition team, and position reports). For help, information about the expedition, and access to the full API, click on the buttons at the top of the page."
-            ]
+        var scripts = [
+            "This is the Okavango Delta.",
+            "Located in Botswana, it is one of the richest wildlife areas on the planet.",
+            "On August 17th, a group of BaYei bushmen, artists, scientists, engineers and filmmakers entered the area for an 18-day expedition. The group, led by Dr. Steve Boyes, seeks to explore and survey new parts of the central delta.",
+            "On this site, you can examine the data footprint of the expedition, and access all of the data they collect, including wildlife sightings, water quality data, photos, audio, and position and heart rate data for individual expedition members.",
+            "Data from the expedition is uploaded in near real-time, as well as at the end of every day.",
+            "Click, drag, and zoom the map to see data points (currently animal sightings, comments from the expedition team, and position reports). For help, information about the expedition, and access to the full API, click on the buttons at the top of the page."
+        ];
+
+        var names = ["Steve","Jer","Chris","GB"];
 
         
 
@@ -414,7 +416,6 @@
     		// create a map in the "map" div, set the view to a given place and zoom
     		var map = L.map('map', {zoomControl:false}).setView(focusLatLon
                 , 5);
-    		var names = ["Steve","Jer","Chris","GB"];
     		map.zoomAnimationThreshold = 20;
 
     		//Day skipping - this is not finished functionality to skip days when in 'playback mode'
