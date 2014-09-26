@@ -1215,6 +1215,7 @@
                     // personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * sp * 2;
                     // personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * sp * 2;
 
+                    var personLatLon = personMarkers[n].getLatLng();
                     if(counters[n]+1 < pathQueues[n].length){
                         var r = map(startTime,pathQueues[n][counters[n]].time,pathQueues[n][counters[n]+1].time,0,1);
                         personLatLon.lat = map(r,0,1,previousPersonMarkersTarget[n][0],personMarkersTarget[n][0]);
