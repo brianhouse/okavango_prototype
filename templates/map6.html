@@ -1220,8 +1220,7 @@
                     //     personMarkers[n].setLatLng(personLatLon);
                     // }
 
-                    if(i==0) map.setView(personLatLon, map.getZoom(), {pan:{animate:false}});
-                    if(i==0) console.log(tpos);
+                    if(i==0 && tpos[0] != 0) map.setView(personLatLon, map.getZoom(), {pan:{animate:false}});
                 }
             }
         }
