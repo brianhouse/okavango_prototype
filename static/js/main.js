@@ -187,7 +187,6 @@ var queryAmbit = function(date){
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 
-		console.log('received ambit ' + json.features.length);
 		if(json.features.length == 0) return;
 		ambitJson.push(json);
 		if(ambitJson.length>0 && sightingJson.length>0 && !dataReady) enableDataPage(ambitJson,sightingJson);
@@ -201,7 +200,6 @@ var querySightings = function(date){
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 		
-		console.log('received sightings ' + json.features.length);
 		if(json.features.length == 0) return;
 		sightingJson.push(json);
 
@@ -517,6 +515,15 @@ var initGraphs = function(data){
 	for(var h=0; h<data.length; h++){
 		var json = data[h].features;
 		var len = json.length;
+
+		for(var i=0; i<names.length; i++){
+			var ambit = json[0].properties;
+			var d = ambit.t_utc*1000-1;
+			metrics[names[i]].heartrate.push([d,0])
+			metrics[names[i]].energyConsumption.push([d,0])
+			metrics[names[i]].speed.push([d,0])
+		}
+
 		for(var i=0; i<len; i++){
 			var ambit = json[i].properties;
 			if(!metrics[ambit.Person]){
@@ -529,12 +536,6 @@ var initGraphs = function(data){
 			}
 			var d = ambit.t_utc*1000;
 
-			if(i==0){
-				metrics[ambit.Person].heartrate.push([d-1,0])
-				metrics[ambit.Person].energyConsumption.push([d-1,0])
-				metrics[ambit.Person].speed.push([d-1,0])
-			}
-
 			if(ambit.HR) metrics[ambit.Person].heartrate.push([d,ambit.HR])
 			if(ambit.EnergyConsumption) metrics[ambit.Person].energyConsumption.push([d,ambit.EnergyConsumption])
 			if(ambit.Speed) metrics[ambit.Person].speed.push([d,ambit.Speed])
@@ -542,12 +543,6 @@ var initGraphs = function(data){
 			if(ambit.HR > metrics.maxHeartRate) metrics.maxHeartRate = ambit.HR;
 			if(ambit.HR < metrics.minHeartRate) metrics.minHeartRate = ambit.HR;
 			if(ambit.EnergyConsumption > metrics.maxEnergyConsumption) metrics.maxEnergyConsumption = ambit.EnergyConsumption;
-
-			if(i==len-1){
-				metrics[ambit.Person].heartrate.push([d+1,0])
-				metrics[ambit.Person].energyConsumption.push([d+1,0])
-				metrics[ambit.Person].speed.push([d+1,0])
-			}
 		}
 
 		// // reset value to 0 at the end of the day
