@@ -4,25 +4,12 @@
 
 TODO
 
-- fix distance and speed 
-- controls time map
-- disable pan when autoplay
-- twitter feed max scroll
-- bad request ambit and sighting
-
-- beacons travel after window unfocus
-- css beacons
-- disable scrollbar
-- style skip intro button
-- aggregate tweets
-- preloader
-- image feed
-- play button
-- timeline still loading
-- add links to twitter feed
-- max twitter feed height
-- about close button
-- scroll bar twitter feed
+- scroll limit twitter feed
+- scrollbar twitter feed
+- data panel
+- remove stars
+- restart from 0
+- open twitterpanel at right time
 
 */
 
@@ -877,7 +864,7 @@ var togglePanel = function(node, mapClick, i){
 
 }
 
-var toggleTwitterPanel = function(){
+var toggleTwitterPanel = function(focus){
 
 	d3.selectAll('#fullPanelWrapper div.page')
 		.style('position','absolute')
@@ -920,6 +907,36 @@ var toggleTwitterPanel = function(){
 		d3.select('#headerWrapper').style('position','fixed');
 
 		currentPage = 'Twitter';
+
+		if(!focus){
+			requestAnimationFrame(function(){
+				var h = d3.select('#twitterWrapper').style('margin-top');
+				h = -parseFloat(h.substring(0,h.length-2));
+				var flag = false;
+				for(var i=0; i<tweetsQueue.length; i++){
+					var q = tweetsQueue[i];
+					if(q.time/1000 > startTime){
+						var tweetFound = false;
+					    d3.select('#twitterWrapper').selectAll('div.tweet')
+					        .filter(function(d){return q.id == d.id})
+					        .each(function(){
+					        	h += this.offsetTop;
+					        	tweetFound = true;
+					        })
+
+					    if(tweetFound){
+						    d3.select('#twitterWrapper')
+						    	.transition()
+						    	.duration(400)
+						    	.ease("cubic-in-out")
+						    	.style('margin-top',(20-h)+'px');
+						    break;
+					    }
+					}
+				}
+			})
+		}
+
 	} else {
 		var w = d3.select('#fullPanelWrapper').style('width');
 		w = +w.substring(0,w.length-2);
@@ -1025,33 +1042,33 @@ var initFeed = function(json){
 
 }
 
-var focusTweet = function(queue){
+var focusTweet = function(marker){
 
 	var tweetFound = false;
-    var id = queue.marker.feature.id;
+    var id = marker.feature.id;
     var h = d3.select('#twitterWrapper').style('margin-top');
     h = -parseFloat(h.substring(0,h.length-2));
 
-    d3.select('#twitterWrapper').selectAll('div.tweet')
-        .filter(function(d){return id == d.id})
-        .each(function(){
-        	h += this.offsetTop;
-        	tweetFound = true;
-        })
+    if(currentPage != 'Twitter') toggleTwitterPanel(true);
+    requestAnimationFrame(function(){
+	    d3.select('#twitterWrapper').selectAll('div.tweet')
+	        .filter(function(d){return id == d.id})
+	        .each(function(){
+	        	h += this.offsetTop;
+	        	tweetFound = true;
+	        })
 
-    if(tweetFound){
-    	console.log('focusing tweet: ' + queue.marker.feature.properties.tweet.text);
-    	clearTimeout(closeFeedTimer);
-    	if(currentPage != 'Twitter') toggleTwitterPanel();
-    	if(startTime - (tweetsQueue[tweetCounter].time/1000 - 300) > 20) closeFeedTimer = setTimeout(toggleTwitterPanel,10000);
-	    requestAnimationFrame(function(){
+	    if(tweetFound){
+	    	console.log('focusing tweet: ' + marker.feature.properties.tweet.text);
 		    d3.select('#twitterWrapper')
 		    	.transition()
 		    	.duration(400)
 		    	.ease("cubic-in-out")
 		    	.style('margin-top',(20-h)+'px');
-	    });
-    }
+	    } else {
+	    	if(currentPage == 'Twitter') toggleTwitterPanel();
+	    }
+	})
 
 }
 
@@ -1142,6 +1159,12 @@ var initMapTimeline = function(){
 		}
 
 		var moveMap = function() {
+
+			isAnimationPaused = false;
+			d3.select("#mapTimeline div.pauseButton")
+                .text(isAnimationPaused?'►':'II')
+                .style('font-size',isAnimationPaused?'11px':'18px');
+
 			for (var i = 0; i < names.length; i++) {
                 var n = names[i];
                 var personLatLon = personMarkers[n].getLatLng();
@@ -1255,12 +1278,10 @@ var initMapTimeline = function(){
 					d.setTime(startTime * 1000 + (offset * 60 * 1000));
 					var len = Math.ceil((data.getTime()-d.getTime())/(1000*60*60*24));
 					if(len == 0){
-						isAnimationPaused = false;
 						skipBack(true);
 						moveMap();
 					} else {
 						for(var i=0; i<Math.abs(len); i++){
-							isAnimationPaused = false;
 							if(len<1) skipBack(false);
 							else skipForward();
 						}
@@ -1278,14 +1299,14 @@ var initMapTimeline = function(){
 var updateMapTimeline = function(d, loadingTransition){
 	if(isGraphReady){
 
+		var mapValues = function(value, start1, stop1, start2, stop2) {
+		    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
+		}
+
 		mapTimeline[0] = d;
 
 		var h = 27;
 		var w = d3.select('#mapTimeline div.bar svg').node().clientWidth;
-
-		function map(value, start1, stop1, start2, stop2) {
-		    return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
-		}
 
 		var flag = false;
 		d3.select('#mapTimeline div.bar svg').selectAll('circle')
@@ -1305,8 +1326,8 @@ var updateMapTimeline = function(d, loadingTransition){
 
 		var d1 = new Date('August 17, 2014');
 		var d2 = new Date('September 1, 2014');
-		var r1 = map(mapTimeline[0].getTime(),d1.getTime(),d2.getTime(),0,1);
-		var r2 = map(mapTimeline[1].getTime(),d1.getTime(),d2.getTime(),0,1);
+		var r1 = mapValues(mapTimeline[0].getTime(),d1.getTime(),d2.getTime(),0,1);
+		var r2 = mapValues(mapTimeline[1].getTime(),d1.getTime(),d2.getTime(),0,1);
 
 		d3.select('#mapTimeline div.bar svg line.covered')
 			.attr('x1',5)

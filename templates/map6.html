@@ -357,7 +357,6 @@
 	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
 
-
         //This is the lat/lon point where the map starts by default. In theory this should reset if/when the real data comes in.
         focusLatLon = [-19.08398, 22.37332];
         targetLatLon = [-19.08398, 22.37332];
@@ -490,6 +489,8 @@
 
 		var step = 0;
         var frameCount = 0;
+        var lastFrameCount = 0;
+        var idleFrameCount = 0;
 
 		var scripts = [
 			"This is the Okavango Delta.",
@@ -660,10 +661,18 @@
                 if (feature.properties && feature.properties.t_utc) {
                     var d = new Date(feature.properties.t_utc * 1000);
                     layer.bindPopup(feature.properties.tweet.text);
-                    d3.select(layer._popup)
-                        .on('mouseover',function(){
-                            console.log(this);
-                        })
+                    requestAnimationFrame(function(){
+                        d3.select(layer._icon)
+                            .on('click',function(){
+                                d3.select(layer._popup._container)
+                                    .style('cursor','pointer')
+                                    .on('click',function(){
+                                        focusTweet(layer);
+                                    })
+
+                            })
+                    })
+
                 }
             }
 
@@ -939,7 +948,8 @@
 			permPaths = [];
 			permGeos = [];
             personMarkers = [];
-			personMarkersTarget = [];
+            personMarkersTarget = [];
+			previousPersonMarkersTarget = [];
 
             pathQueues = [];
 			pathRevealed = [];
@@ -998,7 +1008,7 @@
 
 			function drawPaths() {
 
-			
+
     			var dashes = ["15,3", "5,5,2", "3,3","1,1"];
     			var colors = ["#FF3300", "#FF9900", "#FFFF00","#FF6666"]
     			var widths = [30,26,16,12]
@@ -1017,7 +1027,8 @@
                     var shiftX = (Math.random() *0.002) - 0.001;
                     var shiftY = (Math.random() *0.002) - 0.001;
                     personMarkers[n] = L.marker([focusLatLon[0] + shiftX, focusLatLon[1] + shiftY], {icon: myIcon}).addTo(map);
-    				personMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
+                    personMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
+                    previousPersonMarkersTarget[n] = [focusLatLon[0] + shiftX, focusLatLon[1] + shiftY];
 
                     $('.person-marker').css('width','auto')
     				
@@ -1077,25 +1088,36 @@
 
 		timeMag = 100;
 		timeStep = 0.400;
+        timeInterval = [];
         sightingCounter = 0;
 		tweetCounter = 0;
         photoCounter = 0;
 
 		for (var i = 0; i < names.length; i++) {
-			counters[names[i]] = 1;
+            counters[names[i]] = 1;
+			timeInterval[names[i]] = [new Date().getTime(),new Date().getTime()+1];
 		}
 
         var cullMarkers = function(){
-            if(frameCount%160 == 0){
+
+            if(frameCount%40 == 0){
                 var boundaries = map.getBounds();
+                var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
+                b = [   b[0]+(b[0]-b[1])/2,
+                        b[1]+(b[1]-b[0])/2,
+                        b[2]+(b[2]-b[3])/2,
+                        b[3]+(b[3]-b[2])/2  ];
+            }
+
+            if(frameCount%160 == 0){
                 var sightings = sightingsLayer.getLayers()[0]._featureGroup.getLayers();
                 var l1 = sightings.length;
                 var flag;
                 for(var i = 0; i<l1; i++){
                     flag = false;
                     var coords = sightings[i].getLatLng();
-                    if(coords.lat <= boundaries.getNorthWest().lat && coords.lat >= boundaries.getSouthEast().lat){
-                        if(coords.lng >= boundaries.getNorthWest().lng && coords.lng <= boundaries.getSouthEast().lng){
+                    if(coords.lat <= b[0] && coords.lat >= b[1]){
+                        if(coords.lng >= b[2] && coords.lng <= b[3]){
                             flag = true;
                         }
                     }
@@ -1103,17 +1125,15 @@
                         .style('display',flag?'inline':'none')
                 }
             } else if(frameCount%160 == 40){
-                var boundaries = map.getBounds();
                 var l1 = tweetMarkers.length;
                 var flag;
                 for(var i=0; i<l1; i++){
                     flag = false;
                     var coords = tweetMarkers[i].getLatLng();
-                    if(coords.lat <= boundaries.getNorthWest().lat && coords.lat >= boundaries.getSouthEast().lat){
-                        if(coords.lng >= boundaries.getNorthWest().lng && coords.lng <= boundaries.getSouthEast().lng){
+                    if(coords.lat <= b[0] && coords.lat >= b[1]){
+                        if(coords.lng >= b[2] && coords.lng <= b[3]){
                             flag = true;
                         }
-
                     }
                     d3.select(tweetMarkers[i]._icon)
                         .style('display',flag?'inline':'none')
@@ -1121,7 +1141,6 @@
                         .style('display',flag?'inline':'none')
                 }
             } else if(frameCount%160 == 80){
-                var boundaries = map.getBounds();
                 var beacons = beaconLayer.getLayers();
                 var l1 = beacons.length;
                 var flag;
@@ -1129,8 +1148,8 @@
                     flag = false;
                     if(beacons[i].getLatLng){
                         var coords = beacons[i].getLatLng();
-                        if(coords.lat <= boundaries.getNorthWest().lat && coords.lat >= boundaries.getSouthEast().lat){
-                            if(coords.lng >= boundaries.getNorthWest().lng && coords.lng <= boundaries.getSouthEast().lng){
+                        if(coords.lat <= b[0] && coords.lat >= b[1]){
+                            if(coords.lng >= b[2] && coords.lng <= b[3]){
                                 flag = true;
                             }
                         }
@@ -1140,26 +1159,22 @@
                             .style('display',flag?'inline':'none')
                     }
                 }
-            } else if(frameCount%160 == 120 && isAnimationPaused){
-                // for (var l = 0; l < names.length; l++) {
-                //     var n = names[l];
-                //     var boundaries = map.getBounds();
-                //     var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
-                //     var len = pathRevealed[n].length;
-                //     var coords;
-                //     for(var k=0; k<len; k++){
-                //         coords = pathRevealed[n][0].getLatLngs();
-                //         if(coords[1].lat <= b[0] && coords[1].lat >= b[1] && coords[1].lng >= b[2] && coords[1].lng <= b[3]){
-                //             break;
-                //         } else {
-                //             d3.select(pathRevealed[n][0]._container)
-                //                 .style('display','none')
-                //             pathRevealed[n].shift();
-                //             len --;
-                //             k --;
-                //         }
-                //     }
-                // }
+            } else if(frameCount%160 == 120){
+                var l1 = photoMarkers.length;
+                var flag;
+                for(var i=0; i<l1; i++){
+                    flag = false;
+                    var coords = photoMarkers[i].getLatLng();
+                    if(coords.lat <= b[0] && coords.lat >= b[1]){
+                        if(coords.lng >= b[2] && coords.lng <= b[3]){
+                            flag = true;
+                        }
+                    }
+                    d3.select(photoMarkers[i]._icon)
+                        .style('display',flag?'inline':'none')
+                    d3.select(photoMarkers[i]._shadow)
+                        .style('display',flag?'inline':'none')
+                }
             }
         }
 
@@ -1168,6 +1183,9 @@
             d3.select("#mapTimeline div.pauseButton")
                 .on('click',function(){
                     isAnimationPaused = !isAnimationPaused;
+                    d3.select(this)
+                        .text(isAnimationPaused?'►':'II')
+                        .style('font-size',isAnimationPaused?'11px':'18px');
                 })
 			
 			focusLatLon[0] = map.getCenter().lat;
@@ -1189,21 +1207,25 @@
 		}
 
         var posMap = function(){
-            // centers map on the current target position
 
             var sp = daySkip ? 0.4:0.1;
-            focusLatLon[0] += (targetLatLon[0] - focusLatLon[0]) * sp;
-            focusLatLon[1] += (targetLatLon[1] - focusLatLon[1]) * sp;
-            map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
-
-            // animates explorers' markers towards their current position on the map
+            var mapValues = function(value, start1, stop1, start2, stop2) {
+                return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
+            }
             for (var i = 0; i < names.length; i++) {
                 var n = names[i];
                 if(personMarkers[n]){
-                    var personLatLon = personMarkers[n].getLatLng();
-                    personLatLon.lat += (personMarkersTarget[n][0] - personLatLon.lat) * sp * 2;
-                    personLatLon.lng += (personMarkersTarget[n][1] - personLatLon.lng) * sp * 2;
-                    personMarkers[n].setLatLng(personLatLon);
+                    var tpos = [0,0];
+                    if(counters[n] > 1){
+                        var r = Math.max(0,Math.min(1,mapValues(new Date().getTime(),timeInterval[n][0],timeInterval[n][1],0,1)));
+                        tpos[0] = mapValues(r,0,1,previousPersonMarkersTarget[n][0],personMarkersTarget[n][0]);
+                        tpos[1] = mapValues(r,0,1,previousPersonMarkersTarget[n][1],personMarkersTarget[n][1]);
+                        var personLatLon = personMarkers[n].getLatLng();
+                        personLatLon.lat += (tpos[0] - personLatLon.lat) * sp * 2;
+                        personLatLon.lng += (tpos[1] - personLatLon.lng) * sp * 2;
+                        personMarkers[n].setLatLng(personLatLon);
+                        if(i==0 && tpos[0] != 0) map.setView(personLatLon, map.getZoom(), {pan:{animate:false}});
+                    }
                 }
             }
         }
@@ -1215,10 +1237,13 @@
         //Logic for the time-based animation
 		function doAnimation() {
 
+            if(lastFrameCount == frameCount) idleFrameCount ++;
+            else idleFrameCount = 0;
+            lastFrameCount = frameCount;
+
             if(isAnimationPaused) return;
 
             if (sightingsQueue.length > 0 && pathQueues[names[0]].length > 0) {
-
 
 			startTime += timeStep * timeMag;
 
@@ -1259,10 +1284,19 @@
             //Tweets
 
             if(tweetsQueue.length>0){
-                while (tweetsQueue[tweetCounter].time/1000 - 350 < startTime) {
+                while (tweetsQueue[tweetCounter].time/1000 < startTime) {
                     if(!daySkip && (!tweetsQueue[tweetCounter+1]||tweetsQueue[tweetCounter+1].time-tweetsQueue[tweetCounter].time>100)){ 
-                        // focusTweet(tweetsQueue[tweetCounter]);
-                        tweetsQueue[tweetCounter].marker.openPopup();
+                        var m = tweetsQueue[tweetCounter].marker;
+                        if(currentPage != 'Twitter'){
+                            tweetsQueue[tweetCounter].marker.openPopup();
+                            d3.select(tweetsQueue[tweetCounter].marker._popup._container)
+                                .style('cursor','pointer')
+                                .on('click',function(){
+                                    focusTweet(m);
+                                })
+                        } else {
+                            focusTweet(m);
+                        }
                         revealedTweets.push(tweetsQueue[tweetCounter])
                         revealedMarkerTimes.push(new Date().getTime());
                     }
@@ -1288,9 +1322,8 @@
             //Photos
 
             if(photosQueue.length>0){
-                while (photosQueue[photoCounter].time/1000 - 350 < startTime) {
+                while (photosQueue[photoCounter].time/1000 < startTime) {
                     if(!daySkip && (!photosQueue[photoCounter+1]||photosQueue[photoCounter+1].time-photosQueue[photoCounter].time>100)){ 
-                        // focusTweet(tweetsQueue[tweetCounter]);
                         photosQueue[photoCounter].marker.openPopup();
                         revealedPhotos.push(photosQueue[photoCounter])
                         revealedPhotoTimes.push(new Date().getTime());
@@ -1344,12 +1377,15 @@
                                 }]
                                 
                                 permPaths[q.name].addData(point);
+                                previousPersonMarkersTarget[q.name] = personMarkersTarget[q.name];
                                 personMarkersTarget[q.name] = q.latLon;
                                 pathRevealed[q.name].push(permPaths[q.name].getLayers()[permPaths[q.name].getLayers().length-1]);
                                 if (i == 0) {
                                     targetLatLon[0] = q.latLon[0];
                                     targetLatLon[1] = q.latLon[1];
                                 }
+                                timeInterval[q.name][0] = new Date().getTime();
+                                if(counters[q.name]+1 < pathQueues[q.name].length) timeInterval[q.name][1] = new Date().getTime() + (pathQueues[q.name][counters[q.name]+1].time - pathQueues[q.name][counters[q.name]].time)*1000/(timeMag)
                             }
                             counters[n]++;
                         } 
@@ -1368,6 +1404,12 @@
                     var n = names[l];
                     var boundaries = map.getBounds();
                     var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
+                    b = [
+                            b[0]+(b[0]-b[1])/2,
+                            b[1]+(b[1]-b[0])/2,
+                            b[2]+(b[2]-b[3])/2,
+                            b[3]+(b[3]-b[2])/2
+                        ]
                     var len = pathRevealed[n].length;
                     var coords;
                     for(var k=0; k<len; k++){
