@@ -1350,10 +1350,10 @@
                     var boundaries = map.getBounds();
                     var b = [boundaries.getNorthWest().lat,boundaries.getSouthEast().lat,boundaries.getNorthWest().lng,boundaries.getSouthEast().lng];
                     b = [
-                            b[0]+(b[0]-b[1])/2,
-                            b[1]+(b[1]-b[0])/2,
-                            b[2]+(b[2]-b[3])/2,
-                            b[3]+(b[3]-b[2])/2
+                            b[0]-(b[0]-b[1])/3,
+                            b[1]-(b[1]-b[0])/3,
+                            b[2]-(b[2]-b[3])/3,
+                            b[3]-(b[3]-b[2])/3
                         ]
                     var len = pathRevealed[n].length;
                     var coords;
