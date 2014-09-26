@@ -24,6 +24,17 @@ TODO
 - about close button
 - scroll bar twitter feed
 
+
+- less cropping
+- cull photos
+- uncull paths on pause
+- scroll limit twitter feed
+- scrollbar twitter feed
+- clickable tweet
+- linear person marker motion
+- data panel
+
+
 */
 
 
@@ -1142,6 +1153,12 @@ var initMapTimeline = function(){
 		}
 
 		var moveMap = function() {
+
+			isAnimationPaused = false;
+			d3.select("#mapTimeline div.pauseButton")
+                .text(isAnimationPaused?'►':'II')
+                .style('font-size',isAnimationPaused?'11px':'18px');
+
 			for (var i = 0; i < names.length; i++) {
                 var n = names[i];
                 var personLatLon = personMarkers[n].getLatLng();
@@ -1255,12 +1272,10 @@ var initMapTimeline = function(){
 					d.setTime(startTime * 1000 + (offset * 60 * 1000));
 					var len = Math.ceil((data.getTime()-d.getTime())/(1000*60*60*24));
 					if(len == 0){
-						isAnimationPaused = false;
 						skipBack(true);
 						moveMap();
 					} else {
 						for(var i=0; i<Math.abs(len); i++){
-							isAnimationPaused = false;
 							if(len<1) skipBack(false);
 							else skipForward();
 						}
