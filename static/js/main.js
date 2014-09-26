@@ -26,7 +26,6 @@ var dataReady = false;
 var loaderOffset = 0;
 var ambitJson = [];
 var sightingJson = [];
-var closeFeedTimer;
 var mapTimeline = [0,0];
 
 
@@ -860,12 +859,9 @@ var togglePanel = function(node, mapClick, i){
 	d3.selectAll('#pagesNav li')
 		.classed('focused',function(){return d3.select(this).text() == currentPage || (d3.select(this).text() == 'Map' && mapClick)});
 
-	clearTimeout(toggleTwitterPanel);
-
 }
 
 var toggleTwitterPanel = function(focus){
-
 	d3.selectAll('#fullPanelWrapper div.page')
 		.style('position','absolute')
 		.transition()
@@ -916,9 +912,10 @@ var toggleTwitterPanel = function(focus){
 				for(var i=0; i<tweetsQueue.length; i++){
 					var q = tweetsQueue[i];
 					if(q.time/1000 > startTime){
+						if(i>0) q = tweetsQueue[i-1];
 						var tweetFound = false;
 					    d3.select('#twitterWrapper').selectAll('div.tweet')
-					        .filter(function(d){return q.id == d.id})
+					        .filter(function(d){return q.marker.feature.id == d.id})
 					        .each(function(){
 					        	h += this.offsetTop;
 					        	tweetFound = true;
@@ -959,8 +956,6 @@ var toggleTwitterPanel = function(focus){
 			.transition()
 			.style('opacity',1)
 	}
-
-	clearTimeout(closeFeedTimer);
 }
 
 var initFeed = function(json){
