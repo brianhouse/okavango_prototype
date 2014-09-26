@@ -86,7 +86,7 @@ def get_coords_by_time(db, time):
 
 @db_call
 def update_latlon(db):
-    query = "SELECT * FROM features WHERE kind = 'tweet' OR kind = 'image'"
+    query = "SELECT * FROM features WHERE kind = 'tweet' OR kind = 'image' AND t > 1408171925"
     db.execute(query)
 
     c = 0;
