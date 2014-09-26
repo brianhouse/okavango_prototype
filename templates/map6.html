@@ -1205,7 +1205,6 @@
                 if(personMarkers[n]){
                     var tpos = [0,0];
                     if(counters[n] > 1){
-                        if(i==0) console.log(previousPersonMarkersTarget[n][0] + ' ' + personMarkersTarget[n][0]);
                         var r = Math.max(0,Math.min(1,mapValues(new Date().getTime(),timeInterval[n][0],timeInterval[n][1],0,1)));
                         tpos[0] = mapValues(r,0,1,previousPersonMarkersTarget[n][0],personMarkersTarget[n][0]);
                         tpos[1] = mapValues(r,0,1,previousPersonMarkersTarget[n][1],personMarkersTarget[n][1]);
