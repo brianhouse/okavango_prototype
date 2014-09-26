@@ -1214,7 +1214,7 @@
                     personLatLon.lng += (tpos[1] - personLatLon.lng) * sp * 2;
                     personMarkers[n].setLatLng(personLatLon);
                     if(i==0) map.setView(personLatLon, map.getZoom(), {pan:{animate:false}});
-                    if(i==0 && frameCount%60 == 0) console.log(personMarkersTarget[n]);
+                    if(i==0 && frameCount < 120) console.log(personMarkersTarget[n]);
                 }
             }
         }
