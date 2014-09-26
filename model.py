@@ -80,7 +80,7 @@ def get_coords_by_time(db, time):
     j = json.loads(closeFeature);
     geom = j['geometry'];
 
-    #print("CLOSEST FEATURE TO ? IS ?", (time,geom))
+    print("CLOSEST FEATURE TO ? IS ?", (time,geom))
     return geom;
 
 @db_call
@@ -99,7 +99,7 @@ def update_latlon(db):
         print(t)
 
         #get new coords
-        coords = get_coords_by_time(db,t);
+        coords = get_coords_by_time(t);
 
         #load json from data column
         feature = geojson.loads(d)
