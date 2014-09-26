@@ -67,7 +67,13 @@ var setVideoHeight = function(){
 		.attr('height',d3.select('#video').node().clientWidth*0.6);
 
 	d3.select('#video svg.playButton')
-		.attr('height',d3.select('#video svg.playButton').node().clientWidth)
+		.attr('height',function(){
+			// var w = d3.select('#video svg.playButton').node().clientWidth);
+			// return
+			console.log('test: ' + d3.select('#video svg.playButton').node().clientWidth));
+			return d3.select('#video svg.playButton').node().clientWidth)
+		}
+			
 	d3.select('#video')
 		.on('mouseover',function(){
 			d3.select(this).select('svg.playButton g#ABOUT')
@@ -1318,7 +1324,8 @@ var updateMapTimeline = function(d, loadingTransition){
 		mapTimeline[0] = d;
 
 		var h = 27;
-		var w = +d3.select('#mapTimeline div.bar svg').node().clientWidth;
+		var w = d3.select('#mapTimeline div.bar svg').style('width');
+		w = w.substring(0,w.length-2);
 
 		var flag = false;
 		d3.select('#mapTimeline div.bar svg').selectAll('circle')
@@ -1341,22 +1348,20 @@ var updateMapTimeline = function(d, loadingTransition){
 		var r1 = mapValues(mapTimeline[0].getTime(),d1.getTime(),d2.getTime(),0,1);
 		var r2 = mapValues(mapTimeline[1].getTime(),d1.getTime(),d2.getTime(),0,1);
 
-		if(frameCount%60 == 0) console.log(r1 + ' ' + r2);
-
 		d3.select('#mapTimeline div.bar svg line.covered')
 			.attr('x1',5)
 			.attr('y1',h/2)
-			.attr('x2',5+(w-10)*r1)
+			.attr('x2',5+(+w-10)*r1)
 			.attr('y2',h/2)
 
 		d3.select('#mapTimeline div.bar svg line.uncovered')
-			.attr('x1',5+(w-10)*r1)
+			.attr('x1',5+(+w-10)*r1)
 			.attr('y1',h/2)
-			.attr('x2',5+(w-10)*r2)
+			.attr('x2',5+(+w-10)*r2)
 			.attr('y2',h/2)
 
 		d3.select('#mapTimeline div.bar svg line.loading')
-			.attr('x1',5+(w-10)*r2)
+			.attr('x1',5+(+w-10)*r2)
 			.attr('y1',h/2)
 			.attr('x2',w-5)
 			.attr('y2',h/2)
