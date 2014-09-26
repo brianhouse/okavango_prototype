@@ -67,13 +67,7 @@ var setVideoHeight = function(){
 		.attr('height',d3.select('#video').node().clientWidth*0.6);
 
 	d3.select('#video svg.playButton')
-		.attr('height',function(){
-			// var w = d3.select('#video svg.playButton').node().clientWidth);
-			// return
-			// console.log('test: ' + d3.select('#video svg.playButton').node().clientWidth);
-			return '90'
-		})
-			
+		.attr('height',d3.select('#video svg.playButton').node().clientWidth || 90)
 	d3.select('#video')
 		.on('mouseover',function(){
 			d3.select(this).select('svg.playButton g#ABOUT')
