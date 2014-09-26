@@ -76,6 +76,7 @@ def get_protect(db, kind):
 def get_coords_by_time(db, time):
     db.execute("SELECT t,data FROM features WHERE kind='ambit_geo' AND t < ? ORDER BY t DESC LIMIT 1", (time,))
     result = db.fetchone()
+    print(result)
     closeFeature = result['data'];
     j = json.loads(closeFeature);
     geom = j['geometry'];
