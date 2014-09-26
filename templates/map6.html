@@ -662,7 +662,7 @@
                     var d = new Date(feature.properties.t_utc * 1000);
                     layer.bindPopup(feature.properties.tweet.text);
                     d3.select(layer._icon)
-                        .on('click'.function(){
+                        .on('click',function(){
                             console.log(layer);
                             //                     d3.select(tweetsQueue[tweetCounter].marker._popup._container)
                             // .style('cursor','pointer')
