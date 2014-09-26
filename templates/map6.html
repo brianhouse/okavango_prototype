@@ -357,11 +357,6 @@
 	<script src="../static/js/main.js"></script>
 	<script type="text/javascript">
 
-
-        var map = function(value, start1, stop1, start2, stop2) {
-            return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
-        }
-
         //This is the lat/lon point where the map starts by default. In theory this should reset if/when the real data comes in.
         focusLatLon = [-19.08398, 22.37332];
         targetLatLon = [-19.08398, 22.37332];
@@ -1212,9 +1207,9 @@
             map.setView(focusLatLon, map.getZoom(), {pan:{animate:false}});
 
             // animates explorers' markers towards their current position on the map
-            // var map = function(value, start1, stop1, start2, stop2) {
-            //     return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
-            // }
+            var map = function(value, start1, stop1, start2, stop2) {
+                return parseFloat(start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)));
+            }
             for (var i = 0; i < names.length; i++) {
                 var n = names[i];
                 if(personMarkers[n]){
