@@ -1115,6 +1115,15 @@ var initMapTimeline = function(){
 		        personMarkersTarget[n] = q.latLon;
 		    }
 
+		    while(tweetsQueue[tweetCounter].time/1000 > startTime && tweetCounter > 1) {
+	            tweetCounter --;
+	        }
+
+	        while(photosQueue[photoCounter].time/1000 > startTime && photoCounter > 1) {
+	            photoCounter --;
+	        }
+
+
 		    console.log("NEW Q COUNTER:" + sightingCounter)
 		    daySkip = true;
 
@@ -1148,6 +1157,14 @@ var initMapTimeline = function(){
                 }
 		        personMarkersTarget[n] = q.latLon;
 		    }
+
+		    while(tweetsQueue[tweetCounter].time/1000 < startTime) {
+	            tweetCounter ++;
+	        }
+
+	        while(photosQueue[photoCounter].time/1000 < startTime) {
+	            photoCounter ++;
+	        }
 
 
 		    daySkip = true;
