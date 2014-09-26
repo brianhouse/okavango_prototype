@@ -1031,7 +1031,6 @@ var focusTweet = function(marker){
 	    	console.log('focusing tweet: ' + marker.feature.properties.tweet.text);
 		    d3.select('#twitterWrapper')
 		    	.transition()
-		    	.delay(800)
 		    	.duration(400)
 		    	.ease("cubic-in-out")
 		    	.style('margin-top',(20-h)+'px');
