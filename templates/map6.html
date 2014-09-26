@@ -1210,19 +1210,20 @@
                         tpos[1] = mapValues(r,0,1,previousPersonMarkersTarget[n][1],personMarkersTarget[n][1]);
                     }
                     var personLatLon = personMarkers[n].getLatLng();
-                    if(personLatLon.lat != 0 && personLatLon.lng != 0){
+                    // if(personLatLon.lat != 0 && personLatLon.lng != 0){
                         personLatLon.lat += (tpos[0] - personLatLon.lat) * sp * 2;
                         personLatLon.lng += (tpos[1] - personLatLon.lng) * sp * 2;
                         personMarkers[n].setLatLng(personLatLon);
-                    } else {
-                        personLatLon.lat = tpos[0];
-                        personLatLon.lng = tpos[1];
-                        personMarkers[n].setLatLng(personLatLon);
-                    }
+                    // } else {
+                    //     personLatLon.lat = tpos[0];
+                    //     personLatLon.lng = tpos[1];
+                    //     personMarkers[n].setLatLng(personLatLon);
+                    // }
                     if(i==0) map.setView(personLatLon, map.getZoom(), {pan:{animate:false}});
                     // if(i==0 && frameCount < 120) console.log(personMarkersTarget[n].getLatLng());
                 }
             }
+            console.log(map.getCenter());
         }
 
         //These are the various markers that have been revealed
