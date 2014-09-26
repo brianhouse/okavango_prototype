@@ -183,7 +183,7 @@ var initMetrics = function(){
 
 var queryAmbit = function(date){
 	var dateString = ''+date.getFullYear() + (date.getMonth()>8?'':0) + (date.getMonth()+1) + (date.getDate()>9?'':0) + (date.getDate()+(date.getDate()<10?1:0));
-	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1';
+	var url = 'http://intotheokavango.org/api/timeline?date='+dateString+'&types=ambit&days=1&skip=5';
 	console.log('d3.json : ' + url);
 	d3.json(url, function (json) {
 
@@ -516,32 +516,32 @@ var initGraphs = function(data){
 		var json = data[h].features;
 		var len = json.length;
 
-		// for(var i=0; i<names.length; i++){
-		// 	var ambit = json[0].properties;
-		// 	if(!metrics[ambit.Person]){
-		// 		metrics[ambit.Person] = {
-		// 			heartrate:[],
-		// 			energyConsumption:[],
-		// 			speed:[]
-		// 		}
-		// 		metrics.persons.push(ambit.Person);
-		// 	}
-		// 	var d = ambit.t_utc*1000-1;
-		// 	metrics[names[i]].heartrate.push([d,0])
-		// 	metrics[names[i]].energyConsumption.push([d,0])
-		// 	metrics[names[i]].speed.push([d,0])
-		// }
-
-		for(var i=0; i<len; i++){
-			var ambit = json[i].properties;
-			if(!metrics[ambit.Person]){
-				metrics[ambit.Person] = {
+		for(var i=0; i<names.length; i++){
+			var ambit = json[0].properties;
+			if(!metrics[names[i]]){
+				metrics[names[i]] = {
 					heartrate:[],
 					energyConsumption:[],
 					speed:[]
 				}
-				metrics.persons.push(ambit.Person);
+				metrics.persons.push(names[i]);
 			}
+			var d = ambit.t_utc*1000-1;
+			metrics[names[i]].heartrate.push([d,0])
+			metrics[names[i]].energyConsumption.push([d,0])
+			metrics[names[i]].speed.push([d,0])
+		}
+
+		for(var i=0; i<len; i++){
+			var ambit = json[i].properties;
+			// if(!metrics[ambit.Person]){
+			// 	metrics[ambit.Person] = {
+			// 		heartrate:[],
+			// 		energyConsumption:[],
+			// 		speed:[]
+			// 	}
+			// 	metrics.persons.push(ambit.Person);
+			// }
 			var d = ambit.t_utc*1000;
 
 			if(ambit.HR) metrics[ambit.Person].heartrate.push([d,ambit.HR])
