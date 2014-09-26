@@ -996,7 +996,7 @@
 
 			function drawPaths() {
 
-			
+
     			var dashes = ["15,3", "5,5,2", "3,3","1,1"];
     			var colors = ["#FF3300", "#FF9900", "#FFFF00","#FF6666"]
     			var widths = [30,26,16,12]
@@ -1203,25 +1203,18 @@
             for (var i = 0; i < names.length; i++) {
                 var n = names[i];
                 if(personMarkers[n]){
-                    // var tpos = [0,0];
-                    // if(counters[n] > 1){
-                    //     if(i==0) console.log(previousPersonMarkersTarget[n][0] + ' ' + personMarkersTarget[n][0]);
-                    //     var r = Math.max(0,Math.min(1,mapValues(new Date().getTime(),timeInterval[n][0],timeInterval[n][1],0,1)));
-                    //     tpos[0] = mapValues(r,0,1,previousPersonMarkersTarget[n][0],personMarkersTarget[n][0]);
-                    //     tpos[1] = mapValues(r,0,1,previousPersonMarkersTarget[n][1],personMarkersTarget[n][1]);
-                    // }
-                    // var personLatLon = personMarkers[n].getLatLng();
-                    // // if(personLatLon.lat != 0 && personLatLon.lng != 0){
-                    // personLatLon.lat += (tpos[0] - personLatLon.lat) * sp * 2;
-                    // personLatLon.lng += (tpos[1] - personLatLon.lng) * sp * 2;
-                    // if(tpos[0] != 0) personMarkers[n].setLatLng(personLatLon);
-                    // // } else {
-                    // //     personLatLon.lat = tpos[0];
-                    // //     personLatLon.lng = tpos[1];
-                    // //     personMarkers[n].setLatLng(personLatLon);
-                    // // }
-
-                    // if(i==0 && tpos[0] != 0) map.setView(personLatLon, map.getZoom(), {pan:{animate:false}});
+                    var tpos = [0,0];
+                    if(counters[n] > 1){
+                        if(i==0) console.log(previousPersonMarkersTarget[n][0] + ' ' + personMarkersTarget[n][0]);
+                        var r = Math.max(0,Math.min(1,mapValues(new Date().getTime(),timeInterval[n][0],timeInterval[n][1],0,1)));
+                        tpos[0] = mapValues(r,0,1,previousPersonMarkersTarget[n][0],personMarkersTarget[n][0]);
+                        tpos[1] = mapValues(r,0,1,previousPersonMarkersTarget[n][1],personMarkersTarget[n][1]);
+                        var personLatLon = personMarkers[n].getLatLng();
+                        personLatLon.lat += (tpos[0] - personLatLon.lat) * sp * 2;
+                        personLatLon.lng += (tpos[1] - personLatLon.lng) * sp * 2;
+                        personMarkers[n].setLatLng(personLatLon);
+                        if(i==0 && tpos[0] != 0) map.setView(personLatLon, map.getZoom(), {pan:{animate:false}});
+                    }
                 }
             }
         }
