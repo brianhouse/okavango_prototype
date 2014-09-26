@@ -358,6 +358,9 @@
         var lastFrameCount = 0;
         var idleFrameCount = 0;
 
+        var isAnimationPaused = false;
+        var lastAnimationPaused = false;
+
         var scripts = [
             "This is the Okavango Delta.",
             "Located in Botswana, it is one of the richest wildlife areas on the planet.",
@@ -412,7 +415,6 @@
             focusLatLon = [-19.08398, 22.37332];
             targetLatLon = [-19.08398, 22.37332];
 
-            var isAnimationPaused = false;
     		initLayout();
 
     		// create a map in the "map" div, set the view to a given place and zoom
