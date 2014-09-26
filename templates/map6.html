@@ -1076,6 +1076,7 @@
 
 		timeMag = 100;
 		timeStep = 0.400;
+        timeInterval = [new Date().getTime(),new Date().getTime()]
         sightingCounter = 0;
 		tweetCounter = 0;
         photoCounter = 0;
@@ -1215,10 +1216,9 @@
                 if(personMarkers[n]){
                     var personLatLon = L.latLng(0,0);
                     if(counters[n] > 1){
-                        var r = mapValues(startTime,pathQueues[n][counters[n]-1].time,pathQueues[n][counters[n]].time,0,1);
+                        var r = mapValues(new Date().getTime(),timeInterval[0],timeInterval[1],0,1);
                         personLatLon.lat = mapValues(r,0,1,previousPersonMarkersTarget[n][0],personMarkersTarget[n][0]);
                         personLatLon.lng = mapValues(r,0,1,previousPersonMarkersTarget[n][1],personMarkersTarget[n][1]);
-                        if(n == 'Steve') console.log(r);
                     }
                     personMarkers[n].setLatLng(personLatLon);
                 }
@@ -1240,7 +1240,7 @@
 
             if (sightingsQueue.length > 0 && pathQueues[names[0]].length > 0) {
 
-
+            timeInterval = [new Date().getTime(),new Date().getTime()+timeStep*1000];
 			startTime += timeStep * timeMag;
 
 			var d = new Date();
