@@ -1029,9 +1029,10 @@ var focusTweet = function(marker){
     	console.log('focusing tweet: ' + marker.feature.properties.tweet.text);
     	if(currentPage != 'Twitter') toggleTwitterPanel();
 	    requestAnimationFrame(function(){
+	    	var h = d3.select('#twitterWrapper').style('margin-top');
+    		h = -parseFloat(h.substring(0,h.length-2));
 		    d3.select('#twitterWrapper')
 		    	.transition()
-		    	.delay(800)
 		    	.duration(400)
 		    	.ease("cubic-in-out")
 		    	.style('margin-top',(20-h)+'px');
