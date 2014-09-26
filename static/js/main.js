@@ -528,6 +528,13 @@ var initGraphs = function(data){
 				metrics.persons.push(ambit.Person);
 			}
 			var d = ambit.t_utc*1000;
+
+			if(i==0){
+				metrics[ambit.Person].heartrate.push([d-1,0])
+				metrics[ambit.Person].energyConsumption.push([d-1,0])
+				metrics[ambit.Person].speed.push([d-1,0])
+			}
+
 			if(ambit.HR) metrics[ambit.Person].heartrate.push([d,ambit.HR])
 			if(ambit.EnergyConsumption) metrics[ambit.Person].energyConsumption.push([d,ambit.EnergyConsumption])
 			if(ambit.Speed) metrics[ambit.Person].speed.push([d,ambit.Speed])
@@ -535,6 +542,12 @@ var initGraphs = function(data){
 			if(ambit.HR > metrics.maxHeartRate) metrics.maxHeartRate = ambit.HR;
 			if(ambit.HR < metrics.minHeartRate) metrics.minHeartRate = ambit.HR;
 			if(ambit.EnergyConsumption > metrics.maxEnergyConsumption) metrics.maxEnergyConsumption = ambit.EnergyConsumption;
+
+			if(i==len-1){
+				metrics[ambit.Person].heartrate.push([d+1,0])
+				metrics[ambit.Person].energyConsumption.push([d+1,0])
+				metrics[ambit.Person].speed.push([d+1,0])
+			}
 		}
 
 		// // reset value to 0 at the end of the day
