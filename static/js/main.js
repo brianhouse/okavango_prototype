@@ -864,7 +864,7 @@ var togglePanel = function(node, mapClick, i){
 
 }
 
-var toggleTwitterPanel = function(){
+var toggleTwitterPanel = function(focus){
 
 	d3.selectAll('#fullPanelWrapper div.page')
 		.style('position','absolute')
@@ -907,6 +907,36 @@ var toggleTwitterPanel = function(){
 		d3.select('#headerWrapper').style('position','fixed');
 
 		currentPage = 'Twitter';
+
+		if(!focus){
+			requestAnimationFrame(function(){
+				var h = d3.select('#twitterWrapper').style('margin-top');
+				h = -parseFloat(h.substring(0,h.length-2));
+				var flag = false;
+				for(var i=0; i<tweetsQueue.length; i++){
+					var q = tweetsQueue[i];
+					if(q.time/1000 > startTime){
+						var tweetFound = false;
+					    d3.select('#twitterWrapper').selectAll('div.tweet')
+					        .filter(function(d){return q.id == d.id})
+					        .each(function(){
+					        	h += this.offsetTop;
+					        	tweetFound = true;
+					        })
+
+					    if(tweetFound){
+						    d3.select('#twitterWrapper')
+						    	.transition()
+						    	.duration(400)
+						    	.ease("cubic-in-out")
+						    	.style('margin-top',(20-h)+'px');
+						    break;
+					    }
+					}
+				}
+			}
+		}
+
 	} else {
 		var w = d3.select('#fullPanelWrapper').style('width');
 		w = +w.substring(0,w.length-2);
@@ -1019,7 +1049,7 @@ var focusTweet = function(marker){
     var h = d3.select('#twitterWrapper').style('margin-top');
     h = -parseFloat(h.substring(0,h.length-2));
 
-    if(currentPage != 'Twitter') toggleTwitterPanel();
+    if(currentPage != 'Twitter') toggleTwitterPanel(true);
     requestAnimationFrame(function(){
 	    d3.select('#twitterWrapper').selectAll('div.tweet')
 	        .filter(function(d){return id == d.id})
