@@ -231,13 +231,20 @@ def ingest_hydrosensor(hydrosensor_id, content, dt):
     #HACK
     coordinates = [0, 0, 0]
     t = util.timestamp(dt)
-    properties = {'DateTime': dt.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': "hydrosensor"}    
+    #properties = {'DateTime': dt.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': "hydrosensor"}  
+    properties = {'ContentType': "hydrosensor"}  
     try:
         lines = content.split('\n')
         for line in lines:
             if not len(line.strip()):
                 continue
             try:
+                #Date: Sat, Sep 13, 2014 at 5:23 AM
+                if "Date" in line:
+                    dt = util.parse_date(line.replace("Date: ", "").strip(), tz=config['local_tz'])
+                    t = util.timestamp(dt)
+                    properties['DateTime'] = dt.strftime("%Y-%m-%dT%H:%M:%S%z")
+                    properties['t_utc'] = t
                 if "Temp" in line:
                     temperature = strings.as_numeric(line.replace("Temp (deg C) = (", "").replace(")", "").strip())
                     properties['temperature'] = temperature
