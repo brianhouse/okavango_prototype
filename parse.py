@@ -245,6 +245,7 @@ def ingest_hydrosensor(hydrosensor_id, content, dt):
                     t = util.timestamp(dt)
                     properties['DateTime'] = dt.strftime("%Y-%m-%dT%H:%M:%S%z")
                     properties['t_utc'] = t
+                    log.info(dt.strftime("%Y-%m-%dT%H:%M:%S%z"))
                 if "Temp" in line:
                     temperature = strings.as_numeric(line.replace("Temp (deg C) = (", "").replace(")", "").strip())
                     properties['temperature'] = temperature
