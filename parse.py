@@ -228,7 +228,8 @@ def ingest_hydrosensor(hydrosensor_id, content, dt):
     log.info("ingest_hydrosensor")
     t_protect = model.get_protect('hydrosensor')    
     lat, lon = model.get_drop_by_id(hydrosensor_id)
-    coordinates = [lat, lon, 0]
+    #HACK
+    coordinates = [0, 0, 0]
     t = util.timestamp(dt)
     properties = {'DateTime': dt.strftime("%Y-%m-%dT%H:%M:%S%z"), 't_utc': t, 'ContentType': "hydrosensor"}    
     try:
